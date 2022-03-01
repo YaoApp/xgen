@@ -10,6 +10,7 @@
 - error catcher
 - light theme
 - i18n full support
+- xcom (Independent component library)
 - the art-architecture 
 
 ## Why
