@@ -1,5 +1,18 @@
 # xgen next version
 
+## What`s new
+
+- pnpm
+- umi 4
+- swc
+- mobx
+- EIC (Everything is component)
+- error catcher
+- light theme
+- i18n full support
+- the art-architecture 
+
+
 ## Why
 
 过去的代码不足以支撑更新的更好的想法，而且xgen在编写之初主要是针对内部业务，在写法和架构上没有时间考虑太多，我致力于追求一种美，这种美不仅仅在表现层，更多的可能体现在思想和架构层面，所以我选择基于umi4.0、swc、mobx进行重构，重构之后我希望我可以xgen视作一件“作品”，一个“艺术品”，而不仅仅是一个用来谋生的项目。

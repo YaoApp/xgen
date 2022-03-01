@@ -1,5 +1,17 @@
 # xgen next version
 
+## What`s new
+
+- pnpm
+- umi 4
+- swc
+- mobx
+- EIC (Everything is component)
+- error catcher
+- light theme
+- i18n full support
+- the art-architecture 
+
 ## Why
 
 The past code is not enough to support newer and better ideas, and at the beginning of writing xgen mainly for internal business, there is no time to think too much about the writing method and architecture, I am committed to pursuing a kind of beauty, this kind of beauty is not only Performance is more likely to be reflected in the ideological and architectural level, so I choose to refactor based on umi4.0, swc, mobx. After refactoring, I hope that I can regard xgen as a "work", a "artwork", Not just a project to make a living.
