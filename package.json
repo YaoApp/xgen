@@ -1,0 +1,63 @@
+{
+      "name": "xgen",
+      "version": "1.0.0",
+      "author": "wendao",
+      "description": "Next-generation low-code dashboard.",
+      "private": false,
+      "license": "Apache-2.0",
+      "homepage": "https://yaoapps.com",
+      "repository": {
+            "type": "git",
+            "url": "https://github.com/YaoApp/xgen"
+      },
+      "scripts": {
+            "dev": "umi dev",
+            "build": "umi build",
+            "postinstall": "umi setup",
+            "start": "npm run dev"
+      },
+      "gitHooks": {
+            "pre-commit": "lint-staged --allow-empty"
+      },
+      "lint-staged": {
+            "*.{js,jsx,less,md,json}": [
+                  "prettier --write"
+            ],
+            "*.ts?(x)": [
+                  "prettier --parser=typescript --write"
+            ]
+      },
+      "dependencies": {
+            "ahooks": "^3.1.10",
+            "antd": "^4.18.9",
+            "clsx": "^1.1.1",
+            "echarts": "^5.3.0",
+            "fast-deep-equal": "^3.1.3",
+            "lodash-es": "^4.17.21",
+            "moment": "^2.29.1",
+            "mustache": "^4.2.0",
+            "nprogress": "^0.2.0",
+            "query-string": "^7.1.1",
+            "react": "^17.0.2",
+            "react-countup": "^6.1.1",
+            "react-dom": "^17.0.2",
+            "react-slick": "^0.28.1",
+            "store": "^2.0.12",
+            "umi": "^4.0.0-rc.3"
+      },
+      "devDependencies": {
+            "@swc/core": "^1.2.146",
+            "@types/lodash-es": "^4.17.6",
+            "@types/mustache": "^4.1.2",
+            "@types/nprogress": "^0.2.0",
+            "@types/react": "^17.0.39",
+            "@types/react-dom": "^17.0.11",
+            "@types/react-slick": "^0.23.8",
+            "@types/store": "^2.0.2",
+            "less-vars-to-js": "^1.3.0",
+            "lint-staged": "^12.3.4",
+            "prettier": "^2.5.1",
+            "typescript": "^4.6.2",
+            "yorkie": "^2.0.0"
+      }
+}
