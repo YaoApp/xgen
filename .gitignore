@@ -1,12 +1,13 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/npm-debug.log*
-/yarn-error.log
+node_modules
+*-debug.log*
+*-error.log
 
 # production
-/dist
+dist
+/build
 
 # misc
 .DS_Store
@@ -19,3 +20,12 @@
 .env.local
 .umirc.local.ts
 *.less.d.ts
+
+# turbo
+.turbo
+
+# swc
+.swc
+
+# parcel
+.parcel-cache

@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"jsx": "react-jsx",
+		"lib": ["DOM", "ES2021"],
+		"paths": {
+			"~/*": ["./*"]
+		}
+	}
+}

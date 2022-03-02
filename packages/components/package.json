@@ -1,0 +1,33 @@
+{
+      "name": "@yaoapp/components",
+      "version": "1.0.0",
+      "description": "Components for yaoapp dashboard.",
+      "author": "Wendao",
+      "license": "Apache-2.0",
+      "homepage": "https://yaoapps.com/components",
+      "repository": {
+            "type": "git",
+            "url": "https://github.com/YaoApp/xgen/packages/components"
+      },
+      "source": "./index.ts",
+      "main": "dist/index.js",
+      "module": "dist/module.js",
+      "types": "dist/types.d.ts",
+      "@parcel/bundler-default": {
+            "minBundles": 1,
+            "minBundleSize": 3000,
+            "maxParallelRequests": 18
+      },
+      "scripts": {
+            "build": "parcel build --no-source-maps --no-cache"
+      },
+      "dependencies": {
+            "parcel": "^2.3.2",
+            "react": "^17.0.2",
+            "react-dom": "^17.0.2"
+      },
+      "devDependencies": {
+            "postcss": "^8.2.1",
+            "postcss-modules": "^4.3.0"
+      }
+}

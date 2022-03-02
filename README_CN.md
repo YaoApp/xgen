@@ -5,13 +5,14 @@
 - pnpm
 - umi 4
 - swc
+- turborepo
+- Independent component library
 - mobx
-- EIC (Everything is component)
 - error catcher
 - light theme
 - i18n full support
-- xcom (Independent component library)
 - the art-architecture 
+- EIC (Everything is component)
 
 ## Why
 
@@ -30,6 +31,7 @@ Every route is a dynamic route, Everything is component（后面统称EIC），N
 ### Foundation
 
 - [x] 基于umi 4搭建脚手架
+- [x] 使用Turborepo + Parcel将组件作为单独的包使用
 - [ ] template转换规则设计
 - [ ] EIC架构设计
 - [ ] 样式文件的迁移和重构

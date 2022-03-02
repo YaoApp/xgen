@@ -1,22 +1,12 @@
-import React from 'react';
-import { Link, Outlet } from 'umi';
-import styles from './index.less';
+import { Fragment } from 'react'
+import { Outlet } from 'umi'
 
-export default function Layout() {
-  return (
-    <div className={styles.navs}>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/docs">Docs</Link>
-        </li>
-        <li>
-          <a href="https://github.com/umijs/umi">Github</a>
-        </li>
-      </ul>
-      <Outlet />
-    </div>
-  );
+const Index = () => {
+	return (
+		<Fragment>
+			<Outlet />
+		</Fragment>
+	)
 }
+
+export default Index

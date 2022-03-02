@@ -5,13 +5,14 @@
 - pnpm
 - umi 4
 - swc
+- turborepo
+- Independent component library
 - mobx
-- EIC (Everything is component)
 - error catcher
 - light theme
 - i18n full support
-- xcom (Independent component library)
 - the art-architecture 
+- EIC (Everything is component)
 
 ## Why
 
@@ -30,6 +31,7 @@ Of course, the configuration of the base components is mostly unchanged.
 ### Foundation
 
 - [x] Build scaffolding based on umi 4
+- [x] Use Turborepo + Parcel to use components as separate packages
 - [ ] template conversion rule design
 - [ ] EIC Architecture Design
 - [ ] Migration and refactoring of style files
