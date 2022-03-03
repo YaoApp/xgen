@@ -1,11 +1,21 @@
-import { Fragment } from 'react'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { Outlet } from 'umi'
+
+import config from '@/config'
 
 const Index = () => {
 	return (
-		<Fragment>
+		<HelmetProvider>
+			<Helmet>
+				<link
+					rel='shortcut icon'
+					type='image/x-icon'
+					href={require('@/assets/favicon.ico')}
+				/>
+				<title>{config.name}</title>
+			</Helmet>
 			<Outlet />
-		</Fragment>
+		</HelmetProvider>
 	)
 }
 

@@ -2,6 +2,7 @@
 
 ## What`s new
 
+- pwa
 - pnpm
 - umi 4
 - swc
@@ -41,6 +42,7 @@ Of course, the configuration of the base components is mostly unchanged.
 - [ ] Table refactoring
 - [ ] Form refactoring
 - [ ] Design of extension components based on ShadowDom + Web Worker
+- [ ] JSON field prompt vscode json.$schema
 
 ### Gifts
 
