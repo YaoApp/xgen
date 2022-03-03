@@ -1,11 +1,9 @@
 import { defineConfig } from 'umi'
 
 import config from './config'
-import theme from './utils/antd'
 
 export default defineConfig({
 	base: config.base,
-	theme,
 	npmClient: 'pnpm',
 	srcTranspiler: 'swc',
       mfsu: false,

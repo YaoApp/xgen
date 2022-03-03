@@ -1,3 +1,0 @@
-# Template
-
-## What is template
