@@ -1,0 +1,55 @@
+{
+      "type": "Page",
+      "config": {
+            "title": "@title",
+            "actions": {
+                  "__CONCAT": [
+                        {
+                              "title": "批量编辑",
+                              "icon": "icon-edit",
+                              "action": {
+                                    "id": "$table",
+                                    "method": "showBatchModal"
+                              }
+                        },
+                        "@pageExtraActions"
+                  ]
+            }
+      },
+      "children": [
+            {
+                  "type": "Table",
+                  "id": "$table",
+                  "config": {
+                        "primary": {
+                              "__IF_EXIST": "@id",
+                              "__ELSE": "id"
+                        },
+                        "fields": "@fields",
+                        "actions": "@tableActionsConfig",
+                        "filter": {
+                              "children": "@filterChildren",
+                              "actions": {
+                                    "__IF_EXIST": "@filterActions",
+                                    "__ELSE": {
+                                          "create": {
+                                                "text": "新建@filterCreateTitle",
+                                                "icon": "icon-plus"
+                                          }
+                                    }
+                              }
+                        },
+                        "list": {
+                              "hideView": true,
+                              "hideEdit": false,
+                              "unfold": true,
+                              "__ASSIGN": "@list"
+                        },
+                        "pagination": {
+                              "showTotal": true
+                        }
+                  },
+                  "props": "@tableProps"
+            }
+      ]
+}
