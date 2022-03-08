@@ -1,5 +1,6 @@
 export { default as memo } from './common/memo'
 export { default as sleep } from './common/sleep'
+export { default as Handle } from './common/Handle'
 
 export { default as fuzzyQuery } from './filter/fuzzyQuery'
 export { default as getDeepValue } from './filter/getDeepValue'

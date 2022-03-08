@@ -1,5 +1,12 @@
+import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
+
+import Model from '../model'
+
 const Index = () => {
-      return <div>123</div>
+	const [x] = useState(() => new Model())
+
+	return <div>123</div>
 }
 
-export default Index
+export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

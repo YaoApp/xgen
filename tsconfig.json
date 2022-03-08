@@ -9,6 +9,8 @@
 		"sourceMap": true,
 		"baseUrl": ".",
 		"strict": true,
+            "experimentalDecorators":true,
+            "useDefineForClassFields":true,
 		"paths": {
 			"@/*": ["*"],
 			"@@/*": [".umi/*"]

@@ -1,8 +1,13 @@
-import { memo, sleep } from '@yaoapp/utils'
+import { configure } from 'mobx'
+
+import { Handle, memo, sleep } from '@yaoapp/utils'
+
+configure({ enforceActions: 'never' })
 
 window.$app = {
 	memo,
-	sleep
+	sleep,
+	Handle
 }
 
 export {}
