@@ -6,10 +6,10 @@ import { env, optimization } from './utils/build'
 export default defineConfig({
 	// srcTranspiler: 'swc',
 	mfsu: { esbuild: true },
-	npmClient: 'pnpm',
+      npmClient: 'pnpm',
 	base: config.base,
-	publicPath: config.base,
-	favicon: '/favicon.ico',
+      publicPath: config.base,
+      antd:{},
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
 	links: [{ rel: 'stylesheet', href: `${config.base}icon/md_icon.css` }],
 	polyfill: { imports: ['core-js/features/promise/try', 'core-js/proposals/math-extensions'] },

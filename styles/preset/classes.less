@@ -1,0 +1,22 @@
+.no_wrap {
+	white-space: nowrap;
+}
+
+.clickable {
+	transition: transform ease 0.12s;
+
+	&:active {
+		transform: scale(0.9);
+	}
+}
+
+.edit_text {
+	cursor: pointer;
+
+	&:hover {
+		color: var(--color_main);
+		text-decoration: underline;
+
+		text-decoration-skip: ink;
+	}
+}
