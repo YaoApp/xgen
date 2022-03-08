@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
-import Model from '../model'
+import Common from '../../components/Common'
+import Model from '../../model'
 
 const Index = () => {
 	const [x] = useState(() => new Model())
