@@ -2,7 +2,6 @@
 
 ## What`s new
 
-- pwa
 - pnpm
 - umi 4
 - swc

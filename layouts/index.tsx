@@ -1,7 +1,7 @@
 import { Helmet, HelmetProvider } from 'react-helmet-async'
-import { Outlet } from 'umi'
 
 import config from '@/config'
+import { Outlet } from '@umijs/pro'
 
 const Index = () => {
 	return (
@@ -10,7 +10,7 @@ const Index = () => {
 				<link
 					rel='shortcut icon'
 					type='image/x-icon'
-					href={require('@/assets/favicon.ico')}
+					href={require('@/public/favicon.ico')}
 				/>
 				<title>{config.name}</title>
 			</Helmet>
