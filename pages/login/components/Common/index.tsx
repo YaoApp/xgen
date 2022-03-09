@@ -1,20 +1,15 @@
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 
-import bg_login from '@/assets/images/bg_login.jpeg'
-
 import Form from '../Form'
 import Left from '../Left'
 import styles from './index.less'
 
 const Index = () => {
 	return (
-		<div
-			className={clsx([styles._local, 'w_100vw h_100vh flex'])}
-			style={{ backgroundImage: `url(${bg_login})` }}
-		>
+		<div className={clsx([styles._local, 'w_100vw h_100vh flex'])}>
 			<Left></Left>
-			<div className='right_wrap h_100 border_box'>
+			<div className='right_wrap h_100 border_box bg_white'>
 				<Form></Form>
 			</div>
 		</div>

@@ -1,24 +1,66 @@
-._local{
-      width: calc(100vw - 640px);
-      background-color: rgba(var(--r),var(--g),var(--b),0.72);
+@keyframes float {
+	from {
+		transform: translate(15px, -15px);
+	}
 
-      backdrop-filter: blur(30px);
+	to {
+		transform: translate(-15px, 15px);
+	}
+}
 
-      :global{
-            .logo_wrap{
-                  top: 48px;
-                  left: 48px;
-                  width: 54px;
-                  height: 54px;
+._local {
+	width: calc(100vw - 640px);
+	background-image: linear-gradient(90deg, #3373fc, #0f43b3);
+
+	:global {
+            .logo_wrap {
+                  top: 30px;
+                  left: 30px;
+                  width: 45px;
+                  height: 45px;
                   border-radius: 12px;
 
-                  .logo{
-                        max-width: 48px;
+                  .logo {
+                        max-width: 42px;
                   }
             }
 
-            .image_login_left{
-                  max-width: 60%;
+            .circle{
+                  top: -120px;
+                  right: -120px;
+                  width: 240px;
+                  height: 240px;
+                  border-radius: 50%;
+                  background-color: fade(white,30%);
             }
-      }
+	
+		.grid {
+			background-repeat: repeat;
+		}
+
+		.image_login_left {
+			max-width: 20vw;
+
+			:local {
+				animation: float 24s infinite;
+				animation-direction: alternate;
+			}
+		}
+
+		.words_wrap {
+                  margin-top: 72px;
+                  width: 480px;
+                  color: fade(white,90%);
+                  font-size: 48px;
+		}
+
+            .link_wrap{
+                  bottom: 45px;
+                  color: fade(white,60%);
+
+                  &:hover{
+                        color: white;
+                  }
+            }
+	}
 }

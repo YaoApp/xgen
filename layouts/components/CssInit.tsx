@@ -11,7 +11,7 @@ const Index = () => {
             background-color: var(--color_bg);
             color: var(--color_text);
             font-size: 14px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+            font-family: 'OutFit',-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
                   'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
                   'Noto Color Emoji';
             line-height: 1.5;

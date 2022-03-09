@@ -2,21 +2,26 @@
 	font-weight: 400;
 	font-style: normal;
 	font-family: 'md_icon_outline';
-	src: local('md_icon'), url('/icon/md_icon_outline.otf') format('opentype');
+	src: local('md_icon'), url('./icon/md_icon_outline.otf') format('opentype');
 }
 
 @font-face {
 	font-weight: 400;
 	font-style: normal;
 	font-family: 'md_icon_filled';
-	src: local('md_icon'), url('/icon/md_icon_filled.ttf') format('truetype');
+	src: local('md_icon'), url('./icon/md_icon_filled.ttf') format('truetype');
 }
 
 @font-face {
 	font-weight: 400;
 	font-style: normal;
 	font-family: 'fa_icon';
-	src: local('fa_icon'), url('/icon/fa_icon.woff') format('woff');
+	src: local('fa_icon'), url('./icon/fa_icon.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Outfit';
+	src: local('Outfit'), url('./font/Outfit-VariableFont_wght.ttf') format('truetype');
 }
 
 [class^='icon-'],
