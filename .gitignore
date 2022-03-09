@@ -20,6 +20,7 @@ dist
 .env.local
 .umirc.local.ts
 *.less.d.ts
+.cache
 
 # turbo
 .turbo
