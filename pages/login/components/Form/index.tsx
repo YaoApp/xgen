@@ -4,16 +4,22 @@ import { observer } from 'mobx-react-lite'
 
 import feishu from '@/assets/images/feishu.png'
 import { Icon } from '@/components'
+import { useGlobal } from '@/context/app'
 import { Link } from '@umijs/pro'
 
 const { Item, useForm } = Form
 
 const Index = () => {
+	const global = useGlobal()
 	const [form] = useForm()
 	const { getFieldValue } = form
-	const is_cn = true
+      const is_cn = true
+      
+      console.log(global.theme);
 
-	const onFinish = (v: any) => {
+      const onFinish = (v: any) => {
+            return
+
 		const is_email = v.mobile.indexOf('@') !== -1
 
 		if (is_email) {
@@ -120,6 +126,7 @@ const Index = () => {
 						// 		getFieldValue('captcha_code')
 						// 	)
 						// }
+                                    onClick={()=>global.setTheme(global.theme=='light'?'dark':'light')}
 					>
 						登录
 					</Button>

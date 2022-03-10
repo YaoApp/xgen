@@ -1,20 +1,17 @@
 import { ConfigProvider } from 'antd'
+import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 
 import config from '@/config'
-import GlobalProvider from '@/context/app'
+import { GlobalContext, GlobalModel } from '@/context/app'
 import { Outlet } from '@umijs/pro'
 
 import CssInit from './components/CssInit'
 
-ConfigProvider.config({
-	prefixCls: 'xgen-light',
-      theme: {
-            primaryColor:'#3371fc'
-      }
-})
-
 const Index = () => {
+	const [global] = useState(() => new GlobalModel())
+
 	return (
 		<HelmetProvider>
 			<Helmet>
@@ -26,13 +23,13 @@ const Index = () => {
 				<title>{config.name}</title>
 			</Helmet>
 			<CssInit />
-			<ConfigProvider prefixCls='xgen-light'>
-				<GlobalProvider>
+			<ConfigProvider prefixCls={`xgen-${global.theme}`}>
+				<GlobalContext.Provider value={global}>
 					<Outlet />
-				</GlobalProvider>
+				</GlobalContext.Provider>
 			</ConfigProvider>
 		</HelmetProvider>
 	)
 }
 
-export default Index
+export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

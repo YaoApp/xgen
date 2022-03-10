@@ -5,7 +5,7 @@ import Common from '../components/Common'
 import Model from '../model'
 
 const Index = () => {
-	const [x] = useState(() => new Model())
+      const [ x ] = useState(() => new Model())
 
 	return <Common></Common>
 }

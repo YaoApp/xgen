@@ -1,7 +1,7 @@
-import { Page } from '@/components'
+import { observer } from 'mobx-react-lite'
 
 const Index = () => {
-	return <Page title='page'>123</Page>
+	return <div>123</div>
 }
 
-export default window.$app.memo(Index)
+export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
