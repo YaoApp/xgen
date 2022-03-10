@@ -1,3 +1,4 @@
+import { ConfigProvider } from 'antd'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 
 import config from '@/config'
@@ -5,6 +6,13 @@ import GlobalProvider from '@/context/app'
 import { Outlet } from '@umijs/pro'
 
 import CssInit from './components/CssInit'
+
+ConfigProvider.config({
+	prefixCls: 'xgen-light',
+      theme: {
+            primaryColor:'#3371fc'
+      }
+})
 
 const Index = () => {
 	return (
@@ -18,9 +26,11 @@ const Index = () => {
 				<title>{config.name}</title>
 			</Helmet>
 			<CssInit />
-			<GlobalProvider>
-				<Outlet />
-			</GlobalProvider>
+			<ConfigProvider prefixCls='xgen-light'>
+				<GlobalProvider>
+					<Outlet />
+				</GlobalProvider>
+			</ConfigProvider>
 		</HelmetProvider>
 	)
 }

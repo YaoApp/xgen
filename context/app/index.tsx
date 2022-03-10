@@ -4,8 +4,7 @@ import Model from './model'
 
 import type { PropsWithChildren } from 'react'
 
-// @ts-ignore Avoid duplicate declarations
-const Context = createContext<Model>()
+const Context = createContext<Model | null>(null)
 
 export const useGlobal = () => useContext(Context)
 

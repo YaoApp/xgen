@@ -1,12 +1,7 @@
-import fs from 'fs'
-import lessToJs from 'less-vars-to-js'
-import path from 'path'
-
 import type Config from 'webpack-chain'
+import config from '../config'
 
 export const env = process.env.NODE_ENV as 'development' | 'production'
-
-export const theme = lessToJs(fs.readFileSync(path.join(process.cwd(), `/styles/theme.less`), 'utf8'))
 
 export const proxy = {
 	'/api': {
@@ -18,6 +13,12 @@ export const proxy = {
 		changeOrigin: true
 	}
 }
+
+export const links = [
+	{ rel: 'stylesheet', href: `${config.base}icon_font.css` },
+	{ rel: 'stylesheet', href: `${config.base}theme/light.css` },
+	{ rel: 'stylesheet', href: `${config.base}theme/dark.css` }
+]
 
 export const chainWebpack = (cfg: Config) => {
 	if (env === 'production') {
