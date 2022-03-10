@@ -4,18 +4,13 @@ import { observer } from 'mobx-react-lite'
 
 import feishu from '@/assets/images/feishu.png'
 import { Icon } from '@/components'
-import { useGlobal } from '@/context/app'
-import { Link } from '@umijs/pro'
 
 const { Item, useForm } = Form
 
 const Index = () => {
-	const global = useGlobal()
 	const [form] = useForm()
 	const { getFieldValue } = form
       const is_cn = true
-      
-      console.log(global.theme);
 
       const onFinish = (v: any) => {
             return
@@ -126,15 +121,11 @@ const Index = () => {
 						// 		getFieldValue('captcha_code')
 						// 	)
 						// }
-                                    onClick={()=>global.setTheme(global.theme=='light'?'dark':'light')}
 					>
 						登录
 					</Button>
 				)}
 			</Item>
-			<Link className='btn_link w_100 text_center transition_normal' to='/login/user'>
-				普通用户登录
-			</Link>
 			{/* <div className='flex flex_column'>
 				<div className='or_wrap flex justify_between align_center'>
 					<span className='line'></span>

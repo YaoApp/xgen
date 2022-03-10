@@ -1,6 +1,6 @@
 import { ConfigProvider } from 'antd'
 import { observer } from 'mobx-react-lite'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 
 import config from '@/config'
@@ -20,10 +20,13 @@ const Index = () => {
 					type='image/x-icon'
 					href={require('@/public/favicon.ico')}
 				/>
+				<link rel='stylesheet' href={`/theme/light.css`} />
+				{global.theme === 'dark' && (
+					<link rel='stylesheet' href={`/theme/dark.css`} />
+				)}
 				<title>{config.name}</title>
 			</Helmet>
-			<CssInit />
-			<ConfigProvider prefixCls={`xgen-${global.theme}`}>
+			<ConfigProvider prefixCls='xgen'>
 				<GlobalContext.Provider value={global}>
 					<Outlet />
 				</GlobalContext.Provider>
