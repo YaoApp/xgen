@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Icon } from '@/components'
 import { useGlobal } from '@/context/app'
+import { Link } from '@umijs/pro'
 
 import Form from '../Form'
 import Left from '../Left'
@@ -19,9 +20,12 @@ const Index = () => {
 			<div className='right_wrap h_100 border_box flex flex_column align_center justify_center relative'>
 				<div className='top_wrap absolute top_0 left_0 w_100 border_box flex justify_between align_center'>
 					<Tooltip title='普通用户登录' placement='right'>
-						<div className='user_login_wrap action_wrap flex justify_center align_center cursor_point'>
+						<Link
+							className='user_login_wrap action_wrap flex justify_center align_center cursor_point'
+							to='/login/user'
+						>
 							<Icon name='icon-user' size={18}></Icon>
-						</div>
+						</Link>
 					</Tooltip>
 					<div
 						className='theme_change_wrap action_wrap flex justify_center align_center cursor_point'

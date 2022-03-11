@@ -10,7 +10,7 @@
 		"baseUrl": ".",
 		"strict": true,
             "experimentalDecorators":true,
-            "useDefineForClassFields":true,
+            "emitDecoratorMetadata":true,
 		"paths": {
 			"@/*": ["*"],
 			"@@/*": [".umi/*"]

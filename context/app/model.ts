@@ -1,17 +1,22 @@
 import { ConfigProvider } from 'antd'
 import { makeAutoObservable } from 'mobx'
+import { singleton } from 'tsyringe'
+
+import Service from '@/services/app'
 
 export type Theme = 'light' | 'dark'
 
+@singleton()
 export default class Model {
 	theme: Theme = 'light'
 
-	constructor() {
+	constructor(public service: Service) {
 		makeAutoObservable(this, {}, { autoBind: true })
 
 		const theme = (localStorage.getItem('xgen-theme') || 'light') as Theme
 
 		this.setTheme(theme)
+		this.getAppInfo()
 	}
 
 	setTheme(theme: Theme) {
@@ -24,8 +29,14 @@ export default class Model {
 		ConfigProvider.config({
 			prefixCls: 'xgen',
 			theme: {
-                        primaryColor: '#3371fc'
-                  }
+				primaryColor: '#3371fc'
+			}
 		})
+	}
+
+	*getAppInfo(): Generator {
+		const res = yield this.service.getAppInfo()
+
+		console.log(res)
 	}
 }

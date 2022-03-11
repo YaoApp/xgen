@@ -1,16 +1,15 @@
 import { ConfigProvider } from 'antd'
 import { observer } from 'mobx-react-lite'
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
+import { container } from 'tsyringe'
 
 import config from '@/config'
 import { GlobalContext, GlobalModel } from '@/context/app'
 import { Outlet } from '@umijs/pro'
 
-import CssInit from './components/CssInit'
-
 const Index = () => {
-	const [global] = useState(() => new GlobalModel())
+	const [global] = useState(() => container.resolve(GlobalModel))
 
 	return (
 		<HelmetProvider>
