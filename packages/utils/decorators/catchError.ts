@@ -7,8 +7,8 @@ export default () => {
 
 			try {
 				res = await fn()
-			} catch (err) {
-				err = err
+			} catch (error) {
+				err = error.response
 			}
 
 			return { res, err }

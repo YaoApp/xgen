@@ -27,7 +27,7 @@ body {
 }
 
 ::-webkit-input-placeholder,
-.ant-select-selection-placeholder {
+.xgen-select-selection-placeholder {
 	color: var(--color_placeholder) !important;
 }
 

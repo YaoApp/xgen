@@ -36,7 +36,7 @@ compile(dark_vars, 'dark')
 
 const override_body_styles = fs.readFileSync(init_style_path).toString()
 const light_css = fs.readFileSync(`${output_path}/light.css`).toString()
-const dark_css = fs.readFileSync(`${output_path}/light.css`).toString()
+const dark_css = fs.readFileSync(`${output_path}/dark.css`).toString()
 
 fs.writeFileSync(`${output_path}/light.css`, light_css + override_body_styles)
 fs.writeFileSync(`${output_path}/dark.css`, dark_css + override_body_styles)
