@@ -29,7 +29,7 @@ export default class Model {
 		ConfigProvider.config({
 			prefixCls: 'xgen',
 			theme: {
-				primaryColor: '#3371fc'
+				primaryColor: theme === 'light' ? '#3371fc' : '#4e7adf'
 			}
 		})
 	}

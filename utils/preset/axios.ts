@@ -16,7 +16,7 @@ axios.interceptors.request.use((config) => {
 })
 
 axios.interceptors.response.use(
-	(response) => response,
+	(response) => response.data,
 	(error) => {
 		const res = error.response
 		const data = res.data
@@ -35,7 +35,7 @@ axios.interceptors.response.use(
 			message.error(data.message)
 		} else {
 			if (res.status && res.statusText)
-				message.error(`${res.status} : ${res.statusText}`, 0)
+				message.error(`${res.status} : ${res.statusText}`)
 		}
 
 		return Promise.reject(error)
