@@ -8,7 +8,7 @@ node_modules
 # production
 dist
 /build
-/public/theme/*
+/public/theme/*.css
 
 # misc
 .DS_Store
