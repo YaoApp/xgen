@@ -18,6 +18,7 @@
             "maxParallelRequests": 18
       },
       "scripts": {
+            "dev": "parcel watch --no-hmr",
             "build": "parcel build --no-source-maps --no-cache"
       },
       "dependencies": {

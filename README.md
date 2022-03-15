@@ -1,5 +1,9 @@
 # xgen next version
 
+## Tips
+
+.umirc.ts `mfsu: false` for packages debugging `pnpm run dev:all`.
+
 ## What`s new
 
 - pnpm

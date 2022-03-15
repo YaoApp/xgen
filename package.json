@@ -15,6 +15,7 @@
             "postinstall": "umipro setup",
             "dev": "umipro dev",
             "build": "pnpm run build:theme && umipro build",
+            "dev:all": "turbo run dev",
             "build:all": "turbo run build",
             "build:com": "turbo run build --scope=@yaoapp/components",
             "build:utils": "turbo run build --scope=@yaoapp/utils",
