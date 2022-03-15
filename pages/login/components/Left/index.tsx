@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import { observer } from 'mobx-react-lite'
 
 import dot from '@/assets/images/dot.svg'
 import image_login_left from '@/assets/images/image_login_left.svg'
@@ -21,8 +20,8 @@ const Index = () => {
 			></div>
 			<div className='logo_wrap absolute flex justify_center align_center bg_white'>
 				<img className='logo' src={logo} alt='logo' />
-                  </div>
-                  <div className="circle absolute"></div>
+			</div>
+			<div className='circle absolute'></div>
 			<div className='content_wrap flex flex_column justify_center align_center relative'>
 				<img
 					className='image_login_left'
@@ -48,4 +47,4 @@ const Index = () => {
 	)
 }
 
-export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
+export default new window.$app.Handle(Index).by(window.$app.memo).get()

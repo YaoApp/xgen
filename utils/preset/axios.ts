@@ -21,21 +21,17 @@ axios.interceptors.response.use(
 		const res = error.response
 		const data = res.data
 
-		if (data && (data.code === 401 || data.code === 403)) {
-			const login_url = localStorage.getItem('login_url')
-
-			if (login_url) {
-				history.push(login_url)
-			}
-
-			return
-		}
-
 		if (data && data.message) {
 			message.error(data.message)
 		} else {
 			if (res.status && res.statusText)
 				message.error(`${res.status} : ${res.statusText}`)
+		}
+
+		if (data && data.code === 401) {
+			const login_url = localStorage.getItem('login_url')
+
+			if (login_url) history.push(login_url)
 		}
 
 		return Promise.reject(error)

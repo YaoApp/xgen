@@ -1,14 +1,15 @@
 import axios from 'axios'
 import { injectable } from 'tsyringe'
 
-import { AppInfo } from '@/types/app'
 import { catchError } from '@yaoapp/utils'
+
+import type { Response } from '@/types/app'
 
 @injectable()
 export default class Index {
 	@catchError()
-	getAppInfo() {
-		return axios.get<AppInfo>(`/api/xiang/inspect`)
+	getAppInfo<Res>() {
+		return axios.get<{}, Response<Res>>(`/api/xiang/inspect`)
 	}
 
 	@catchError()

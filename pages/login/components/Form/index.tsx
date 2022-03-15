@@ -1,36 +1,19 @@
-import { Button, Form, Input, message } from 'antd'
+import { Button, Form, Input } from 'antd'
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 
-import feishu from '@/assets/images/feishu.png'
+import logo_feishu from '@/assets/images/feishu.png'
 import { Icon } from '@/components'
 
 const { Item, useForm } = Form
 
-const Index = () => {
+import type { IPropsForm } from '../../types'
+
+const Index = (props: IPropsForm) => {
+	const { code, feishu, getCaptcha, onFinish } = props
 	const [form] = useForm()
 	const { getFieldValue } = form
-      const is_cn = true
-
-      const onFinish = (v: any) => {
-            return
-
-		const is_email = v.mobile.indexOf('@') !== -1
-
-		if (is_email) {
-			if (
-				!/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(
-					v.mobile
-				)
-			) {
-				// return message.warning(login_messages.form.validate.email)
-			}
-		} else {
-			if (!/^1[3|4|5|8|9][0-9]\d{4,8}$/.test(v.mobile)) {
-				// return message.warning(login_messages.form.validate.mobile)
-			}
-		}
-	}
+	const is_cn = true
 
 	return (
 		<Form
@@ -83,11 +66,11 @@ const Index = () => {
 			<div className='input_wrap relative'>
 				<Item noStyle shouldUpdate>
 					{() => (
-						<Item noStyle name='captcha_code'>
+						<Item noStyle name='code'>
 							<Input
 								className={clsx([
 									'input input_captcha_code',
-									getFieldValue('captcha_code')
+									getFieldValue('code')
 										? 'has_value'
 										: '',
 									!is_cn && 'en'
@@ -105,7 +88,13 @@ const Index = () => {
 						</Item>
 					)}
 				</Item>
-				<span className='img_captcha_code absolute cursor_point' />
+				<span
+					className='img_captcha_code absolute cursor_point'
+					style={{
+						backgroundImage: code ? `url(${code})` : undefined
+					}}
+					onClick={getCaptcha}
+				/>
 			</div>
 			<Item noStyle shouldUpdate>
 				{() => (
@@ -114,40 +103,42 @@ const Index = () => {
 						type='primary'
 						htmlType='submit'
 						shape='round'
-						// disabled={
-						// 	!(
-						// 		getFieldValue('mobile') &&
-						// 		getFieldValue('password') &&
-						// 		getFieldValue('captcha_code')
-						// 	)
-						// }
+						disabled={
+							!(
+								getFieldValue('mobile') &&
+								getFieldValue('password') &&
+								getFieldValue('code')
+							)
+						}
 					>
 						登录
 					</Button>
 				)}
 			</Item>
-			{/* <div className='flex flex_column'>
-				<div className='or_wrap flex justify_between align_center'>
-					<span className='line'></span>
-					<span className='text'>or</span>
-					<span className='line'></span>
+			{feishu && (
+				<div className='flex flex_column'>
+					<div className='or_wrap flex justify_between align_center'>
+						<span className='line'></span>
+						<span className='text'>or</span>
+						<span className='line'></span>
+					</div>
+					<div className='third_wrap w_100 flex flex_column'>
+						<Button
+							className='btn_third relative'
+							shape='round'
+							icon={
+								<img
+									className='logo_third absolute'
+									src={logo_feishu}
+									alt='logo_feishu'
+								/>
+							}
+						>
+							使用飞书进行登录
+						</Button>
+					</div>
 				</div>
-				<div className='third_wrap w_100 flex flex_column'>
-					<Button
-						className='btn_third relative'
-						shape='round'
-						icon={
-							<img
-								className='logo_third absolute'
-								src={feishu}
-								alt='feishu'
-							/>
-						}
-					>
-						使用飞书进行登录
-					</Button>
-				</div>
-			</div> */}
+			)}
 		</Form>
 	)
 }

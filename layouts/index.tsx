@@ -6,6 +6,7 @@ import { container } from 'tsyringe'
 
 import config from '@/config'
 import { GlobalContext, GlobalModel } from '@/context/app'
+import InitCss from '@/styles/preset/init'
 import { Outlet } from '@umijs/pro'
 
 const Index = () => {
@@ -19,11 +20,15 @@ const Index = () => {
 					type='image/x-icon'
 					href={require('@/public/favicon.ico')}
 				/>
-				<link rel='stylesheet' href={`/theme/light.css`} />
 				{global.theme === 'dark' && (
 					<link rel='stylesheet' href={`/theme/dark.css`} />
 				)}
-				<title>{config.name}</title>
+				<style>{InitCss}</style>
+				<title>
+					{global.app_info.name
+						? `${global.app_info.name} - ${global.app_info.description}`
+						: config.name}
+				</title>
 			</Helmet>
 			<ConfigProvider prefixCls='xgen'>
 				<GlobalContext.Provider value={global}>

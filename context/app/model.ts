@@ -4,11 +4,14 @@ import { singleton } from 'tsyringe'
 
 import Service from '@/services/app'
 
-export type Theme = 'light' | 'dark'
+import type { AppInfo, Theme, User, Menu } from '@/types/app'
 
 @singleton()
-export default class Model {
+export default class GlobalModel {
 	theme: Theme = 'light'
+	app_info = {} as AppInfo
+	user = {} as User
+	menu = [] as Array<Menu>
 
 	constructor(public service: Service) {
 		makeAutoObservable(this, {}, { autoBind: true })
@@ -34,9 +37,11 @@ export default class Model {
 		})
 	}
 
-	*getAppInfo(): Generator {
-		const res = yield this.service.getAppInfo()
+	async getAppInfo() {
+		const { res, err } = await this.service.getAppInfo<AppInfo>()
 
-		console.log(res)
+		if (err) return
+
+		this.app_info = res
 	}
 }

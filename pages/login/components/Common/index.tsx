@@ -10,9 +10,18 @@ import Form from '../Form'
 import Left from '../Left'
 import styles from './index.less'
 
-const Index = () => {
+import type { IPropsCommon, IPropsForm } from '../../types'
+
+const Index = ({ x }: IPropsCommon) => {
 	const global = useGlobal()
 	const is_dark = global.theme == 'dark'
+
+	const props_form: IPropsForm = {
+		code: x.captcha.content,
+		feishu: global.app_info?.login?.feishu,
+		getCaptcha: x.getCaptcha,
+		onFinish: x.onFinish
+	}
 
 	return (
 		<div className={clsx([styles._local, 'w_100vw h_100vh flex '])}>
@@ -41,7 +50,7 @@ const Index = () => {
 					<span className='title'>登录</span>
 					<span className='user_type absolute white'>Admin</span>
 				</div>
-				<Form></Form>
+				<Form {...props_form}></Form>
 				<div className='copyright w_100 absolute flex justify_center'>
 					<span>由</span>
 					<a href='https://www.iqka.com/' target='_blank'>

@@ -1,3 +1,12 @@
+import type { AxiosError } from 'axios'
+
+export type Theme = 'light' | 'dark'
+
+export interface Response<T> {
+	res: T
+	err: AxiosError['response']
+}
+
 export interface AppInfo {
 	/** Application Name */
 	name: string
@@ -32,6 +41,14 @@ export interface AppInfo {
 	}
 }
 
+export interface User {
+	email: string
+	id: number
+	mobile?: any
+	name: string
+	type: string
+}
+
 export interface Menu {
 	id: number
 	name: string
@@ -40,4 +57,5 @@ export interface Menu {
 	visible_menu?: boolean
 	blocks?: boolean
 	children?: Array<Menu>
+	parent?: any
 }
