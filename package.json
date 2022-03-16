@@ -11,6 +11,9 @@
             "type": "git",
             "url": "https://github.com/YaoApp/xgen"
       },
+      "workspaces": [
+            "packages/*"
+      ],
       "scripts": {
             "postinstall": "umipro setup",
             "dev": "umipro dev",

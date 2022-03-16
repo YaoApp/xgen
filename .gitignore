@@ -9,6 +9,7 @@ node_modules
 dist
 /build
 /public/theme/*.css
+/public/icon_font.css
 
 # misc
 .DS_Store

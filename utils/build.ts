@@ -16,7 +16,7 @@ export const proxy = {
 
 export const links = [
 	{ rel: 'stylesheet', href: `${config.base}icon_font.css` },
-	{ rel: 'stylesheet', href: `${config.base}theme/light.css` },
+	{ rel: 'stylesheet', href: `${config.base}theme/light.css` }
 ]
 
 export const chainWebpack = (cfg: Config) => {
