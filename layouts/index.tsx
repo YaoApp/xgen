@@ -7,10 +7,14 @@ import { container } from 'tsyringe'
 import config from '@/config'
 import { GlobalContext, GlobalModel } from '@/context/app'
 import InitCss from '@/styles/preset/init'
-import { Outlet } from '@umijs/pro'
+import { Outlet, useIntl } from '@umijs/pro'
 
 const Index = () => {
+	const { messages } = useIntl()
 	const [global] = useState(() => container.resolve(GlobalModel))
+
+	global.locale_messages = messages
+
 	const name = global.app_info.name
 
 	return (

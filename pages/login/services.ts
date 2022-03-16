@@ -3,7 +3,7 @@ import { injectable } from 'tsyringe'
 
 import { catchError } from '@yaoapp/utils'
 
-import type { Response } from '@/types/app'
+import type { Response } from '@/types'
 
 @injectable()
 export default class Index {

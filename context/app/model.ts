@@ -4,11 +4,12 @@ import { singleton } from 'tsyringe'
 
 import Service from '@/services/app'
 
-import type { AppInfo, Theme, User, Menu } from '@/types/app'
+import type { AppInfo, Theme, User, Menu, LocaleMessages } from '@/types'
 
 @singleton()
 export default class GlobalModel {
 	theme: Theme = 'light'
+	locale_messages = {} as LocaleMessages
 	app_info = {} as AppInfo
 	user = {} as User
 	menu = [] as Array<Menu>

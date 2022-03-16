@@ -1,5 +1,5 @@
 import type Model from './model'
-import type { AppInfo, Menu, User } from '@/types/app'
+import type { AppInfo, Menu, User } from '@/types'
 
 export type UserType = 'admin' | 'user'
 

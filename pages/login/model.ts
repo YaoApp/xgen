@@ -8,13 +8,13 @@ import { history } from '@umijs/pro'
 
 import Service from './services'
 
-import type { Loading } from '@/types/app'
-import type { Captcha, ReqLogin, ResLogin, FormValues, UserType } from './types'
+import type { Loading } from '@/types'
+import type { UserType, Captcha, ReqLogin, ResLogin, FormValues } from './types'
 
 @injectable()
 export default class Model {
-	captcha = {} as Captcha
 	user_type = '' as UserType
+	captcha = {} as Captcha
 	loading = {} as Loading
 
 	constructor(private global: GlobalModel, public service: Service) {
@@ -29,11 +29,15 @@ export default class Model {
 
 		if (is_email) {
 			if (!reg_email.test(mobile)) {
-				return message.warning('格式错误')
+				return message.warning(
+					this.global.locale_messages.login.form.validate.email
+				)
 			}
 		} else {
 			if (!reg_mobile.test(mobile)) {
-				return message.warning('格式错误')
+				return message.warning(
+					this.global.locale_messages.login.form.validate.mobile
+				)
 			}
 		}
 
@@ -74,7 +78,7 @@ export default class Model {
 
 		const entry = this.global.app_info?.login?.entry?.[this.user_type]
 
-		if (!entry) return message.warning('应用未设置首页，请联系管理员')
+		if (!entry) return message.warning(this.global.locale_messages.login.no_entry)
 
 		history.push(entry)
 	}

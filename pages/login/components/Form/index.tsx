@@ -3,6 +3,7 @@ import clsx from 'clsx'
 
 import logo_feishu from '@/assets/images/feishu.png'
 import { Icon } from '@/components'
+import { useIntl } from '@umijs/pro'
 
 const { Item, useForm } = Form
 
@@ -12,7 +13,8 @@ const Index = (props: IPropsForm) => {
 	const { code, feishu, getCaptcha, onFinish } = props
 	const [form] = useForm()
 	const { getFieldValue } = form
-	const is_cn = true
+	const { messages, locale } = useIntl()
+	const is_cn = locale === 'zh-CN'
 
 	return (
 		<Form
@@ -97,19 +99,19 @@ const Index = (props: IPropsForm) => {
 			<Item noStyle shouldUpdate>
 				{() => (
 					<Button
-						className='btn_login'
-						type='primary'
-						htmlType='submit'
-						shape='round'
-						disabled={
+						className={clsx([
+							'btn_login',
 							!(
 								getFieldValue('mobile') &&
 								getFieldValue('password') &&
 								getFieldValue('code')
-							)
-						}
+							) && 'disabled'
+						])}
+						type='primary'
+						htmlType='submit'
+						shape='round'
 					>
-						登录
+						{messages.login.title}
 					</Button>
 				)}
 			</Item>
