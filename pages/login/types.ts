@@ -40,6 +40,7 @@ export interface IPropsCommon {
 export interface IPropsForm {
 	code: Captcha['content']
 	feishu: AppInfo['login']['feishu']
+	loading: boolean
 	getCaptcha: () => void
 	onFinish: (data: FormValues) => void
 }

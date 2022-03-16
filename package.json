@@ -33,6 +33,7 @@
             ]
       },
       "dependencies": {
+            "@matrixage/atom.css": "^2.0.1",
             "@umijs/pro": "^4.0.0-rc.6",
             "@yaoapp/components": "workspace:*",
             "@yaoapp/utils": "workspace:*",

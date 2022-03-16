@@ -1,6 +1,5 @@
 import { Button, Form, Input } from 'antd'
 import clsx from 'clsx'
-import { observer } from 'mobx-react-lite'
 
 import logo_feishu from '@/assets/images/feishu.png'
 import { Icon } from '@/components'
@@ -40,6 +39,7 @@ const Index = (props: IPropsForm) => {
 										size={21}
 									></Icon>
 								}
+								autoComplete='off'
 							></Input>
 						</Item>
 					)}
@@ -58,6 +58,7 @@ const Index = (props: IPropsForm) => {
 								type='password'
 								maxLength={23}
 								prefix={<Icon name='lock-outline' size={21}></Icon>}
+								autoComplete='new-password'
 							></Input>
 						</Item>
 					)}
@@ -70,12 +71,9 @@ const Index = (props: IPropsForm) => {
 							<Input
 								className={clsx([
 									'input input_captcha_code',
-									getFieldValue('code')
-										? 'has_value'
-										: '',
+									getFieldValue('code') ? 'has_value' : '',
 									!is_cn && 'en'
 								])}
-								autoComplete='off'
 								type='text'
 								maxLength={6}
 								prefix={
@@ -143,4 +141,4 @@ const Index = (props: IPropsForm) => {
 	)
 }
 
-export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
+export default window.$app.memo(Index)

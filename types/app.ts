@@ -7,6 +7,10 @@ export interface Response<T> {
 	err: AxiosError['response']
 }
 
+export interface Loading {
+	[key: string]: boolean
+}
+
 export interface AppInfo {
 	/** Application Name */
 	name: string

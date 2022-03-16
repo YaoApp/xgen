@@ -11,6 +11,7 @@ import { Outlet } from '@umijs/pro'
 
 const Index = () => {
 	const [global] = useState(() => container.resolve(GlobalModel))
+	const name = global.app_info.name
 
 	return (
 		<HelmetProvider>
@@ -25,9 +26,7 @@ const Index = () => {
 				)}
 				<style>{InitCss}</style>
 				<title>
-					{global.app_info.name
-						? `${global.app_info.name} - ${global.app_info.description}`
-						: config.name}
+					{name ? `${name} - ${global.app_info.description}` : config.name}
 				</title>
 			</Helmet>
 			<ConfigProvider prefixCls='xgen'>

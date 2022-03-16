@@ -8,31 +8,19 @@ import { history } from '@umijs/pro'
 
 import Service from './services'
 
+import type { Loading } from '@/types/app'
 import type { Captcha, ReqLogin, ResLogin, FormValues, UserType } from './types'
 
 @injectable()
 export default class Model {
 	captcha = {} as Captcha
 	user_type = '' as UserType
+	loading = {} as Loading
 
 	constructor(private global: GlobalModel, public service: Service) {
 		makeAutoObservable(this, {}, { autoBind: true })
 
 		this.getCaptcha()
-	}
-
-	async getCaptcha() {
-		const { res } = await this.service.getCaptcha<Captcha>()
-
-		this.captcha = res
-	}
-
-	async login(data: ReqLogin) {
-		const { res, err } = await this.service.login<ReqLogin, ResLogin>(data)
-
-		if (err || !res?.token) return this.getCaptcha()
-
-		this.afterLogin(res)
 	}
 
 	onFinish(data: FormValues) {
@@ -59,14 +47,30 @@ export default class Model {
 		})
 	}
 
-	async afterLogin(res: ResLogin) {
+	async getCaptcha() {
+		const { res, err } = await this.service.getCaptcha<Captcha>()
+
+		if (err) return
+
+		this.captcha = res
+	}
+
+	async login(data: ReqLogin) {
+		this.loading.login = true
+
+		const { res, err } = await this.service.login<ReqLogin, ResLogin>(data)
+
+		if (err || !res?.token) return this.getCaptcha()
+
 		this.global.user = res.user
 		this.global.menu = res.menus
 
 		sessionStorage.setItem('token', res.token)
 		localStorage.setItem('login_url', history.location.pathname)
 
-		await window.$app.sleep(600)
+		await window.$app.sleep(3000)
+
+		this.loading.login = false
 
 		const entry = this.global.app_info?.login?.entry?.[this.user_type]
 

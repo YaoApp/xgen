@@ -1,17 +1,19 @@
 export default () => {
 	return (target: unknown, key: string, descriptor: PropertyDescriptor) => {
-            const fn = descriptor.value
+		const fn = descriptor.value
 
-		descriptor.value = async (...params) => {
+		descriptor.value = async (...args: any) => {
 			let res, err
 
 			try {
-				res = await fn(...params)
+				res = await fn.apply(this, args)
 			} catch (error) {
 				err = error.response
 			}
 
 			return { res, err }
-		}
+            }
+            
+            return descriptor
 	}
 }

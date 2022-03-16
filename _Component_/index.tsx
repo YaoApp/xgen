@@ -4,4 +4,4 @@ const Index = () => {
 	return <div className={styles._local}></div>
 }
 
-export default new window.$app.Handle(Index).by(window.$app.memo).get()
+export default window.$app.memo(Index)

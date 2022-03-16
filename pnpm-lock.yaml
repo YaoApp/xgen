@@ -4,6 +4,7 @@ importers:
 
   .:
     specifiers:
+      '@matrixage/atom.css': ^2.0.1
       '@parcel/packager-ts': 2.3.2
       '@parcel/transformer-less': 2.3.2
       '@parcel/transformer-typescript-types': 2.3.2
@@ -49,6 +50,7 @@ importers:
       webpack-chain: ^6.5.1
       yorkie: ^2.0.0
     dependencies:
+      '@matrixage/atom.css': 2.0.1
       '@umijs/pro': 4.0.0-rc.6_31cb5e95e2ddb3fbf2a3bf6549b2b85e
       '@yaoapp/components': link:packages/components
       '@yaoapp/utils': link:packages/utils
@@ -1037,6 +1039,10 @@ packages:
       hoist-non-react-statics: 3.3.2
       react: 17.0.2
       react-is: 16.13.1
+    dev: false
+
+  /@matrixage/atom.css/2.0.1:
+    resolution: {integrity: sha512-H4PANARfOu9nlmEbKhxgBirvhQQjKK0A9q3HWQ60z6tSrdoSjE+KMC50wWnX39YQlXYn1G3KvGR9JjgwpwaF1g==}
     dev: false
 
   /@parcel/bundler-default/2.3.2_@parcel+core@2.3.2:

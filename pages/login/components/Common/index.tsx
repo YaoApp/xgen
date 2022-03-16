@@ -18,11 +18,12 @@ const Index = ({ x }: IPropsCommon) => {
 
 	const props_form: IPropsForm = {
 		code: x.captcha.content,
-		feishu: global.app_info?.login?.feishu,
+		feishu: global.app_info.login?.feishu,
+		loading: x.loading.login,
 		getCaptcha: x.getCaptcha,
 		onFinish: x.onFinish
-	}
-
+      }
+      
 	return (
 		<div className={clsx([styles._local, 'w_100vw h_100vh flex '])}>
 			<Left></Left>
