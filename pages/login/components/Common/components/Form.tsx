@@ -7,7 +7,7 @@ import { useIntl } from '@umijs/max'
 
 const { Item, useForm } = Form
 
-import type { IPropsForm } from '@/parts/login/types'
+import type { IPropsForm } from '@/pages/login/types'
 
 const Index = (props: IPropsForm) => {
 	const { code, feishu, loading, getCaptcha, onFinish } = props

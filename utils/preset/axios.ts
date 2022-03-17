@@ -1,10 +1,11 @@
 import { message } from 'antd'
 import axios from 'axios'
+import store from 'store2'
 
 import { history } from '@umijs/max'
 
 axios.interceptors.request.use((config) => {
-	const session = `Bearer ${sessionStorage.getItem('token')}` || ''
+	const session = `Bearer ${store.session.get('token')}` || ''
 
 	return {
 		...config,
@@ -29,7 +30,7 @@ axios.interceptors.response.use(
 		}
 
 		if (data && data.code === 401) {
-			const login_url = localStorage.getItem('login_url')
+			const login_url = store.get('login_url')
 
 			if (login_url) history.push(login_url)
 		}

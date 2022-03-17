@@ -1,5 +1,6 @@
 import { message } from 'antd'
 import { makeAutoObservable } from 'mobx'
+import store from 'store2'
 import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
@@ -87,8 +88,8 @@ export default class Model {
 		this.global.user = res.user
 		this.global.menu = res.menus
 
-		sessionStorage.setItem('token', res.token)
-		localStorage.setItem('login_url', history.location.pathname)
+		store.session.set('token', res.token)
+		store.set('login_url', history.location.pathname)
 
 		await window.$app.sleep(3000)
 

@@ -2,7 +2,7 @@ import { useUpdateEffect } from 'ahooks'
 import { message } from 'antd'
 import clsx from 'clsx'
 import { useState } from 'react'
-import store from 'store'
+import store from 'store2'
 import { connect, history } from 'umi'
 
 import styles from './index.less'

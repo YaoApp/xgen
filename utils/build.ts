@@ -14,6 +14,10 @@ export const proxy = {
 	}
 }
 
+export const conventionRoutes = {
+	exclude: [/model\.(j|t)sx?$/, /services\.(j|t)sx?$/, /types\.(j|t)sx?$/, /components\//]
+}
+
 export const links = [
 	{ rel: 'stylesheet', href: `${config.base}icon_font.css` },
 	{ rel: 'stylesheet', href: `${config.base}theme/light.css` }

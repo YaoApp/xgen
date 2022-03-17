@@ -35,7 +35,10 @@ export interface AppInfo {
 			login: string
 		}
 	}
-	optional: {
+	icons?: {
+		png: string
+	}
+	optional?: {
 		/** Custom user model, default is xiang.user */
 		userModel?: 'user'
 		/** Custom menu model, default is xiang.menu */

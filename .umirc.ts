@@ -1,7 +1,7 @@
 import { defineConfig } from '@umijs/max'
 
 import config from './config'
-import { chainWebpack, links, proxy } from './utils/build'
+import { chainWebpack, conventionRoutes, links, proxy } from './utils/build'
 
 export default defineConfig({
 	mfsu: { esbuild: true },
@@ -16,5 +16,6 @@ export default defineConfig({
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
 	polyfill: { imports: ['core-js/features/promise/try'] },
 	extraBabelPlugins: ['babel-plugin-transform-typescript-metadata'],
-	chainWebpack
+	chainWebpack,
+	conventionRoutes
 })

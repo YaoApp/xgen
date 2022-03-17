@@ -11,7 +11,7 @@ import Left from './components/Left'
 import Sns from './components/Sns'
 import styles from './index.less'
 
-import type { IPropsCommon, IPropsForm } from '../../types'
+import type { IPropsCommon, IPropsForm } from '@/pages/login/types'
 
 const Index = ({ x, type }: IPropsCommon) => {
 	const { messages, locale } = useIntl()

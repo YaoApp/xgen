@@ -2,8 +2,8 @@ import { observer } from 'mobx-react-lite'
 import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
-import Common from '@/parts/login/components/Common'
-import Model from '@/parts/login/model'
+import Common from '@/pages/login/components/Common'
+import Model from '@/pages/login/model'
 import { history, useParams } from '@umijs/max'
 
 const Index = () => {

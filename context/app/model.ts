@@ -1,5 +1,6 @@
 import { ConfigProvider } from 'antd'
 import { makeAutoObservable } from 'mobx'
+import store from 'store2'
 import { singleton } from 'tsyringe'
 
 import Service from '@/services/app'
@@ -13,11 +14,16 @@ export default class GlobalModel {
 	app_info = {} as AppInfo
 	user = {} as User
 	menu = [] as Array<Menu>
+	current_nav: number = store.get('current_nav') || 0
+	current_menu: number = store.get('current_menu') || 0
+	visible_nav: boolean = true
+	visible_menu: boolean = true
+	visible_header: boolean = true
 
 	constructor(public service: Service) {
 		makeAutoObservable(this, {}, { autoBind: true })
 
-		const theme = (localStorage.getItem('xgen-theme') || 'light') as Theme
+		const theme = (store.get('xgen-theme') || 'light') as Theme
 
 		this.setTheme(theme)
 		this.getAppInfo()
@@ -26,7 +32,7 @@ export default class GlobalModel {
 	setTheme(theme: Theme) {
 		this.theme = theme
 
-		localStorage.setItem('xgen-theme', theme)
+		store.get('xgen-theme', theme)
 		document.documentElement.setAttribute('data-theme', theme)
 		document.documentElement.style.colorScheme = theme
 
