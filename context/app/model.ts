@@ -12,8 +12,8 @@ export default class GlobalModel {
 	theme: Theme = 'light'
 	locale_messages = {} as LocaleMessages
 	app_info = {} as AppInfo
-	user = {} as User
-	menu = [] as Array<Menu>
+	user = (store.get('user') || {}) as User
+	menu = (store.get('menu') || []) as Array<Menu>
 	current_nav: number = store.get('current_nav') || 0
 	current_menu: number = store.get('current_menu') || 0
 	visible_nav: boolean = true

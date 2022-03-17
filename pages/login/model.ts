@@ -89,9 +89,12 @@ export default class Model {
 		this.global.menu = res.menus
 
 		store.session.set('token', res.token)
+		store.set('user', res.user)
+		store.set('menu', res.menus)
+		store.set('current_nav', 0)
 		store.set('login_url', history.location.pathname)
 
-		await window.$app.sleep(3000)
+		await window.$app.sleep(600)
 
 		this.loading.login = false
 

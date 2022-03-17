@@ -1,5 +1,4 @@
-import store from 'store2'
-
+import logo from '@/assets/images/logo.svg'
 import { useGlobal } from '@/context/app'
 
 import styles from './index.less'
@@ -9,12 +8,16 @@ const Index = () => {
 
 	return (
 		<div className={styles._local}>
-			<span
-				className='logo'
-				style={{
-					backgroundImage: `url(data:image/png;base64,${global.app_info.icons?.png})`
-				}}
-			/>
+			{global.app_info.icons?.png ? (
+				<span
+					className='logo'
+					style={{
+						backgroundImage: `url(data:image/png;base64,${global.app_info.icons?.png})`
+					}}
+				/>
+			) : (
+				<img className='logo img' src={logo} alt='logo' />
+			)}
 		</div>
 	)
 }

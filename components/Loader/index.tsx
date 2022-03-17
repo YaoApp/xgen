@@ -1,64 +1,21 @@
-import { useUpdateEffect } from 'ahooks'
-import { message } from 'antd'
 import clsx from 'clsx'
-import { useState } from 'react'
-import store from 'store2'
-import { connect, history } from 'umi'
 
 import styles from './index.less'
 
-import type { Loading, IModelApp } from 'umi'
-
 interface IProps {
 	loading: boolean
-	visible_menu: boolean
+	fold_menu: boolean
 }
 
 const Index = (props: IProps) => {
-	const { loading, visible_menu } = props
-	const [visible, setVisible] = useState<boolean>(false)
-	let close_loading: any
-
-	useUpdateEffect(() => {
-		if (store.get('path') === history.location.pathname) return
-
-		if (loading) {
-			setVisible(true)
-		} else {
-			const timer = setTimeout(() => setVisible(false), 600)
-
-			return () => clearTimeout(timer)
-		}
-
-		return () => {
-			setTimeout(() => setVisible(false), 1200)
-		}
-	}, [loading])
-
-	useUpdateEffect(() => {
-		if (store.get('path') === history.location.pathname) {
-			if (loading) close_loading = message.loading('loading', 0)
-			if (!loading && close_loading) close_loading()
-
-			return () => {
-				if (close_loading) close_loading()
-			}
-		} else {
-			const timer = setTimeout(() => {
-				store.set('path', history.location.pathname)
-			}, 300)
-
-			return () => clearTimeout(timer)
-		}
-	}, [loading, history.location.pathname])
+	const { loading, fold_menu } = props
 
 	return (
 		<div
 			className={clsx([
 				styles._local,
-				visible ? styles.visible : '',
 				loading ? styles.show : '',
-				!visible_menu ? styles.fold : ''
+				fold_menu ? styles.fold : ''
 			])}
 		>
 			<div className='wrap'>
@@ -69,9 +26,4 @@ const Index = (props: IProps) => {
 	)
 }
 
-const getInitialProps = ({ loading, app }: { loading: Loading; app: IModelApp }) => ({
-	loading: loading.global,
-	visible_menu: app.visible_menu
-})
-
-export default connect(getInitialProps)(Index)
+export default Index
