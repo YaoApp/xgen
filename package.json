@@ -59,7 +59,8 @@
             "reflect-metadata": "^0.1.13",
             "store2": "^2.13.2",
             "tslib": "^2.3.1",
-            "tsyringe": "^4.6.0"
+            "tsyringe": "^4.6.0",
+            "umi": "4.0.0-canary.20220317.2"
       },
       "devDependencies": {
             "@parcel/packager-ts": "2.3.2",
