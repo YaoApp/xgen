@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import axios from 'axios'
 
-import { history } from '@umijs/pro'
+import { history } from '@umijs/max'
 
 axios.interceptors.request.use((config) => {
 	const session = `Bearer ${sessionStorage.getItem('token')}` || ''

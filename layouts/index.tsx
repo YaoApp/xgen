@@ -7,7 +7,7 @@ import { container } from 'tsyringe'
 import config from '@/config'
 import { GlobalContext, GlobalModel } from '@/context/app'
 import InitCss from '@/styles/preset/init'
-import { Outlet, useIntl } from '@umijs/pro'
+import { Outlet, useIntl } from '@umijs/max'
 
 const Index = () => {
 	const { messages } = useIntl()

@@ -15,9 +15,9 @@
             "packages/*"
       ],
       "scripts": {
-            "postinstall": "umipro setup",
-            "dev": "umipro dev",
-            "build": "pnpm run build:theme && umipro build",
+            "postinstall": "umimax setup",
+            "dev": "umimax dev",
+            "build": "pnpm run build:theme && umimax build",
             "dev:all": "turbo run dev",
             "build:all": "turbo run build",
             "build:com": "turbo run build --scope=@yaoapp/components",
@@ -37,7 +37,7 @@
       },
       "dependencies": {
             "@matrixage/atom.css": "^2.0.1",
-            "@umijs/pro": "^4.0.0-rc.6",
+            "@umijs/max": "^4.0.0-canary.20220316.1",
             "@yaoapp/components": "workspace:*",
             "@yaoapp/utils": "workspace:*",
             "ahooks": "^3.1.10",

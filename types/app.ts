@@ -2,9 +2,11 @@ import type { AxiosError } from 'axios'
 
 export type Theme = 'light' | 'dark'
 
+export type ResError = AxiosError['response']
+
 export interface Response<T> {
 	res: T
-	err: AxiosError['response']
+	err: ResError
 }
 
 export interface Loading {
@@ -29,8 +31,8 @@ export interface AppInfo {
 		}
 		/** Display and configure the Feishu login interface */
 		feishu?: {
-			authUrl: '/api/feishu/auth/url'
-			login: '/api/feishu/login'
+			authUrl: string
+			login: string
 		}
 	}
 	optional: {

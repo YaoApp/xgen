@@ -1,4 +1,4 @@
-import { defineConfig } from '@umijs/pro'
+import { defineConfig } from '@umijs/max'
 
 import config from './config'
 import { chainWebpack, links, proxy } from './utils/build'

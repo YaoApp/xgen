@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { Icon } from '@/components'
 import { useGlobal } from '@/context/app'
 import { toFirstUpperCase } from '@/utils/filter'
-import { Link, useIntl } from '@umijs/pro'
+import { Link, useIntl } from '@umijs/max'
 
 import Form from './components/Form'
 import Left from './components/Left'
@@ -33,12 +33,22 @@ const Index = ({ x, type }: IPropsCommon) => {
 			<Left></Left>
 			<div className='right_wrap h_100 border_box flex flex_column align_center justify_center relative'>
 				<div className='top_wrap absolute top_0 left_0 w_100 border_box flex justify_between align_center'>
-					<Tooltip title={messages.login.user_login_tip} placement='right'>
+					<Tooltip
+						title={
+							type === 'admin'
+								? messages.login.user_login_tip
+								: messages.login.admin_login_tip
+						}
+						placement='right'
+					>
 						<Link
 							className='user_login_wrap action_wrap flex justify_center align_center cursor_point'
-							to='/login/user'
+							to={`/login/${type === 'admin' ? 'user' : 'admin'}`}
 						>
-							<Icon name='icon-user' size={18}></Icon>
+							<Icon
+								name={`icon-user${type === 'admin' ? 's' : ''}`}
+								size={18}
+							></Icon>
 						</Link>
 					</Tooltip>
 					<div

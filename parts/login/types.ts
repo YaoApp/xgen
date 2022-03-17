@@ -17,6 +17,7 @@ export interface FormValues {
 export interface ReqLogin {
 	email?: string
 	mobile?: string
+	is?: string
 	password: string
 	captcha: {
 		id: string
@@ -30,6 +31,15 @@ export interface ResLogin {
 	token: string
 	user: User
 	type: UserType
+}
+
+export interface ResAuthByLark {
+	url: string
+}
+
+export interface ReqLoginByLark {
+	code: string
+	state: string
 }
 
 export interface IPropsCommon {

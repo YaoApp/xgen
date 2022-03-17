@@ -3,7 +3,7 @@ import clsx from 'clsx'
 
 import logo_feishu from '@/assets/images/feishu.png'
 import { Icon } from '@/components'
-import { useIntl } from '@umijs/pro'
+import { useIntl } from '@umijs/max'
 
 const { Item, useForm } = Form
 
@@ -89,7 +89,7 @@ const Index = (props: IPropsForm) => {
 					)}
 				</Item>
 				<span
-					className='img_captcha_code absolute cursor_point'
+					className='img_captcha_code absolute cursor_point border_box'
 					style={{
 						backgroundImage: code ? `url(${code})` : undefined
 					}}
