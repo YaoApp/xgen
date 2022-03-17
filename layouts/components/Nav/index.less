@@ -1,3 +1,17 @@
+[data-theme='dark'] {
+	._local {
+		:global {
+			.nav_item {
+				height: 64px;
+
+				i {
+					color: fade(white, 80%);
+				}
+			}
+		}
+	}
+}
+
 ._local {
 	position: fixed;
 	top: 0;
@@ -22,12 +36,12 @@
 
 			&.active {
 				i {
-					color: var(--color_main) !important;
+					color: var(--color_main);
 				}
 			}
 
 			i {
-				color: rgba(255, 255, 255, 0.8) !important;
+				color: var(--color_title_grey);
 				transition: color ease 0.3s;
 			}
 		}
