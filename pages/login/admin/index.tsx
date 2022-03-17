@@ -2,8 +2,8 @@ import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import { container } from 'tsyringe'
 
-import Common from '../components/Common'
-import Model from '../model'
+import Common from '@/parts/login/components/Common'
+import Model from '@/parts/login/model'
 
 const Index = () => {
 	const [x] = useState(() => container.resolve(Model))

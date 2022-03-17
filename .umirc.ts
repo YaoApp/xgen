@@ -4,7 +4,7 @@ import config from './config'
 import { chainWebpack, links, proxy } from './utils/build'
 
 export default defineConfig({
-	mfsu:false,
+	mfsu: { esbuild: true },
 	monorepoRedirect: { srcDir: ['./'] },
 	npmClient: 'pnpm',
 	base: config.base,

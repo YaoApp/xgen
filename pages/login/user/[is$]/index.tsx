@@ -1,13 +1,16 @@
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
+import { container } from 'tsyringe'
 
-import Common from '../../components/Common'
-import Model from '../../model'
+import Common from '@/parts/login/components/Common'
+import Model from '@/parts/login/model'
 
 const Index = () => {
-	const [x] = useState(() => new Model())
+	const [x] = useState(() => container.resolve(Model))
 
-	return <div>123</div>
+	x.user_type = 'user'
+
+	return <Common type='user' x={x}></Common>
 }
 
 export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

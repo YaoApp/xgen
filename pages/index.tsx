@@ -1,3 +1,5 @@
+import Admin from './login/admin'
+
 export default () => {
-      return <div>test </div>
+	return <Admin></Admin>
 }

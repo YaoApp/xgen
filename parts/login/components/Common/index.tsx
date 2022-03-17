@@ -7,9 +7,9 @@ import { useGlobal } from '@/context/app'
 import { toFirstUpperCase } from '@/utils/filter'
 import { Link, useIntl } from '@umijs/pro'
 
-import Form from '../Form'
-import Left from '../Left'
-import Sns from '../Sns'
+import Form from './components/Form'
+import Left from './components/Left'
+import Sns from './components/Sns'
 import styles from './index.less'
 
 import type { IPropsCommon, IPropsForm } from '../../types'
