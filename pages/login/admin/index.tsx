@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
 import Common from '@/parts/login/components/Common'
@@ -8,7 +8,10 @@ import Model from '@/parts/login/model'
 const Index = () => {
 	const [x] = useState(() => container.resolve(Model))
 
-	x.user_type = 'admin'
+	useLayoutEffect(() => {
+            x.user_type = 'admin'
+            x.getCaptcha()
+	}, [])
 
 	return <Common type='admin' x={x}></Common>
 }

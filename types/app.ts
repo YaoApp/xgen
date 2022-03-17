@@ -24,8 +24,8 @@ export interface AppInfo {
 			admin: string
 			user: string
 		}
-		/** Configure the login related apis */
-		apis?: {
+		/** Configure the staff login related apis */
+		user?: {
 			captcha: string
 			login: string
 		}

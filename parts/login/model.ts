@@ -26,14 +26,14 @@ export default class Model {
 	loading = {} as Loading
 	is?: string
 
-	constructor(private global: GlobalModel, public service: Service) {
+	constructor(public global: GlobalModel, public service: Service) {
 		makeAutoObservable(this, {}, { autoBind: true })
-
-		this.getCaptcha()
 	}
 
 	async getCaptcha() {
-		const { res, err } = await this.service.getCaptcha<Captcha>()
+		const { res, err } = await this.service.getCaptcha<Captcha>(
+			this.user_type === 'user' ? this.global.app_info?.login?.user?.captcha : ''
+		)
 
 		if (err) return
 
@@ -43,7 +43,10 @@ export default class Model {
 	async login(data: ReqLogin) {
 		this.loading.login = true
 
-		const { res, err } = await this.service.login<ReqLogin, ResLogin>(data)
+		const { res, err } = await this.service.login<ReqLogin, ResLogin>(
+			data,
+			this.user_type === 'user' ? this.global.app_info?.login?.user?.login : ''
+		)
 
 		this.afterLogin(res, err)
 	}
@@ -73,6 +76,31 @@ export default class Model {
 		this.afterLogin(res, err)
 	}
 
+	async afterLogin(res: ResLogin, err: ResError) {
+		if (err || !res?.token) {
+			this.loading.login = false
+			this.getCaptcha()
+
+			return
+		}
+
+		this.global.user = res.user
+		this.global.menu = res.menus
+
+		sessionStorage.setItem('token', res.token)
+		localStorage.setItem('login_url', history.location.pathname)
+
+		await window.$app.sleep(3000)
+
+		this.loading.login = false
+
+		const entry = this.global.app_info?.login?.entry?.[this.user_type]
+
+		if (!entry) return message.warning(this.global.locale_messages.login.no_entry)
+
+		history.push(entry)
+	}
+
 	onFinish(data: FormValues) {
 		const { mobile, password, code } = data
 		const is_email = mobile.indexOf('@') !== -1
@@ -100,30 +128,5 @@ export default class Model {
 			},
 			...(this.is ? { is: this.is } : {})
 		})
-	}
-
-	async afterLogin(res: ResLogin, err: ResError) {
-		if (err || !res?.token) {
-			this.loading.login = false
-			this.getCaptcha()
-
-			return
-		}
-
-		this.global.user = res.user
-		this.global.menu = res.menus
-
-		sessionStorage.setItem('token', res.token)
-		localStorage.setItem('login_url', history.location.pathname)
-
-		await window.$app.sleep(3000)
-
-		this.loading.login = false
-
-		const entry = this.global.app_info?.login?.entry?.[this.user_type]
-
-		if (!entry) return message.warning(this.global.locale_messages.login.no_entry)
-
-		history.push(entry)
 	}
 }

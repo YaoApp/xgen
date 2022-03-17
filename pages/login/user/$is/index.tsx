@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
 import Common from '@/parts/login/components/Common'
@@ -7,16 +7,19 @@ import Model from '@/parts/login/model'
 import { history, useParams } from '@umijs/max'
 
 const Index = () => {
+	const [x] = useState(() => container.resolve(Model))
 	const { is } = useParams<{ is: string }>()
 	const query = new URLSearchParams(history.location.search)
-	const [x] = useState(() => container.resolve(Model))
 
-	useEffect(() => {
+	useLayoutEffect(() => {
+		if (!x.global.app_info.login?.user) return history.push('/login/admin')
+
 		x.user_type = 'user'
 		x.is = is
+		x.getCaptcha()
 	}, [])
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!query.get('from')) return
 
 		x.loginByLark({

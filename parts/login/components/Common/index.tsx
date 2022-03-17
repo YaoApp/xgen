@@ -3,7 +3,6 @@ import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 
 import { Icon } from '@/components'
-import { useGlobal } from '@/context/app'
 import { toFirstUpperCase } from '@/utils/filter'
 import { Link, useIntl } from '@umijs/max'
 
@@ -15,14 +14,13 @@ import styles from './index.less'
 import type { IPropsCommon, IPropsForm } from '../../types'
 
 const Index = ({ x, type }: IPropsCommon) => {
-	const global = useGlobal()
-	const is_dark = global.theme == 'dark'
 	const { messages, locale } = useIntl()
 	const is_cn = locale === 'zh-CN'
+	const is_dark = x.global.theme == 'dark'
 
 	const props_form: IPropsForm = {
 		code: x.captcha.content,
-		feishu: global.app_info.login?.feishu,
+		feishu: x.global.app_info.login?.feishu,
 		loading: x.loading.login,
 		getCaptcha: x.getCaptcha,
 		onFinish: x.onFinish
@@ -42,7 +40,10 @@ const Index = ({ x, type }: IPropsCommon) => {
 						placement='right'
 					>
 						<Link
-							className='user_login_wrap action_wrap flex justify_center align_center cursor_point'
+							className={clsx([
+								'user_login_wrap action_wrap flex justify_center align_center cursor_point',
+								!x.global.app_info.login?.user && 'disabled'
+							])}
 							to={`/login/${type === 'admin' ? 'user' : 'admin'}`}
 						>
 							<Icon
@@ -53,7 +54,7 @@ const Index = ({ x, type }: IPropsCommon) => {
 					</Tooltip>
 					<div
 						className='theme_change_wrap action_wrap flex justify_center align_center cursor_point'
-						onClick={() => global.setTheme(is_dark ? 'light' : 'dark')}
+						onClick={() => x.global.setTheme(is_dark ? 'light' : 'dark')}
 					>
 						<Icon
 							name={`icon-${is_dark ? 'sun' : 'moon'}`}

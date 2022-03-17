@@ -9,12 +9,14 @@ import type { Response } from '@/types'
 export default class Index {
 	@catchError()
 	getCaptcha<Res>(url?: string) {
-		return axios.get<{}, Response<Res>>(`${url ?? '/api/xiang/user/captcha'}?type=digit`)
+		return axios.get<{}, Response<Res>>(
+			`${url ? url : '/api/xiang/user/captcha'}?type=digit`
+		)
 	}
 
 	@catchError()
 	login<Req, Res>(data: Req, url?: string) {
-		return axios.post<Req, Response<Res>>(url ?? `/api/xiang/user/login`, data)
+		return axios.post<Req, Response<Res>>(url ? url : `/api/xiang/user/login`, data)
 	}
 
 	@catchError()

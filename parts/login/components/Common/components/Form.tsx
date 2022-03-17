@@ -10,7 +10,7 @@ const { Item, useForm } = Form
 import type { IPropsForm } from '@/parts/login/types'
 
 const Index = (props: IPropsForm) => {
-	const { code, feishu, getCaptcha, onFinish } = props
+	const { code, feishu, loading, getCaptcha, onFinish } = props
 	const [form] = useForm()
 	const { getFieldValue } = form
 	const { messages, locale } = useIntl()
@@ -110,6 +110,7 @@ const Index = (props: IPropsForm) => {
 						type='primary'
 						htmlType='submit'
 						shape='round'
+						loading={loading}
 					>
 						{messages.login.title}
 					</Button>
