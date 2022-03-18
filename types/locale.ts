@@ -1,3 +1,5 @@
+export type Locale = 'zh-CN' | 'en-US'
+
 export interface LocaleMessages {
 	login: {
 		title: string
@@ -14,7 +16,20 @@ export interface LocaleMessages {
 	}
 	layout: {
 		logout: string
-		account: string
-		menu: string
+		setting: {
+			title: string
+			update_menu: {
+				title: string
+				desc: string
+				btn_text: string
+				feedback: string
+			}
+			language: {
+				title: string
+			}
+			theme: {
+				title: string
+			}
+		}
 	}
 }

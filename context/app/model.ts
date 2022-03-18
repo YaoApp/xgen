@@ -1,15 +1,19 @@
-import { ConfigProvider } from 'antd'
+import { ConfigProvider, message } from 'antd'
 import { makeAutoObservable } from 'mobx'
+import { genConfig } from 'react-nice-avatar'
 import store from 'store2'
 import { singleton } from 'tsyringe'
 
 import Service from '@/services/app'
+
+import type { AvatarFullConfig } from 'react-nice-avatar'
 
 import type { AppInfo, Theme, User, Menu, LocaleMessages } from '@/types'
 
 @singleton()
 export default class GlobalModel {
 	theme: Theme = 'light'
+	avatar = {} as AvatarFullConfig
 	locale_messages = {} as LocaleMessages
 	app_info = {} as AppInfo
 	user = (store.get('user') || {}) as User
@@ -25,14 +29,49 @@ export default class GlobalModel {
 
 		const theme = (store.get('xgen-theme') || 'light') as Theme
 
-		this.setTheme(theme)
+		this.getAvatar()
 		this.getAppInfo()
+		this.setTheme(theme)
+	}
+
+	async getAppInfo() {
+		const { res, err } = await this.service.getAppInfo<AppInfo>()
+
+		if (err) return
+
+		this.app_info = res
+	}
+
+	async getUserMenu() {
+		const { res, err } = await this.service.getUserMenu<Array<Menu>>()
+
+		if (err) return
+
+		this.menu = res
+
+		store.set('menu', res)
+
+		message.success(this.locale_messages.layout.setting.update_menu.feedback)
+	}
+
+	getAvatar() {
+		const store_avatar = store.get('avatar')
+
+		if (store_avatar) {
+			this.avatar = store_avatar
+		} else {
+			const avatar = genConfig()
+
+			this.avatar = avatar
+
+			store.set('avatar', avatar)
+		}
 	}
 
 	setTheme(theme: Theme) {
 		this.theme = theme
 
-		store.get('xgen-theme', theme)
+		store.set('xgen-theme', theme)
 		document.documentElement.setAttribute('data-theme', theme)
 		document.documentElement.style.colorScheme = theme
 
@@ -42,13 +81,5 @@ export default class GlobalModel {
 				primaryColor: theme === 'light' ? '#3371fc' : '#4e7adf'
 			}
 		})
-	}
-
-	async getAppInfo() {
-		const { res, err } = await this.service.getAppInfo<AppInfo>()
-
-		if (err) return
-
-		this.app_info = res
 	}
 }

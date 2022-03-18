@@ -1,23 +1,43 @@
+[data-theme='dark'] {
+	._local {
+		:global {
+			.popover_user_wrap {
+				.user_wrap {
+					background-color: var(--color_bg_nav);
+
+					.info_wrap {
+						background-color: fade(white, 2%);
+					}
+				}
+			}
+		}
+	}
+}
+
 ._local {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 
 	:global {
-		.option_item {
-			height: 64px;
+		.nav_item {
+			margin-bottom: 24px;
+			padding: 0;
+			width: 40px;
+			height: 40px !important;
+			border-radius: var(--radius);
 
-			i {
-				color: rgba(255, 255, 255, 0.8) !important;
+			&:hover {
+				background-color: var(--color_bg_menu);
 			}
+		}
 
-			.xgen-badge {
-				.xgen-badge-dot {
-					width: 14px;
-					height: 14px;
-					border: 2px solid var(--color_bg_nav);
-					background-color: var(--color_main);
-					box-shadow: none;
+		.option_item {
+			margin-bottom: 20px;
+
+			.avatar {
+				&:hover {
+					transform: scale(1.2);
 				}
 			}
 		}
@@ -34,17 +54,15 @@
 			.user_wrap {
 				overflow: hidden;
 				width: 260px;
+				border: 1px solid var(--color_border_soft);
 				border-radius: 6px;
-				background-color: #28282b;
-
-				.icon_sync_menu {
-					top: 15px;
-					right: 15px;
-					z-index: 3;
-				}
+				background-color: var(--color_bg_menu);
+				box-shadow: 0 0 30px var(--shadow);
 
 				.info_wrap {
 					padding: 15px;
+					border-bottom: 1px solid var(--color_border_soft);
+					background-color: fade(black, 2%);
 
 					.info {
 						margin-left: 12px;
@@ -61,7 +79,6 @@
 
 				.btn_wrap {
 					padding: 15px;
-					background-color: var(--color_bg_nav);
 
 					.btn_logout {
 						i {
@@ -73,6 +90,26 @@
 							line-height: 1;
 						}
 					}
+				}
+			}
+		}
+
+		.setting_modal {
+			.setting_item {
+				padding: 16px 20px;
+				border-top: 1px solid var(--color_border_soft);
+                        color: var(--color_text_contrast);
+				
+				&:first-child {
+					border-top: none;
+				}
+
+                        .btn_update{
+                              filter: brightness(120%);
+                        }
+
+				.desc {
+					opacity: 0.6;
 				}
 			}
 		}

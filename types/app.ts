@@ -39,14 +39,10 @@ export interface AppInfo {
 		png: string
 	}
 	optional?: {
-		/** Custom user model, default is xiang.user */
-		userModel?: 'user'
-		/** Custom menu model, default is xiang.menu */
-		menuModel?: 'menu'
-		/** Hide the navigation bar user function button */
-		hideUserModule?: true
-		/** Hide the navigation bar menu function button */
-		hideMenuModule?: true
+		/** Hide the navigation bar notification */
+		hideNotification?: boolean
+		/** Hide the navigation bar setting */
+		hideSetting?: boolean
 	}
 }
 

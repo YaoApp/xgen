@@ -21,7 +21,7 @@ const Index = () => {
 	const [global] = useState(() => container.resolve(GlobalModel))
 	const menu = global.menu.slice()
 	const { pathname } = useLocation()
-	const is_login = pathname.indexOf('/login/') !== -1
+	const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
 
 	useLayoutEffect(() => {
 		global.locale_messages = messages
@@ -30,11 +30,14 @@ const Index = () => {
 	const name = global.app_info.name
 
 	const props_nav: IPropsNav = {
+		theme: global.theme,
+		avatar: global.avatar,
 		app_info: global.app_info,
 		user: global.user,
 		menu: menu,
 		visible_nav: global.visible_nav,
 		current_nav: global.current_nav,
+		setTheme: global.setTheme,
 		setCurrentNav(current: GlobalModel['current_nav']) {
 			global.current_nav = current
 			global.current_menu = menu[current]?.children?.[0]?.id || 0
@@ -42,7 +45,7 @@ const Index = () => {
 			store.set('current_nav', current)
 			store.set('current_menu', menu[current]?.children?.[0]?.id || 0)
 		},
-		getUserMenu() {}
+		getUserMenu: global.getUserMenu
 	}
 
 	const props_menu: IPropsMenu = {

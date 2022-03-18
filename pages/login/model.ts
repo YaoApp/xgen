@@ -87,6 +87,7 @@ export default class Model {
 
 		this.global.user = res.user
 		this.global.menu = res.menus
+		this.global.current_nav = 0
 
 		store.session.set('token', res.token)
 		store.set('user', res.user)

@@ -13,7 +13,7 @@ export default class Index {
 	}
 
 	@catchError()
-	getUserMenu() {
-		return axios.get(`/api/xiang/user/menu`)
+	getUserMenu<Res>() {
+		return axios.get<{}, Response<Res>>(`/api/xiang/user/menu`)
 	}
 }

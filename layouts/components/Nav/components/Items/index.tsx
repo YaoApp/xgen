@@ -6,13 +6,9 @@ import { Link } from '@umijs/max'
 
 import styles from './index.less'
 
-import type { IPropsNav } from '@/layouts/types'
+import type { IPropsItems } from '@/layouts/types'
 
-const Index = ({
-	menu,
-	current_nav,
-	setCurrentNav
-}: Omit<IPropsNav, 'app_info' | 'user' | 'getUserMenu' | 'visible_nav'>) => {
+const Index = ({ menu, current_nav, setCurrentNav }: IPropsItems) => {
 	return (
 		<div className={styles._local}>
 			{menu.map((item, index) => (

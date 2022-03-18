@@ -1,10 +1,10 @@
 export default {
 	login: {
 		title: 'Login',
-            user_login_tip: 'Staff Login',
+		user_login_tip: 'Staff Login',
 		admin_login_tip: 'Admin Login',
-            no_entry: 'The app does not set the home page, please set the home page in app.json',
-            auth_lark_err:'Lark shortcut login failed',
+		no_entry: 'The app does not set the home page, please set the home page in app.json',
+		auth_lark_err: 'Lark shortcut login failed',
 		form: {
 			validate: {
 				email: 'The email format is incorrect',
@@ -14,7 +14,20 @@ export default {
 	},
 	layout: {
 		logout: 'Log out',
-		account: 'User management',
-		menu: 'Menu settings'
+		setting: {
+			title: 'Setting',
+			update_menu: {
+				title: 'Update Menu',
+				desc: 'update the current menu,after modifying the menu',
+                        btn_text: 'Update',
+                        feedback:'Menu updated successfully'
+			},
+			language: {
+				title: 'Language'
+			},
+			theme: {
+				title: 'Theme'
+			}
+		}
 	}
 }

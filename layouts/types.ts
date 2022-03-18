@@ -2,20 +2,31 @@ import type { Menu } from '@/types'
 import type { GlobalModel } from '@/context/app'
 
 export interface IPropsNav {
+	theme: GlobalModel['theme']
+      avatar: GlobalModel[ 'avatar' ]
 	app_info: GlobalModel['app_info']
 	user: GlobalModel['user']
 	menu: Array<Menu>
 	visible_nav: GlobalModel['visible_nav']
 	current_nav: GlobalModel['current_nav']
+	setTheme: GlobalModel['setTheme']
+	setCurrentNav: (current: GlobalModel['current_nav']) => void
 	getUserMenu: () => void
+}
+
+export interface IPropsItems {
+	menu: Array<Menu>
+	current_nav: GlobalModel['current_nav']
 	setCurrentNav: (current: GlobalModel['current_nav']) => void
 }
 
 export interface IPropsOptions {
+	theme: GlobalModel['theme']
+	avatar: GlobalModel['avatar']
 	app_info: GlobalModel['app_info']
 	user: GlobalModel['user']
-	setCurrentNav: (current: GlobalModel['current_nav']) => void
-	getUserMenu: () => void
+	setTheme: GlobalModel['setTheme']
+	getUserMenu: GlobalModel['getUserMenu']
 }
 
 export interface IPropsMenu {

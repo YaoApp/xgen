@@ -1,115 +1,105 @@
-import { Avatar, Badge, Button, Popover, Tooltip } from 'antd'
-import store from 'store2'
+import { Badge, Modal, Popover } from 'antd'
+import clsx from 'clsx'
+import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
+import NiceAvatar from 'react-nice-avatar'
 
 import { Icon } from '@/components'
-import { history, NavLink, useIntl } from '@umijs/max'
+import { useIntl } from '@umijs/max'
 
+import SettingModalContent from '../SettingModalContent'
+import UserModalContent from '../UserModalContent'
 import styles from './index.less'
 
+import type { ModalProps } from 'antd'
+import type { GlobalModel } from '@/context/app'
+
 import type { IPropsOptions } from '@/layouts/types'
+import type { IProps as IPropsSettingModalContent } from '../SettingModalContent'
+import type { IProps as IPropsUserModalContent } from '../UserModalContent'
 
 const Index = (props: IPropsOptions) => {
-	const { app_info, user, setCurrentNav, getUserMenu } = props
-	const { messages } = useIntl()
-	const layout_messages: any = messages.layout
+	const { theme, avatar, app_info, user, setTheme, getUserMenu } = props
+	const intl = useIntl()
+	const { locale } = intl
+	const locale_messages: GlobalModel['locale_messages'] = intl.messages
+	const [visible_setting_modal, setVisibleSettingModal] = useState(false)
 
-	const User = (
-		<div className='user_wrap flex flex_column relative'>
-			<Icon
-				className='icon_sync_menu absolute'
-				name='icon-refresh-cw'
-				size={15}
-				color='white'
-				onClick={() => getUserMenu()}
-			></Icon>
-			<div
-				className='info_wrap w_100 border_box flex align_center'
-				onClick={() =>
-					history.push(
-						`/form/${app_info?.optional?.userModel || 'xiang.user'}/${
-							user.id
-						}`
-					)
-				}
-			>
-				<Avatar
-					className='cursor_point'
-					size={50}
-					style={{ backgroundColor: '#039be5' }}
-				>
-					{user.name.substr(0, 1)}
-				</Avatar>
-				<div className='info flex flex_column'>
-					<span className='user_name'>{user.name}</span>
-					<span className='user_account'>{user.email || user.mobile}</span>
-				</div>
-			</div>
-			<div className='btn_wrap w_100 border_box'>
-				<Button
-					className='btn_logout w_100 flex justify_center align_center'
-					type='primary'
-					onClick={() => {
-						store.clearAll()
-						store.session.remove('token')
-
-						history.push(store.get('login_url') || '/')
-					}}
-				>
-					<Icon name='icon-log-out' size={15} color='white'></Icon>
-					<span className='text'>{layout_messages.logout}</span>
-				</Button>
-			</div>
-		</div>
+	const Avatar = (
+		<NiceAvatar
+			className='avatar cursor_point transition_normal'
+			style={{ width: 40, height: 40 }}
+			{...avatar}
+		/>
 	)
 
+	const props_setting_modal: ModalProps = {
+		visible: visible_setting_modal,
+		title: locale_messages.layout.setting.title,
+		wrapClassName: 'custom_modal',
+		destroyOnClose: true,
+		getContainer: false,
+		maskClosable: true,
+		centered: true,
+		footer: null,
+		onCancel: () => setVisibleSettingModal(false)
+	}
+
+	const props_user_modal_content: IPropsUserModalContent = {
+		user,
+		text_logout: locale_messages.layout.logout,
+		Avatar
+	}
+
+	const props_setting_modal_content: IPropsSettingModalContent = {
+		locale_messages: locale_messages,
+		locale,
+		theme,
+		setTheme,
+		getUserMenu
+	}
+
 	return (
-		<div className={styles._local}>
-			{!app_info?.optional?.hideUserModule && (
-				<Tooltip title={layout_messages.account} placement='right'>
-					<NavLink
-						className='nav_item w_100 flex justify_center align_center clickable'
-						to={`/table/${app_info?.optional?.userModel || 'xiang.user'}`}
-						onClick={() => setCurrentNav(-1)}
-					>
-						<Icon name='icon-user' size={20}></Icon>
-					</NavLink>
-				</Tooltip>
-			)}
-			{!app_info?.optional?.hideMenuModule && (
-				<Tooltip title={layout_messages.menu} placement='right'>
-					<NavLink
-						className='nav_item w_100 flex justify_center align_center clickable'
-						to={`/table/${app_info?.optional?.menuModel || 'xiang.menu'}`}
-						onClick={() => setCurrentNav(-1)}
-					>
-						<Icon name='icon-settings' size={20}></Icon>
-					</NavLink>
-				</Tooltip>
-			)}
-			<div id='option_item' className='option_item flex justify_center align_center'>
-				<Popover
-					overlayClassName='popover_user_wrap'
-					trigger='click'
-					placement='rightTop'
-					align={{ offset: [15, 10] }}
-					content={User}
-					getPopupContainer={() =>
-						document.getElementById('option_item') as HTMLElement
-					}
-				>
-					<Badge dot offset={[-7, 7]}>
-						<Avatar
-							className='cursor_point'
-							size={50}
-							style={{ backgroundColor: '#039be5' }}
-						>
-							{user.name.substr(0, 1)}
-						</Avatar>
+		<div className={clsx([styles._local, 'flex flex_column align_center'])}>
+			{!app_info?.optional?.hideNotification && (
+				<div className='nav_item w_100 flex justify_center align_center clickable'>
+					<Badge dot offset={[-4, 2]}>
+						<Icon name='icon-bell' size={20}></Icon>
 					</Badge>
-				</Popover>
-			</div>
+				</div>
+			)}
+			{!app_info?.optional?.hideSetting && (
+				<div
+					className='nav_item w_100 flex justify_center align_center clickable'
+					onClick={() => setVisibleSettingModal(true)}
+				>
+					<Icon name='icon-settings' size={20}></Icon>
+				</div>
+			)}
+			<Modal {...props_setting_modal}>
+				<SettingModalContent {...props_setting_modal_content}></SettingModalContent>
+			</Modal>
+			<Popover
+				overlayClassName='popover_user_wrap'
+				trigger='click'
+				placement='rightTop'
+				align={{ offset: [24, -6] }}
+				content={
+					<UserModalContent {...props_user_modal_content}></UserModalContent>
+				}
+				getPopupContainer={() =>
+					document.getElementById('option_item') as HTMLElement
+				}
+			>
+				<div
+					id='option_item'
+					className='option_item flex justify_center align_center'
+				>
+					{Avatar}
+				</div>
+			</Popover>
 		</div>
 	)
 }
 
-export default window.$app.memo(Index)
+export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

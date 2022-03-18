@@ -5,21 +5,34 @@ import Logo from './components/Logo'
 import Options from './components/Options'
 import styles from './index.less'
 
-import type { IPropsNav, IPropsOptions } from '../../types'
+import type { IPropsNav, IPropsItems, IPropsOptions } from '../../types'
 
 const Index = (props: IPropsNav) => {
-	const { app_info, user, menu, visible_nav, current_nav, setCurrentNav, getUserMenu } = props
+	const {
+		theme,
+		avatar,
+		app_info,
+		user,
+		menu,
+		visible_nav,
+		current_nav,
+		setTheme,
+		setCurrentNav,
+		getUserMenu
+	} = props
 
-	const props_items: Omit<IPropsNav, 'app_info' | 'user' | 'getUserMenu' | 'visible_nav'> = {
+	const props_items: IPropsItems = {
 		menu,
 		current_nav,
 		setCurrentNav
 	}
 
 	const props_options: IPropsOptions = {
+		theme,
+		avatar,
 		app_info,
 		user,
-		setCurrentNav,
+		setTheme,
 		getUserMenu
 	}
 
