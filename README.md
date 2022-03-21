@@ -2,6 +2,8 @@
 
 ## Tips
 
+Before you run dev, you must generate theme css files to public by `pnpm run build:theme`.
+
 .umirc.ts `mfsu: false` for packages debugging `pnpm run dev:all`.
 
 ## What`s new

@@ -1,4 +1,5 @@
 export default interface Layout {
+	not_found: string
 	logout: string
 	avatar: {
 		reset: string
