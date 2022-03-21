@@ -28,10 +28,11 @@ export default class GlobalModel {
 		makeAutoObservable(this, {}, { autoBind: true })
 
 		const theme = (store.get('xgen-theme') || 'light') as Theme
+		const avatar = store.get('avatar') as AvatarFullConfig
 
-		this.getAvatar()
 		this.getAppInfo()
 		this.setTheme(theme)
+		this.setAvatar(avatar)
 	}
 
 	async getAppInfo() {
@@ -54,18 +55,10 @@ export default class GlobalModel {
 		message.success(this.locale_messages.layout.setting.update_menu.feedback)
 	}
 
-	getAvatar() {
-		const store_avatar = store.get('avatar')
+	setAvatar(avatar?: AvatarFullConfig) {
+		this.avatar = avatar || genConfig()
 
-		if (store_avatar) {
-			this.avatar = store_avatar
-		} else {
-			const avatar = genConfig()
-
-			this.avatar = avatar
-
-			store.set('avatar', avatar)
-		}
+		store.set('avatar', this.avatar)
 	}
 
 	setTheme(theme: Theme) {
@@ -78,7 +71,7 @@ export default class GlobalModel {
 		ConfigProvider.config({
 			prefixCls: 'xgen',
 			theme: {
-				primaryColor: theme === 'light' ? '#3371fc' : '#4e7adf'
+				primaryColor: theme === 'light' ? '#3371fc' : '#6a96f9'
 			}
 		})
 	}

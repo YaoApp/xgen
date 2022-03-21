@@ -1,17 +1,22 @@
-import type { Menu } from '@/types'
+import type { Theme, Locale, Menu } from '@/types'
 import type { GlobalModel } from '@/context/app'
 
 export interface IPropsNav {
 	theme: GlobalModel['theme']
-      avatar: GlobalModel[ 'avatar' ]
+	avatar: GlobalModel['avatar']
 	app_info: GlobalModel['app_info']
 	user: GlobalModel['user']
 	menu: Array<Menu>
 	visible_nav: GlobalModel['visible_nav']
 	current_nav: GlobalModel['current_nav']
 	setTheme: GlobalModel['setTheme']
+	setAvatar: GlobalModel['setAvatar']
 	setCurrentNav: (current: GlobalModel['current_nav']) => void
-	getUserMenu: () => void
+	getUserMenu: GlobalModel['getUserMenu']
+}
+
+export interface IPropsLogo {
+	logo: GlobalModel['app_info']['icons']
 }
 
 export interface IPropsItems {
@@ -26,6 +31,7 @@ export interface IPropsOptions {
 	app_info: GlobalModel['app_info']
 	user: GlobalModel['user']
 	setTheme: GlobalModel['setTheme']
+	setAvatar: GlobalModel['setAvatar']
 	getUserMenu: GlobalModel['getUserMenu']
 }
 
@@ -41,4 +47,19 @@ export interface IPropsMenu {
 export interface IPropsContainer {
 	visible_nav: GlobalModel['visible_nav']
 	visible_menu: GlobalModel['visible_menu']
+}
+
+export interface IPropsSettingModalContent {
+	locale_messages: GlobalModel['locale_messages']
+	locale: Locale
+	theme: Theme
+	setTheme: GlobalModel['setTheme']
+	getUserMenu: GlobalModel['getUserMenu']
+}
+
+export interface IPropsUserModalContent {
+	user: IPropsOptions['user']
+	locale_messages: GlobalModel['locale_messages']
+      Avatar: JSX.Element
+	setAvatar: GlobalModel['setAvatar']
 }

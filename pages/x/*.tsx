@@ -8,7 +8,7 @@ const Index = () => {
       
 	console.log(match)
 
-	return <div>123</div>
+	return <div className='color_main'>123</div>
 }
 
 export default window.$app.memo(Index)

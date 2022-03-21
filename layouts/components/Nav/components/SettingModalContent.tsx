@@ -2,18 +2,9 @@ import { Button, Switch } from 'antd'
 
 import { ReloadOutlined } from '@ant-design/icons'
 
-import type { Locale, Theme } from '@/types'
-import type { GlobalModel } from '@/context/app'
+import type { IPropsSettingModalContent } from '@/layouts/types'
 
-export interface IProps {
-	locale_messages: GlobalModel['locale_messages']
-	locale: Locale
-	theme: Theme
-	setTheme: GlobalModel['setTheme']
-	getUserMenu: GlobalModel['getUserMenu']
-}
-
-const Index = (props: IProps) => {
+const Index = (props: IPropsSettingModalContent) => {
 	const { locale_messages, locale, theme, setTheme, getUserMenu } = props
 	const is_cn = locale === 'zh-CN'
 

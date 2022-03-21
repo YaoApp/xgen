@@ -1,22 +1,21 @@
-import logo from '@/assets/images/logo.svg'
-import { useGlobal } from '@/context/app'
+import logo_svg from '@/assets/images/logo.svg'
 
 import styles from './index.less'
 
-const Index = () => {
-	const global = useGlobal()
+import type { IPropsLogo } from '@/layouts/types'
 
+const Index = ({ logo }: IPropsLogo) => {
 	return (
 		<div className={styles._local}>
-			{global.app_info.icons?.png ? (
+			{logo?.png ? (
 				<span
 					className='logo'
 					style={{
-						backgroundImage: `url(data:image/png;base64,${global.app_info.icons?.png})`
+						backgroundImage: `url(data:image/png;base64,${logo.png})`
 					}}
 				/>
 			) : (
-				<img className='logo img' src={logo} alt='logo' />
+				<img className='logo img' src={logo_svg} alt='logo' />
 			)}
 		</div>
 	)

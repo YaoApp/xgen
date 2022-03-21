@@ -38,6 +38,7 @@ const Index = () => {
 		visible_nav: global.visible_nav,
 		current_nav: global.current_nav,
 		setTheme: global.setTheme,
+		setAvatar: global.setAvatar,
 		setCurrentNav(current: GlobalModel['current_nav']) {
 			global.current_nav = current
 			global.current_menu = menu[current]?.children?.[0]?.id || 0

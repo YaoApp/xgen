@@ -13,7 +13,10 @@ export default {
 		}
 	},
 	layout: {
-		logout: '退出登录',
+            logout: '退出登录',
+            avatar:{
+                  reset:'重置随机头像'
+            },
 		setting: {
 			title: '设置',
 			update_menu: {

@@ -14,12 +14,14 @@ import styles from './index.less'
 import type { ModalProps } from 'antd'
 import type { GlobalModel } from '@/context/app'
 
-import type { IPropsOptions } from '@/layouts/types'
-import type { IProps as IPropsSettingModalContent } from '../SettingModalContent'
-import type { IProps as IPropsUserModalContent } from '../UserModalContent'
+import type {
+	IPropsOptions,
+	IPropsSettingModalContent,
+	IPropsUserModalContent
+} from '@/layouts/types'
 
 const Index = (props: IPropsOptions) => {
-	const { theme, avatar, app_info, user, setTheme, getUserMenu } = props
+	const { theme, avatar, app_info, user, setTheme, setAvatar, getUserMenu } = props
 	const intl = useIntl()
 	const { locale } = intl
 	const locale_messages: GlobalModel['locale_messages'] = intl.messages
@@ -43,20 +45,21 @@ const Index = (props: IPropsOptions) => {
 		centered: true,
 		footer: null,
 		onCancel: () => setVisibleSettingModal(false)
-	}
-
-	const props_user_modal_content: IPropsUserModalContent = {
-		user,
-		text_logout: locale_messages.layout.logout,
-		Avatar
-	}
-
-	const props_setting_modal_content: IPropsSettingModalContent = {
+      }
+      
+      const props_setting_modal_content: IPropsSettingModalContent = {
 		locale_messages: locale_messages,
 		locale,
 		theme,
 		setTheme,
 		getUserMenu
+	}
+
+	const props_user_modal_content: IPropsUserModalContent = {
+		user,
+		locale_messages,
+            Avatar,
+            setAvatar
 	}
 
 	return (
@@ -102,4 +105,4 @@ const Index = (props: IPropsOptions) => {
 	)
 }
 
-export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
+export default window.$app.memo(Index)

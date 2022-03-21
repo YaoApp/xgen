@@ -1,22 +1,24 @@
-import { Button } from 'antd'
+import { Button, Tooltip } from 'antd'
 import store from 'store2'
 
 import { Icon } from '@/components'
 import { history } from '@umijs/max'
 
-import type { IPropsOptions } from '@/layouts/types'
+import type { IPropsUserModalContent } from '@/layouts/types'
 
-export interface IProps {
-	user: IPropsOptions['user']
-	text_logout: string
-	Avatar: JSX.Element
-}
-
-const Index = (props: IProps) => {
-	const { user, text_logout, Avatar } = props
+const Index = (props: IPropsUserModalContent) => {
+	const { user, locale_messages, Avatar, setAvatar } = props
 
 	return (
 		<div className='user_wrap flex flex_column relative'>
+			<Tooltip title={locale_messages.layout.avatar.reset}>
+				<div
+					className='btn_reset_avatar flex justify_center align_center absolute clickable'
+					onClick={() => setAvatar()}
+				>
+					<Icon className='icon_reset' name='refresh-outline' size={18}></Icon>
+				</div>
+			</Tooltip>
 			<div className='info_wrap w_100 border_box flex align_center'>
 				{Avatar}
 				<div className='info flex flex_column'>
@@ -39,7 +41,7 @@ const Index = (props: IProps) => {
 					}}
 				>
 					<Icon name='icon-log-out' size={15} color='white'></Icon>
-					<span className='text'>{text_logout}</span>
+					<span className='text'>{locale_messages.layout.logout}</span>
 				</Button>
 			</div>
 		</div>
