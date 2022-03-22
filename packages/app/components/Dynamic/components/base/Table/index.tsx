@@ -1,6 +1,8 @@
-import { memo } from '@yaoapp/utils'
+import clsx from 'clsx'
+import { observer } from 'mobx-react-lite'
 
 import Page from '../Page'
+import Table from './components/Table'
 import styles from './index.less'
 
 export interface IPropsTable {
@@ -13,19 +15,17 @@ const Index = (props: IPropsTable) => {
 
 	if (parent === 'Page') {
 		return (
-			<Page>
-				<div className={styles._local}>
-					<div className='red'>8666</div>
-				</div>
+			<Page className={clsx([styles._local, 'w_100'])}>
+				<Table></Table>
 			</Page>
 		)
 	}
 
 	return (
-		<div className={styles._local}>
-			<div className='red'>8666</div>
+		<div className={clsx([styles._local, 'w_100'])}>
+			<Table></Table>
 		</div>
 	)
 }
 
-export default memo(Index)
+export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

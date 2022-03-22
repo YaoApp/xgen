@@ -37,10 +37,10 @@ const Index = (props: IPropsOptions) => {
 
 	const props_setting_modal: ModalProps = {
 		visible: visible_setting_modal,
-		title: locale_messages.layout.setting.title,
+            title: locale_messages.layout.setting.title,
+		className: styles.setting_modal,
 		wrapClassName: 'custom_modal',
 		destroyOnClose: true,
-		getContainer: false,
 		maskClosable: true,
 		centered: true,
 		footer: null,

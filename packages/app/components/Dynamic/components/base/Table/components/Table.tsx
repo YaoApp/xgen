@@ -1,5 +1,7 @@
 const Index = () => {
-	return <div></div>
+      return <div>
+            
+      </div>
 }
 
 export default window.$app.memo(Index)
