@@ -15,14 +15,10 @@
             "packages/*"
       ],
       "scripts": {
-            "postinstall": "umimax setup",
-            "dev": "umimax dev",
-            "build": "pnpm run build:theme && umimax build",
-            "dev:all": "turbo run dev",
-            "build:all": "turbo run build",
+            "dev": "turbo run dev",
+            "build": "turbo run build",
             "build:com": "turbo run build --scope=@yaoapp/components",
-            "build:utils": "turbo run build --scope=@yaoapp/utils",
-            "build:theme": "ts-node --project ./styles/theme/tsconfig.json ./styles/theme/build.ts"
+            "build:utils": "turbo run build --scope=@yaoapp/utils"
       },
       "gitHooks": {
             "pre-commit": "lint-staged --allow-empty"
@@ -35,57 +31,11 @@
                   "prettier --parser=typescript --write"
             ]
       },
-      "dependencies": {
-            "@ant-design/icons": "^4.7.0",
-            "@matrixage/atom.css": "^2.0.1",
-            "@umijs/max": "^4.0.0-canary.20220316.1",
-            "@yaoapp/components": "workspace:*",
-            "@yaoapp/utils": "workspace:*",
-            "ahooks": "^3.1.10",
-            "antd": "^4.18.9",
-            "axios": "^0.26.1",
-            "clsx": "^1.1.1",
-            "echarts": "^5.3.0",
-            "lodash-es": "^4.17.21",
-            "mobx": "^6.4.2",
-            "mobx-react-lite": "^3.3.0",
-            "mustache": "^4.2.0",
-            "nprogress": "^0.2.0",
-            "query-string": "^7.1.1",
-            "react": "^17.0.2",
-            "react-countup": "^6.1.1",
-            "react-dom": "^17.0.2",
-            "react-helmet-async": "^1.2.3",
-            "react-nice-avatar": "^1.2.4",
-            "react-slick": "^0.28.1",
-            "reflect-metadata": "^0.1.13",
-            "store2": "^2.13.2",
-            "tslib": "^2.3.1",
-            "tsyringe": "^4.6.0",
-            "umi": "4.0.0-canary.20220317.2"
-      },
+      "dependencies": {},
       "devDependencies": {
-            "@parcel/packager-ts": "2.3.2",
-            "@parcel/transformer-less": "2.3.2",
-            "@parcel/transformer-typescript-types": "2.3.2",
-            "@swc/core": "^1.2.146",
-            "@types/less": "^3.0.3",
-            "@types/lodash-es": "^4.17.6",
-            "@types/mustache": "^4.1.2",
-            "@types/nprogress": "^0.2.0",
-            "@types/react": "^17.0.39",
-            "@types/react-dom": "^17.0.11",
-            "@types/react-slick": "^0.23.8",
-            "babel-plugin-transform-typescript-metadata": "^0.3.2",
-            "less": "^4.1.2",
-            "less-vars-to-js": "^1.3.0",
             "lint-staged": "^12.3.4",
-            "postcss": "^8.4.5",
             "prettier": "^2.5.1",
-            "ts-node": "^10.7.0",
             "turbo": "^1.1.4",
-            "typescript": "^4.6.2",
-            "webpack-chain": "^6.5.1",
             "yorkie": "^2.0.0"
       }
 }

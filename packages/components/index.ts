@@ -1,1 +1,1 @@
-export { default as ErrorCatcher } from './ErrorCatcher'
+export { default as Table } from './base/Table'
