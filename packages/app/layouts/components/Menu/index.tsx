@@ -9,7 +9,6 @@ import { fuzzyQuery } from '@yaoapp/utils'
 
 import styles from './index.less'
 
-import type { Menu } from '@/types'
 import type { IPropsMenu } from '../../types'
 
 const Index = (props: IPropsMenu) => {
@@ -33,10 +32,6 @@ const Index = (props: IPropsMenu) => {
 		[input],
 		{ wait: 300 }
 	)
-
-	const onMenuItem = useCallback((item: Menu, index: number) => {
-		setCurrentMenu(index)
-	}, [])
 
 	return (
 		<div className={clsx([styles._local, visible ? styles.visible : styles.unvisible])}>
@@ -83,7 +78,7 @@ const Index = (props: IPropsMenu) => {
 								])}
 								to={item.path}
 								key={index}
-								onClick={() => onMenuItem(item, index)}
+								onClick={() => setCurrentMenu(index)}
 							>
 								<div className='icon_wrap flex justify_center align_center'>
 									<Icon name={item.icon}></Icon>

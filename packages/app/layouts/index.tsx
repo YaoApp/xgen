@@ -41,10 +41,10 @@ const Index = () => {
 		setAvatar: global.setAvatar,
 		setCurrentNav(current: GlobalModel['current_nav']) {
 			global.current_nav = current
-			global.current_menu = menu[current]?.children?.[0]?.id || 0
+			global.current_menu = 0
 
 			store.set('current_nav', current)
-			store.set('current_menu', menu[current]?.children?.[0]?.id || 0)
+			store.set('current_menu', 0)
 		},
 		getUserMenu: global.getUserMenu
 	}
