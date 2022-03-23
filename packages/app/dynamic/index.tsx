@@ -9,7 +9,7 @@ interface IProps {
 }
 
 const Index = ({ type, name, props }: IProps) => {
-	const Component = lazy(() => import(`@/components/Dynamic/components/${type}/${name}`))
+	const Component = lazy(() => import(`@/dynamic/components/${type}/${name}`))
 
 	return (
 		<Suspense fallback={null}>

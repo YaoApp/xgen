@@ -7,7 +7,10 @@ importers:
       lint-staged: ^12.3.4
       prettier: ^2.5.1
       turbo: ^1.1.4
+      url-pattern: ^1.0.3
       yorkie: ^2.0.0
+    dependencies:
+      url-pattern: 1.0.3
     devDependencies:
       lint-staged: 12.3.4
       prettier: 2.5.1
@@ -9146,6 +9149,11 @@ packages:
   /urix/0.1.0:
     resolution: {integrity: sha512-Am1ousAhSLBeB9cG/7k7r2R0zj50uDRlZHPGbazid5s9rlF1F/QKYObEKSIunSjIOkJZqwRRLpvewjEkM7pSqg==}
     deprecated: Please see https://github.com/lydell/urix#deprecated
+    dev: false
+
+  /url-pattern/1.0.3:
+    resolution: {integrity: sha512-uQcEj/2puA4aq1R3A2+VNVBgaWYR24FdWjl7VNW83rnWftlhyzOZ/tBjezRiC2UkIzuxC8Top3IekN3vUf1WxA==}
+    engines: {node: '>=0.12.0'}
     dev: false
 
   /url/0.11.0:

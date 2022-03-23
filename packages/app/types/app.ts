@@ -13,6 +13,12 @@ export interface Loading {
 	[key: string]: boolean
 }
 
+export interface Match {
+	type: string
+	model: string
+	id?: string
+}
+
 export interface AppInfo {
 	/** Application Name */
 	name: string
