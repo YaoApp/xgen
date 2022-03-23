@@ -11,7 +11,7 @@ interface IProps {
 
 const Index = ({ type, name, props }: IProps) => {
 	const Component = lazy(() =>
-		import(`@/dynamic/components/${type}/${name}`).catch(() => {
+		import(`@/widgets/${type}/${name}`).catch(() => {
 			message.error(`Component is not exist, type:'${type}' name:'${name}'`, 0)
 		})
 	)

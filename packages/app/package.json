@@ -35,7 +35,7 @@
       "dependencies": {
             "@ant-design/icons": "^4.7.0",
             "@matrixage/atom.css": "^2.0.1",
-            "@umijs/max": "^4.0.0-canary.20220316.1",
+            "@umijs/max": "^4.0.0-canary.20220323.1",
             "@yaoapp/components": "workspace:*",
             "@yaoapp/utils": "workspace:*",
             "ahooks": "^3.1.10",
