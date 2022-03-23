@@ -3,18 +3,20 @@ import fs from 'fs'
 import lessToJs from 'less-vars-to-js'
 import path from 'path'
 
+const root_path=path.join(process.cwd(),'../../')
+
 const antd_theme_path = path.join(process.cwd(), `/node_modules/antd/dist/antd.variable.less`)
 const light_theme_path = path.join(process.cwd(), `/styles/theme/light.less`)
 const dark_theme_path = path.join(process.cwd(), `/styles/theme/dark.less`)
-const init_style_path = path.join(process.cwd(), `/packages/components/assets/styles/init.css`)
-const icon_font_path = path.join(process.cwd(), `/packages/components/assets/styles/icon_font.css`)
+const init_style_path = path.join(root_path, `/packages/components/assets/styles/init.css`)
+const icon_font_path = path.join(root_path, `/packages/components/assets/styles/icon_font.css`)
 const public_path = path.join(process.cwd(), `/public`)
 const output_path = path.join(process.cwd(), `/public/theme`)
 
 const light_theme = lessToJs(fs.readFileSync(light_theme_path, 'utf8'))
 const dark_theme = lessToJs(fs.readFileSync(dark_theme_path, 'utf8'))
 
-const getModifyVarsString = (theme: object) => {
+const getModifyVarsString = (theme: any) => {
 	return Object.keys(theme).reduce((total, key: string) => {
 		const value = theme[key]
 

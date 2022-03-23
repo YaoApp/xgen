@@ -17,12 +17,9 @@
       "scripts": {
             "postinstall": "umimax setup",
             "dev": "umimax dev",
-            "build": "pnpm run build:theme && umimax build",
-            "dev:all": "turbo run dev",
-            "build:all": "turbo run build",
-            "build:com": "turbo run build --scope=@yaoapp/components",
-            "build:utils": "turbo run build --scope=@yaoapp/utils",
-            "build:theme": "ts-node --project ./styles/theme/tsconfig.json ./styles/theme/build.ts"
+            "build": "pnpm run build:theme && umimax build && pnpm run build:after",
+            "build:theme": "ts-node --project ./build/tsconfig.json ./build/theme.ts",
+            "build:after": "ts-node --project ./build/tsconfig.json ./build/after.ts"
       },
       "gitHooks": {
             "pre-commit": "lint-staged --allow-empty"
@@ -62,7 +59,9 @@
             "store2": "^2.13.2",
             "tslib": "^2.3.1",
             "tsyringe": "^4.6.0",
-            "umi": "4.0.0-canary.20220317.2"
+            "umi": "4.0.0-canary.20220317.2",
+            "react-error-boundary": "^3.1.4",
+            "url-pattern": "^1.0.3"
       },
       "devDependencies": {
             "@parcel/packager-ts": "2.3.2",

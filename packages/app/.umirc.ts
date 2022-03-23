@@ -1,10 +1,10 @@
 import { defineConfig } from '@umijs/max'
 
+import { chainWebpack, conventionRoutes, links, proxy } from './build/config'
 import config from './config'
-import { chainWebpack, conventionRoutes, links, proxy } from './utils/build'
 
 export default defineConfig({
-	mfsu: { esbuild: true },
+      mfsu: { esbuild: true },
 	monorepoRedirect: { srcDir: ['./'] },
 	npmClient: 'pnpm',
 	base: config.base,
@@ -12,7 +12,7 @@ export default defineConfig({
 	proxy,
 	links,
 	moment2dayjs: {},
-	antd: { import: true, style: 'less' },
+	antd: { import: false },
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
 	polyfill: { imports: ['core-js/features/promise/try'] },
 	extraBabelPlugins: ['babel-plugin-transform-typescript-metadata'],

@@ -1,3 +1,6 @@
+import '@/styles/index.less'
+import '@matrixage/atom.css/atom.min.css'
+
 import { ConfigProvider } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { Fragment, useLayoutEffect, useState } from 'react'

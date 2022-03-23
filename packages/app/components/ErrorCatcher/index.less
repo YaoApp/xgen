@@ -1,0 +1,32 @@
+._local {
+	:global {
+            .error_header{
+                  .error_name {
+                        margin: 12px 0;
+                        color: rgb(232, 59, 70);
+                        white-space: pre-wrap;
+                        font-size: 24px;
+                  }
+
+                  .btn_retry{
+                        width: 30px;
+                        height: 30px;
+                        border: none;
+                        border-radius: var(--radius);
+                        background-color: transparent;
+
+                        &:hover{
+                              background-color: var(--color_text);
+                              color: white;
+                        }
+                  }
+            }
+
+		.error_message {
+			padding: 24px;
+                  border-radius: var(--radius);
+			background-color: #4a393f;
+			color: rgb(252, 207, 207);
+		}
+	}
+}

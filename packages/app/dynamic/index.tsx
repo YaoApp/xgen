@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import { lazy, Suspense } from 'react'
 
 type ComponentsType = 'base' | 'form' | 'chart' | 'group' | 'option'
@@ -9,7 +10,11 @@ interface IProps {
 }
 
 const Index = ({ type, name, props }: IProps) => {
-	const Component = lazy(() => import(`@/dynamic/components/${type}/${name}`))
+	const Component = lazy(() =>
+		import(`@/dynamic/components/${type}/${name}`).catch(() => {
+			message.error(`Component is not exist, type:'${type}' name:'${name}'`, 0)
+		})
+	)
 
 	return (
 		<Suspense fallback={null}>

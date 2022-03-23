@@ -17,6 +17,10 @@
       "scripts": {
             "dev": "turbo run dev",
             "build": "turbo run build",
+            "dev:app": "turbo run dev --scope=xgen",
+            "dev:com": "turbo run dev --scope=@yaoapp/components",
+            "dev:utils": "turbo run dev --scope=@yaoapp/utils",
+            "build:app": "turbo run build --scope=@yaoapp/app",
             "build:com": "turbo run build --scope=@yaoapp/components",
             "build:utils": "turbo run build --scope=@yaoapp/utils"
       },
@@ -36,8 +40,5 @@
             "prettier": "^2.5.1",
             "turbo": "^1.1.4",
             "yorkie": "^2.0.0"
-      },
-      "dependencies": {
-            "url-pattern": "^1.0.3"
       }
 }

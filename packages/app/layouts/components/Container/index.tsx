@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 
+import { ErrorCatcher } from '@/components'
 import { history } from '@umijs/max'
 
 import styles from './index.less'
@@ -18,7 +19,9 @@ const Index = (props: IPropsContainer & { children: React.ReactNode }) => {
 				history.location.pathname.indexOf('/iframe') !== -1 ? styles.iframe : ''
 			])}
 		>
-			<div className='content_wrap w_100 border_box'>{children}</div>
+			<div className='content_wrap w_100 border_box'>
+				<ErrorCatcher>{children}</ErrorCatcher>
+			</div>
 		</div>
 	)
 }

@@ -23,9 +23,9 @@ export const links = [
 	{ rel: 'stylesheet', href: `${config.base}theme/light.css` }
 ]
 
-export const chainWebpack = (cfg: Config) => {
+export const chainWebpack = (config: Config) => {
 	if (env === 'production') {
-		cfg.merge({
+		config.merge({
 			optimization: {
 				splitChunks: {
 					chunks: 'all',

@@ -7,10 +7,7 @@ importers:
       lint-staged: ^12.3.4
       prettier: ^2.5.1
       turbo: ^1.1.4
-      url-pattern: ^1.0.3
       yorkie: ^2.0.0
-    dependencies:
-      url-pattern: 1.0.3
     devDependencies:
       lint-staged: 12.3.4
       prettier: 2.5.1
@@ -55,6 +52,7 @@ importers:
       react: ^17.0.2
       react-countup: ^6.1.1
       react-dom: ^17.0.2
+      react-error-boundary: ^3.1.4
       react-helmet-async: ^1.2.3
       react-nice-avatar: ^1.2.4
       react-slick: ^0.28.1
@@ -66,6 +64,7 @@ importers:
       turbo: ^1.1.4
       typescript: ^4.6.2
       umi: 4.0.0-canary.20220317.2
+      url-pattern: ^1.0.3
       webpack-chain: ^6.5.1
       yorkie: ^2.0.0
     dependencies:
@@ -88,6 +87,7 @@ importers:
       react: 17.0.2
       react-countup: 6.1.1_react@17.0.2
       react-dom: 17.0.2_react@17.0.2
+      react-error-boundary: 3.1.4_react@17.0.2
       react-helmet-async: 1.2.3_react-dom@17.0.2+react@17.0.2
       react-nice-avatar: 1.2.4_react@17.0.2
       react-slick: 0.28.1_react-dom@17.0.2+react@17.0.2
@@ -96,6 +96,7 @@ importers:
       tslib: 2.3.1
       tsyringe: 4.6.0
       umi: 4.0.0-canary.20220317.2_b3cdd50c0ac1614909bc1ec660a8069d
+      url-pattern: 1.0.3
     devDependencies:
       '@parcel/packager-ts': 2.3.2
       '@parcel/transformer-less': 2.3.2
@@ -8005,6 +8006,16 @@ packages:
       object-assign: 4.1.1
       react: 17.0.2
       scheduler: 0.20.2
+    dev: false
+
+  /react-error-boundary/3.1.4_react@17.0.2:
+    resolution: {integrity: sha512-uM9uPzZJTF6wRQORmSrvOIgt4lJ9MC1sNgEOj2XGsDTRE4kmpWxg7ENK9EWNKJRMAOY9z0MuF4yIfl6gp4sotA==}
+    engines: {node: '>=10', npm: '>=6'}
+    peerDependencies:
+      react: '>=16.13.1'
+    dependencies:
+      '@babel/runtime': 7.17.7
+      react: 17.0.2
     dev: false
 
   /react-error-overlay/6.0.9:
