@@ -19,6 +19,6 @@ export default class Model {
 
 		if (err) return
 
-		console.log(res)
+		this.setting = res
 	}
 }
