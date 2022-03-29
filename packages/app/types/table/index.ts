@@ -2,7 +2,7 @@ import type Filter from './filter'
 import type Header from './header'
 import type Action from './action'
 import type { TableProps } from 'antd'
-import type { BaseColumn, Fileds } from './common'
+import type { BaseColumn, Fileds, FiledDetail } from './common'
 
 export interface SettingTable {
 	header: Header
@@ -17,3 +17,7 @@ export interface SettingTable {
 		table: Fileds
 	}
 }
+
+export type Column = BaseColumn & FiledDetail
+
+export { BaseColumn, Fileds, FiledDetail }

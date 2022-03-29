@@ -1,6 +1,6 @@
 import { Tooltip } from 'antd'
 
-import { Icon } from '@/components'
+import { Icon } from '@/widgets'
 
 const sns = [
 	{

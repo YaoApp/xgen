@@ -9,10 +9,10 @@ interface IProps {
 	props: { [key: string]: any }
 }
 
-const Index = ({ type, name, props }: IProps) => {
+const Dynamic = ({ type, name, props }: IProps) => {
 	const Component = lazy(() =>
-		import(`@/widgets/${type}/${name}`).catch(() => {
-			message.error(`Component is not exist, type:'${type}' name:'${name}'`, 0)
+		import(`@/components/${type}/${name}`).catch(() => {
+			message.error(`Component is not exist, type:'${type}' name:'${name}'`)
 		})
 	)
 
@@ -23,4 +23,4 @@ const Index = ({ type, name, props }: IProps) => {
 	)
 }
 
-export default window.$app.memo(Index)
+export default window.$app.memo(Dynamic)

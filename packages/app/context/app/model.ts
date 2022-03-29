@@ -24,7 +24,7 @@ export default class GlobalModel {
 	visible_menu: boolean = true
 	visible_header: boolean = true
 
-	constructor(public service: Service) {
+	constructor(private service: Service) {
 		makeAutoObservable(this, {}, { autoBind: true })
 
 		const theme = (store.get('xgen-theme') || 'light') as Theme

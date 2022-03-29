@@ -1,16 +1,16 @@
 import { Tooltip } from 'antd'
 
-import { Icon } from '@/components'
+import { Icon } from '@/widgets'
 import { history } from '@umijs/max'
 
 import type { Action } from '../types'
 
 const Index = (props: Action) => {
-	const { title, action, payload, icon, onClick } = props
+	const { title, props: props_action, icon } = props
 
 	const onAction = () => {
-		if (action === 'history.push') {
-			history.push(payload)
+		if (props_action.type === 'history.push') {
+			history.push(props_action.payload)
 		}
 	}
 
@@ -18,10 +18,7 @@ const Index = (props: Action) => {
 		<Tooltip title={title} placement='bottom'>
 			<a
 				className='option_item cursor_point flex justify_center align_center transition_normal clickable'
-				onClick={() => {
-					if (action) onAction()
-					if (onClick) onClick()
-				}}
+				onClick={onAction}
 			>
 				<Icon className='icon_option' name={icon} size={18}></Icon>
 			</a>

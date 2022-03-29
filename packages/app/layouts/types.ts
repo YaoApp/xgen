@@ -36,6 +36,7 @@ export interface IPropsOptions {
 }
 
 export interface IPropsMenu {
+	locale_messages: GlobalModel['locale_messages']
 	visible: boolean
 	blocks: boolean
 	title: Menu['name']
@@ -60,6 +61,6 @@ export interface IPropsSettingModalContent {
 export interface IPropsUserModalContent {
 	user: IPropsOptions['user']
 	locale_messages: GlobalModel['locale_messages']
-      Avatar: JSX.Element
+	Avatar: JSX.Element
 	setAvatar: GlobalModel['setAvatar']
 }

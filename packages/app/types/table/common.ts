@@ -1,6 +1,6 @@
 export interface BaseColumn {
 	name: string
-	width: number
+	width?: number
 }
 
 export interface FiledDetail {

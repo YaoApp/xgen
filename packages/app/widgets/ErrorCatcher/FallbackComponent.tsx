@@ -1,7 +1,7 @@
 import type { FallbackProps } from 'react-error-boundary'
 import clsx from 'clsx'
 
-import { Icon } from '@/components'
+import { Icon } from '@/widgets'
 
 import styles from './index.less'
 

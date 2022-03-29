@@ -13,10 +13,9 @@ export default interface Header {
 	actions: Array<{
 		title: string
 		icon: string
-		action?: {
+		props: {
 			type: string
-			payload?: any
+			payload: any
 		}
-		onClick?: () => void
 	}>
 }

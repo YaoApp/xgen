@@ -1,7 +1,7 @@
 import { Button, Tooltip } from 'antd'
 import store from 'store2'
 
-import { Icon } from '@/components'
+import { Icon } from '@/widgets'
 import { history } from '@umijs/max'
 
 import type { IPropsUserModalContent } from '@/layouts/types'

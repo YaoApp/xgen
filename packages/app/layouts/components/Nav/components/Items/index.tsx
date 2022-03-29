@@ -1,7 +1,7 @@
 import { Tooltip } from 'antd'
 import clsx from 'clsx'
 
-import { Icon } from '@/components'
+import { Icon } from '@/widgets'
 import { Link } from '@umijs/max'
 
 import styles from './index.less'

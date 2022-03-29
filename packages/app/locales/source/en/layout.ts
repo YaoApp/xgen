@@ -1,7 +1,10 @@
 export default {
 	layout: {
 		not_found: 'Not Found',
-		logout: 'Log out',
+            logout: 'Log out',
+            menu: {
+                  search_placeholder:'Search in menu'
+            },
 		avatar: {
 			reset: 'Re-random avatar'
 		},

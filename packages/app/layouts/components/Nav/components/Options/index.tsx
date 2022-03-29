@@ -1,10 +1,9 @@
 import { Badge, Modal, Popover } from 'antd'
 import clsx from 'clsx'
-import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import NiceAvatar from 'react-nice-avatar'
 
-import { Icon } from '@/components'
+import { Icon } from '@/widgets'
 import { useIntl } from '@umijs/max'
 
 import SettingModalContent from '../SettingModalContent'

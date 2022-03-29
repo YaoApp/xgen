@@ -2,8 +2,8 @@ import { Tooltip } from 'antd'
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 
-import { Icon } from '@/components'
 import { toFirstUpperCase } from '@/utils/filter'
+import { Icon } from '@/widgets'
 import { Link, useIntl } from '@umijs/max'
 
 import Form from './components/Form'

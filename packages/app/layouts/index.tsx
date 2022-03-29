@@ -53,6 +53,7 @@ const Index = () => {
 	}
 
 	const props_menu: IPropsMenu = {
+		locale_messages: messages,
 		visible: global.visible_menu,
 		blocks: !!menu[global.current_nav]?.blocks,
 		title: menu[global.current_nav]?.name,

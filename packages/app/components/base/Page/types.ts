@@ -3,18 +3,17 @@ import type { GlobalModel } from '@/context/app'
 export interface Action {
 	title: string
 	icon: string
-	action?: {
+	props: {
 		type: string
-		payload?: any
+		payload: any
 	}
-	onClick?: () => void
 }
 
 export interface IProps {
 	children: React.ReactNode
 	className?: string
 	style?: React.CSSProperties
-	actions?: Array<Action> | JSX.Element
+	actions?: Array<Action>
 	isChart?: boolean
 }
 

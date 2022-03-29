@@ -2,7 +2,7 @@ import { Button, Form, Input } from 'antd'
 import clsx from 'clsx'
 
 import logo_feishu from '@/assets/images/feishu.png'
-import { Icon } from '@/components'
+import { Icon } from '@/widgets'
 import { useIntl } from '@umijs/max'
 
 const { Item, useForm } = Form

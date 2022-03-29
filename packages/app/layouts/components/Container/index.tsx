@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 
-import { ErrorCatcher } from '@/components'
+import { ErrorCatcher } from '@/widgets'
 import { history } from '@umijs/max'
 
 import styles from './index.less'

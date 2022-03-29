@@ -27,7 +27,7 @@ export default class Model {
 	loading = {} as Loading
 	is?: string
 
-	constructor(public global: GlobalModel, public service: Service) {
+	constructor(public global: GlobalModel, private service: Service) {
 		makeAutoObservable(this, {}, { autoBind: true })
 	}
 

@@ -1,5 +1,5 @@
+import { Dynamic } from '@/components'
 import { useMatch } from '@/hooks'
-import Dynamic from '@/widgets'
 import { history } from '@umijs/max'
 
 import type { Match } from '@/types'

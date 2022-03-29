@@ -1,9 +1,9 @@
 import { useBoolean, useDebounceEffect } from 'ahooks'
 import { Input } from 'antd'
 import clsx from 'clsx'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { Icon } from '@/components'
+import { Icon } from '@/widgets'
 import { history, Link } from '@umijs/max'
 import { fuzzyQuery } from '@yaoapp/utils'
 
@@ -12,7 +12,7 @@ import styles from './index.less'
 import type { IPropsMenu } from '../../types'
 
 const Index = (props: IPropsMenu) => {
-	const { visible, blocks, title, items, setCurrentMenu } = props
+	const { locale_messages, visible, blocks, title, items, setCurrentMenu } = props
 	const [visible_input, { toggle }] = useBoolean(false)
 	const [current_items, setCurrentItems] = useState<IPropsMenu['items']>([])
 	const [input, setInput] = useState('')
@@ -40,7 +40,7 @@ const Index = (props: IPropsMenu) => {
 					<Input
 						className='input'
 						autoFocus
-						placeholder='在菜单中搜索'
+						placeholder={locale_messages.layout.menu.search_placeholder}
 						onChange={({ target: { value } }) => setInput(value)}
 					></Input>
 				) : (

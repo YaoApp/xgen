@@ -39,12 +39,9 @@ const Index = (props: IProps) => {
 			>
 				<Left {...props_left}></Left>
 				<div className='options_wrap flex align_center'>
-					{Array.isArray(actions)
-						? !!actions.length &&
-						  actions.map((item, index) => (
-								<Action {...item} key={index}></Action>
-						  ))
-						: actions}
+					{actions?.map((item, index) => (
+						<Action {...item} key={index}></Action>
+                              )) }
 				</div>
 			</header>
 			<div className='page_wrap'>{children}</div>

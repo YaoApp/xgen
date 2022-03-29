@@ -15,9 +15,9 @@
             "packages/*"
       ],
       "scripts": {
-            "postinstall": "umimax setup",
-            "dev": "umimax dev",
-            "build": "pnpm run build:theme && umimax build && pnpm run build:after",
+            "postinstall": "max setup",
+            "dev": "max dev",
+            "build": "pnpm run build:theme && max build && pnpm run build:after",
             "build:theme": "ts-node --project ./build/tsconfig.json ./build/theme.ts",
             "build:after": "ts-node --project ./build/tsconfig.json ./build/after.ts"
       },
@@ -35,7 +35,7 @@
       "dependencies": {
             "@ant-design/icons": "^4.7.0",
             "@matrixage/atom.css": "^2.0.1",
-            "@umijs/max": "^4.0.0-canary.20220323.1",
+            "@umijs/max": "^4.0.0-rc.9",
             "@yaoapp/components": "workspace:*",
             "@yaoapp/utils": "workspace:*",
             "ahooks": "^3.1.10",
@@ -59,15 +59,11 @@
             "store2": "^2.13.2",
             "tslib": "^2.3.1",
             "tsyringe": "^4.6.0",
-            "umi": "4.0.0-canary.20220317.2",
             "react-error-boundary": "^3.1.4",
             "url-pattern": "^1.0.3"
       },
       "devDependencies": {
-            "@parcel/packager-ts": "2.3.2",
-            "@parcel/transformer-less": "2.3.2",
-            "@parcel/transformer-typescript-types": "2.3.2",
-            "@swc/core": "^1.2.146",
+            "@swc/core": "^1.2.161",
             "@types/less": "^3.0.3",
             "@types/lodash-es": "^4.17.6",
             "@types/mustache": "^4.1.2",
