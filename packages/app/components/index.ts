@@ -1,4 +1,4 @@
-export { default as Dynamic } from './x'
+export { default as X } from './x'
 
 export { default as Page } from './base/Page'
 export { default as Filter } from './base/Filter'

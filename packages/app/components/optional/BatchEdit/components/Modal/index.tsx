@@ -1,7 +1,7 @@
 import { Button, Checkbox, Col, Form, Modal, Row } from 'antd'
 import { cloneDeep, pickBy } from 'lodash-es'
 
-import { Dynamic } from '@/components'
+import { X } from '@/components'
 
 import { useOptions } from './hooks'
 import styles from './index.less'
@@ -95,7 +95,7 @@ const Index = (props: IProps) => {
 						(item: any, index: number) =>
 							item.checked && (
 								<Col span={item.span} key={index}>
-									<Dynamic
+									<X
 										type='form'
 										name={item.edit.type}
 										props={{
@@ -103,7 +103,7 @@ const Index = (props: IProps) => {
 											name: item.edit.props.value,
 											label: item.label
 										}}
-									></Dynamic>
+									></X>
 								</Col>
 							)
 					)}

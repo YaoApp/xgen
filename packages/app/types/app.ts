@@ -9,6 +9,12 @@ export interface Response<T> {
 	err: ResError
 }
 
+export interface SearchParams {
+	page: number
+	pagesize: number
+	[key: string]: number | string
+}
+
 export interface Loading {
 	[key: string]: boolean
 }

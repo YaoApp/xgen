@@ -1,4 +1,4 @@
-import { Dynamic } from '@/components'
+import { X } from '@/components'
 import { useMatch } from '@/hooks'
 import { history } from '@umijs/max'
 
@@ -10,7 +10,7 @@ const Index = () => {
 
 	if (!model) history.push('/404')
 
-	return <Dynamic type='base' name={type} props={{ parent: 'Page', model, id }}></Dynamic>
+	return <X type='base' name={type} props={{ parent: 'Page', model, id }}></X>
 }
 
 export default window.$app.memo(Index)

@@ -4,7 +4,7 @@ import type Action from './action'
 import type { TableProps } from 'antd'
 import type { BaseColumn, Fileds, FiledDetail } from './common'
 
-export interface SettingTable {
+export interface TableSetting {
 	header: Header
 	filter: Filter
 	table: {
@@ -16,6 +16,13 @@ export interface SettingTable {
 		filter: Fileds
 		table: Fileds
 	}
+}
+
+export type TableData = {
+	data: Array<any>
+	page: number
+	pagesize: number
+	total: number
 }
 
 export type Column = BaseColumn & FiledDetail

@@ -9,7 +9,7 @@ interface IProps {
 	props: { [key: string]: any }
 }
 
-const Dynamic = ({ type, name, props }: IProps) => {
+const Index = ({ type, name, props }: IProps) => {
 	const Component = lazy(() =>
 		import(`@/components/${type}/${name}`).catch(() => {
 			message.error(`Component is not exist, type:'${type}' name:'${name}'`)
@@ -23,4 +23,4 @@ const Dynamic = ({ type, name, props }: IProps) => {
 	)
 }
 
-export default window.$app.memo(Dynamic)
+export default window.$app.memo(Index)

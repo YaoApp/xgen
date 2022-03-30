@@ -29,7 +29,7 @@ axios.interceptors.response.use(
 				message.error(`${res.status} : ${res.statusText}`)
 		}
 
-		if (data && data.code === 401) {
+		if (data?.code === 401 || data?.code === 403) {
 			const login_url = store.get('login_url')
 
 			if (login_url) history.push(login_url)

@@ -9,6 +9,11 @@ import type { Response } from '@/types'
 export default class Index {
 	@catchError()
 	getSetting<Res>(model: string) {
-		return axios.get<{}, Response<Res>>(`/api/table/${model}/setting`)
-      }
+		return axios.get<{}, Response<Res>>(`/api/xiang/table/${model}/setting`)
+	}
+
+	@catchError()
+	search<Req, Res>(model: string, params?: Req) {
+		return axios.get<Req, Response<Res>>(`/api/xiang/table/${model}/search`, { params })
+	}
 }

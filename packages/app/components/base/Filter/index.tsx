@@ -1,7 +1,7 @@
 import { Button, Col, Form, Row, Tooltip } from 'antd'
 import clsx from 'clsx'
 
-import { Dynamic } from '@/components'
+import { X } from '@/components'
 import { Icon } from '@/widgets'
 import { PlusOutlined } from '@ant-design/icons'
 import { getLocale, history } from '@umijs/max'
@@ -44,7 +44,7 @@ const Index = (props: IPropsFilter) => {
 			<Row gutter={16} justify='space-between' style={{ marginBottom: 20 }}>
 				{base.map((item: any, index: number) => (
 					<Col span={item.span} key={index}>
-						<Dynamic
+						<X
 							type='form'
 							name={item.edit.type}
 							props={{
@@ -52,7 +52,7 @@ const Index = (props: IPropsFilter) => {
 								bind: item.bind,
 								name: item.name
 							}}
-						></Dynamic>
+						></X>
 					</Col>
 				))}
 				<Col span={2}>
@@ -122,7 +122,7 @@ const Index = (props: IPropsFilter) => {
 					<Row gutter={16} style={{ marginBottom: 16 }}>
 						{more.map((item: any, index: number) => (
 							<Col span={item.span} key={index}>
-								<Dynamic
+								<X
 									type='form'
 									name={item.edit.type}
 									props={{
@@ -130,7 +130,7 @@ const Index = (props: IPropsFilter) => {
 										bind: item.bind,
 										name: item.name
 									}}
-								></Dynamic>
+								></X>
 							</Col>
 						))}
 					</Row>
