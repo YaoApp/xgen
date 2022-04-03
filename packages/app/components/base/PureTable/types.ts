@@ -13,6 +13,13 @@ export type TableColumn = TableColumnType<any>
 
 export interface IPropsEditPopover {
 	field_detail: Column
-	data_item: any
+      data_item: any
+	form_value: any
 	row_index: number
+}
+
+export interface IPropsViewContent {
+	field_detail: Column
+	data_item: any
+	form_value: any
 }

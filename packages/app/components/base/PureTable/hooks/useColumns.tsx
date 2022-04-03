@@ -13,6 +13,8 @@ const hook = (columns: IPropsPureTable['columns']) => {
 		const list_columns = columns.reduce(handleColumns, [])
 
 		console.log(JSON.parse(JSON.stringify(columns)))
+		console.log(list_columns)
+		return list_columns
 	}, [columns])
 }
 

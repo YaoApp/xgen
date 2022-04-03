@@ -13,7 +13,7 @@ export default class Model {
 	parent = 'Page' as IPropsTable['parent']
 	model = '' as IPropsTable['model']
 	setting = {} as TableSetting
-	list = {} as TableData['data']
+	list = [] as TableData['data']
 	filter_columns = [] as Array<Column>
 	table_columns = [] as Array<Column>
 	pagination = { page: 1, pagesize: 10, total: 0 } as Omit<TableData, 'data'>

@@ -96,7 +96,7 @@ const Index = (props: IProps) => {
 							item.checked && (
 								<Col span={item.span} key={index}>
 									<X
-										type='form'
+										type='edit'
 										name={item.edit.type}
 										props={{
 											...item.edit.props,

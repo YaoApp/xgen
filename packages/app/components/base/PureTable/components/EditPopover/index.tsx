@@ -5,18 +5,14 @@ import clsx from 'clsx'
 
 import { X } from '@/components'
 import { CheckOutlined } from '@ant-design/icons'
-import { getDeepValue } from '@yaoapp/utils'
 
-import { getText } from '../../utils'
+import ViewContent from '../ViewContent'
 
 import type { IPropsEditPopover } from '../../types'
 
 const Index = (props: IPropsEditPopover) => {
-	const { field_detail, data_item, row_index } = props
+	const { field_detail, data_item, form_value, row_index } = props
 	const edit_type = field_detail.edit.type
-	const view_type = field_detail.view?.type
-	const form_value = getDeepValue(field_detail.bind, data_item)
-	const view_text = getText(field_detail, data_item)
 
 	const props_edit_component = {
 		...field_detail.edit.props,
@@ -46,19 +42,7 @@ const Index = (props: IPropsEditPopover) => {
 
 	const view_content = (
 		<div className='edit_text line_clamp_2'>
-			{() => {
-				if (!view_type) return view_text || '-'
-
-				const props_view_component = {
-					...field_detail.view.props,
-					__bind: field_detail.bind,
-					__name: field_detail.name,
-					__data_item: data_item,
-					value: form_value
-				}
-
-				return <X type='view' name={view_type} props={props_view_component}></X>
-			}}
+			<ViewContent {...{ field_detail, data_item, form_value }}></ViewContent>
 		</div>
 	)
 

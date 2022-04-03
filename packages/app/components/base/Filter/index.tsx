@@ -45,7 +45,7 @@ const Index = (props: IPropsFilter) => {
 				{base.map((item: any, index: number) => (
 					<Col span={item.span} key={index}>
 						<X
-							type='form'
+							type='edit'
 							name={item.edit.type}
 							props={{
 								...item.edit.props,
@@ -123,7 +123,7 @@ const Index = (props: IPropsFilter) => {
 						{more.map((item: any, index: number) => (
 							<Col span={item.span} key={index}>
 								<X
-									type='form'
+									type='edit'
 									name={item.edit.type}
 									props={{
 										...item.edit.props,
