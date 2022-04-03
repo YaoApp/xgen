@@ -5,5 +5,5 @@ export { default as Filter } from './base/Filter'
 export { default as PureTable } from './base/PureTable'
 export { default as Table } from './base/Table'
 
-export { default as Item } from './form/Item'
-export { default as Input } from './form/Input'
+export { default as Item } from './edit/Item'
+export { default as Input } from './edit/Input'

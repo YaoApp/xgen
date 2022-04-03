@@ -1,5 +1,6 @@
 import type Model from '@/components/base/Table/model'
 import type { TableColumnType } from 'antd'
+import type { Column } from '@/types'
 
 export interface IPropsPureTable {
 	parent: Model['parent']
@@ -9,3 +10,9 @@ export interface IPropsPureTable {
 }
 
 export type TableColumn = TableColumnType<any>
+
+export interface IPropsEditPopover {
+	field_detail: Column
+	data_item: any
+	row_index: number
+}

@@ -76,3 +76,9 @@ export interface Menu {
 	children?: Array<Menu>
 	parent?: any
 }
+
+export interface IPropsEditComponent {
+	__bind: string
+	__name: string
+	__data_item: any
+}

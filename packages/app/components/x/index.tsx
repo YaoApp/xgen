@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import { lazy, Suspense } from 'react'
 
-type ComponentsType = 'base' | 'form' | 'chart' | 'group' | 'option'
+type ComponentsType = 'base' | 'edit' | 'view' | 'chart' | 'group' | 'option'
 
 interface IProps {
 	type: ComponentsType

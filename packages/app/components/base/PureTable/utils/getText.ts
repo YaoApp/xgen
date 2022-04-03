@@ -4,11 +4,11 @@ import { getDeepValue } from '@yaoapp/utils'
 
 import type { Column } from '@/types'
 
-export default (bind: string, dataItem: unknown, item: Column) => {
-	let text = getDeepValue(bind, dataItem)
+export default (field_detail: Column, dataItem: unknown) => {
+	let text = getDeepValue(field_detail.bind, dataItem)
 
-	if (item.view?.props['format']) {
-		text = day(text).format(item.view?.props['format'])
+	if (field_detail.view?.props['format']) {
+		text = day(text).format(field_detail.view?.props['format'])
 	}
 
 	return Array.isArray(text) ? text.join(',') : text !== undefined && text !== null ? text : '-'

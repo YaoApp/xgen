@@ -9,12 +9,12 @@ export interface ViewComponents {
 
 export interface FiledDetail {
 	bind: string
-	view?: {
+	view: {
 		type: string
 		props: any
 		components?: ViewComponents
 	}
-	edit?: {
+	edit: {
 		type: string
 		props: any
 	}
