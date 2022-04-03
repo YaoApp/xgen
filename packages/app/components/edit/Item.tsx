@@ -6,26 +6,31 @@ const { Item } = Form
 
 interface IProps extends FormItemProps {
 	children: JSX.Element
-	name: string
+	__bind: string
+	__name: string
 	hide_label?: boolean
 }
 
 const Index = (props: IProps) => {
-	const { children } = props
+	const { children, __bind, __name, hide_label, ...rest_props } = props
 
 	const real_props = {
-		label: props?.hide_label ? (
+		label: hide_label ? (
 			''
 		) : (
-			<a id={props.name} className='disabled' href={`#${props.name}`}>
-				<label>{props.name}</label>
+			<a id={__name} className='disabled' href={`#${__name}`}>
+				<label>{__name}</label>
 			</a>
 		),
-		name: props.name,
-		noStyle: !props.name
+		name: __bind,
+		noStyle: !__name
 	}
 
-	return <Item {...real_props}>{children}</Item>
+	return (
+		<Item {...real_props} {...rest_props}>
+			{children}
+		</Item>
+	)
 }
 
 export default window.$app.memo(Index)

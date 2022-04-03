@@ -18,7 +18,7 @@ const Index = (props: IPropsEditPopover) => {
 	const form_value = getDeepValue(field_detail.bind, data_item)
 	const view_text = getText(field_detail, data_item)
 
-	const props_edit = {
+	const props_edit_component = {
 		...field_detail.edit.props,
 		__bind: field_detail.bind,
 		__name: field_detail.name,
@@ -27,14 +27,14 @@ const Index = (props: IPropsEditPopover) => {
 		style: { width: 240 }
 	}
 
-	const Content = (
+	const edit_content = (
 		<Form
 			className='flex'
 			name={`form_table_td_${field_detail.bind}_${row_index}`}
 			initialValues={{ [field_detail.bind]: form_value }}
 			onFinish={(v) => {}}
 		>
-			<X type='edit' name={field_detail.edit.type} props={props_edit}></X>
+			<X type='edit' name={field_detail.edit.type} props={props_edit_component}></X>
 			<Button
 				className='ml_12'
 				type='primary'
@@ -44,6 +44,24 @@ const Index = (props: IPropsEditPopover) => {
 		</Form>
 	)
 
+	const view_content = (
+		<div className='edit_text line_clamp_2'>
+			{() => {
+				if (!view_type) return view_text || '-'
+
+				const props_view_component = {
+					...field_detail.view.props,
+					__bind: field_detail.bind,
+					__name: field_detail.name,
+					__data_item: data_item,
+					value: form_value
+				}
+
+				return <X type='view' name={view_type} props={props_view_component}></X>
+			}}
+		</div>
+	)
+
 	return (
 		<Popover
 			id='td_popover'
@@ -51,22 +69,9 @@ const Index = (props: IPropsEditPopover) => {
 			placement={edit_type === 'upload' ? 'bottom' : 'topLeft'}
 			trigger='click'
 			destroyTooltipOnHide={{ keepParent: false }}
-			content={Content}
+			content={edit_content}
 		>
-			<div className='edit_text line_clamp_2'>
-				{view_type ? (
-					<X
-						type='view'
-						name={view_type}
-						props={{
-							__value: view_text,
-							...field_detail.edit.props
-						}}
-					></X>
-				) : (
-					view_text || '-'
-				)}
-			</div>
+			{view_content}
 		</Popover>
 	)
 }

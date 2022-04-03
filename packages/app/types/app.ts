@@ -1,4 +1,5 @@
 import type { AxiosError } from 'axios'
+import type { FormItemProps } from 'antd'
 
 export type Theme = 'light' | 'dark'
 
@@ -77,8 +78,16 @@ export interface Menu {
 	parent?: any
 }
 
-export interface IPropsEditComponent {
+export interface IPropsComponent {
 	__bind: string
 	__name: string
 	__data_item: any
+}
+
+export interface IPropsEditComponent extends IPropsComponent {
+	itemProps?: FormItemProps
+}
+
+export interface IPropsViewComponent extends IPropsEditComponent {
+	__value: any
 }
