@@ -1,4 +1,5 @@
 import type Model from '@/components/base/Table/model'
+import type { TableColumnType } from 'antd'
 
 export interface IPropsPureTable {
 	parent: Model['parent']
@@ -6,3 +7,5 @@ export interface IPropsPureTable {
 	columns: Model['table_columns']
 	pagination: Model['pagination']
 }
+
+export type TableColumn = TableColumnType<any>

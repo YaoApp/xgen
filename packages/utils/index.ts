@@ -1,3 +1,6 @@
+import equal from 'fast-deep-equal'
+
+export { equal }
 export { default as memo } from './common/memo'
 export { default as sleep } from './common/sleep'
 export { default as Handle } from './common/Handle'

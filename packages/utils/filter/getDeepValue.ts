@@ -1,8 +1,4 @@
-const Index = (v: string, item: object) => {
-      if (v.indexOf(':') !== -1) return v
-      
-	const key = v.replace(':', '')
-
+const Index = (key: string, item: any) => {
 	if (key.indexOf('.') !== -1) {
 		const indexs = key.split('.')
 

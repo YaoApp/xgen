@@ -1,17 +1,16 @@
 import { Table } from 'antd'
 import clsx from 'clsx'
 
+import useColumns from './hooks/useColumns'
 import styles from './index.less'
 
 import type { IPropsPureTable } from './types'
 
 const Index = (props: IPropsPureTable) => {
 	const { parent, list, columns, pagination } = props
-      const in_modal = parent === 'Modal'
-      
-	console.log(JSON.stringify(columns))
-	console.log(JSON.stringify(pagination))
+	const is_inner = parent === 'Modal'
 
+	const render_columns = useColumns(columns)
 
 	const table_pagination = {
 		current: Number(pagination.page) || 1,
@@ -22,12 +21,12 @@ const Index = (props: IPropsPureTable) => {
 
 	return (
 		// <Table
-		// 	className={clsx([styles._local, in_modal ? styles.inline : ''])}
+		// 	className={clsx([styles._local, is_inner ? styles.inline : ''])}
 		// 	dataSource={list}
 		// 	columns={[]}
-		// 	sticky={in_modal ? false : { offsetHeader: 52 }}
+		// 	sticky={is_inner ? false : { offsetHeader: 52 }}
 		// 	rowKey={(item) => item.id}
-		// 	pagination={in_modal ? false : table_pagination}
+		// 	pagination={is_inner ? false : table_pagination}
 		// />
 
 		<div>123</div>
