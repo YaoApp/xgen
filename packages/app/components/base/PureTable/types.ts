@@ -7,13 +7,15 @@ export interface IPropsPureTable {
 	list: Model['list']
 	columns: Model['table_columns']
 	pagination: Model['pagination']
+	props: Model['setting']['table']['props']
+	operation: Model['setting']['table']['operation']
 }
 
 export type TableColumn = TableColumnType<any>
 
 export interface IPropsEditPopover {
 	field_detail: Column
-      data_item: any
+	data_item: any
 	form_value: any
 	row_index: number
 }

@@ -30,6 +30,10 @@ const Index = () => {
 		global.locale_messages = messages
 	}, [])
 
+	useLayoutEffect(() => {
+		global.stack.reset()
+	}, [pathname])
+
 	const name = global.app_info.name
 
 	const props_nav: IPropsNav = {

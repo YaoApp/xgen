@@ -8,9 +8,14 @@ export interface TableSetting {
 	header: Header
 	filter: Filter
 	table: {
-		props: TableProps<{}>
+		props: TableProps<any>
 		columns: Array<BaseColumn>
-		actions: Array<Action>
+		operation: {
+			width?: number
+			hide?: boolean
+			fold?: boolean
+			actions: Array<Action>
+		}
 	}
 	fileds: {
 		filter: Fileds

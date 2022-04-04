@@ -17,6 +17,7 @@ const { useForm } = Form
 const Index = (props: IPropsFilter) => {
 	const { model, columns, btnAddText } = props
 	const locale = getLocale()
+	const is_cn = locale === 'zh-CN'
 	const [form] = useForm()
 	const { getFieldsValue, resetFields } = form
 	const { display_more, opacity_more, visible_more, setVisibleMore } = useVisibleMore()
@@ -49,8 +50,8 @@ const Index = (props: IPropsFilter) => {
 							name={item.edit.type}
 							props={{
 								...item.edit.props,
-								bind: item.bind,
-								name: item.name
+								__bind: item.bind,
+								__name: item.name
 							}}
 						></X>
 					</Col>
@@ -75,13 +76,7 @@ const Index = (props: IPropsFilter) => {
 				<Col flex='auto'>
 					<div className='flex justify_end'>
 						{visible_btn_more && (
-							<Tooltip
-								title={
-									locale === 'zh-CN'
-										? '更多筛选项'
-										: 'More Filters'
-								}
-							>
+							<Tooltip title={is_cn ? '更多筛选项' : 'More Filters'}>
 								<Button
 									className='btn_more no_text w_100 flex justify_center align_center'
 									icon={
@@ -127,8 +122,8 @@ const Index = (props: IPropsFilter) => {
 									name={item.edit.type}
 									props={{
 										...item.edit.props,
-										bind: item.bind,
-										name: item.name
+										__bind: item.bind,
+										__name: item.name
 									}}
 								></X>
 							</Col>

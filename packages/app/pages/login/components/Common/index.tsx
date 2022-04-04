@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { toFirstUpperCase } from '@/utils/filter'
 import { Icon } from '@/widgets'
-import { Link, useIntl } from '@umijs/max'
+import { getLocale, Link, useIntl } from '@umijs/max'
 
 import Form from './components/Form'
 import Left from './components/Left'
@@ -14,7 +14,8 @@ import styles from './index.less'
 import type { IPropsCommon, IPropsForm } from '@/pages/login/types'
 
 const Index = ({ x, type }: IPropsCommon) => {
-	const { messages, locale } = useIntl()
+	const { messages } = useIntl()
+	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
 	const is_dark = x.global.theme == 'dark'
 

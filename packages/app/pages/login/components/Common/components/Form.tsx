@@ -3,7 +3,7 @@ import clsx from 'clsx'
 
 import logo_feishu from '@/assets/images/feishu.png'
 import { Icon } from '@/widgets'
-import { useIntl } from '@umijs/max'
+import { getLocale, useIntl } from '@umijs/max'
 
 const { Item, useForm } = Form
 
@@ -13,7 +13,8 @@ const Index = (props: IPropsForm) => {
 	const { code, feishu, loading, getCaptcha, onFinish } = props
 	const [form] = useForm()
 	const { getFieldValue } = form
-	const { messages, locale } = useIntl()
+	const { messages } = useIntl()
+	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
 
 	return (

@@ -4,6 +4,7 @@ import { genConfig } from 'react-nice-avatar'
 import store from 'store2'
 import { singleton } from 'tsyringe'
 
+import { Stack } from '@/context'
 import Service from '@/services/app'
 
 import type { AvatarFullConfig } from 'react-nice-avatar'
@@ -24,7 +25,7 @@ export default class GlobalModel {
 	visible_menu: boolean = true
 	visible_header: boolean = true
 
-	constructor(private service: Service) {
+	constructor(private service: Service, public stack: Stack) {
 		makeAutoObservable(this, {}, { autoBind: true })
 
 		const theme = (store.get('xgen-theme') || 'light') as Theme

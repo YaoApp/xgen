@@ -1,3 +1,4 @@
+import { findLastIndex } from 'lodash-es'
 import store from 'store2'
 import { singleton } from 'tsyringe'
 
@@ -13,6 +14,13 @@ export default class Index {
 
 	pop() {
 		this.paths.pop()
+		this.sync()
+	}
+
+	remove(path: string) {
+		const index = findLastIndex(this.paths, (item: string) => item === path)
+
+		this.paths.slice(index + 1)
 		this.sync()
 	}
 

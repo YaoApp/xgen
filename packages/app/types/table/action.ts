@@ -1,10 +1,12 @@
 export default interface Action {
 	title: string
 	icon: string
+	type: 'view' | 'edit'
+	how: 'page' | 'model'
 	props: {
-		type: string
-		useModal: boolean
-		formName: string
-		formId: string
+		model: string
+		bind: string
+		danger?: boolean
+		disabled?: boolean
 	}
 }

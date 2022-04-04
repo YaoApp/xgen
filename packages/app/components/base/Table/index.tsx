@@ -18,26 +18,31 @@ const Index = (props: IPropsTable) => {
 	const [x] = useState(() => container.resolve(Model))
 
 	useLayoutEffect(() => {
-		x.stack.reset()
-		x.stack.push(`${parent}-${model}`)
+		x.stack.push(`Table-${parent}-${model}`)
 
 		x.parent = parent
 		x.model = model
 
 		x.getSetting()
 		x.search()
+
+		return () => {
+			x.stack.remove(`Table-${parent}-${model}`)
+		}
 	}, [])
+
+	if (!x.setting.table) return null
 
 	const props_table: IPropsPureTable = {
 		parent,
 		list: x.list,
 		columns: x.table_columns,
-		pagination: x.pagination
+		pagination: x.pagination,
+		props: x.setting.table.props,
+		operation: x.setting.table.operation
 	}
 
 	if (parent === 'Page') {
-		if (!x.setting.table) return null
-
 		const props_filter: IPropsFilter = {
 			model: x.model,
 			columns: x.filter_columns,

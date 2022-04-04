@@ -7,10 +7,10 @@ import styles from './index.less'
 import type { IPropsPureTable } from './types'
 
 const Index = (props: IPropsPureTable) => {
-	const { parent, list = [], columns, pagination } = props
+	const { parent, list, columns, pagination, props: table_props, operation } = props
 	const is_inner = parent === 'Modal'
 
-	const list_columns = useColumns(columns)
+	const list_columns = useColumns(columns, table_props, operation)
 
 	const table_pagination = {
 		current: Number(pagination.page) || 1,
@@ -27,6 +27,7 @@ const Index = (props: IPropsPureTable) => {
 			sticky={is_inner ? false : { offsetHeader: 52 }}
 			rowKey={(item) => item.id}
 			pagination={is_inner ? false : table_pagination}
+			{...table_props}
 		/>
 	)
 }
