@@ -21,8 +21,6 @@ const hook = (
 
 		const list_columns = columns.reduce(handleColumns, [])
 
-		console.log(JSON.parse(JSON.stringify(operation)))
-
 		const operation_col: TableColumn = {
 			title: is_cn ? '操作' : 'operation',
 			key: '__operation'

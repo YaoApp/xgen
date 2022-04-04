@@ -8,13 +8,13 @@ export default class Index {
 	path_string = '' as string
 
 	push(path: string) {
-		this.paths.push(path)
-		this.sync()
+            this.paths.push(path)
+            this.sync()
 	}
 
 	pop() {
-		this.paths.pop()
-		this.sync()
+            this.paths.pop()
+            this.sync()
 	}
 
 	remove(path: string) {
@@ -30,10 +30,6 @@ export default class Index {
 	}
 
 	sync() {
-		const target = this.paths.join('/')
-
-		this.path_string = target
-
-		store.set('path_string', target)
+		store.set('__paths', this.paths)
 	}
 }

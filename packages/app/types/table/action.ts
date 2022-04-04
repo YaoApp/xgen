@@ -6,7 +6,10 @@ export default interface Action {
 	props: {
 		model: string
 		bind: string
-		danger?: boolean
-		disabled?: boolean
+		style?: 'danger'
+		disabled?: {
+			bind: string
+			value: string | Array<string>
+		}
 	}
 }

@@ -32,4 +32,4 @@ export type TableData = {
 
 export type Column = BaseColumn & FiledDetail
 
-export { BaseColumn, Fileds, FiledDetail, ViewComponents }
+export { Action, BaseColumn, Fileds, FiledDetail, ViewComponents }

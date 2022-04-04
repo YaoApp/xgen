@@ -23,6 +23,7 @@
 	}
 }
 
+// message
 .important_message {
 	top: initial;
 	bottom: 8px;
@@ -41,12 +42,14 @@
 	.important_message() !important;
 }
 
+// Mentions
 .xgen-mentions {
 	textarea {
 		background-color: transparent !important;
 	}
 }
 
+// Modal
 [data-theme='dark'] {
 	.xgen-modal-mask {
 		background-color: rgba(255, 255, 255, 0.09);
@@ -77,9 +80,9 @@
 		&-close {
 			color: var(--color_text_grey);
 
-                  &:hover{
-                        color: var(--color_text_contrast);
-                  }
+			&:hover {
+				color: var(--color_text_contrast);
+			}
 		}
 
 		&-header {
@@ -95,6 +98,33 @@
 
 		&-body {
 			padding: 0;
+		}
+	}
+}
+
+// Popover
+.xgen-popover {
+	.xgen-popover-arrow {
+		overflow: visible;
+
+		.xgen-popover-arrow-content {
+			width: 8px;
+			height: 8px;
+			border-radius: 2px;
+			box-shadow: var(--shadow);
+
+			&::before {
+				display: none;
+			}
+		}
+	}
+}
+
+// Tooltip
+.xgen-tooltip {
+	.xgen-tooltip-arrow {
+		.xgen-tooltip-arrow-content {
+			box-shadow: var(--shadow);
 		}
 	}
 }

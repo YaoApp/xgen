@@ -1,7 +1,7 @@
 import { Table } from 'antd'
 import clsx from 'clsx'
 
-import useColumns from './hooks/useColumns'
+import { useColumns } from './hooks'
 import styles from './index.less'
 
 import type { IPropsPureTable } from './types'

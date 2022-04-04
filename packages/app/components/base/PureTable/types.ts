@@ -25,3 +25,8 @@ export interface IPropsViewContent {
 	data_item: any
 	form_value: any
 }
+
+export interface IPropsActions {
+	actions: Model['setting']['table']['operation']['actions']
+	data_item: any
+}
