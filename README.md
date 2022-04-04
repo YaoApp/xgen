@@ -8,11 +8,10 @@ Before you run dev, you must generate theme css files to public by `pnpm run bui
 
 ## What`s new
 
-- pnpm
 - umi 4
-- swc
+- pnpm
+- mfsu+
 - turborepo
-- Independent component library
 - mobx
 - error catcher
 - light theme
