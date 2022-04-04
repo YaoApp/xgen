@@ -38,24 +38,24 @@ Of course, the configuration of the base components is mostly unchanged.
 
 - [x] Build scaffolding based on umi 4
 - [x] Use Turborepo + Parcel to use components as separate packages
-- [ ] template conversion rule design
-- [ ] EIC Architecture Design
-- [ ] Migration and refactoring of style files
-- [ ] Support Light Theme
-- [ ] Multilingual support
-- [ ] Design error capture based on EventListner
-- [ ] Table refactoring
+- [x] template conversion rule design
+- [x] EIC Architecture Design
+- [x] Migration and refactoring of style files
+- [x] Support Light Theme
+- [x] Multilingual support
+- [x] Design error capture based on EventListner
+- [x] Table refactoring
 - [ ] Form refactoring
-- [ ] Design of extension components based on ShadowDom + Web Worker
+- [ ] Design of extension components based on React/Vue/Lit Element
 - [ ] JSON field prompt vscode json.$schema
 
 ### Gifts
 
 - [ ] Component packaging tool xtool
-- [ ] Support custom components, import packaged components from CDN based on SystemJS
+- [ ] Support custom components, import packaged components from based on Dynamic import
 
 ### Ideas
 
-- [ ] Cloud components, support importing components from npm
+- [ ] Cloud components, support importing components from yao workshop
 - [ ] Infra, a visual work platform, supports one-click deployment of YaoApp
 - [ ] Component as proto (CAP), components are prototypes, CAP prototyping platform, prototyping tools designed from the code level (thinking some inspiration for reverse workflow), product planning uses the component system provided by developers to make prototypes, and the production is completed After that, the designer adjusts the component parameters, adds CSS for processing, and delivers the code to the developer.
