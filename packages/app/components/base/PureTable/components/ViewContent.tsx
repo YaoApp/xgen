@@ -14,8 +14,8 @@ const Index = (props: IPropsViewContent) => {
 		...field_detail.view.props,
 		__bind: field_detail.bind,
 		__name: field_detail.name,
-		__data_item: data_item,
-		__value: form_value
+		__value: form_value,
+		__data_item: data_item
 	}
 
 	return <X type='view' name={field_detail.view.type} props={props_view_component}></X>

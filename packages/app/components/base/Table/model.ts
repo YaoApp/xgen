@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { injectable } from 'tsyringe'
 
+import { Stack } from '@/context'
 import { Utils } from '@/services'
 
 import Service from './services'
@@ -18,7 +19,7 @@ export default class Model {
 	table_columns = [] as Array<Column>
 	pagination = { page: 1, pagesize: 10, total: 0 } as Omit<TableData, 'data'>
 
-	constructor(private service: Service, private utils: Utils) {
+	constructor(private service: Service, private utils: Utils, public stack: Stack) {
 		makeAutoObservable(this, {}, { autoBind: true })
 	}
 

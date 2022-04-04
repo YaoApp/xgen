@@ -18,12 +18,22 @@ const Index = (props: IPropsTable) => {
 	const [x] = useState(() => container.resolve(Model))
 
 	useLayoutEffect(() => {
+		x.stack.reset()
+		x.stack.push(`${parent}-${model}`)
+
 		x.parent = parent
 		x.model = model
 
 		x.getSetting()
 		x.search()
 	}, [])
+
+	const props_table: IPropsPureTable = {
+		parent,
+		list: x.list,
+		columns: x.table_columns,
+		pagination: x.pagination
+	}
 
 	if (parent === 'Page') {
 		if (!x.setting.table) return null
@@ -34,13 +44,6 @@ const Index = (props: IPropsTable) => {
 			btnAddText: x.setting.filter?.btnAddText
 		}
 
-		const props_table: IPropsPureTable = {
-			parent,
-			list: x.list,
-			columns: x.table_columns,
-			pagination: x.pagination
-		}
-
 		return (
 			<Page className={clsx([styles._local, 'w_100'])}>
 				<Filter {...props_filter}></Filter>
@@ -49,7 +52,11 @@ const Index = (props: IPropsTable) => {
 		)
 	}
 
-	return <div className={clsx([styles._local, 'w_100'])}></div>
+	return (
+		<div className={clsx([styles._local, 'w_100'])}>
+			<PureTable {...props_table}></PureTable>
+		</div>
+	)
 }
 
 export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
