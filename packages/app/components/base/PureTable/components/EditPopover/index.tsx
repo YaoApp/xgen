@@ -1,5 +1,3 @@
-import './index.less'
-
 import { Button, Form, Popover } from 'antd'
 import clsx from 'clsx'
 
@@ -7,6 +5,7 @@ import { X } from '@/components'
 import { CheckOutlined } from '@ant-design/icons'
 
 import ViewContent from '../ViewContent'
+import styles from './index.less'
 
 import type { IPropsEditPopover } from '../../types'
 
@@ -49,7 +48,7 @@ const Index = (props: IPropsEditPopover) => {
 	return (
 		<Popover
 			id='td_popover'
-			overlayClassName={clsx(['td_popover', edit_type])}
+			overlayClassName={clsx([styles._local, edit_type])}
 			placement={edit_type === 'upload' ? 'bottom' : 'topLeft'}
 			trigger='click'
 			destroyTooltipOnHide={{ keepParent: false }}

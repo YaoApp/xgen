@@ -1,6 +1,6 @@
-:global {
-	.td_popover {
-		&.upload {
+._local {
+	&.upload {
+		:global {
 			.xgen-popover-inner-content {
 				width: 405px;
 			}
@@ -27,28 +27,39 @@
 				}
 			}
 		}
+	}
 
-		&.dynamic_list {
-			.xgen-popover-arrow-content {
-				background-color: var(--color_bg);
-			}
-
-			.xgen-popover-inner-content {
-				border-radius: 6px;
-				background-color: var(--color_bg);
-
-				.xgen-form-item-control {
-					border: none;
-				}
-			}
-		}
-
+	:global {
 		.xgen-form-item {
 			margin-bottom: 0;
 		}
 
 		.xgen-form-item-label {
 			display: none;
+		}
+
+		.xgen-popover-arrow {
+			overflow: visible;
+
+			.xgen-popover-arrow-content {
+				box-shadow:var(--shadow);
+			}
+		}
+
+		.xgen-form-item-control {
+			box-sizing: border-box;
+			border: 1px solid var(--color_border_soft);
+			border-radius: 6px;
+		}
+
+		.xgen-input-group-addon {
+			border: none;
+			background-color: var(--color_main);
+			cursor: pointer;
+
+			i {
+				color: white !important;
+			}
 		}
 	}
 }

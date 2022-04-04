@@ -1,7 +1,119 @@
 ._local {
 	:global {
-		.red {
-			color: red;
+		.xgen-table {
+			.xgen-table-container {
+				table {
+					border-spacing: 0 6px;
+					border-collapse: separate;
+				}
+			}
+
+			.xgen-table-header {
+				transform: translateY(8px);
+			}
+
+			.xgen-table-thead {
+				tr {
+					th {
+						padding: 0 10px;
+						border: none;
+						font-size: 12px;
+
+						&:first-child {
+							padding-left: 20px;
+						}
+
+						&:last-child {
+							padding-right: 20px;
+							text-align: right;
+						}
+
+						&.xgen-table-selection-column {
+							padding-left: 10px;
+						}
+					}
+				}
+			}
+
+			.xgen-table-tbody {
+				margin-top: -18px;
+
+				tr {
+					&.xgen-table-measure-row {
+						padding: 0;
+					}
+
+					&.xgen-table-row-selected {
+						td {
+							border-color: transparent;
+							background-color: transparent;
+
+							&:first-child,
+							&:last-child {
+								border-color: transparent;
+							}
+						}
+					}
+
+					td {
+						box-sizing: border-box;
+						padding: 8px 10px;
+						height: 68px;
+						border: none;
+						border-top: 1px solid var(--color_border);
+						border-bottom: 1px solid var(--color_border);
+						background-color: var(--color_bg_menu) !important;
+
+						&:first-child {
+							padding-left: 20px;
+							border-left: 1px solid var(--color_border);
+							border-top-left-radius: 6px;
+							border-bottom-left-radius: 6px;
+						}
+
+						&:last-child {
+							padding-right: 12px;
+							border-right: 1px solid var(--color_border);
+							border-top-right-radius: 6px;
+							border-bottom-right-radius: 6px;
+							text-align: right;
+						}
+
+						&.xgen-table-selection-column {
+							padding-left: 10px;
+						}
+
+						&.scroll_table_options {
+							&::after {
+								box-shadow: inset -10px 0 8px -8px
+									var(--color_bg_nav);
+							}
+						}
+
+						.xgen-tag {
+							margin-right: 0;
+							padding: 0 6px;
+							padding-top: 3px;
+							padding-bottom: 4px;
+							font-weight: bold;
+							font-size: 10px;
+							line-height: 1;
+						}
+
+						a {
+							color: var(--color_text);
+						}
+					}
+				}
+			}
+
+			.xgen-table-sticky-holder {
+				background-color: var(--color_bg);
+			}
+
+			.xgen-table-container {
+				border-radius: 0;
+			}
 		}
 	}
 }
