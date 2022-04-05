@@ -9,12 +9,13 @@
 		"sourceMap": true,
 		"baseUrl": ".",
 		"strict": true,
-            "experimentalDecorators":true,
-            "emitDecoratorMetadata":true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 		"paths": {
 			"@/*": ["*"],
 			"@@/*": [".umi/*"]
 		},
+		"types": ["./typings"],
 		"allowSyntheticDefaultImports": true
 	}
 }
