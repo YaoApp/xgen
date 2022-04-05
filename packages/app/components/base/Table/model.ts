@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { injectable } from 'tsyringe'
 
-import { Stack } from '@/context'
+import { Namespace, Stack } from '@/context'
 import { Utils } from '@/services'
 
 import Service from './services'
@@ -19,7 +19,12 @@ export default class Model {
 	table_columns = [] as Array<Column>
 	pagination = { page: 1, pagesize: 10, total: 0 } as Omit<TableData, 'data'>
 
-	constructor(private service: Service, private utils: Utils, public stack: Stack) {
+	constructor(
+		private service: Service,
+		private utils: Utils,
+		public stack: Stack,
+		public namespace: Namespace
+	) {
 		makeAutoObservable(this, {}, { autoBind: true })
 	}
 
@@ -42,5 +47,26 @@ export default class Model {
 
 		this.list = data
 		this.pagination = { page, pagesize, total }
+	}
+
+	init(parent: IPropsTable['parent'], model: IPropsTable['model']) {
+		this.stack.push(`Table-${parent}-${model}`)
+
+		this.namespace.paths = this.stack.paths
+		this.parent = parent
+		this.model = model
+
+		this.getSetting()
+		this.search()
+	}
+
+	on() {
+		window.$app.Event.on(`${this.namespace.value}/search`, this.search)
+	}
+
+	off() {
+		this.stack.remove(this.namespace.value)
+
+		window.$app.Event.off(`${this.namespace.value}/search`, this.search)
 	}
 }

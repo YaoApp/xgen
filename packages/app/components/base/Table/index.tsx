@@ -18,16 +18,10 @@ const Index = (props: IPropsTable) => {
 	const [x] = useState(() => container.resolve(Model))
 
 	useLayoutEffect(() => {
-		x.stack.push(`Table-${parent}-${model}`)
-
-		x.parent = parent
-		x.model = model
-
-		x.getSetting()
-		x.search()
+		x.init(parent, model)
 
 		return () => {
-			x.stack.remove(`Table-${parent}-${model}`)
+			x.off()
 		}
 	}, [])
 

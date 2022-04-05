@@ -1,20 +1,24 @@
 import { findLastIndex } from 'lodash-es'
+import { makeAutoObservable } from 'mobx'
 import store from 'store2'
 import { singleton } from 'tsyringe'
 
 @singleton()
 export default class Index {
 	paths = [] as Array<string>
-	path_string = '' as string
+
+	constructor() {
+		makeAutoObservable(this, {}, { autoBind: true })
+	}
 
 	push(path: string) {
-            this.paths.push(path)
-            this.sync()
+		this.paths.push(path)
+		this.sync()
 	}
 
 	pop() {
-            this.paths.pop()
-            this.sync()
+		this.paths.pop()
+		this.sync()
 	}
 
 	remove(path: string) {
