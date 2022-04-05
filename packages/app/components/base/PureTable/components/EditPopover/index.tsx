@@ -12,7 +12,7 @@ import type { IPropsEditComponent } from '@/types'
 
 const Index = (props: IPropsEditPopover) => {
 	const { namespace, field_detail, data_item, form_value, row_index } = props
-	const edit_type = field_detail.edit.type
+      const edit_type = field_detail.edit.type
 
 	const props_edit_component: IPropsEditComponent = {
 		...field_detail.edit.props,

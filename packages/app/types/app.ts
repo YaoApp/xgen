@@ -80,16 +80,15 @@ export interface Menu {
 export interface IPropsComponent {
 	__bind: string
 	__name: string
-	__data_item: any
+      __data_item: any
+	__namespace: string
 }
 
 export interface IPropsEditComponent extends IPropsComponent {
-	namespace: string
-	value: any
 	style?: CSSProperties
 	itemProps?: FormItemProps
 }
 
-export interface IPropsViewComponent extends IPropsEditComponent {
+export interface IPropsViewComponent extends IPropsComponent {
 	__value: any
 }
