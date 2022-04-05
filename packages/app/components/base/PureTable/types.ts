@@ -30,3 +30,14 @@ export interface IPropsActions {
 	actions: Model['setting']['table']['operation']['actions']
 	data_item: any
 }
+
+export interface Locale {
+	[key: string]: {
+		pagination: {
+			total: {
+				before: string
+				after: string
+			}
+		}
+	}
+}

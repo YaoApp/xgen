@@ -3,7 +3,7 @@
 		:global {
 			.unfold_table_option_item {
 				.icon_wrap {
-                              border-color: var(--color_border);
+					border-color: var(--color_border);
 				}
 			}
 		}
@@ -18,7 +18,7 @@
 			.icon_wrap {
 				width: 30px;
 				height: 30px;
-				border: 1px solid var(--color_border_soft);
+				border: 1px solid var(--color_border_light);
 				border-radius: 50%;
 
 				&:hover {
@@ -40,14 +40,29 @@
 	}
 }
 
-.unfold_actions{
-      :global{
-            .xgen-tooltip-arrow {
-                  .xgen-tooltip-arrow-content {
-                        top: -12px;
-                        width: 6px;
-                        height: 6px;
-                  }
-            }
-      }
+.unfold_actions {
+	:global {
+		.xgen-tooltip-arrow {
+			.xgen-tooltip-arrow-content {
+                        transform: initial;
+                        
+				&::before {
+					display: none;
+				}
+
+				&::after {
+					position: absolute;
+					bottom: 13px;
+					width: 0;
+					height: 0;
+					border-width: 6px;
+					border-style: solid;
+					border-color: var(--color_bg_tooltip);
+                              border-radius: 2px;
+					content: '';
+                              transform: rotate(45deg);
+				}
+			}
+		}
+	}
 }

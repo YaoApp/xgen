@@ -22,8 +22,8 @@ const Index = (props: IPropsActions) => {
 					key={index}
                               overlayClassName={ styles.unfold_actions }
                               destroyTooltipOnHide={ { keepParent: false } }
-                              align={ { offset: [ 0, 8 ] } }
-                              autoAdjustOverflow={false}
+                              align={ { offset: [ 0, 6 ] } }
+                              autoAdjustOverflow={ false }
 				>
 					<div className='unfold_table_option_item' key={index}>
 						<a

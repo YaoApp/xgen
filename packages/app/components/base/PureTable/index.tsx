@@ -1,22 +1,31 @@
 import { Table } from 'antd'
 import clsx from 'clsx'
 
+import { getLocale } from '@umijs/max'
+
 import { useColumns } from './hooks'
 import styles from './index.less'
+import locales from './locales'
 
+import type { TablePaginationConfig } from 'antd'
 import type { IPropsPureTable } from './types'
 
 const Index = (props: IPropsPureTable) => {
 	const { parent, list, columns, pagination, props: table_props, operation } = props
+	const locale = getLocale()
 	const is_inner = parent === 'Modal'
 
 	const list_columns = useColumns(columns, table_props, operation)
 
-	const table_pagination = {
+	const table_pagination: TablePaginationConfig = {
 		current: Number(pagination.page) || 1,
 		pageSize: Number(pagination.pagesize) || 10,
 		total: pagination.total,
-		showSizeChanger: true
+		showSizeChanger: true,
+		showTotal: (total: number) =>
+			locales[locale].pagination.total.before +
+			total +
+			locales[locale].pagination.total.after
 	}
 
 	return (
