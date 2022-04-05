@@ -20,6 +20,7 @@ export default class Model {
 	filter_columns = [] as Array<Column>
 	table_columns = [] as Array<Column>
 	pagination = { page: 1, pagesize: 10, total: 0 } as Omit<TableData, 'data'>
+	search_params = {} as SearchParams
 
 	constructor(
 		private service: Service,
@@ -43,9 +44,11 @@ export default class Model {
 	async search(params?: SearchParams) {
 		const hideLoading = message.loading('loading')
 
+		this.search_params = { ...this.search_params, ...filterEmpty(params) }
+
 		const { res, err } = await this.service.search<SearchParams, TableData>(
 			this.model,
-			filterEmpty(params)
+			this.search_params
 		)
 
 		hideLoading()
@@ -69,6 +72,10 @@ export default class Model {
 		this.search()
 
 		this.on()
+	}
+
+	resetSearchParams() {
+		this.search_params = {}
 	}
 
 	on() {

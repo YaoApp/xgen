@@ -3,9 +3,10 @@ import type Model from '@/components/base/Table/model'
 
 export interface IPropsFilter {
 	model: string
+	namespace: Model['namespace']['value']
 	columns: Array<Column>
 	btnAddText: TableSetting['filter']['btnAddText']
-	namespace: Model['namespace']['value']
+	resetSearchParams: Model['resetSearchParams']
 }
 
 export interface Locale {

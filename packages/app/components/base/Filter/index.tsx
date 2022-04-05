@@ -15,7 +15,7 @@ import type { IPropsFilter } from './types'
 const { useForm } = Form
 
 const Index = (props: IPropsFilter) => {
-	const { model, columns, btnAddText, namespace } = props
+	const { model, columns, btnAddText, namespace, resetSearchParams } = props
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
 	const [form] = useForm()
@@ -24,11 +24,14 @@ const Index = (props: IPropsFilter) => {
 	const { base, more, visible_btn_more } = useCalcLayout(columns)
 
 	const onFinish = (v: any) => {
+		resetSearchParams()
+
 		window.$app.Event.emit(`${namespace}/search`, v)
 	}
 
 	const onReset = () => {
 		resetFields()
+		resetSearchParams()
 		onFinish(getFieldsValue())
 	}
 

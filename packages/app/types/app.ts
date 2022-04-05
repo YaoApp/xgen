@@ -11,9 +11,7 @@ export interface Response<T> {
 }
 
 export interface SearchParams {
-	page: number
-	pagesize: number
-	[key: string]: number | string
+	[key: 'page' | 'pagesize' | string]: number | string
 }
 
 export interface Loading {

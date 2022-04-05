@@ -11,7 +11,7 @@ import type { TablePaginationConfig } from 'antd'
 import type { IPropsPureTable } from './types'
 
 const Index = (props: IPropsPureTable) => {
-	const { parent, list, columns, pagination, props: table_props, operation } = props
+	const { parent, namespace, list, columns, pagination, props: table_props, operation } = props
 	const locale = getLocale()
 	const is_inner = parent === 'Modal'
 
@@ -36,6 +36,9 @@ const Index = (props: IPropsPureTable) => {
 			sticky={is_inner ? false : { offsetHeader: 52 }}
 			rowKey={(item) => item.id}
 			pagination={is_inner ? false : table_pagination}
+			onChange={({ current: page, pageSize: pagesize }) => {
+				window.$app.Event.emit(`${namespace}/search`, { page, pagesize })
+			}}
 			{...table_props}
 		/>
 	)

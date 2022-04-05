@@ -3,7 +3,8 @@ import type { TableColumnType } from 'antd'
 import type { Column } from '@/types'
 
 export interface IPropsPureTable {
-	parent: Model['parent']
+      parent: Model[ 'parent' ]
+	namespace: Model['namespace']['value']
 	list: Model['list']
 	columns: Model['table_columns']
 	pagination: Model['pagination']
