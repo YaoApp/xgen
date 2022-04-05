@@ -15,7 +15,7 @@ const Index = (props: IPropsPureTable) => {
 	const locale = getLocale()
 	const is_inner = parent === 'Modal'
 
-	const list_columns = useColumns(columns, table_props, operation)
+      const list_columns = useColumns(namespace, columns, table_props, operation)
 
 	const table_pagination: TablePaginationConfig = {
 		current: Number(pagination.page) || 1,

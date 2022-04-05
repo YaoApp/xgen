@@ -9,7 +9,7 @@ import styles from './index.less'
 import type { IPropsActions } from '../../types'
 
 const Index = (props: IPropsActions) => {
-	const { actions, data_item } = props
+	const { namespace, actions, data_item } = props
 
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled(data_item)

@@ -1,5 +1,6 @@
 import type { AxiosError } from 'axios'
 import type { FormItemProps } from 'antd'
+import type { CSSProperties } from 'react'
 
 export type Theme = 'light' | 'dark'
 
@@ -83,6 +84,9 @@ export interface IPropsComponent {
 }
 
 export interface IPropsEditComponent extends IPropsComponent {
+	namespace: string
+	value: any
+	style?: CSSProperties
 	itemProps?: FormItemProps
 }
 

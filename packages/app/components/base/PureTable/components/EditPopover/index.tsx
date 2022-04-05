@@ -8,13 +8,15 @@ import ViewContent from '../ViewContent'
 import styles from './index.less'
 
 import type { IPropsEditPopover } from '../../types'
+import type { IPropsEditComponent } from '@/types'
 
 const Index = (props: IPropsEditPopover) => {
-	const { field_detail, data_item, form_value, row_index } = props
+	const { namespace, field_detail, data_item, form_value, row_index } = props
 	const edit_type = field_detail.edit.type
 
-	const props_edit_component = {
+	const props_edit_component: IPropsEditComponent = {
 		...field_detail.edit.props,
+		__namespace: namespace,
 		__bind: field_detail.bind,
 		__name: field_detail.name,
 		__data_item: data_item,
@@ -41,7 +43,9 @@ const Index = (props: IPropsEditPopover) => {
 
 	const view_content = (
 		<div className='edit_text line_clamp_2'>
-			<ViewContent {...{ field_detail, data_item, form_value }}></ViewContent>
+			<ViewContent
+				{...{ namespace, field_detail, data_item, form_value }}
+			></ViewContent>
 		</div>
 	)
 
@@ -53,6 +57,7 @@ const Index = (props: IPropsEditPopover) => {
 			trigger='click'
 			destroyTooltipOnHide={{ keepParent: false }}
 			content={edit_content}
+			align={{ offset: [-20, 0] }}
 		>
 			{view_content}
 		</Popover>

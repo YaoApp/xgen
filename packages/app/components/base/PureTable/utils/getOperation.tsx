@@ -2,10 +2,15 @@ import FoldActions from '../components/FoldActions'
 import UnfoldActions from '../components/UnfoldActions'
 
 import type { TableSetting } from '@/types'
-import type { IPropsActions } from '../types'
+import type { IPropsPureTable, IPropsActions } from '../types'
 
-export default (operation: TableSetting['table']['operation'], data_item: any) => {
+export default (
+	namespace: IPropsPureTable['namespace'],
+	operation: TableSetting['table']['operation'],
+	data_item: any
+) => {
 	const props_actions: IPropsActions = {
+		namespace,
 		actions: operation.actions,
 		data_item
 	}

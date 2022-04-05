@@ -3,12 +3,10 @@ import fs from 'fs'
 import lessToJs from 'less-vars-to-js'
 import path from 'path'
 
-const root_path=path.join(process.cwd(),'../../')
-
 const antd_theme_path = path.join(process.cwd(), `/node_modules/antd/dist/antd.variable.less`)
 const light_theme_path = path.join(process.cwd(), `/styles/theme/light.less`)
 const dark_theme_path = path.join(process.cwd(), `/styles/theme/dark.less`)
-const init_style_path = path.join(root_path, `/packages/components/assets/styles/init.css`)
+const init_style_path = path.join(process.cwd(), `/styles/preset/init.css`)
 const output_path = path.join(process.cwd(), `/public/theme`)
 
 const light_theme = lessToJs(fs.readFileSync(light_theme_path, 'utf8'))

@@ -5,13 +5,14 @@ import { getText } from '../utils'
 import type { IPropsViewContent } from '../types'
 
 const Index = (props: IPropsViewContent) => {
-	const { field_detail, data_item, form_value } = props
+	const { namespace, field_detail, data_item, form_value } = props
 	const view_text = getText(field_detail, data_item)
 
 	if (!field_detail.view?.type) return <div className='line_clamp_2'>{view_text || '-'}</div>
 
 	const props_view_component = {
 		...field_detail.view.props,
+		__namespace: namespace,
 		__bind: field_detail.bind,
 		__name: field_detail.name,
 		__value: form_value,
