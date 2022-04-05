@@ -40,7 +40,8 @@ const Index = (props: IPropsTable) => {
 		const props_filter: IPropsFilter = {
 			model: x.model,
 			columns: x.filter_columns,
-			btnAddText: x.setting.filter?.btnAddText
+			btnAddText: x.setting.filter?.btnAddText,
+			namespace: x.namespace.value
 		}
 
 		return (

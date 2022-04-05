@@ -1,8 +1,10 @@
+import { message } from 'antd'
 import { makeAutoObservable } from 'mobx'
 import { injectable } from 'tsyringe'
 
 import { Namespace, Stack } from '@/context'
 import { Utils } from '@/services'
+import { filterEmpty } from '@yaoapp/utils'
 
 import Service from './services'
 
@@ -38,8 +40,15 @@ export default class Model {
 		this.table_columns = this.utils.reduce(res.table.columns, res.fileds.table)
 	}
 
-	async search() {
-		const { res, err } = await this.service.search<SearchParams, TableData>(this.model)
+	async search(params?: SearchParams) {
+		const hideLoading = message.loading('loading')
+
+		const { res, err } = await this.service.search<SearchParams, TableData>(
+			this.model,
+			filterEmpty(params)
+		)
+
+		hideLoading()
 
 		if (err) return
 
@@ -58,6 +67,8 @@ export default class Model {
 
 		this.getSetting()
 		this.search()
+
+		this.on()
 	}
 
 	on() {

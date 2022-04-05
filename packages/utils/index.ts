@@ -9,6 +9,7 @@ export { default as catchError } from './decorators/catchError'
 
 export { default as fuzzyQuery } from './filter/fuzzyQuery'
 export { default as getDeepValue } from './filter/getDeepValue'
+export { default as filterEmpty } from './filter/filterEmpty'
 
 export { default as apis } from './yao/apis'
 export { default as getFileSrc } from './yao/getFileSrc'
