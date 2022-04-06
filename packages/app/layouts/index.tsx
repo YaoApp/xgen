@@ -28,6 +28,12 @@ const Index = () => {
 
 	useLayoutEffect(() => {
 		global.locale_messages = messages
+
+		global.stack.on()
+
+		return () => {
+			global.stack.off()
+		}
 	}, [])
 
 	useLayoutEffect(() => {

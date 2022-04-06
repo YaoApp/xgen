@@ -1,4 +1,4 @@
-interface IConfigCommonOpenModal {
+export interface IConfigCommonOpenModal {
 	Form?: {
 		type: 'view' | 'edit'
 		model: string
@@ -9,12 +9,12 @@ interface IConfigCommonOpenModal {
 	}
 }
 
-interface IConfigCommonPushHistory {
+interface IConfigCommonHistoryPush {
 	pathname: string
 }
 
 interface IConfigTableSave {
-	[key: string]: any
+	[key: string]: string
 }
 
 export default interface Action {
@@ -22,7 +22,8 @@ export default interface Action {
 	icon: string
 	action: {
 		'Common.openModal'?: IConfigCommonOpenModal
-		'Common.pushHistory'?: IConfigCommonPushHistory
+		'Common.historyPush'?: IConfigCommonHistoryPush
+		'Common.historyBack'?: {}
 		'Table.save'?: IConfigTableSave
 		'Table.delete'?: {}
 	}
@@ -31,7 +32,8 @@ export default interface Action {
 		bind: string
 		value: string | Array<string>
 	}
-	confirm?: {
+	tip?: {
 		title: string
+		desc: string
 	}
 }

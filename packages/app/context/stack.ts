@@ -36,4 +36,14 @@ export default class Index {
 	sync() {
 		store.set('__paths', this.paths)
 	}
+
+	on() {
+		window.$app.Event.on('global.stack.pop', this.pop)
+		window.$app.Event.on('global.stack.remove', this.remove)
+	}
+
+	off() {
+		window.$app.Event.off('global.stack.pop', this.pop)
+		window.$app.Event.off('global.stack.remove', this.remove)
+	}
 }

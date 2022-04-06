@@ -5,5 +5,9 @@ export default interface Messages {
 			loading: string
 			success: string
 		}
+		delete: {
+			loading: string
+			success: string
+		}
 	}
 }

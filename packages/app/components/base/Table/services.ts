@@ -23,7 +23,7 @@ export default class Index {
 	}
 
 	@catchError()
-	delete<Res>(model: string, primary_value: string) {
+	delete<Res>(model: string, primary_value: number) {
 		return axios.post<{}, Response<Res>>(
 			`/api/xiang/table/${model}/delete/${primary_value}`
 		)

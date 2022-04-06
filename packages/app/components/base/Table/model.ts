@@ -15,7 +15,8 @@ import type {
 	Column,
 	SearchParams,
 	TableSaveData,
-	TableSaveResponse
+	TableSaveResponse,
+	TableDeleteResponse
 } from '@/types'
 import type { IPropsTable } from './types'
 
@@ -34,7 +35,6 @@ export default class Model {
 		private service: Service,
 		private utils: Utils,
 		public global: GlobalModel,
-		public stack: Stack,
 		public namespace: Namespace
 	) {
 		makeAutoObservable(this, {}, { autoBind: true })
@@ -89,10 +89,29 @@ export default class Model {
 		this.search()
 	}
 
-	init(parent: IPropsTable['parent'], model: IPropsTable['model']) {
-		this.stack.push(`Table-${parent}-${model}`)
+	async delete(primary_value: number) {
+		const hideLoading = message.loading(
+			this.global.locale_messages.messages.table.delete.loading
+		)
 
-		this.namespace.paths = this.stack.paths
+		const { err } = await this.service.delete<TableDeleteResponse>(
+			this.model,
+			primary_value
+		)
+
+		hideLoading()
+
+		if (err) return
+
+		message.success(this.global.locale_messages.messages.table.delete.success)
+
+		this.search()
+	}
+
+	init(parent: IPropsTable['parent'], model: IPropsTable['model']) {
+		this.global.stack.push(`Table-${parent}-${model}`)
+
+		this.namespace.paths = this.global.stack.paths
 		this.parent = parent
 		this.model = model
 
@@ -109,12 +128,14 @@ export default class Model {
 	on() {
 		window.$app.Event.on(`${this.namespace.value}/search`, this.search)
 		window.$app.Event.on(`${this.namespace.value}/save`, this.save)
+		window.$app.Event.on(`${this.namespace.value}/delete`, this.delete)
 	}
 
 	off() {
-		this.stack.remove(this.namespace.value)
+		this.global.stack.remove(this.namespace.value)
 
-            window.$app.Event.off(`${this.namespace.value}/search`, this.search)
+		window.$app.Event.off(`${this.namespace.value}/search`, this.search)
 		window.$app.Event.off(`${this.namespace.value}/save`, this.save)
+		window.$app.Event.off(`${this.namespace.value}/delete`, this.delete)
 	}
 }

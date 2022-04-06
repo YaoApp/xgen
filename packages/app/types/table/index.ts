@@ -3,6 +3,7 @@ import type Header from './header'
 import type Action from './action'
 import type { TableProps } from 'antd'
 import type { BaseColumn, Fileds, FiledDetail, ViewComponents } from './common'
+import type { IConfigCommonOpenModal } from './action'
 
 export interface TableSetting {
 	primary: string
@@ -37,7 +38,8 @@ export interface TableSaveData {
 }
 
 export type TableSaveResponse = number
+export type TableDeleteResponse = number
 
 export type Column = BaseColumn & FiledDetail
 
-export { Action, BaseColumn, Fileds, FiledDetail, ViewComponents }
+export { Action, BaseColumn, Fileds, FiledDetail, ViewComponents, IConfigCommonOpenModal }

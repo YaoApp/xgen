@@ -5,6 +5,10 @@ export default {
 			save: {
 				loading: '保存中...',
 				success: '保存成功'
+                  },
+                  delete: {
+				loading: '删除中...',
+				success: '已删除'
 			}
 		}
 	}

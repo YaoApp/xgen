@@ -5,6 +5,10 @@ export default {
 			save: {
 				loading: 'saving...',
 				success: 'saving success'
+			},
+			delete: {
+				loading: 'deleting...',
+				success: 'deleted'
 			}
 		}
 	}

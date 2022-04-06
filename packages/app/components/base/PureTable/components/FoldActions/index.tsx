@@ -1,7 +1,7 @@
 import { Popover } from 'antd'
 import clsx from 'clsx'
 
-import { useActionDisabled, useActionStyle } from '@/hooks'
+import { useActionDisabled, useActionStyle, useOperation } from '@/hooks'
 import { Icon } from '@/widgets'
 
 import styles from './index.less'
@@ -10,9 +10,9 @@ import type { IPropsActions } from '../../types'
 
 const Index = (props: IPropsActions) => {
 	const { namespace, primary, actions, data_item } = props
-
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled(data_item)
+	const handleOperation = useOperation()
 
 	const Content = (
 		<div className={clsx([styles.table_option_items, 'flex flex_column'])}>
@@ -24,6 +24,14 @@ const Index = (props: IPropsActions) => {
 						getDisabled(it.disabled)
 					])}
 					key={index}
+					onClick={() =>
+						handleOperation({
+							namespace,
+							primary,
+							data_item,
+							it
+						})
+					}
 				>
 					<Icon name={it.icon} size={13}></Icon>
 					<span className='text'>{it.title}</span>

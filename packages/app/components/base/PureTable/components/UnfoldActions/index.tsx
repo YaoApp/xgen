@@ -10,10 +10,9 @@ import type { IPropsActions } from '../../types'
 
 const Index = (props: IPropsActions) => {
 	const { namespace, primary, actions, data_item } = props
-	const handleOperation = useOperation()
-
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled(data_item)
+	const handleOperation = useOperation()
 
 	return (
 		<div className={clsx([styles._local, 'flex flex_wrap justify_end'])}>
@@ -34,7 +33,12 @@ const Index = (props: IPropsActions) => {
 								getDisabled(it.disabled)
 							])}
 							onClick={() =>
-								handleOperation({ namespace, primary, it })
+								handleOperation({
+									namespace,
+									primary,
+									data_item,
+									it
+								})
 							}
 						>
 							<Icon name={it.icon} size={13}></Icon>

@@ -25,9 +25,30 @@
 					background-color: var(--color_bg_nav);
 				}
 
+				&.success {
+					color: var(--color_success);
+
+					&:hover {
+						background-color: var(--color_success);
+						color: white;
+					}
+				}
+
+				&.warning {
+					color: var(--color_warning);
+
+					&:hover {
+						background-color: var(--color_warning);
+						color: white;
+					}
+				}
+
 				&.danger {
-					i {
-						color: var(--color_danger) !important;
+					color: var(--color_danger);
+
+					&:hover {
+						background-color: var(--color_danger);
+						color: white;
 					}
 				}
 
@@ -44,8 +65,8 @@
 	:global {
 		.xgen-tooltip-arrow {
 			.xgen-tooltip-arrow-content {
-                        transform: initial;
-                        
+				transform: initial;
+
 				&::before {
 					display: none;
 				}
@@ -57,10 +78,10 @@
 					height: 0;
 					border-width: 6px;
 					border-style: solid;
-					border-color: rgba(0,0,0,0.75);
-                              border-radius: 2px;
+					border-color: rgba(0, 0, 0, 0.75);
+					border-radius: 2px;
 					content: '';
-                              transform: rotate(45deg);
+					transform: rotate(45deg);
 				}
 			}
 		}

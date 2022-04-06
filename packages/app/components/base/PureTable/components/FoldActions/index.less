@@ -14,26 +14,27 @@
 	}
 }
 
-.options_popover{
-      :global{
-            .xgen-popover-arrow {
-                  overflow: visible;
-      
-                  .xgen-popover-arrow-content {
-                        bottom: -3px;
-                  }
-            }
+.options_popover {
+	:global {
+		.xgen-popover-arrow {
+			overflow: visible;
 
-            .xgen-popover-inner {
-                  .xgen-popover-inner-content {
-                        padding: 0;
-                        border-radius: 6px;
-                  }
-            }
-      }
+			.xgen-popover-arrow-content {
+				bottom: -3px;
+			}
+		}
+
+		.xgen-popover-inner {
+			.xgen-popover-inner-content {
+				padding: 0;
+				border-radius: 6px;
+			}
+		}
+	}
 }
 
 .table_option_items {
+      overflow: hidden;
 	border: 1px solid var(--color_bg_menu);
 	border-radius: 6px;
 
@@ -43,24 +44,37 @@
 			border-bottom: 1px solid var(--color_border_soft);
 
 			&:hover {
-				color: var(--color_main) !important;
-
-				i {
-					color: var(--color_main) !important;
-				}
+				color: var(--color_main);
 			}
 
 			&:last-child {
 				border-bottom: none;
 			}
 
-			&.danger {
-				i {
-					color: var(--color_danger) !important;
-				}
+			&.success {
+				color: var(--color_success);
 
-				.text {
-					color: var(--color_danger) !important;
+				&:hover {
+					background-color: var(--color_success);
+					color: white;
+				}
+			}
+
+			&.warning {
+				color: var(--color_warning);
+
+				&:hover {
+					background-color: var(--color_warning);
+					color: white;
+				}
+			}
+
+			&.danger {
+				color: var(--color_danger);
+
+				&:hover {
+					background-color: var(--color_danger);
+					color: white;
 				}
 			}
 
