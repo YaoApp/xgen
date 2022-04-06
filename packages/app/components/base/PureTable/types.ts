@@ -1,10 +1,12 @@
 import type Model from '@/components/base/Table/model'
 import type { TableColumnType } from 'antd'
 import type { Column } from '@/types'
+import type { ViewComponents } from '@/types'
 
 export interface IPropsPureTable {
 	parent: Model['parent']
 	namespace: Model['namespace']['value']
+	primary: Model['setting']['primary']
 	list: Model['list']
 	columns: Model['table_columns']
 	pagination: Model['pagination']
@@ -12,18 +14,19 @@ export interface IPropsPureTable {
 	operation: Model['setting']['table']['operation']
 }
 
-export type TableColumn = TableColumnType<any>
-
-export interface IPropsEditPopover {
-	namespace: Model['namespace']['value']
-	field_detail: Column
+export interface IPropsBlock {
+	namespace: IPropsComponentCommon['namespace']
+	primary: IPropsComponentCommon['primary']
+	type: string
+	components: ViewComponents
 	data_item: any
-	form_value: any
-	row_index: number
 }
 
-export interface IPropsViewContent {
+export type TableColumn = TableColumnType<any>
+
+export interface IPropsComponentCommon {
 	namespace: Model['namespace']['value']
+	primary: Model['setting']['primary']
 	field_detail: Column
 	data_item: any
 	form_value: any
@@ -31,6 +34,7 @@ export interface IPropsViewContent {
 
 export interface IPropsActions {
 	namespace: Model['namespace']['value']
+	primary: Model['setting']['primary']
 	actions: Model['setting']['table']['operation']['actions']
 	data_item: any
 }

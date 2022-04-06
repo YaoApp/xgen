@@ -5,6 +5,7 @@ import type { TableProps } from 'antd'
 import type { BaseColumn, Fileds, FiledDetail, ViewComponents } from './common'
 
 export interface TableSetting {
+	primary: string
 	header: Header
 	filter: Filter
 	table: {
@@ -29,6 +30,13 @@ export type TableData = {
 	pagesize: number
 	total: number
 }
+
+export interface TableSaveData {
+	id: number
+	[key: string]: any
+}
+
+export type TableSaveResponse = number
 
 export type Column = BaseColumn & FiledDetail
 

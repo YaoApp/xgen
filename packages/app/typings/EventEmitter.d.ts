@@ -1,7 +1,3 @@
-interface $App {
-	Event: EventEmitter<string | symbol, any>
-}
-
 declare class EventEmitter<
 	EventTypes extends EventEmitter.ValidEventTypes = string | symbol,
 	Context extends any = any

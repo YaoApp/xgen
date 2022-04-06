@@ -18,8 +18,8 @@ export default class Index {
 	}
 
 	@catchError()
-	save<Data, Res>(model: string, data?: Data) {
-		return axios.post<{}, Response<Res>>(`/api/xiang/table/${model}/save`, { data })
+	save<Data, Res>(model: string, data: Data) {
+		return axios.post<{}, Response<Res>>(`/api/xiang/table/${model}/save`, data)
 	}
 
 	@catchError()
@@ -30,9 +30,17 @@ export default class Index {
 	}
 
 	@catchError()
-	batchDelete<Res>(model: string, primary_key: string, ids: Array<string>) {
+	batchDelete<Res>(model: string, primary_key: string, ids: Array<number>) {
 		return axios.post<{}, Response<Res>>(
 			`/api/xiang/table/${model}/delete/in?primary=${primary_key}&ids=${ids.join(',')}`
+		)
+	}
+
+	@catchError()
+	batchUpdate<Data, Res>(model: string, primary_key: string, ids: Array<number>, data: Data) {
+		return axios.post<{}, Response<Res>>(
+			`/api/xiang/table/${model}/update/in?primary=${primary_key}&ids=${ids.join(',')}`,
+			data
 		)
 	}
 }

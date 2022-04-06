@@ -6,11 +6,13 @@ import type { IPropsPureTable, IPropsActions } from '../types'
 
 export default (
 	namespace: IPropsPureTable['namespace'],
+	primary: IPropsPureTable['primary'],
 	operation: TableSetting['table']['operation'],
 	data_item: any
 ) => {
 	const props_actions: IPropsActions = {
 		namespace,
+		primary,
 		actions: operation.actions,
 		data_item
 	}

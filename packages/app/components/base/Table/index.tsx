@@ -30,6 +30,7 @@ const Index = (props: IPropsTable) => {
 	const props_table: IPropsPureTable = {
 		parent,
 		namespace: x.namespace.value,
+		primary: x.setting.primary,
 		list: x.list,
 		columns: x.table_columns,
 		pagination: x.pagination,

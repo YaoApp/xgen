@@ -9,7 +9,7 @@ import styles from './index.less'
 import type { IPropsActions } from '../../types'
 
 const Index = (props: IPropsActions) => {
-	const { namespace, actions, data_item } = props
+	const { namespace, primary, actions, data_item } = props
 
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled(data_item)
@@ -20,8 +20,8 @@ const Index = (props: IPropsActions) => {
 				<div
 					className={clsx([
 						'table_option_item flex align_center cursor_point',
-						getStyle(it.props.style),
-						getDisabled(it.props.disabled)
+						getStyle(it.style),
+						getDisabled(it.disabled)
 					])}
 					key={index}
 				>

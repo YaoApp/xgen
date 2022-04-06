@@ -21,7 +21,7 @@ const Index = (props: IPropsFilter) => {
 	const [form] = useForm()
 	const { getFieldsValue, resetFields } = form
 	const { display_more, opacity_more, visible_more, setVisibleMore } = useVisibleMore()
-	const { base, more, visible_btn_more } = useCalcLayout(columns)
+	const { base, more, visible_btn_more } = useCalcLayout(columns, btnAddText)
 
 	const onFinish = (v: any) => {
 		resetSearchParams()
@@ -94,14 +94,16 @@ const Index = (props: IPropsFilter) => {
 								></Button>
 							</Tooltip>
 						)}
-						<Button
-							className='btn_add flex justify_center align_center ml_16'
-							type='primary'
-							onClick={add}
-							icon={<PlusOutlined></PlusOutlined>}
-						>
-							{btnAddText}
-						</Button>
+						{btnAddText && (
+							<Button
+								className='btn_add flex justify_center align_center ml_16'
+								type='primary'
+								onClick={add}
+								icon={<PlusOutlined></PlusOutlined>}
+							>
+								{btnAddText}
+							</Button>
+						)}
 					</div>
 				</Col>
 			</Row>

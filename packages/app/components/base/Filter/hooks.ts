@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import type { Column } from '@/types'
+import type { IPropsFilter } from './types'
 
 export const useVisibleMore = () => {
 	const [visible_more, setVisibleMore] = useState(false)
@@ -28,11 +29,11 @@ export const useVisibleMore = () => {
 	return { visible_more, display_more, opacity_more, setVisibleMore }
 }
 
-export const useCalcLayout = (columns: Array<Column>) => {
+export const useCalcLayout = (columns: Array<Column>, btnAddText: IPropsFilter['btnAddText']) => {
 	return useMemo(() => {
 		if (!columns.length) return { base: [], more: [], visible_btn_more: false }
 
-		const setting_cols = 3
+		const setting_cols = btnAddText ? 3 : 0
 		const base: Array<Column> = []
 		const more: Array<Column> = []
 

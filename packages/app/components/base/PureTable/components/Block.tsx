@@ -1,28 +1,21 @@
 import { X } from '@/components'
-import { getDeepValue } from '@yaoapp/utils'
 
 import { getRender } from '../utils'
 
-import type { ViewComponents, Column } from '@/types'
-
-interface IProps {
-	type: string
-	components: ViewComponents
-	data_item: any
-	row_index: number
-}
+import type { Column } from '@/types'
+import type { IPropsBlock } from '../types'
 
 type Elements = { [key: string]: JSX.Element }
 
-const Index = (props: IProps) => {
-	const { type, components, data_item, row_index } = props
+const Index = (props: IPropsBlock) => {
+	const { namespace, primary, type, components, data_item } = props
 
 	const elements: Elements = {}
 
 	for (const key in components) {
 		const field_detail = components[key] as Column
 
-		elements[key] = getRender(field_detail, data_item, row_index)
+		elements[key] = getRender(namespace, primary, field_detail, data_item)
 	}
 
 	return <X type='group' name={type} props={elements}></X>

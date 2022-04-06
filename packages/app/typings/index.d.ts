@@ -5,8 +5,6 @@ declare module '*.svg'
 declare module '*.jpeg'
 declare module 'less-vars-to-js'
 
-interface $App {}
-
 interface Window {
 	$app: $App
 }

@@ -1,7 +1,7 @@
 import { Tooltip } from 'antd'
 import clsx from 'clsx'
 
-import { useActionDisabled, useActionStyle } from '@/hooks'
+import { useActionDisabled, useActionStyle, useOperation } from '@/hooks'
 import { Icon } from '@/widgets'
 
 import styles from './index.less'
@@ -9,7 +9,8 @@ import styles from './index.less'
 import type { IPropsActions } from '../../types'
 
 const Index = (props: IPropsActions) => {
-	const { actions, data_item } = props
+	const { namespace, primary, actions, data_item } = props
+	const handleOperation = useOperation()
 
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled(data_item)
@@ -20,18 +21,21 @@ const Index = (props: IPropsActions) => {
 				<Tooltip
 					title={it.title}
 					key={index}
-                              overlayClassName={ styles.unfold_actions }
-                              destroyTooltipOnHide={ { keepParent: false } }
-                              align={ { offset: [ 0, 6 ] } }
-                              autoAdjustOverflow={ false }
+					overlayClassName={styles.unfold_actions}
+					destroyTooltipOnHide={{ keepParent: false }}
+					align={{ offset: [0, 6] }}
+					autoAdjustOverflow={false}
 				>
 					<div className='unfold_table_option_item' key={index}>
 						<a
 							className={clsx([
 								'icon_wrap border_box flex justify_center align_center clickable',
-								getStyle(it.props.style),
-								getDisabled(it.props.disabled)
+								getStyle(it.style),
+								getDisabled(it.disabled)
 							])}
+							onClick={() =>
+								handleOperation({ namespace, primary, it })
+							}
 						>
 							<Icon name={it.icon} size={13}></Icon>
 						</a>

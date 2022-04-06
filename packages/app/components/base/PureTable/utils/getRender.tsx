@@ -4,34 +4,27 @@ import EditPopover from '../components/EditPopover'
 import ViewContent from '../components/ViewContent'
 
 import type { Column } from '@/types'
-import type { IPropsEditPopover, IPropsViewContent } from '../types'
+import type { IPropsComponentCommon } from '../types'
 
 export default (
-	namespace: IPropsEditPopover['namespace'],
+	namespace: IPropsComponentCommon['namespace'],
+	primary: IPropsComponentCommon['primary'],
 	field_detail: Column,
 	data_item: any,
-	row_index: number
 ) => {
 	const form_value = getDeepValue(field_detail.bind, data_item)
 
+	const props_common: IPropsComponentCommon = {
+		namespace,
+		primary,
+		field_detail,
+		data_item,
+		form_value
+	}
+
 	if (field_detail.edit?.type) {
-		const props_edit_popover: IPropsEditPopover = {
-			namespace,
-			field_detail,
-			data_item,
-			form_value,
-			row_index
-		}
-
-		return <EditPopover {...props_edit_popover}></EditPopover>
+		return <EditPopover {...props_common}></EditPopover>
 	} else {
-		const props_view_content: IPropsViewContent = {
-			namespace,
-			field_detail,
-			data_item,
-			form_value
-		}
-
-		return <ViewContent {...props_view_content}></ViewContent>
+		return <ViewContent {...props_common}></ViewContent>
 	}
 }

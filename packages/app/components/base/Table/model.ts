@@ -3,12 +3,20 @@ import { makeAutoObservable } from 'mobx'
 import { injectable } from 'tsyringe'
 
 import { Namespace, Stack } from '@/context'
+import { GlobalModel } from '@/context/app'
 import { Utils } from '@/services'
 import { filterEmpty } from '@yaoapp/utils'
 
 import Service from './services'
 
-import type { TableSetting, TableData, Column, SearchParams } from '@/types'
+import type {
+	TableSetting,
+	TableData,
+	Column,
+	SearchParams,
+	TableSaveData,
+	TableSaveResponse
+} from '@/types'
 import type { IPropsTable } from './types'
 
 @injectable()
@@ -25,6 +33,7 @@ export default class Model {
 	constructor(
 		private service: Service,
 		private utils: Utils,
+		public global: GlobalModel,
 		public stack: Stack,
 		public namespace: Namespace
 	) {
@@ -42,7 +51,7 @@ export default class Model {
 	}
 
 	async search(params?: SearchParams) {
-		const hideLoading = message.loading('loading')
+		const hideLoading = message.loading(this.global.locale_messages.messages.table.search)
 
 		this.search_params = { ...this.search_params, ...filterEmpty(params) }
 
@@ -59,6 +68,25 @@ export default class Model {
 
 		this.list = data
 		this.pagination = { page, pagesize, total }
+	}
+
+	async save(data: TableSaveData) {
+		const hideLoading = message.loading(
+			this.global.locale_messages.messages.table.save.loading
+		)
+
+		const { err } = await this.service.save<TableSaveData, TableSaveResponse>(
+			this.model,
+			data
+		)
+
+		hideLoading()
+
+		if (err) return
+
+		message.success(this.global.locale_messages.messages.table.save.success)
+
+		this.search()
 	}
 
 	init(parent: IPropsTable['parent'], model: IPropsTable['model']) {
@@ -80,11 +108,13 @@ export default class Model {
 
 	on() {
 		window.$app.Event.on(`${this.namespace.value}/search`, this.search)
+		window.$app.Event.on(`${this.namespace.value}/save`, this.save)
 	}
 
 	off() {
 		this.stack.remove(this.namespace.value)
 
-		window.$app.Event.off(`${this.namespace.value}/search`, this.search)
+            window.$app.Event.off(`${this.namespace.value}/search`, this.search)
+		window.$app.Event.off(`${this.namespace.value}/save`, this.save)
 	}
 }

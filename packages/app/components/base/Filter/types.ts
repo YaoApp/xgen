@@ -5,7 +5,7 @@ export interface IPropsFilter {
 	model: string
 	namespace: Model['namespace']['value']
 	columns: Array<Column>
-	btnAddText: TableSetting['filter']['btnAddText']
+	btnAddText?: TableSetting['filter']['btnAddText']
 	resetSearchParams: Model['resetSearchParams']
 }
 

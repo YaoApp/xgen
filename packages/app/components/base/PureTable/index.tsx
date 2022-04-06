@@ -11,11 +11,20 @@ import type { TablePaginationConfig } from 'antd'
 import type { IPropsPureTable } from './types'
 
 const Index = (props: IPropsPureTable) => {
-	const { parent, namespace, list, columns, pagination, props: table_props, operation } = props
+	const {
+		parent,
+		namespace,
+		primary,
+		list,
+		columns,
+		pagination,
+		props: table_props,
+		operation
+	} = props
 	const locale = getLocale()
 	const is_inner = parent === 'Modal'
 
-      const list_columns = useColumns(namespace, columns, table_props, operation)
+	const list_columns = useColumns(namespace, primary, columns, table_props, operation)
 
 	const table_pagination: TablePaginationConfig = {
 		current: Number(pagination.page) || 1,

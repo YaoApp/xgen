@@ -78,10 +78,11 @@ export interface Menu {
 }
 
 export interface IPropsComponent {
+	__namespace: string
+	__primary: string
 	__bind: string
 	__name: string
-      __data_item: any
-	__namespace: string
+	__data_item: any
 }
 
 export interface IPropsEditComponent extends IPropsComponent {

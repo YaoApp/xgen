@@ -3,20 +3,22 @@ import clsx from 'clsx'
 
 import { X } from '@/components'
 import { CheckOutlined } from '@ant-design/icons'
+import { hidePopover } from '@yaoapp/utils'
 
 import ViewContent from '../ViewContent'
 import styles from './index.less'
 
-import type { IPropsEditPopover } from '../../types'
+import type { IPropsComponentCommon } from '../../types'
 import type { IPropsEditComponent } from '@/types'
 
-const Index = (props: IPropsEditPopover) => {
-	const { namespace, field_detail, data_item, form_value, row_index } = props
-      const edit_type = field_detail.edit.type
+const Index = (props: IPropsComponentCommon) => {
+	const { namespace, primary, field_detail, data_item, form_value } = props
+	const edit_type = field_detail.edit.type
 
 	const props_edit_component: IPropsEditComponent = {
 		...field_detail.edit.props,
 		__namespace: namespace,
+		__primary: primary,
 		__bind: field_detail.bind,
 		__name: field_detail.name,
 		__data_item: data_item,
@@ -24,12 +26,21 @@ const Index = (props: IPropsEditPopover) => {
 		style: { width: 240 }
 	}
 
+	const onFinish = (v: any) => {
+		window.$app.Event.emit(`${namespace}/save`, {
+			[primary]: data_item[primary],
+			...v
+		})
+
+		hidePopover()
+	}
+
 	const edit_content = (
 		<Form
 			className='flex'
-			name={`form_table_td_${field_detail.bind}_${row_index}`}
+			name={`form_table_td_${field_detail.bind}`}
 			initialValues={{ [field_detail.bind]: form_value }}
-			onFinish={(v) => {}}
+			onFinish={onFinish}
 		>
 			<X type='edit' name={field_detail.edit.type} props={props_edit_component}></X>
 			<Button
@@ -44,7 +55,7 @@ const Index = (props: IPropsEditPopover) => {
 	const view_content = (
 		<div className='edit_text line_clamp_2'>
 			<ViewContent
-				{...{ namespace, field_detail, data_item, form_value }}
+				{...{ namespace, primary, field_detail, data_item, form_value }}
 			></ViewContent>
 		</div>
 	)
