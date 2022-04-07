@@ -2,8 +2,8 @@ import { message } from 'antd'
 import { makeAutoObservable } from 'mobx'
 import { injectable } from 'tsyringe'
 
-import { Namespace, Stack } from '@/context'
 import { GlobalModel } from '@/context/app'
+import { Namespace } from '@/models'
 import { Utils } from '@/services'
 import { filterEmpty } from '@yaoapp/utils'
 

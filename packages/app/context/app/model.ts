@@ -4,7 +4,7 @@ import { genConfig } from 'react-nice-avatar'
 import store from 'store2'
 import { singleton } from 'tsyringe'
 
-import { Stack } from '@/context'
+import { Stack } from '@/models'
 import Service from '@/services/app'
 
 import type { AvatarFullConfig } from 'react-nice-avatar'

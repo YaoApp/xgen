@@ -1,4 +1,4 @@
-import { throttle } from 'lodash-es'
+import { debounce } from 'lodash-es'
 import { makeAutoObservable } from 'mobx'
 import { injectable } from 'tsyringe'
 
@@ -14,6 +14,27 @@ import type { SelectProps } from 'antd'
 export default class Index {
 	raw_props = {} as IProps
 	options = [] as Component.Options
+
+	get target_props(): SelectProps {
+		if (!Object.keys(this.raw_props).length) return {}
+
+		const target: SelectProps = {}
+
+		if (this.raw_props.showSearch) {
+			target['filterOption'] = (input, option) =>
+				String(option?.children).toLowerCase().indexOf(input.toLowerCase()) >= 0
+		}
+
+		if (this.raw_props.xProps.search) {
+			target['showSearch'] = true
+			target['filterOption'] = false
+			target['notFoundContent'] = null
+			target['defaultActiveFirstOption'] = false
+			target['onSearch'] = debounce(this.searchOptions, 800, { leading: false })
+		}
+
+		return target
+	}
 
 	constructor(private service: Service) {
 		makeAutoObservable(this, {}, { autoBind: true })
@@ -56,28 +77,5 @@ export default class Index {
 
 	init() {
 		if (this.raw_props.xProps.remote) this.getOptions()
-	}
-
-	get target_props(): SelectProps {
-		if (!Object.keys(this.raw_props).length) return {}
-
-		const target: SelectProps = {}
-
-		if (this.raw_props.showSearch) {
-			target['showArrow'] = false
-			target['filterOption'] = (input, option) =>
-				String(option?.children).toLowerCase().indexOf(input.toLowerCase()) >= 0
-		}
-
-		if (this.raw_props.xProps.search) {
-			target['showArrow'] = false
-			target['showSearch'] = true
-			target['filterOption'] = false
-			target['notFoundContent'] = null
-			target['defaultActiveFirstOption'] = false
-			target['onSearch'] = throttle(this.searchOptions, 800, { leading: false })
-		}
-
-		return target
 	}
 }
