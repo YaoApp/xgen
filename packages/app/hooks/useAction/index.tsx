@@ -3,14 +3,14 @@ import { delete as tableDelete, save } from './actions/Table'
 
 import type { IPropsComponent, Action } from '@/types'
 
-export interface HandleOperation {
+export interface OnAction {
 	namespace: IPropsComponent['__namespace']
 	primary: IPropsComponent['__primary']
 	data_item: IPropsComponent['__data_item']
 	it: Action
 }
 
-const handleOperation = ({ namespace, primary, data_item, it }: HandleOperation) => {
+const onAction = ({ namespace, primary, data_item, it }: OnAction) => {
 	if (it.action?.['Common.openModal']) {
 		openModal({ namespace, primary, it })
 	}
@@ -32,4 +32,4 @@ const handleOperation = ({ namespace, primary, data_item, it }: HandleOperation)
 	}
 }
 
-export default () => handleOperation
+export default () => onAction

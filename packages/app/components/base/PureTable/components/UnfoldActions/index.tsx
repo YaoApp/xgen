@@ -1,7 +1,7 @@
 import { Tooltip } from 'antd'
 import clsx from 'clsx'
 
-import { useActionDisabled, useActionStyle, useOperation } from '@/hooks'
+import { useAction, useActionDisabled, useActionStyle } from '@/hooks'
 import { Icon } from '@/widgets'
 
 import styles from './index.less'
@@ -12,7 +12,7 @@ const Index = (props: IPropsActions) => {
 	const { namespace, primary, actions, data_item } = props
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled(data_item)
-	const handleOperation = useOperation()
+	const onAction = useAction()
 
 	return (
 		<div className={clsx([styles._local, 'flex flex_wrap justify_end'])}>
@@ -33,7 +33,7 @@ const Index = (props: IPropsActions) => {
 								getDisabled(it.disabled)
 							])}
 							onClick={() =>
-								handleOperation({
+								onAction({
 									namespace,
 									primary,
 									data_item,

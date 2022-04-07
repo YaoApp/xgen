@@ -1,8 +1,8 @@
 import { showTip } from '../../utils'
 
-import type { HandleOperation } from '../../index'
+import type { OnAction } from '../../index'
 
-export default async ({ namespace, primary, data_item, it }: HandleOperation) => {
+export default async ({ namespace, primary, data_item, it }: OnAction) => {
 	if (it.tip) {
 		const ok = await showTip(it.tip)
 

@@ -6,7 +6,7 @@ import type { Action } from '@/types'
 
 export default (data_item: any) => {
 	return useCallback(
-		(disabled: Action['props']['disabled']) => {
+		(disabled: Action['disabled']) => {
 			if (!disabled) return ''
 
 			const real_value = getDeepValue(disabled.bind, data_item)

@@ -2,9 +2,9 @@ import { getDeepValue } from '@yaoapp/utils'
 
 import { showTip } from '../../utils'
 
-import type { HandleOperation } from '../../index'
+import type { OnAction } from '../../index'
 
-export default async ({ namespace, primary, it, data_item }: HandleOperation) => {
+export default async ({ namespace, primary, it, data_item }: OnAction) => {
 	if (it.tip) {
 		const ok = await showTip(it.tip)
 
