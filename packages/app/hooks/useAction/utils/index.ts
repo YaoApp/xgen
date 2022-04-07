@@ -1,2 +1,2 @@
 export { default as createModalContainer } from './createModalContainer'
-export { default as showTip } from './showTip'
+export { default as showConfirm } from './showConfirm'

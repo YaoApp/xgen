@@ -32,7 +32,7 @@ export default interface Action {
 		bind: string
 		value: string | Array<string>
 	}
-	tip?: {
+	confirm?: {
 		title: string
 		desc: string
 	}

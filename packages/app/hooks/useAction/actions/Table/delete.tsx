@@ -1,10 +1,10 @@
-import { showTip } from '../../utils'
+import { showConfirm } from '../../utils'
 
 import type { OnAction } from '../../index'
 
 export default async ({ namespace, primary, data_item, it }: OnAction) => {
-	if (it.tip) {
-		const ok = await showTip(it.tip)
+	if (it.confirm) {
+		const ok = await showConfirm(it.confirm)
 
 		if (!ok) return
 	}
