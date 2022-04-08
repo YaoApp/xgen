@@ -11,6 +11,7 @@ export declare namespace Component {
 	interface Option {
 		label: string
 		value: string
+		color?: string
 	}
 
 	type Options = Array<Option>

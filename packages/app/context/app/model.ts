@@ -41,6 +41,8 @@ export default class GlobalModel {
 
 		if (err) return
 
+		store.set('__mode', res.mode)
+
 		this.app_info = res
 	}
 

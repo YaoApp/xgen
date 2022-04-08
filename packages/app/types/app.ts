@@ -30,6 +30,8 @@ export interface AppInfo {
 	name: string
 	/** Application description */
 	description?: string
+	/** runtime mode, note: may affect user experience! */
+	mode?: 'development' | 'production'
 	login: {
 		/** Configure the jump page after administrator and user login */
 		entry: {

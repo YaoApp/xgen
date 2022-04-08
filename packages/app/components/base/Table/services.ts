@@ -8,25 +8,8 @@ import type { Response } from '@/types'
 @injectable()
 export default class Index {
 	@catchError()
-	getSetting<Res>(model: string) {
-		return axios.get<{}, Response<Res>>(`/api/xiang/table/${model}/setting`)
-	}
-
-	@catchError()
 	search<Req, Res>(model: string, params?: Req) {
 		return axios.get<Req, Response<Res>>(`/api/xiang/table/${model}/search`, { params })
-	}
-
-	@catchError()
-	save<Data, Res>(model: string, data: Data) {
-		return axios.post<{}, Response<Res>>(`/api/xiang/table/${model}/save`, data)
-	}
-
-	@catchError()
-	delete<Res>(model: string, primary_value: number) {
-		return axios.post<{}, Response<Res>>(
-			`/api/xiang/table/${model}/delete/${primary_value}`
-		)
 	}
 
 	@catchError()

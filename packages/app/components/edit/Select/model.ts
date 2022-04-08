@@ -1,5 +1,7 @@
 import { debounce } from 'lodash-es'
 import { makeAutoObservable } from 'mobx'
+import qs from 'query-string'
+import store from 'store2'
 import { injectable } from 'tsyringe'
 
 import { getDeepValue } from '@yaoapp/utils'
@@ -45,12 +47,24 @@ export default class Index {
 
 		if (!remote) return
 
+		const params = getDeepValue(remote.params!, this.raw_props.__data_item)
+		const is_prod = store.get('__mode') === 'production'
+		const session_key = `${remote.api}|${qs.stringify(params)}`
+
+		if (is_prod) {
+			const session_cache = store.session.get(session_key)
+
+			if (session_cache) return (this.options = session_cache)
+		}
+
 		const { res, err } = await this.service.getOptions<Component.Params, Component.Options>(
 			remote.api,
-			getDeepValue(remote.params!, this.raw_props.__data_item)
+			params
 		)
 
 		if (err) return
+
+		if (is_prod) store.session.set(session_key, res)
 
 		this.options = res
 	}

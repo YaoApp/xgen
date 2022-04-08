@@ -1,9 +1,9 @@
 import type Filter from './filter'
 import type Header from './header'
-import type Action from './action'
+import type Action from '../common/action'
 import type { TableProps } from 'antd'
 import type { BaseColumn, Fileds, FiledDetail, ViewComponents } from './common'
-import type { IConfigCommonOpenModal } from './action'
+import type { IConfigCommonOpenModal } from '../common/action'
 
 export interface TableSetting {
 	primary: string

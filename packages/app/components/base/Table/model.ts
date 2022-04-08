@@ -4,7 +4,7 @@ import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
 import { Namespace } from '@/models'
-import { Utils } from '@/services'
+import { Common, Table, Utils } from '@/services'
 import { filterEmpty } from '@yaoapp/utils'
 
 import Service from './services'
@@ -33,6 +33,8 @@ export default class Model {
 
 	constructor(
 		private service: Service,
+		private common: Common,
+		private table: Table,
 		private utils: Utils,
 		public global: GlobalModel,
 		public namespace: Namespace
@@ -41,7 +43,7 @@ export default class Model {
 	}
 
 	async getSetting() {
-		const { res, err } = await this.service.getSetting<TableSetting>(this.model)
+		const { res, err } = await this.common.getSetting<TableSetting>('table', this.model)
 
 		if (err) return
 
@@ -75,7 +77,7 @@ export default class Model {
 			this.global.locale_messages.messages.table.save.loading
 		)
 
-		const { err } = await this.service.save<TableSaveData, TableSaveResponse>(
+		const { err } = await this.table.save<TableSaveData, TableSaveResponse>(
 			this.model,
 			data
 		)
@@ -94,10 +96,7 @@ export default class Model {
 			this.global.locale_messages.messages.table.delete.loading
 		)
 
-		const { err } = await this.service.delete<TableDeleteResponse>(
-			this.model,
-			primary_value
-		)
+		const { err } = await this.table.delete<TableDeleteResponse>(this.model, primary_value)
 
 		hideLoading()
 
