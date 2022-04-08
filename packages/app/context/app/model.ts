@@ -9,16 +9,16 @@ import Service from '@/services/app'
 
 import type { AvatarFullConfig } from 'react-nice-avatar'
 
-import type { AppInfo, Theme, User, Menu, LocaleMessages } from '@/types'
+import type { App, LocaleMessages } from '@/types'
 
 @singleton()
 export default class GlobalModel {
-	theme: Theme = 'light'
+	theme: App.Theme = 'light'
 	avatar = {} as AvatarFullConfig
 	locale_messages = {} as LocaleMessages
-	app_info = {} as AppInfo
-	user = (store.get('user') || {}) as User
-	menu = (store.get('menu') || []) as Array<Menu>
+	app_info = {} as App.Info
+	user = (store.get('user') || {}) as App.User
+	menu = (store.get('menu') || []) as Array<App.Menu>
 	current_nav: number = store.get('current_nav') || 0
 	current_menu: number = store.get('current_menu') || 0
 	visible_nav: boolean = true
@@ -28,7 +28,7 @@ export default class GlobalModel {
 	constructor(private service: Service, public stack: Stack) {
 		makeAutoObservable(this, {}, { autoBind: true })
 
-		const theme = (store.get('xgen-theme') || 'light') as Theme
+		const theme = (store.get('xgen-theme') || 'light') as App.Theme
 		const avatar = store.get('avatar') as AvatarFullConfig
 
 		this.getAppInfo()
@@ -37,7 +37,7 @@ export default class GlobalModel {
 	}
 
 	async getAppInfo() {
-		const { res, err } = await this.service.getAppInfo<AppInfo>()
+		const { res, err } = await this.service.getAppInfo<App.Info>()
 
 		if (err) return
 
@@ -47,7 +47,7 @@ export default class GlobalModel {
 	}
 
 	async getUserMenu() {
-		const { res, err } = await this.service.getUserMenu<Array<Menu>>()
+		const { res, err } = await this.service.getUserMenu<Array<App.Menu>>()
 
 		if (err) return
 
@@ -64,7 +64,7 @@ export default class GlobalModel {
 		store.set('avatar', this.avatar)
 	}
 
-	setTheme(theme: Theme) {
+	setTheme(theme: App.Theme) {
 		this.theme = theme
 
 		store.set('xgen-theme', theme)

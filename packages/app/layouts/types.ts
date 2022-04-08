@@ -1,4 +1,4 @@
-import type { Theme, Locale, Menu } from '@/types'
+import type { Locale, App } from '@/types'
 import type { GlobalModel } from '@/context/app'
 
 export interface IPropsNav {
@@ -6,7 +6,7 @@ export interface IPropsNav {
 	avatar: GlobalModel['avatar']
 	app_info: GlobalModel['app_info']
 	user: GlobalModel['user']
-	menu: Array<Menu>
+	menu: Array<App.Menu>
 	visible_nav: GlobalModel['visible_nav']
 	current_nav: GlobalModel['current_nav']
 	setTheme: GlobalModel['setTheme']
@@ -20,7 +20,7 @@ export interface IPropsLogo {
 }
 
 export interface IPropsItems {
-	menu: Array<Menu>
+	menu: Array<App.Menu>
 	current_nav: GlobalModel['current_nav']
 	setCurrentNav: (current: GlobalModel['current_nav']) => void
 }
@@ -39,7 +39,7 @@ export interface IPropsMenu {
 	locale_messages: GlobalModel['locale_messages']
 	visible: boolean
 	blocks: boolean
-	title: Menu['name']
+	title: App.Menu['name']
 	items: Array<any>
 	current_menu: GlobalModel['current_menu']
 	setCurrentMenu: (current: GlobalModel['current_menu']) => void
@@ -53,7 +53,7 @@ export interface IPropsContainer {
 export interface IPropsSettingModalContent {
 	locale_messages: GlobalModel['locale_messages']
 	locale: Locale
-	theme: Theme
+	theme: App.Theme
 	setTheme: GlobalModel['setTheme']
 	getUserMenu: GlobalModel['getUserMenu']
 }

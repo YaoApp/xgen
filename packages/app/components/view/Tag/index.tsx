@@ -7,10 +7,10 @@ import { container } from 'tsyringe'
 import styles from './index.less'
 import Model from './model'
 
-import type { IPropsViewComponent, Component } from '@/types'
+import type { Component } from '@/types'
 import type { TagProps } from 'antd'
 
-export interface IProps extends TagProps, IPropsViewComponent {
+export interface IProps extends TagProps, Component.PropsViewComponent {
 	bind?: string
 	options?: Component.Options
 	remote?: Component.Request

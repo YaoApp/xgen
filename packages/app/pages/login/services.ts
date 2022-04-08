@@ -25,8 +25,8 @@ export default class Index {
 	}
 
 	@catchError()
-	loginByLark<Req, Res>(data: Req, url: string) {
-		return axios.get<Req, Response<Res>>(url, data)
+	loginByLark<Req, Res>(url: string, params: Req) {
+		return axios.get<Req, Response<Res>>(url, { params })
 	}
 
 	/** autoLogin is just for demo app. */

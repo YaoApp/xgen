@@ -3,12 +3,12 @@ import { useState } from 'react'
 
 import styles from './index.less'
 
-import type { IConfigCommonOpenModal, IPropsComponent } from '@/types'
+import type { Component, Action } from '@/types'
 
 export interface IProps {
-	namespace: IPropsComponent['__namespace']
-	primary: IPropsComponent['__primary']
-	config: IConfigCommonOpenModal
+	namespace: Component.Props['__namespace']
+	primary: Component.Props['__primary']
+	config: Action.OpenModal
 }
 
 const Index = (props: IProps) => {

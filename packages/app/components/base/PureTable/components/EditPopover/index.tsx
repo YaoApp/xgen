@@ -9,13 +9,13 @@ import ViewContent from '../ViewContent'
 import styles from './index.less'
 
 import type { IPropsComponentCommon } from '../../types'
-import type { IPropsEditComponent } from '@/types'
+import type { Component } from '@/types'
 
 const Index = (props: IPropsComponentCommon) => {
 	const { namespace, primary, field_detail, data_item, form_value } = props
 	const edit_type = field_detail.edit.type
 
-	const props_edit_component: IPropsEditComponent = {
+	const props_edit_component: Component.PropsEditComponent = {
 		...field_detail.edit.props,
 		__namespace: namespace,
 		__primary: primary,

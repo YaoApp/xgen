@@ -2,9 +2,9 @@ import day from 'dayjs'
 
 import { getDeepValue } from '@yaoapp/utils'
 
-import type { Column } from '@/types'
+import type { Common } from '@/types'
 
-export default (field_detail: Column, dataItem: unknown) => {
+export default (field_detail: Common.Column, dataItem: unknown) => {
 	let text = getDeepValue(field_detail.bind, dataItem)
 
 	if (field_detail.view?.props['format']) {

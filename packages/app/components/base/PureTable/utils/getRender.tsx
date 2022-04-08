@@ -3,14 +3,14 @@ import { getDeepValue } from '@yaoapp/utils'
 import EditPopover from '../components/EditPopover'
 import ViewContent from '../components/ViewContent'
 
-import type { Column } from '@/types'
+import type { Common } from '@/types'
 import type { IPropsComponentCommon } from '../types'
 
 export default (
 	namespace: IPropsComponentCommon['namespace'],
 	primary: IPropsComponentCommon['primary'],
-	field_detail: Column,
-	data_item: any,
+	field_detail: Common.Column,
+	data_item: any
 ) => {
 	const form_value = getDeepValue(field_detail.bind, data_item)
 

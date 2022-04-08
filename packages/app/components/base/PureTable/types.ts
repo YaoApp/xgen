@@ -1,7 +1,6 @@
 import type Model from '@/components/base/Table/model'
 import type { TableColumnType } from 'antd'
-import type { Column } from '@/types'
-import type { ViewComponents } from '@/types'
+import type { Common } from '@/types'
 
 export interface IPropsPureTable {
 	parent: Model['parent']
@@ -18,7 +17,7 @@ export interface IPropsBlock {
 	namespace: IPropsComponentCommon['namespace']
 	primary: IPropsComponentCommon['primary']
 	type: string
-	components: ViewComponents
+	components: Common.ViewComponents
 	data_item: any
 }
 
@@ -27,7 +26,7 @@ export type TableColumn = TableColumnType<any>
 export interface IPropsComponentCommon {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
-	field_detail: Column
+	field_detail: Common.Column
 	data_item: any
 	form_value: any
 }

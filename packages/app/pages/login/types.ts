@@ -1,5 +1,5 @@
 import type Model from './model'
-import type { AppInfo, Menu, User } from '@/types'
+import type { App } from '@/types'
 
 export type UserType = 'admin' | 'user'
 
@@ -27,9 +27,9 @@ export interface ReqLogin {
 
 export interface ResLogin {
 	expires_at: number
-	menus: Array<Menu>
+	menus: Array<App.Menu>
 	token: string
-	user: User
+	user: App.User
 	type: UserType
 }
 
@@ -49,7 +49,7 @@ export interface IPropsCommon {
 
 export interface IPropsForm {
 	code: Captcha['content']
-	feishu: AppInfo['login']['feishu']
+	feishu: App.Info['login']['feishu']
 	loading: boolean
 	getCaptcha: () => void
 	onFinish: (data: FormValues) => void

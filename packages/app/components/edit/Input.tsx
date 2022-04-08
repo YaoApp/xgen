@@ -4,9 +4,9 @@ import Item from '@/components/edit/Item'
 import { getLocale } from '@umijs/max'
 
 import type { InputProps } from 'antd'
-import type { IPropsEditComponent } from '@/types'
+import type { Component } from '@/types'
 
-interface IProps extends InputProps, IPropsEditComponent {}
+interface IProps extends InputProps, Component.PropsEditComponent {}
 
 const Index = (props: IProps) => {
 	const { __bind, __name, itemProps, ...rest_props } = props

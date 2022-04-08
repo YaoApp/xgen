@@ -3,10 +3,10 @@ import UrlPattern from 'url-pattern'
 import { history } from '@umijs/max'
 import { getDeepValue } from '@yaoapp/utils'
 
-import type { IPropsComponent } from '@/types'
+import type { Component } from '@/types'
 
 interface Args {
-	data_item: IPropsComponent['__data_item']
+	data_item: Component.Props['__data_item']
 	pathname: string
 }
 

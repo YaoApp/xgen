@@ -1,8 +1,8 @@
 import { equal, getDeepValue } from '@yaoapp/utils'
 
-import type { Column } from '@/types'
+import type { Common } from '@/types'
 
-export default (new_val: any, old_val: any, raw_col_item: Column) => {
+export default (new_val: any, old_val: any, raw_col_item: Common.Column) => {
 	let update = false
 	const deps: Array<string> = raw_col_item.bind as any
 

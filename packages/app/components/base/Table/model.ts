@@ -9,27 +9,19 @@ import { filterEmpty } from '@yaoapp/utils'
 
 import Service from './services'
 
-import type {
-	TableSetting,
-	TableData,
-	Column,
-	SearchParams,
-	TableSaveData,
-	TableSaveResponse,
-	TableDeleteResponse
-} from '@/types'
-import type { IPropsTable } from './types'
+import type { TableType, Common as CommonType } from '@/types'
+import type { Component } from '@/types'
 
 @injectable()
 export default class Model {
-	parent = 'Page' as IPropsTable['parent']
-	model = '' as IPropsTable['model']
-	setting = {} as TableSetting
-	list = [] as TableData['data']
-	filter_columns = [] as Array<Column>
-	table_columns = [] as Array<Column>
-	pagination = { page: 1, pagesize: 10, total: 0 } as Omit<TableData, 'data'>
-	search_params = {} as SearchParams
+	parent = 'Page' as Component.StackComponent['parent']
+	model = '' as Component.StackComponent['model']
+	setting = {} as TableType.Setting
+	list = [] as TableType.Data['data']
+	filter_columns = [] as Array<CommonType.Column>
+	table_columns = [] as Array<CommonType.Column>
+	pagination = { page: 1, pagesize: 10, total: 0 } as Omit<TableType.Data, 'data'>
+	search_params = {} as TableType.SearchParams
 
 	constructor(
 		private service: Service,
@@ -43,7 +35,10 @@ export default class Model {
 	}
 
 	async getSetting() {
-		const { res, err } = await this.common.getSetting<TableSetting>('table', this.model)
+		const { res, err } = await this.common.getSetting<TableType.Setting>(
+			'table',
+			this.model
+		)
 
 		if (err) return
 
@@ -52,12 +47,12 @@ export default class Model {
 		this.table_columns = this.utils.reduce(res.table.columns, res.fileds.table)
 	}
 
-	async search(params?: SearchParams) {
+	async search(params?: TableType.SearchParams) {
 		const hideLoading = message.loading(this.global.locale_messages.messages.table.search)
 
 		this.search_params = { ...this.search_params, ...filterEmpty(params) }
 
-		const { res, err } = await this.service.search<SearchParams, TableData>(
+		const { res, err } = await this.service.search<TableType.SearchParams, TableType.Data>(
 			this.model,
 			this.search_params
 		)
@@ -72,12 +67,12 @@ export default class Model {
 		this.pagination = { page, pagesize, total }
 	}
 
-	async save(data: TableSaveData) {
+	async save(data: TableType.SaveRequest) {
 		const hideLoading = message.loading(
 			this.global.locale_messages.messages.table.save.loading
 		)
 
-		const { err } = await this.table.save<TableSaveData, TableSaveResponse>(
+		const { err } = await this.table.save<TableType.SaveRequest, TableType.SaveResponse>(
 			this.model,
 			data
 		)
@@ -96,7 +91,10 @@ export default class Model {
 			this.global.locale_messages.messages.table.delete.loading
 		)
 
-		const { err } = await this.table.delete<TableDeleteResponse>(this.model, primary_value)
+		const { err } = await this.table.delete<TableType.DeleteResponse>(
+			this.model,
+			primary_value
+		)
 
 		hideLoading()
 
@@ -107,7 +105,7 @@ export default class Model {
 		this.search()
 	}
 
-	init(parent: IPropsTable['parent'], model: IPropsTable['model']) {
+	init(parent: Component.StackComponent['parent'], model: Component.StackComponent['model']) {
 		this.global.stack.push(`Table-${parent}-${model}`)
 
 		this.namespace.paths = this.global.stack.paths

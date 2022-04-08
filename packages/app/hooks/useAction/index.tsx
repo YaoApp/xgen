@@ -1,13 +1,13 @@
 import { historyBack, historyPush, openModal } from './actions/Common'
 import { delete as tableDelete, save } from './actions/Table'
 
-import type { IPropsComponent, Action } from '@/types'
+import type { Component, Action } from '@/types'
 
 export interface OnAction {
-	namespace: IPropsComponent['__namespace']
-	primary: IPropsComponent['__primary']
-	data_item: IPropsComponent['__data_item']
-	it: Action
+	namespace: Component.Props['__namespace']
+	primary: Component.Props['__primary']
+	data_item: Component.Props['__data_item']
+	it: Action.Props
 }
 
 const onAction = ({ namespace, primary, data_item, it }: OnAction) => {

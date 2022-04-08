@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import type { Column } from '@/types'
+import type { Common } from '@/types'
 import type { IPropsFilter } from './types'
 
 export const useVisibleMore = () => {
@@ -29,15 +29,18 @@ export const useVisibleMore = () => {
 	return { visible_more, display_more, opacity_more, setVisibleMore }
 }
 
-export const useCalcLayout = (columns: Array<Column>, btnAddText: IPropsFilter['btnAddText']) => {
+export const useCalcLayout = (
+	columns: Array<Common.Column>,
+	btnAddText: IPropsFilter['btnAddText']
+) => {
 	return useMemo(() => {
 		if (!columns.length) return { base: [], more: [], visible_btn_more: false }
 
 		const setting_cols = btnAddText ? 3 : 0
-		const base: Array<Column> = []
-		const more: Array<Column> = []
+		const base: Array<Common.Column> = []
+		const more: Array<Common.Column> = []
 
-		const filter_cols = columns.reduce((total: number, item: Column) => {
+		const filter_cols = columns.reduce((total: number, item: Common.Column) => {
 			total += item.width || 0
 
 			if (total > 20 - setting_cols) {

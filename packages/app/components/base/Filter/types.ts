@@ -1,11 +1,11 @@
-import type { TableSetting, Column } from '@/types'
+import type { TableType, Common } from '@/types'
 import type Model from '@/components/base/Table/model'
 
 export interface IPropsFilter {
 	model: string
 	namespace: Model['namespace']['value']
-	columns: Array<Column>
-	btnAddText?: TableSetting['filter']['btnAddText']
+	columns: Array<Common.Column>
+	btnAddText?: TableType.Setting['filter']['btnAddText']
 	resetSearchParams: Model['resetSearchParams']
 }
 

@@ -1,7 +1,7 @@
 import Block from '../components/Block'
 import { getRender, shouldGroupUpdate } from '../utils'
 
-import type { Column, ViewComponents } from '@/types'
+import type { Common } from '@/types'
 import type { IPropsPureTable, TableColumn } from '../types'
 
 export default (
@@ -9,7 +9,7 @@ export default (
 	primary: IPropsPureTable['primary'],
 	columns: IPropsPureTable['columns']
 ) => {
-	const handleColumn = (total: Array<TableColumn>, raw_col_item: Column) => {
+	const handleColumn = (total: Array<TableColumn>, raw_col_item: Common.Column) => {
 		const target_col_item: TableColumn = {}
 
 		if (raw_col_item?.width) target_col_item['width'] = raw_col_item.width
@@ -23,7 +23,7 @@ export default (
 					namespace={namespace}
 					primary={primary}
 					type={raw_col_item.view.type as string}
-					components={raw_col_item.view.components as ViewComponents}
+					components={raw_col_item.view.components as Common.ViewComponents}
 					data_item={data_item}
 				></Block>
 			)

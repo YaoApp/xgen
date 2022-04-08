@@ -8,12 +8,12 @@ import { Filter, Page, PureTable } from '@/components'
 import styles from './index.less'
 import Model from './model'
 
-import type { IPropsTable } from './types'
+import type { Component } from '@/types'
 
 import type { IPropsFilter } from '@/components/base/Filter/types'
 import type { IPropsPureTable } from '@/components/base/PureTable/types'
 
-const Index = (props: IPropsTable) => {
+const Index = (props: Component.StackComponent) => {
 	const { parent, model } = props
 	const [x] = useState(() => container.resolve(Model))
 

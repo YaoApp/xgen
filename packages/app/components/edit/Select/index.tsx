@@ -12,9 +12,9 @@ import Model from './model'
 const { Option } = Select
 
 import type { SelectProps } from 'antd'
-import type { IPropsEditComponent, Component } from '@/types'
+import type { Component } from '@/types'
 
-export interface IProps extends SelectProps, IPropsEditComponent {
+export interface IProps extends SelectProps, Component.PropsEditComponent {
 	xProps: {
 		remote?: Component.Request
 		search?: Component.Request & { key: string }

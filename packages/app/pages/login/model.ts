@@ -9,7 +9,7 @@ import { history } from '@umijs/max'
 
 import Service from './services'
 
-import type { Loading, ResError } from '@/types'
+import type { Global, Utils } from '@/types'
 import type {
 	UserType,
 	Captcha,
@@ -24,7 +24,7 @@ import type {
 export default class Model {
 	user_type = '' as UserType
 	captcha = {} as Captcha
-	loading = {} as Loading
+	loading = {} as Global.BooleanObject
 	is?: string
 
 	constructor(public global: GlobalModel, private service: Service) {
@@ -66,18 +66,18 @@ export default class Model {
 		window.open(res.url)
 	}
 
-	async loginByLark(data: ReqLoginByLark) {
+	async loginByLark(params: ReqLoginByLark) {
 		this.loading.login = true
 
 		const { res, err } = await this.service.loginByLark<ReqLoginByLark, ResLogin>(
-			data,
-			this.global.app_info?.login?.feishu?.login || ''
+			this.global.app_info?.login?.feishu?.login || '',
+			params
 		)
 
 		this.afterLogin(res, err)
 	}
 
-	async afterLogin(res: ResLogin, err: ResError) {
+	async afterLogin(res: ResLogin, err: Utils.ResError) {
 		if (err || !res?.token) {
 			this.loading.login = false
 			this.getCaptcha()
