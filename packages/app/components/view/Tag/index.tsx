@@ -1,8 +1,10 @@
 import { Tag } from 'antd'
+import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 import React, { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
+import styles from './index.less'
 import Model from './model'
 
 import type { IPropsViewComponent, Component } from '@/types'
@@ -30,7 +32,7 @@ const CommonTag = window.$app.memo(({ pure, margin, item }: IPropsCommonTag) => 
 	if (margin) style['margin'] = 3
 
 	return (
-		<Tag className='edit_text' color={item.color} style={style}>
+		<Tag className={clsx([styles._local, 'edit_text'])} color={item.color} style={style}>
 			{item.label}
 		</Tag>
 	)
