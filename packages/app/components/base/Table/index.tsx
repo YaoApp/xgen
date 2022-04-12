@@ -23,7 +23,7 @@ const Index = (props: Component.StackComponent) => {
 		return () => {
 			x.off()
 		}
-	}, [])
+	}, [x, parent, model])
 
 	if (!x.setting.table) return null
 

@@ -15,5 +15,6 @@ export declare namespace Global {
 		type: string
 		model: string
 		id?: string
+		formType?: 'view' | 'edit'
 	}
 }

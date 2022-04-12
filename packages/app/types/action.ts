@@ -12,12 +12,17 @@ export declare namespace Action {
 		}
 	}
 
+	interface HistoryPush {
+		pathname: string
+		search?: any
+	}
+
 	interface Props {
 		title: string
 		icon: string
 		action: {
 			'Common.openModal'?: OpenModal
-			'Common.historyPush'?: { pathname: string }
+			'Common.historyPush'?: HistoryPush
 			'Common.historyBack'?: {}
 			'Table.save'?: Global.StringObject
 			'Table.delete'?: {}

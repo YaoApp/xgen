@@ -2,9 +2,13 @@ import type { FormItemProps } from 'antd'
 import type { CSSProperties } from 'react'
 
 export declare namespace Component {
+	type FormType = 'view' | 'edit'
+
 	interface StackComponent {
 		parent: 'Page' | 'Modal'
 		model: string
+		id?: number
+		form?: { type: FormType }
 	}
 
 	interface Props {

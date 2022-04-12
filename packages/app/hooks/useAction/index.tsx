@@ -16,7 +16,7 @@ const onAction = ({ namespace, primary, data_item, it }: OnAction) => {
 	}
 
 	if (it.action?.['Common.historyPush']) {
-		historyPush({ data_item, pathname: it.action['Common.historyPush'].pathname })
+		historyPush({ data_item, action: it.action['Common.historyPush'] })
 	}
 
 	if (it.action?.['Common.historyBack']) {

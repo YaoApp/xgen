@@ -14,7 +14,8 @@ import type { FormType, TableType, Component } from '@/types'
 export default class Model {
 	parent = 'Page' as Component.StackComponent['parent']
 	model = '' as Component.StackComponent['model']
-	id = 0
+	id = 0 as Component.StackComponent['id']
+	type = '' as Component.FormType
 	setting = {} as FormType.Setting
 	sections = [] as Array<any>
 
@@ -39,6 +40,8 @@ export default class Model {
 	}
 
 	async find(params?: any) {
+		return
+
 		const { res, err } = await this.service.find<any, {}>(this.model, params)
 	}
 
@@ -76,12 +79,19 @@ export default class Model {
 		message.success(this.global.locale_messages.messages.table.delete.success)
 	}
 
-	init(parent: Component.StackComponent['parent'], model: Component.StackComponent['model']) {
-		this.global.stack.push(`FormType-${parent}-${model}`)
+	init(
+		parent: Component.StackComponent['parent'],
+		model: Component.StackComponent['model'],
+		id: Component.StackComponent['id'],
+		form: Component.StackComponent['form']
+	) {
+		this.global.stack.push(`Form-${parent}-${model}`)
 
 		this.namespace.paths = this.global.stack.paths
 		this.parent = parent
 		this.model = model
+		this.id = Number(id)
+		this.type = form!.type
 
 		this.getSetting()
 		this.find()
