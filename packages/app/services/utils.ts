@@ -4,9 +4,15 @@ import type { Common, FormType } from '@/types'
 
 @injectable()
 export default class Index {
-	private handleColumn(item: Common.BaseColumn, fileds: Common.Fileds) {
+	private handleNormalColumn(item: Common.BaseColumn, fileds: Common.Fileds) {
 		const handled_item = fileds[item.name]
 		const target_item = { ...item, ...handled_item }
+
+		return target_item
+	}
+
+	private handleTableColumn(item: Common.BaseColumn, fileds: Common.Fileds) {
+		const target_item = this.handleNormalColumn(item, fileds)
 
 		if (target_item.view?.components) {
 			target_item.view.components = Object.keys(target_item.view?.components).reduce(
@@ -24,7 +30,7 @@ export default class Index {
 
 	reduce(columns: Array<Common.BaseColumn>, fileds: Common.Fileds) {
 		return columns.reduce((total: Array<Common.Column>, item) => {
-			total.push(this.handleColumn(item, fileds))
+			total.push(this.handleTableColumn(item, fileds))
 
 			return total
 		}, [])
@@ -38,7 +44,7 @@ export default class Index {
 					tabs: this.reduceSections(item.tabs, fileds)
 				})
 			} else {
-				total.push(this.handleColumn(item, fileds))
+				total.push(this.handleNormalColumn(item, fileds))
 			}
 
 			return total
