@@ -36,7 +36,7 @@ export default class Model {
 		if (err) return
 
 		this.setting = res
-		this.sections = this.utils.reduceSections(res.form.sections, res.fileds.form)
+            this.sections = this.utils.reduceSections(res.form.sections, res.fileds.form)
 	}
 
 	async find(params?: any) {

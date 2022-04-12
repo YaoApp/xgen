@@ -1,10 +1,14 @@
 import type { Action, Common } from '@/types'
 
 export declare namespace FormType {
+	interface Column extends Common.BaseColumn {
+		tabs?: Array<Section>
+	}
+
 	interface Section {
 		title?: string
 		desc?: string
-		columns: Array<Common.BaseColumn | { tabs: Array<Section> }>
+		columns: Array<Column>
 	}
 
 	interface Setting {

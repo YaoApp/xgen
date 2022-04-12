@@ -4,30 +4,52 @@ import type { Common, FormType } from '@/types'
 
 @injectable()
 export default class Index {
-	reduce(columns: Array<Common.BaseColumn>, fileds: Common.Fileds) {
-		return columns.reduce((total: Array<Common.Column>, item) => {
-			const handled_item = fileds[item.name]
-			const target_item = { ...item, ...handled_item }
+	private handleColumn(item: Common.BaseColumn, fileds: Common.Fileds) {
+		const handled_item = fileds[item.name]
+		const target_item = { ...item, ...handled_item }
 
-			if (target_item.view?.components) {
-				target_item.view.components = Object.keys(
-					target_item.view?.components
-				).reduce((components: { [key: string]: Common.FiledDetail }, key) => {
+		if (target_item.view?.components) {
+			target_item.view.components = Object.keys(target_item.view?.components).reduce(
+				(components: { [key: string]: Common.FiledDetail }, key) => {
 					components[key] = fileds[key]
 
 					return components
-				}, {})
-			}
+				},
+				{}
+			)
+		}
 
-			total.push(target_item)
+		return target_item
+	}
+
+	reduce(columns: Array<Common.BaseColumn>, fileds: Common.Fileds) {
+		return columns.reduce((total: Array<Common.Column>, item) => {
+			total.push(this.handleColumn(item, fileds))
 
 			return total
 		}, [])
 	}
 
 	reduceSections(sections: Array<FormType.Section>, fileds: Common.Fileds) {
+		const getSectionColumns = (total: any, item: FormType.Column) => {
+			if (item.tabs) {
+				total.push({
+					width: item?.width || 24,
+					tabs: this.reduceSections(item.tabs, fileds)
+				})
+			} else {
+				total.push(this.handleColumn(item, fileds))
+			}
+
+			return total
+		}
+
 		return sections.reduce((total: any, item) => {
-			total['title'] = item.title
+			total.push({
+				title: item.title,
+				desc: item.desc,
+				columns: item.columns.reduce(getSectionColumns, [])
+			})
 
 			return total
 		}, [])
