@@ -19,7 +19,7 @@ const Index = (props: Component.StackComponent) => {
 	const [x] = useState(() => container.resolve(Model))
 	const locale = getLocale()
 	const locale_messages = locales[locale]
-	const page_title_prefix = usePageTitle(locale_messages, id, form!.type)
+	const page_title_prefix = usePageTitle(locale_messages, id!, form!.type)
 
 	useLayoutEffect(() => {
 		x.init(parent, model, id, form)
@@ -37,7 +37,8 @@ const Index = (props: Component.StackComponent) => {
 		primary: x.setting.primary,
 		data: x.data,
 		sections: x.sections,
-		operation: x.setting.operation
+		operation: x.setting.operation,
+		title: page_title_prefix
 	}
 
 	if (parent === 'Page') {

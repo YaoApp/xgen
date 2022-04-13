@@ -14,11 +14,11 @@ import type { FormType, TableType, Component, Global } from '@/types'
 export default class Model {
 	parent = 'Page' as Component.StackComponent['parent']
 	model = '' as Component.StackComponent['model']
-	id = 0 as Component.StackComponent['id']
+	id = 0 as Component.IdType
 	type = '' as Component.FormType
 	setting = {} as FormType.Setting
 	data = {} as Global.AnyObject
-	sections = [] as Array<any>
+	sections = [] as Array<FormType.SectionResult>
 
 	constructor(
 		private service: Service,
@@ -42,10 +42,8 @@ export default class Model {
 		console.log(this.column_utils.reduceSections(res.form.sections, res.fileds.form))
 	}
 
-	async find(params?: any) {
-		return
-
-		const { res, err } = await this.service.find<any, {}>(this.model, params)
+	async find() {
+		const { res, err } = await this.service.find<any>(this.model, this.id)
 	}
 
 	async save(data: TableType.SaveRequest) {
@@ -97,7 +95,8 @@ export default class Model {
 		this.type = form!.type
 
 		this.getSetting()
-		this.find()
+
+		if (Number(id) !== 0) this.find()
 
 		this.on()
 	}

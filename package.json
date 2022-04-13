@@ -39,7 +39,7 @@
             "@parcel/packager-ts": "2.4.0",
             "@parcel/transformer-typescript-types": "2.4.0",
             "lint-staged": "^12.3.4",
-            "prettier": "^2.5.1",
+            "prettier": "^2.6.2",
             "turbo": "^1.1.4",
             "yorkie": "^2.0.0"
       }

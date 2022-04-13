@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { X } from '@/components'
 import { Icon } from '@/widgets'
 import { PlusOutlined } from '@ant-design/icons'
-import { getLocale, history } from '@umijs/max'
+import { getLocale } from '@umijs/max'
 
 import { useCalcLayout, useVisibleMore } from './hooks'
 import styles from './index.less'

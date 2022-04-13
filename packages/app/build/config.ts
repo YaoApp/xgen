@@ -55,3 +55,5 @@ export const chainWebpack = (config: Config) => {
 		})
 	}
 }
+
+export const extraBabelPlugins = ['babel-plugin-transform-typescript-metadata']

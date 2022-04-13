@@ -8,7 +8,7 @@ import type { Response } from '@/types'
 @injectable()
 export default class Index {
 	@catchError()
-	find<Req, Res>(model: string, params?: Req) {
-		return axios.get<Req, Response<Res>>(`/api/xiang/table/${model}/find`, { params })
+	find<Res>(model: string, primary_value: number) {
+		return axios.get<{}, Response<Res>>(`/api/xiang/table/${model}/find/${primary_value}`)
 	}
 }

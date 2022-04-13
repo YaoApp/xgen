@@ -41,7 +41,7 @@ export class ColumnUtils {
 			total: Array<FormType.ColumnResult>,
 			item: FormType.Column
 		) => {
-			if (item.tabs) {
+			if ('tabs' in item) {
 				total.push({
 					width: item?.width || 24,
 					tabs: this.reduceSections(item.tabs, fileds)

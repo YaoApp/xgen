@@ -25,5 +25,5 @@ export declare namespace Common {
 		[key: string]: FiledDetail
 	}
 
-	type Column = BaseColumn & FiledDetail
+	interface Column extends BaseColumn, FiledDetail {}
 }
