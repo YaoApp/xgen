@@ -11,6 +11,10 @@ export declare namespace Global {
 		[key: string]: boolean
 	}
 
+	interface AnyObject {
+		[key: string]: any
+	}
+
 	interface Match {
 		type: string
 		model: string

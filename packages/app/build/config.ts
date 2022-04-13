@@ -15,7 +15,16 @@ export const proxy = {
 }
 
 export const conventionRoutes = {
-	exclude: [/model\.(j|t)sx?$/, /services\.(j|t)sx?$/, /types\.(j|t)sx?$/, /components\//]
+	exclude: [
+		/model\.(j|t)sx?$/,
+		/services\.(j|t)sx?$/,
+		/types\.(j|t)sx?$/,
+		/hooks\.(j|t)sx?$/,
+		/locales\.(j|t)sx?$/,
+		/components\//,
+		/hooks\//,
+		/locales\//
+	]
 }
 
 export const links = [

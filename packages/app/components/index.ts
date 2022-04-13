@@ -4,6 +4,8 @@ export { default as Page } from './base/Page'
 export { default as Filter } from './base/Filter'
 export { default as PureTable } from './base/PureTable'
 export { default as Table } from './base/Table'
+export { default as PureForm } from './base/PureForm'
+export { default as Form } from './base/Form'
 
 export { default as Item } from './edit/Item'
 export { default as Input } from './edit/Input'

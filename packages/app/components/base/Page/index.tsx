@@ -6,17 +6,27 @@ import { useGlobal } from '@/context/app'
 
 import Action from './components/Action'
 import Left from './components/Left'
+import { usePageTitle } from './hooks'
 import styles from './index.less'
 
 import type { IProps, IPropsLeft } from './types'
 
 const Index = (props: IProps) => {
-	const { children, className, style, actions = [], isChart } = props
+	const {
+		children,
+		className,
+		style,
+		title: props_title,
+		titlePrefix,
+		actions = [],
+		isChart
+	} = props
 	const global = useGlobal()
 	const menu = global.menu.slice()
 	const visible_menu = global.visible_menu
 	const visible_header = global.visible_header
-	const title = menu[global.current_nav]?.children?.[global.current_menu]?.name || ''
+	const menu_title = menu[global.current_nav]?.children?.[global.current_menu]?.name || ''
+	const title = usePageTitle(menu_title, titlePrefix, props_title)
 
 	useTitle(`${global.app_info.name} - ${menu[global.current_nav]?.name} - ${title}`)
 

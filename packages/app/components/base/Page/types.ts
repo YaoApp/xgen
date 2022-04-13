@@ -12,7 +12,9 @@ export interface Action {
 export interface IProps {
 	children: React.ReactNode
 	className?: string
-	style?: React.CSSProperties
+      style?: React.CSSProperties
+      titlePrefix?: string
+	title?: string
 	actions?: Array<Action>
 	isChart?: boolean
 }

@@ -8,7 +8,7 @@ import { ColumnUtils, Common, Table } from '@/services'
 
 import Service from './services'
 
-import type { FormType, TableType, Component } from '@/types'
+import type { FormType, TableType, Component, Global } from '@/types'
 
 @injectable()
 export default class Model {
@@ -17,6 +17,7 @@ export default class Model {
 	id = 0 as Component.StackComponent['id']
 	type = '' as Component.FormType
 	setting = {} as FormType.Setting
+	data = {} as Global.AnyObject
 	sections = [] as Array<any>
 
 	constructor(
@@ -36,9 +37,9 @@ export default class Model {
 		if (err) return
 
 		this.setting = res
-            this.sections = this.column_utils.reduceSections(res.form.sections, res.fileds.form)
+		this.sections = this.column_utils.reduceSections(res.form.sections, res.fileds.form)
 
-            console.log(this.column_utils.reduceSections(res.form.sections, res.fileds.form));
+		console.log(this.column_utils.reduceSections(res.form.sections, res.fileds.form))
 	}
 
 	async find(params?: any) {

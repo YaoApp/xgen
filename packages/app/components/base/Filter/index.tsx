@@ -15,7 +15,7 @@ import type { IPropsFilter } from './types'
 const { useForm } = Form
 
 const Index = (props: IPropsFilter) => {
-	const { model, columns, btnAddText, namespace, resetSearchParams } = props
+	const { model, columns, btnAddText, onAdd, onFinish, resetSearchParams } = props
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
 	const [form] = useForm()
@@ -23,20 +23,10 @@ const Index = (props: IPropsFilter) => {
 	const { display_more, opacity_more, visible_more, setVisibleMore } = useVisibleMore()
 	const { base, more, visible_btn_more } = useCalcLayout(columns, btnAddText)
 
-	const onFinish = (v: any) => {
-		resetSearchParams()
-
-		window.$app.Event.emit(`${namespace}/search`, v)
-	}
-
 	const onReset = () => {
 		resetFields()
 		resetSearchParams()
 		onFinish(getFieldsValue())
-	}
-
-	const add = () => {
-		history.push(`/x/Form/${model}/0`)
 	}
 
 	return (
@@ -98,7 +88,7 @@ const Index = (props: IPropsFilter) => {
 							<Button
 								className='btn_add flex justify_center align_center ml_16'
 								type='primary'
-								onClick={add}
+								onClick={onAdd}
 								icon={<PlusOutlined></PlusOutlined>}
 							>
 								{btnAddText}

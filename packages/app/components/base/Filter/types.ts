@@ -3,9 +3,10 @@ import type Model from '@/components/base/Table/model'
 
 export interface IPropsFilter {
 	model: string
-	namespace: Model['namespace']['value']
 	columns: Array<Common.Column>
 	btnAddText?: TableType.Setting['filter']['btnAddText']
+	onAdd: () => void
+	onFinish: (v: any) => void
 	resetSearchParams: Model['resetSearchParams']
 }
 

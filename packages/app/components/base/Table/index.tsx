@@ -4,6 +4,7 @@ import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
 import { Filter, Page, PureTable } from '@/components'
+import { history } from '@umijs/max'
 
 import styles from './index.less'
 import Model from './model'
@@ -41,9 +42,16 @@ const Index = (props: Component.StackComponent) => {
 	if (parent === 'Page') {
 		const props_filter: IPropsFilter = {
 			model: x.model,
-			namespace: x.namespace.value,
 			columns: x.filter_columns,
 			btnAddText: x.setting.filter?.btnAddText,
+			onFinish(v: any) {
+				x.resetSearchParams()
+
+				window.$app.Event.emit(`${x.namespace.value}/search`, v)
+			},
+			onAdd() {
+				history.push(`/x/Form/${model}/0/edit`)
+			},
 			resetSearchParams: x.resetSearchParams
 		}
 

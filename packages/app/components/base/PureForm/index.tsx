@@ -2,7 +2,11 @@ import clsx from 'clsx'
 
 import styles from './index.less'
 
-const Index = () => {
+import type { IPropsPureForm } from './types'
+
+const Index = (props: IPropsPureForm) => {
+	const {} = props
+
 	return <div className={clsx([styles._local])}>123</div>
 }
 
