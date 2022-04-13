@@ -5,10 +5,18 @@ export declare namespace FormType {
 		tabs?: Array<Section>
 	}
 
+	type ColumnResult = { width?: number; tabs?: Array<SectionResult> } | Common.Column
+
 	interface Section {
 		title?: string
 		desc?: string
 		columns: Array<Column>
+	}
+
+	interface SectionResult {
+		title?: string
+		desc?: string
+		columns: Array<ColumnResult>
 	}
 
 	interface Setting {

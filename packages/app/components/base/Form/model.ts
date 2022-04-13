@@ -4,7 +4,7 @@ import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
 import { Namespace } from '@/models'
-import { Common, Table, Utils } from '@/services'
+import { ColumnUtils, Common, Table } from '@/services'
 
 import Service from './services'
 
@@ -23,7 +23,7 @@ export default class Model {
 		private service: Service,
 		private common: Common,
 		private table: Table,
-		private utils: Utils,
+		private column_utils: ColumnUtils,
 		public global: GlobalModel,
 		public namespace: Namespace
 	) {
@@ -36,7 +36,9 @@ export default class Model {
 		if (err) return
 
 		this.setting = res
-            this.sections = this.utils.reduceSections(res.form.sections, res.fileds.form)
+            this.sections = this.column_utils.reduceSections(res.form.sections, res.fileds.form)
+
+            console.log(this.column_utils.reduceSections(res.form.sections, res.fileds.form));
 	}
 
 	async find(params?: any) {

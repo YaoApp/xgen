@@ -4,7 +4,7 @@ import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
 import { Namespace } from '@/models'
-import { Common, Table, Utils } from '@/services'
+import { ColumnUtils, Common, Table } from '@/services'
 import { filterEmpty } from '@yaoapp/utils'
 
 import Service from './services'
@@ -27,7 +27,7 @@ export default class Model {
 		private service: Service,
 		private common: Common,
 		private table: Table,
-		private utils: Utils,
+		private column_utils: ColumnUtils,
 		public global: GlobalModel,
 		public namespace: Namespace
 	) {
@@ -43,8 +43,8 @@ export default class Model {
 		if (err) return
 
 		this.setting = res
-		this.filter_columns = this.utils.reduce(res.filter.columns, res.fileds.filter)
-		this.table_columns = this.utils.reduce(res.table.columns, res.fileds.table)
+		this.filter_columns = this.column_utils.reduce(res.filter.columns, res.fileds.filter)
+		this.table_columns = this.column_utils.reduce(res.table.columns, res.fileds.table)
 	}
 
 	async search(params?: TableType.SearchParams) {

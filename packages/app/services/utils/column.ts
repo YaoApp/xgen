@@ -3,7 +3,7 @@ import { injectable } from 'tsyringe'
 import type { Common, FormType } from '@/types'
 
 @injectable()
-export default class Index {
+export class ColumnUtils {
 	private handleNormalColumn(item: Common.BaseColumn, fileds: Common.Fileds) {
 		const handled_item = fileds[item.name]
 		const target_item = { ...item, ...handled_item }
@@ -37,7 +37,10 @@ export default class Index {
 	}
 
 	reduceSections(sections: Array<FormType.Section>, fileds: Common.Fileds) {
-		const getSectionColumns = (total: any, item: FormType.Column) => {
+		const getSectionColumns = (
+			total: Array<FormType.ColumnResult>,
+			item: FormType.Column
+		) => {
 			if (item.tabs) {
 				total.push({
 					width: item?.width || 24,
@@ -50,7 +53,7 @@ export default class Index {
 			return total
 		}
 
-		return sections.reduce((total: any, item) => {
+		return sections.reduce((total: Array<FormType.SectionResult>, item) => {
 			total.push({
 				title: item.title,
 				desc: item.desc,
