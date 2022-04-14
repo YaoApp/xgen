@@ -21,7 +21,7 @@ const Index = (props: IPropsRowItem) => {
 	}
 
 	return (
-		<Row gutter={24} wrap={true}>
+		<Row gutter={16} wrap={true}>
 			{columns.map((item, index: number) => {
 				if ('tabs' in item) {
 					return (

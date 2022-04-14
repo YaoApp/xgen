@@ -1,2 +1,83 @@
 ._local {
+	border: 1px solid var(--color_border);
+	border-radius: 6px;
+	background-color: var(--color_bg_menu);
+
+	:global {
+		.form_title_wrap {
+			padding: 12px 24px;
+			border-bottom: 1px solid var(--color_border);
+
+			.title {
+				color: var(--color_title);
+				font-weight: 600;
+				font-size: 18px;
+			}
+		}
+
+		.form_wrap {
+			padding: 36px;
+
+			.xgen-tabs {
+				.xgen-tabs-tab {
+					padding-top: 0;
+				}
+			}
+
+			.xgen-form-item {
+				display: flex;
+				flex-direction: column;
+				vertical-align: initial;
+
+				.xgen-form-item-label {
+					display: flex;
+
+					label {
+						margin-bottom: 8px;
+						height: auto;
+						color: var(--color_text);
+						font-weight: 700;
+						font-size: 12.6px;
+
+						&::after {
+							display: none;
+						}
+					}
+				}
+
+				.xgen-form-item-control {
+					min-height: auto;
+					height: auto;
+				}
+
+				&.xgen-form-item-with-help {
+					margin-bottom: 24px;
+				}
+
+				.xgen-input-number {
+					width: 100%;
+				}
+
+				.xgen-form-item-explain {
+					position: absolute;
+					top: -26px;
+					right: 2px;
+					font-size: 13px;
+				}
+
+				.xgen-input[disabled],
+				.xgen-input-disabled,
+				.xgen-picker.xgen-picker-disabled,
+				.xgen-select-disabled.xgen-select:not(.xgen-select-customize-input)
+					.xgen-select-selector {
+					background-color: var(--color_bg_nav);
+					color: var(--color_text);
+				}
+
+				.xgen-select-disabled.xgen-select-multiple .xgen-select-selection-item {
+					color: var(--color_text);
+				}
+			}
+		}
+	}
 }

@@ -1,3 +1,5 @@
+import clsx from 'clsx'
+
 import RowItem from '../RowItem'
 import styles from './index.less'
 
@@ -14,7 +16,7 @@ const Index = (props: IPropsSection) => {
 	}
 
 	return (
-		<div className='section w_100 border_box flex flex_column'>
+		<div className={clsx([styles._local, 'w_100 border_box flex flex_column'])}>
 			{item.title && (
 				<a
 					id={item.title}

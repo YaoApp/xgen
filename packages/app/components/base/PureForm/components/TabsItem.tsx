@@ -17,7 +17,7 @@ const Index = (props: IPropsTabsItem) => {
 
 	return (
 		<Col span={item.width}>
-			<Tabs className='w_100' style={{ padding: '0 8px' }} animated>
+			<Tabs className='w_100' animated>
 				{item.tabs.map((it, idx: number) => (
 					<TabPane tab={it.title} key={idx} forceRender>
 						<RowItem {...props_row_item} columns={it.columns}></RowItem>

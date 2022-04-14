@@ -54,20 +54,18 @@
 	.xgen-modal-mask {
 		background-color: rgba(255, 255, 255, 0.09);
 	}
-}
 
-.xgen-modal-mask {
-	backdrop-filter: blur(24px);
-}
-
-[data-theme='dark'] {
-	.custom_modal {
+      .custom_modal {
 		.xgen-modal {
 			&-header {
 				background-color: fade(white, 3%);
 			}
 		}
 	}
+}
+
+.xgen-modal-mask {
+	backdrop-filter: blur(24px);
 }
 
 .custom_modal {
@@ -103,6 +101,21 @@
 }
 
 // Popover
+[data-theme='dark'] {
+      .xgen-popover {
+            .xgen-popover-arrow {
+      
+                  .xgen-popover-arrow-content {
+                        background-color: var(--color_bg_nav);
+                  }
+            }
+
+            .xgen-popover-inner {
+                  background-color: var(--color_bg_nav);
+            }
+      }
+}
+
 .xgen-popover {
 	.xgen-popover-arrow {
 		overflow: visible;
@@ -111,12 +124,17 @@
 			width: 8px;
 			height: 8px;
 			border-radius: 2px;
+                  background-color: var(--color_bg_menu);
 			box-shadow: var(--shadow);
 
 			&::before {
 				display: none;
 			}
 		}
+	}
+
+	.xgen-popover-inner {
+		background-color: var(--color_bg_menu);
 	}
 }
 
@@ -142,4 +160,9 @@
 	.xgen-pagination-total-text {
 		margin-right: 15px;
 	}
+}
+
+// Select
+.xgen-select-dropdown{
+      background-color: var(--color_bg_menu);
 }

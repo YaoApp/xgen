@@ -23,7 +23,11 @@ const Index = (props: IPropsPureForm) => {
 	}
 
 	return (
-		<Form className={clsx([styles._local])} form={form} name={namespace}>
+		<Form
+			className={clsx([styles._local, 'w_100 border_box flex flex_column'])}
+			form={form}
+			name={namespace}
+		>
 			<div className='form_title_wrap w_100 border_box flex justify_between align_center'>
 				<span className='title no_wrap'>{title}</span>
 				<Actions {...props_actions}></Actions>
