@@ -25,7 +25,7 @@ const Index = (props: IPropsActions) => {
 					align={{ offset: [0, 6] }}
 					autoAdjustOverflow={false}
 				>
-					<div className='unfold_table_option_item' key={index}>
+					<div className='unfold_table_option_item'>
 						<a
 							className={clsx([
 								'icon_wrap border_box flex justify_center align_center clickable',

@@ -12,6 +12,10 @@ export declare namespace Component {
 		form?: { type: FormType }
 	}
 
+	interface FormComponent extends StackComponent {
+		onBack?: () => void
+	}
+
 	interface Props {
 		__namespace: string
 		__primary: string

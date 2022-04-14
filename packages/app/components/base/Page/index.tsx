@@ -17,7 +17,6 @@ const Index = (props: IProps) => {
 		className,
 		style,
 		title: props_title,
-		titlePrefix,
 		actions = [],
 		isChart
 	} = props
@@ -26,7 +25,7 @@ const Index = (props: IProps) => {
 	const visible_menu = global.visible_menu
 	const visible_header = global.visible_header
 	const menu_title = menu[global.current_nav]?.children?.[global.current_menu]?.name || ''
-	const title = usePageTitle(menu_title, titlePrefix, props_title)
+	const title = usePageTitle(menu_title, props_title)
 
 	useTitle(`${global.app_info.name} - ${menu[global.current_nav]?.name} - ${title}`)
 

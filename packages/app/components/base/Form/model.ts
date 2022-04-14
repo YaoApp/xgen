@@ -5,6 +5,7 @@ import { injectable } from 'tsyringe'
 import { GlobalModel } from '@/context/app'
 import { Namespace } from '@/models'
 import { ColumnUtils, Common, Table } from '@/services'
+import { history } from '@umijs/max'
 
 import Service from './services'
 
@@ -38,12 +39,14 @@ export default class Model {
 
 		this.setting = res
 		this.sections = this.column_utils.reduceSections(res.form.sections, res.fileds.form)
-
-		console.log(this.column_utils.reduceSections(res.form.sections, res.fileds.form))
 	}
 
 	async find() {
 		const { res, err } = await this.service.find<any>(this.model, this.id)
+
+		if (err) return
+
+		this.data = res
 	}
 
 	async save(data: TableType.SaveRequest) {
@@ -61,6 +64,10 @@ export default class Model {
 		if (err) return
 
 		message.success(this.global.locale_messages.messages.table.save.success)
+
+		if (!this.setting.operation.preset?.save?.back) return
+
+		history.back()
 	}
 
 	async delete(primary_value: number) {
@@ -78,6 +85,8 @@ export default class Model {
 		if (err) return
 
 		message.success(this.global.locale_messages.messages.table.delete.success)
+
+		history.back()
 	}
 
 	init(
@@ -103,11 +112,15 @@ export default class Model {
 
 	on() {
 		window.$app.Event.on(`${this.namespace.value}/find`, this.find)
+		window.$app.Event.on(`${this.namespace.value}/save`, this.save)
+		window.$app.Event.on(`${this.namespace.value}/delete`, this.delete)
 	}
 
 	off() {
 		this.global.stack.remove(this.namespace.value)
 
 		window.$app.Event.off(`${this.namespace.value}/find`, this.find)
+		window.$app.Event.off(`${this.namespace.value}/save`, this.save)
+		window.$app.Event.off(`${this.namespace.value}/delete`, this.delete)
 	}
 }

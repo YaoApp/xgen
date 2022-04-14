@@ -27,7 +27,7 @@ export default class Index {
 				String(option?.children).toLowerCase().indexOf(input.toLowerCase()) >= 0
 		}
 
-		if (this.raw_props.xProps.search) {
+		if (this.raw_props.xProps?.search) {
 			target['showSearch'] = true
 			target['filterOption'] = false
 			target['notFoundContent'] = null
@@ -43,7 +43,7 @@ export default class Index {
 	}
 
 	async getOptions() {
-		const remote = this.raw_props.xProps.remote
+		const remote = this.raw_props.xProps?.remote
 
 		if (!remote) return
 
@@ -90,6 +90,6 @@ export default class Index {
 	}
 
 	init() {
-		if (this.raw_props.xProps.remote) this.getOptions()
+		if (this.raw_props.xProps?.remote) this.getOptions()
 	}
 }

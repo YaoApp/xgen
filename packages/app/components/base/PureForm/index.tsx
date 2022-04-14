@@ -1,19 +1,41 @@
 import { Form } from 'antd'
 import clsx from 'clsx'
+import { useLayoutEffect } from 'react'
+
+import { getLocale } from '@umijs/max'
 
 import Actions from './components/Actions'
 import Sections from './components/Sections'
 import styles from './index.less'
+import locales from './locales'
 
 import type { IPropsPureForm, IPropsActions, IPropsSections } from './types'
 
 const { useForm } = Form
 
 const Index = (props: IPropsPureForm) => {
-	const { namespace, primary, data, sections, operation, title } = props
+	const { namespace, primary, type, id, data, sections, operation, title, onSave, onBack } =
+		props
 	const [form] = useForm()
+	const locale = getLocale()
+	const { setFieldsValue, resetFields } = form
+	const locale_messages = locales[locale]
 
-	const props_actions: IPropsActions = {}
+	useLayoutEffect(() => {
+		if (id === 0) return resetFields()
+
+		setFieldsValue(data)
+	}, [id, data])
+
+	const props_actions: IPropsActions = {
+		locale_messages: locale_messages.actions,
+		namespace,
+		primary,
+		type,
+		operation,
+		data,
+		onBack
+	}
 
 	const props_sections: IPropsSections = {
 		namespace,
@@ -27,8 +49,9 @@ const Index = (props: IPropsPureForm) => {
 			className={clsx([styles._local, 'w_100 border_box flex flex_column'])}
 			form={form}
 			name={namespace}
+			onFinish={onSave}
 		>
-			<div className='form_title_wrap w_100 border_box flex justify_between align_center'>
+			<div className='form_title_wrap w_100 border_box flex justify_between align_center relative'>
 				<span className='title no_wrap'>{title}</span>
 				<Actions {...props_actions}></Actions>
 			</div>

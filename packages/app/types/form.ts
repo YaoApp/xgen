@@ -1,7 +1,7 @@
 import type { Action, Common } from '@/types'
 
 export declare namespace FormType {
-      interface Section {
+	interface Section {
 		title?: string
 		desc?: string
 		columns: Array<Column>
@@ -11,23 +11,24 @@ export declare namespace FormType {
 		title?: string
 		desc?: string
 		columns: Array<ColumnResult>
-      }
-      
+	}
+
 	interface RawTab {
 		width?: number
 		tabs: Array<Section>
-      }
-      
+	}
+
 	interface TargetTab {
 		width?: number
 		tabs: Array<SectionResult>
-      }
-      
+	}
+
 	type Column = Common.BaseColumn | RawTab
 
 	type ColumnResult = Common.Column | TargetTab
 
 	interface Setting {
+		name: string
 		primary: string
 		operation: {
 			preset: {

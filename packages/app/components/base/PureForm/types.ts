@@ -1,17 +1,29 @@
 import type Model from '@/components/base/Form/model'
-import type { Common, FormType } from '@/types'
+import type { Common, FormType, Global } from '@/types'
 
 export interface IPropsPureForm {
 	parent: Model['parent']
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
+	id: Model['id']
+	type: Model['type']
 	data: Model['data']
 	sections: Model['sections']
 	operation: Model['setting']['operation']
 	title: string
+	onSave: (v: Global.AnyObject) => void
+	onBack: () => void
 }
 
-export interface IPropsActions {}
+export interface IPropsActions {
+	locale_messages: Locale[keyof Locale]['actions']
+	namespace: Model['namespace']['value']
+	primary: Model['setting']['primary']
+	type: Model['type']
+	operation: Model['setting']['operation']
+	data: Model['data']
+	onBack: IPropsPureForm['onBack']
+}
 
 export interface IPropsSections {
 	namespace: Model['namespace']['value']
@@ -46,4 +58,13 @@ export interface IPropsTabsItem {
 	primary: Model['setting']['primary']
 	data: Model['data']
 	item: FormType.TargetTab
+}
+
+export interface Locale {
+	[key: string]: {
+		actions: {
+			back: string
+			save: string
+		}
+	}
 }

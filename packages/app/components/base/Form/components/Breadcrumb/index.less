@@ -1,3 +1,37 @@
 ._local {
+	margin-bottom: 15px;
 	width: 100%;
+
+	:global {
+		.xgen-affix {
+			z-index: 101;
+			margin-left: 36px;
+			width: auto !important;
+		}
+
+		.bread {
+			display: flex;
+			align-items: center;
+			background-color: var(--color_bg);
+
+			&.stick {
+				width: 400px;
+				height: 60px;
+				font-weight: 600;
+				font-size: 20px;
+				line-height: 1;
+
+				.xgen-breadcrumb-link,
+				a {
+					color: var(--color_page_title);
+				}
+
+				a {
+					&:hover {
+						color: var(--color_main);
+					}
+				}
+			}
+		}
+	}
 }
