@@ -1,11 +1,17 @@
-import { Col, Row, Tabs } from 'antd'
-
+import RowItem from '../RowItem'
 import styles from './index.less'
 
-import type { IPropsSection } from '../../types'
+import type { IPropsSection, IPropsRowItem } from '../../types'
 
 const Index = (props: IPropsSection) => {
-	const { item } = props
+	const { namespace, primary, data, item } = props
+
+	const props_row_item: IPropsRowItem = {
+		namespace,
+		primary,
+		data,
+		columns: item.columns
+	}
 
 	return (
 		<div className='section w_100 border_box flex flex_column'>
@@ -19,14 +25,7 @@ const Index = (props: IPropsSection) => {
 					{item.desc && <span className='desc'>{item.desc}</span>}
 				</a>
 			)}
-			<Row gutter={24} wrap={true}>
-				{item.columns.map((it, idx) => {
-					if ('tabs' in it) {
-						return null
-					} else {
-					}
-				})}
-			</Row>
+			<RowItem {...props_row_item}></RowItem>
 		</div>
 	)
 }

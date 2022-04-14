@@ -1,12 +1,14 @@
 import { message } from 'antd'
 import { lazy, Suspense } from 'react'
 
+import type { Global } from '@/types'
+
 type ComponentsType = 'base' | 'edit' | 'view' | 'chart' | 'group' | 'option'
 
 interface IProps {
 	type: ComponentsType
 	name: string
-	props: { [key: string]: any }
+	props: Global.AnyObject
 }
 
 const Index = ({ type, name, props }: IProps) => {

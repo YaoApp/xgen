@@ -1,5 +1,5 @@
 import type Model from '@/components/base/Form/model'
-import type { FormType } from '@/types'
+import type { Common, FormType } from '@/types'
 
 export interface IPropsPureForm {
 	parent: Model['parent']
@@ -14,9 +14,36 @@ export interface IPropsPureForm {
 export interface IPropsActions {}
 
 export interface IPropsSections {
+	namespace: Model['namespace']['value']
+	primary: Model['setting']['primary']
+	data: Model['data']
 	sections: Model['sections']
 }
 
 export interface IPropsSection {
+	namespace: Model['namespace']['value']
+	primary: Model['setting']['primary']
+	data: Model['data']
 	item: FormType.SectionResult
+}
+
+export interface IPropsRowItem {
+	namespace: Model['namespace']['value']
+	primary: Model['setting']['primary']
+	data: Model['data']
+	columns: Array<FormType.ColumnResult>
+}
+
+export interface IPropsFormItem {
+	namespace: Model['namespace']['value']
+	primary: Model['setting']['primary']
+	data: Model['data']
+	item: Common.Column
+}
+
+export interface IPropsTabsItem {
+	namespace: Model['namespace']['value']
+	primary: Model['setting']['primary']
+	data: Model['data']
+	item: FormType.TargetTab
 }
