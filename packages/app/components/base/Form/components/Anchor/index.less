@@ -1,3 +1,22 @@
 ._local {
+	margin-top: 42px;
+	padding-left: 30px;
 	width: 100%;
+
+      @media screen and (max-width: 1500px) {
+		display: none;
+	}
+
+	:global {
+		.xgen-anchor {
+			font-size: 12px;
+
+			.xgen-anchor-ink {
+				&::before {
+                              width: 1px;
+					background-color: var(--color_border);
+				}
+			}
+		}
+	}
 }

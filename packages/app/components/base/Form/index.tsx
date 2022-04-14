@@ -6,6 +6,7 @@ import { container } from 'tsyringe'
 import { Page, PureForm } from '@/components'
 import { getLocale } from '@umijs/max'
 
+import Anchor from './components/Anchor'
 import Breadcrumb from './components/Breadcrumb'
 import { usePageTitle } from './hooks'
 import styles from './index.less'
@@ -14,7 +15,7 @@ import Model from './model'
 
 import type { Component } from '@/types'
 import type { IPropsPureForm } from '@/components/base/PureForm/types'
-import type { IPropsBreadcrumb } from './types'
+import type { IPropsBreadcrumb, IPropsAnchor } from './types'
 
 const Index = (props: Component.FormComponent) => {
 	const { parent, model, id, form, onBack } = props
@@ -40,6 +41,10 @@ const Index = (props: Component.FormComponent) => {
 		title
 	}
 
+	const props_anchor: IPropsAnchor = {
+		sections: x.setting.form.sections
+	}
+
 	const props_form: IPropsPureForm = {
 		parent,
 		namespace: x.namespace.value,
@@ -51,10 +56,11 @@ const Index = (props: Component.FormComponent) => {
 		operation: x.setting.operation,
 		title,
 		onSave(v) {
-			window.$app.Event.emit(`${x.namespace.value}/save`, {
-				...v,
-				[x.setting.primary]: x.id
-			})
+			const data = { ...v }
+
+			if (x.id !== 0) data[x.setting.primary] = x.id
+
+			window.$app.Event.emit(`${x.namespace.value}/save`, data)
 		},
 		onBack() {
 			if (onBack) return onBack()
@@ -65,15 +71,24 @@ const Index = (props: Component.FormComponent) => {
 
 	if (parent === 'Page') {
 		return (
-			<Page className={clsx([styles._local, 'w_100 flex flex_column'])} title={title}>
-				<Breadcrumb {...props_breadcrumb}></Breadcrumb>
-				<PureForm {...props_form}></PureForm>
+			<Page className={clsx([styles._local, 'w_100'])} title={title}>
+				<div className='flex relative'>
+					<div className='w_100 flex flex_column'>
+						<Breadcrumb {...props_breadcrumb}></Breadcrumb>
+						<PureForm {...props_form}></PureForm>
+					</div>
+					{x.setting.config?.showAnchor && (
+						<div className='anchor_wrap absolute top_0'>
+							<Anchor {...props_anchor}></Anchor>
+						</div>
+					)}
+				</div>
 			</Page>
 		)
 	}
 
 	return (
-		<div className={clsx([styles._local, 'w_100'])}>
+		<div className={styles._local}>
 			<PureForm {...props_form}></PureForm>
 		</div>
 	)

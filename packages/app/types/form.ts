@@ -44,5 +44,8 @@ export declare namespace FormType {
 		fileds: {
 			form: Common.Fileds
 		}
+		config: {
+			showAnchor?: boolean
+		}
 	}
 }
