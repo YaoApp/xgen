@@ -31,7 +31,8 @@ const Index = (props: IPropsPureForm) => {
 		locale_messages: locale_messages.actions,
 		namespace,
 		primary,
-		type,
+            type,
+            id,
 		operation,
 		data,
 		onBack

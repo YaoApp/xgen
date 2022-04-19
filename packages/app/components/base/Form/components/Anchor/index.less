@@ -3,7 +3,7 @@
 	padding-left: 30px;
 	width: 100%;
 
-      @media screen and (max-width: 1500px) {
+	@media screen and (max-width: 1500px) {
 		display: none;
 	}
 
@@ -13,10 +13,21 @@
 
 			.xgen-anchor-ink {
 				&::before {
-                              width: 1px;
-					background-color: var(--color_border);
+                              display: none;
 				}
 			}
+
+                  .xgen-anchor-link{
+                        padding-left: 8px;
+                  }
+
+                  .section_title {
+                        padding-left: 12px;
+
+                        &> a {
+                              font-weight: 600;
+                        }
+                  }
 		}
 	}
 }

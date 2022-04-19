@@ -10,7 +10,7 @@ import styles from './index.less'
 import type { IPropsActions } from '../../types'
 
 const Index = (props: IPropsActions) => {
-	const { locale_messages, namespace, primary, type, operation, data, onBack } = props
+	const { locale_messages, namespace, primary, type, id, operation, data, onBack } = props
 	const [stick, setStick] = useState<boolean | undefined>(false)
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled(data)
@@ -25,7 +25,7 @@ const Index = (props: IPropsActions) => {
 					stick && styles.stick
 				])}
 			>
-				{operation.actions?.length && (
+				{id !== 0 && operation.actions?.length && (
 					<div className='custom_actions flex align_center'>
 						{operation.actions.map((it, index) => (
 							<Button

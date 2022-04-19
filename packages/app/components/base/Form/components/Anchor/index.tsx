@@ -15,7 +15,7 @@ const Index = (props: IPropsAnchor) => {
 		<div className={clsx([styles._local])}>
 			<Anchor offsetTop={60} onClick={(e) => e.preventDefault()}>
 				{sections.map((item, index: number) => (
-					<Link title={item.title} href={`#${item.title}`} key={index}>
+					<Link className='section_title' title={item.title} href={`#${item.title}`} key={index}>
 						{item.columns.map((it, idx: number) => (
 							<AnchorItem item={it} key={idx}></AnchorItem>
 						))}
