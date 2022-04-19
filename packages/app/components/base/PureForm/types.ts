@@ -19,7 +19,7 @@ export interface IPropsActions {
 	locale_messages: Locale[keyof Locale]['actions']
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
-      type: Model[ 'type' ]
+	type: Model['type']
 	id: Model['id']
 	operation: Model['setting']['operation']
 	data: Model['data']
@@ -31,34 +31,39 @@ export interface IPropsSections {
 	primary: Model['setting']['primary']
 	data: Model['data']
 	sections: Model['sections']
+	disabled: boolean
 }
 
 export interface IPropsSection {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
 	data: Model['data']
-	item: FormType.SectionResult
+      item: FormType.SectionResult
+	disabled: boolean
 }
 
 export interface IPropsRowItem {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
 	data: Model['data']
-	columns: Array<FormType.ColumnResult>
+      columns: Array<FormType.ColumnResult>
+	disabled: boolean
 }
 
 export interface IPropsFormItem {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
 	data: Model['data']
-	item: Common.Column
+      item: Common.Column
+	disabled: boolean
 }
 
 export interface IPropsTabsItem {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
 	data: Model['data']
-	item: FormType.TargetTab
+      item: FormType.TargetTab
+	disabled: boolean
 }
 
 export interface Locale {

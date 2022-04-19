@@ -6,13 +6,14 @@ import styles from './index.less'
 import type { IPropsSection, IPropsRowItem } from '../../types'
 
 const Index = (props: IPropsSection) => {
-	const { namespace, primary, data, item } = props
+	const { namespace, primary, data, item, disabled } = props
 
 	const props_row_item: IPropsRowItem = {
 		namespace,
 		primary,
 		data,
-		columns: item.columns
+		columns: item.columns,
+		disabled
 	}
 
 	return (

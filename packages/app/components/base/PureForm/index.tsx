@@ -20,6 +20,7 @@ const Index = (props: IPropsPureForm) => {
 	const locale = getLocale()
 	const { setFieldsValue, resetFields } = form
 	const locale_messages = locales[locale]
+	const disabled = type === 'view'
 
 	useLayoutEffect(() => {
 		if (id === 0) return resetFields()
@@ -31,8 +32,8 @@ const Index = (props: IPropsPureForm) => {
 		locale_messages: locale_messages.actions,
 		namespace,
 		primary,
-            type,
-            id,
+		type,
+		id,
 		operation,
 		data,
 		onBack
@@ -42,12 +43,17 @@ const Index = (props: IPropsPureForm) => {
 		namespace,
 		primary,
 		data,
-		sections
+		sections,
+		disabled
 	}
 
 	return (
 		<Form
-			className={clsx([styles._local, 'w_100 border_box flex flex_column'])}
+			className={clsx([
+				styles._local,
+				disabled && styles.disabled,
+				'w_100 border_box flex flex_column'
+			])}
 			form={form}
 			name={namespace}
 			onFinish={onSave}

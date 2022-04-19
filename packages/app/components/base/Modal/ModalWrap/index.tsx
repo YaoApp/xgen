@@ -17,6 +17,7 @@ const Index = (props: IPropsModalWrap) => {
 				destroyOnClose
 				footer={false}
 				closable={false}
+				maskClosable={false}
 				bodyStyle={{ padding: 0 }}
 			>
 				{children}

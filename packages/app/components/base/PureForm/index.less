@@ -3,6 +3,26 @@
 	border-radius: 6px;
 	background-color: var(--color_bg_menu);
 
+	&.disabled {
+		:global {
+			.form_wrap {
+				.xgen-form-item {
+                              padding:0 18px;
+                              padding-top: 12px;
+                              padding-right: 6px;
+                              border-radius: var(--radius);
+                              background-color: var(--color_bg_nav);
+
+                              .xgen-form-item-label {
+                                    label {
+                                          margin-bottom: 0;
+                                    }
+                              }
+				}
+			}
+		}
+	}
+
 	:global {
 		.form_title_wrap {
 			padding: 12px 24px;
@@ -26,7 +46,7 @@
 		}
 
 		.form_wrap {
-			padding: 36px;
+			padding: 36px 36px 24px 36px;
 
 			.xgen-tabs {
 				.xgen-tabs-tab {
@@ -80,7 +100,8 @@
 				.xgen-picker.xgen-picker-disabled,
 				.xgen-select-disabled.xgen-select:not(.xgen-select-customize-input)
 					.xgen-select-selector {
-					background-color: var(--color_bg_nav);
+					padding-left: 0;
+					background-color: transparent;
 					color: var(--color_text);
 				}
 
