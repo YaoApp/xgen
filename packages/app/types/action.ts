@@ -2,6 +2,7 @@ import { Global } from '@/types'
 
 export declare namespace Action {
 	interface OpenModal {
+		width?: number
 		Form?: {
 			type: 'view' | 'edit'
 			model: string

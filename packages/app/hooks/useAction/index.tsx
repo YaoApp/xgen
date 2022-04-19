@@ -12,7 +12,7 @@ export interface OnAction {
 
 const onAction = ({ namespace, primary, data_item, it }: OnAction) => {
 	if (it.action?.['Common.openModal']) {
-		openModal({ namespace, primary, it })
+		openModal({ namespace, primary, data_item, it })
 	}
 
 	if (it.action?.['Common.historyPush']) {

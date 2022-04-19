@@ -117,7 +117,7 @@ export default class Model {
 	}
 
 	off() {
-		this.global.stack.remove(this.namespace.value)
+		this.global.stack.remove(this.namespace.paths.slice(-1)[0])
 
 		window.$app.Event.off(`${this.namespace.value}/find`, this.find)
 		window.$app.Event.off(`${this.namespace.value}/save`, this.save)

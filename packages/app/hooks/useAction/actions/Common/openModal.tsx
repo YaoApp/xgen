@@ -7,12 +7,12 @@ import { createModalContainer } from '../../utils'
 import type { IProps as IPropsModal } from '@/components/base/Modal'
 import type { OnAction } from '../../index'
 
-export default ({ namespace, primary, it }: Omit<OnAction, 'data_item'>) => {
+export default ({ namespace, primary, data_item, it }: OnAction) => {
 	const props_modal: IPropsModal = {
 		namespace,
-		primary,
+		id: data_item[primary],
 		config: it.action['Common.openModal']!
 	}
 
-	ReactDom.render(<Modal {...props_modal}></Modal>, createModalContainer())
+	ReactDom.render(<Modal {...props_modal}></Modal>, createModalContainer(namespace))
 }
