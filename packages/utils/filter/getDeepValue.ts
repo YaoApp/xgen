@@ -5,11 +5,17 @@ type Params = {
 }
 
 const Index = (param: Key | Params, data_item: any) => {
-      if (!param) return {}
-      
+	if (!param) return {}
+
 	if (typeof param === 'string') {
-		if (param.indexOf('.') !== -1) {
-			const indexs = param.split('.')
+		let real_param = param
+
+		if (param.indexOf(':') !== -1) {
+			real_param = param.replace(':', '')
+		}
+
+		if (real_param.indexOf('.') !== -1) {
+			const indexs = real_param.split('.')
 
 			return indexs.reduce((total: any, it: any) => {
 				total = total[it]
@@ -18,7 +24,7 @@ const Index = (param: Key | Params, data_item: any) => {
 			}, data_item)
 		}
 
-		return data_item[param]
+		return data_item[real_param]
 	} else {
 		return Object.keys(param).reduce((total: any, key: string) => {
 			if (param[key].indexOf(':') !== -1) {

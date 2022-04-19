@@ -1,5 +1,6 @@
 import type { FormItemProps } from 'antd'
 import type { CSSProperties } from 'react'
+import type { Common } from '@/types'
 
 export declare namespace Component {
 	type IdType = number
@@ -39,7 +40,7 @@ export declare namespace Component {
 
 	interface Request {
 		api: string
-		params?: { [key: string]: `:${string}` | string }
+		params?: { [key: string]: Common.DynamicValue }
 	}
 
 	interface Option {
