@@ -11,7 +11,7 @@ interface IProps extends Component.PropsViewComponent, ImageProps {}
 
 const Index = (props: IProps) => {
 	const { __value } = props
-	const is_local = __value.indexOf('https://') !== -1
+	const is_local = __value?.indexOf('https://') !== -1
 
 	if (Array.isArray(__value)) {
 		return (
