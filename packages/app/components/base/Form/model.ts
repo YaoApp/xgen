@@ -65,9 +65,13 @@ export default class Model {
 
 		message.success(this.global.locale_messages.messages.table.save.success)
 
+		if (this.parent === 'Modal') {
+			window.$app.Event.emit(`${this.namespace.parent}/search`)
+		}
+
 		if (!this.setting.operation.preset?.save?.back) return
 
-		history.back()
+		window.$app.Event.emit(`${this.namespace.value}/back`)
 	}
 
 	async delete(primary_value: number) {
@@ -86,14 +90,19 @@ export default class Model {
 
 		message.success(this.global.locale_messages.messages.table.delete.success)
 
-		history.back()
+		if (this.parent === 'Modal') {
+			window.$app.Event.emit(`${this.namespace.parent}/search`)
+		}
+
+		window.$app.Event.emit(`${this.namespace.value}/back`)
 	}
 
 	init(
 		parent: Component.StackComponent['parent'],
 		model: Component.StackComponent['model'],
 		id: Component.StackComponent['id'],
-		form: Component.StackComponent['form']
+		form: Component.StackComponent['form'],
+		onBack: Component.FormComponent['onBack']
 	) {
 		this.global.stack.push(`Form-${parent}-${model}`)
 
@@ -107,20 +116,22 @@ export default class Model {
 
 		if (Number(id) !== 0) this.find()
 
-		this.on()
+		this.on(onBack)
 	}
 
-	on() {
+	on(onBack: Component.FormComponent['onBack']) {
 		window.$app.Event.on(`${this.namespace.value}/find`, this.find)
 		window.$app.Event.on(`${this.namespace.value}/save`, this.save)
 		window.$app.Event.on(`${this.namespace.value}/delete`, this.delete)
+		window.$app.Event.on(`${this.namespace.value}/back`, onBack!)
 	}
 
-	off() {
-		this.global.stack.remove(this.namespace.paths.slice(-1)[0])
-
+	off(onBack: Component.FormComponent['onBack']) {
 		window.$app.Event.off(`${this.namespace.value}/find`, this.find)
 		window.$app.Event.off(`${this.namespace.value}/save`, this.save)
 		window.$app.Event.off(`${this.namespace.value}/delete`, this.delete)
+		window.$app.Event.off(`${this.namespace.value}/back`, onBack!)
+
+		this.global.stack.remove(this.namespace.paths.slice(-1)[0])
 	}
 }

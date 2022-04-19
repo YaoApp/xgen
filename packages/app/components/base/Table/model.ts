@@ -129,10 +129,10 @@ export default class Model {
 	}
 
 	off() {
-		this.global.stack.remove(this.namespace.paths.slice(-1)[0])
-
 		window.$app.Event.off(`${this.namespace.value}/search`, this.search)
 		window.$app.Event.off(`${this.namespace.value}/save`, this.save)
 		window.$app.Event.off(`${this.namespace.value}/delete`, this.delete)
+
+		this.global.stack.remove(this.namespace.paths.slice(-1)[0])
 	}
 }
