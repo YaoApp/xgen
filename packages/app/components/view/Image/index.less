@@ -1,0 +1,37 @@
+._local {
+	display: flex;
+	width: 100%;
+
+	:global {
+		.xgen-image {
+			display: flex !important;
+			margin-right: 8px;
+
+			&.xgen-image-error {
+				height: 15px !important;
+
+				.xgen-image-img {
+					width: auto;
+					height: 15px !important;
+					border: none;
+				}
+			}
+
+			.xgen-image-img {
+				box-sizing: border-box;
+				border: 1px solid var(--color_border);
+				border-radius: 6px;
+
+				object-fit: cover;
+			}
+
+			.xgen-image-mask {
+				border-radius: 6px;
+			}
+
+			.xgen-image-error {
+				display: flex;
+			}
+		}
+	}
+}

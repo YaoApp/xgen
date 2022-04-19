@@ -15,7 +15,7 @@ const Index = (props: IPropsActions) => {
 	const onAction = useAction()
 
 	return (
-		<div className={clsx([styles._local, 'flex flex_wrap justify_end'])}>
+		<div className={clsx([styles._local, 'flex justify_end'])}>
 			{actions.map((it, index) => (
 				<Tooltip
 					title={it.title}
