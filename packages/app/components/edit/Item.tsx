@@ -8,14 +8,14 @@ interface IProps extends FormItemProps {
 	children: JSX.Element
 	__bind: string
 	__name: string
-	hide_label?: boolean
+	hideLabel?: boolean
 }
 
 const Index = (props: IProps) => {
-	const { children, __bind, __name, hide_label, ...rest_props } = props
+	const { children, __bind, __name, hideLabel, ...rest_props } = props
 
 	const real_props = {
-		label: hide_label ? (
+		label: hideLabel ? (
 			''
 		) : (
 			<a id={__name} className='disabled' href={`#${__name}`}>
