@@ -9,17 +9,20 @@ import { getLocale } from '@umijs/max'
 import styles from './index.less'
 import Model from './model'
 
-import type { SelectType } from '@/types'
+import type { Remote } from '@/types'
+import type { SelectProps } from 'antd'
 
-const Index = (props: SelectType.IPropsSelect) => {
+interface IProps extends Remote.IProps, SelectProps {}
+
+const Index = (props: IProps) => {
 	const { __bind, __name, __data_item, itemProps, xProps, ...rest_props } = props
 	const [x] = useState(() => container.resolve(Model))
 	const is_cn = getLocale() === 'zh-CN'
 
 	useLayoutEffect(() => {
-		x.model.raw_props = props
+		x.remote.raw_props = props
 
-		x.model.init()
+		x.remote.init()
 	}, [])
 
 	return (

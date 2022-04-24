@@ -1,21 +1,37 @@
+import { debounce } from 'lodash-es'
 import { makeAutoObservable } from 'mobx'
 import { injectable } from 'tsyringe'
 
-import { Select } from '@/models'
+import { Remote } from '@/models'
 
 import type { SelectProps } from 'antd'
 
 @injectable()
 export default class Index {
 	get options(): SelectProps['options'] {
-		return this.model.options
+		return this.remote.options
 	}
 
 	get target_props() {
-		return this.model.select_props
+		const target: SelectProps = {}
+
+		if (this.remote.raw_props.showSearch) {
+			target['filterOption'] = (input, option) =>
+				String(option?.children).toLowerCase().indexOf(input.toLowerCase()) >= 0
+		}
+
+		if (this.remote.raw_props.xProps?.search) {
+			target['showSearch'] = true
+			target['filterOption'] = false
+			target['notFoundContent'] = null
+			target['defaultActiveFirstOption'] = false
+			target['onSearch'] = debounce(this.remote.searchOptions, 800, { leading: false })
+		}
+
+		return target
 	}
 
-	constructor(public model: Select) {
+	constructor(public remote: Remote) {
 		makeAutoObservable(this, {}, { autoBind: true })
 	}
 }
