@@ -4,20 +4,19 @@ import '@matrixage/atom.css/atom.min.css'
 import { ConfigProvider } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { Fragment, useLayoutEffect, useState } from 'react'
-import { Helmet, HelmetProvider } from 'react-helmet-async'
+import { HelmetProvider } from 'react-helmet-async'
 import store from 'store2'
 import { container } from 'tsyringe'
 
-import config from '@/config'
 import { GlobalContext, GlobalModel } from '@/context/app'
-import InitCss from '@/styles/preset/init'
 import { Outlet, useIntl, useLocation } from '@umijs/max'
 
 import Container from './components/Container'
+import Helmet from './components/Helmet'
 import Menu from './components/Menu'
 import Nav from './components/Nav'
 
-import type { IPropsNav, IPropsMenu, IPropsContainer } from './types'
+import type { IPropsHelmet, IPropsNav, IPropsMenu, IPropsContainer } from './types'
 
 const Index = () => {
 	const { messages } = useIntl()
@@ -40,7 +39,10 @@ const Index = () => {
 		global.stack.reset()
 	}, [pathname])
 
-	const name = global.app_info.name
+	const props_helmet: IPropsHelmet = {
+		theme: global.theme,
+		app_info: global.app_info
+	}
 
 	const props_nav: IPropsNav = {
 		theme: global.theme,
@@ -83,20 +85,7 @@ const Index = () => {
 
 	return (
 		<HelmetProvider>
-			<Helmet>
-				<link
-					rel='shortcut icon'
-					type='image/x-icon'
-					href={require('@/public/favicon.ico')}
-				/>
-				{global.theme === 'dark' && (
-					<link rel='stylesheet' href={`/theme/dark.css`} />
-				)}
-				<style>{InitCss}</style>
-				<title>
-					{name ? `${name} - ${global.app_info.description}` : config.name}
-				</title>
-			</Helmet>
+			<Helmet {...props_helmet}></Helmet>
 			<ConfigProvider prefixCls='xgen'>
 				<GlobalContext.Provider value={global}>
 					{is_login ? (

@@ -1,6 +1,11 @@
 import type { Locale, App } from '@/types'
 import type { GlobalModel } from '@/context/app'
 
+export interface IPropsHelmet{
+      theme: GlobalModel[ 'theme' ]
+	app_info: GlobalModel['app_info']
+}
+
 export interface IPropsNav {
 	theme: GlobalModel['theme']
 	avatar: GlobalModel['avatar']
