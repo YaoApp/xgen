@@ -18,6 +18,8 @@
 		}
 	}
 
+	.xgen-input-number[disabled],
+	.xgen-input-number-disabled,
 	.xgen-input[disabled],
 	.xgen-input-disabled,
 	.xgen-picker.xgen-picker-disabled,
@@ -25,6 +27,12 @@
 		padding-left: 0;
 		background-color: transparent;
 		color: var(--color_text);
+	}
+
+	.xgen-input-number-disabled {
+		input {
+			padding-left: 0;
+		}
 	}
 
 	.xgen-select-disabled.xgen-select-multiple .xgen-select-selection-item {
