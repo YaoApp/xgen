@@ -37,7 +37,6 @@ importers:
       axios: ^0.26.1
       babel-plugin-transform-typescript-metadata: ^0.3.2
       clsx: ^1.1.1
-      dayjs: ^1.11.0
       echarts: ^5.3.0
       eventemitter3: ^4.0.7
       less: ^4.1.2
@@ -45,6 +44,7 @@ importers:
       lodash-es: ^4.17.21
       mobx: ^6.4.2
       mobx-react-lite: ^3.3.0
+      moment: ^2.29.3
       mustache: ^4.2.0
       nprogress: ^0.2.0
       postcss: ^8.4.5
@@ -75,12 +75,12 @@ importers:
       antd: 4.19.5_sfoxds7t5ydpegc3knd667wn6m
       axios: 0.26.1
       clsx: 1.1.1
-      dayjs: 1.11.0
       echarts: 5.3.1
       eventemitter3: 4.0.7
       lodash-es: 4.17.21
       mobx: 6.5.0
       mobx-react-lite: 3.3.0_hmiq3xiffx2tpvk3y5rm3vgqxa
+      moment: 2.29.3
       mustache: 4.2.0
       nprogress: 0.2.0
       query-string: 7.1.1
@@ -2805,7 +2805,7 @@ packages:
       copy-to-clipboard: 3.3.1
       lodash: 4.17.21
       memoize-one: 6.0.0
-      moment: 2.29.1
+      moment: 2.29.3
       rc-cascader: 3.2.9_sfoxds7t5ydpegc3knd667wn6m
       rc-checkbox: 2.3.2_sfoxds7t5ydpegc3knd667wn6m
       rc-collapse: 3.1.2_sfoxds7t5ydpegc3knd667wn6m
@@ -2821,7 +2821,7 @@ packages:
       rc-motion: 2.4.6_sfoxds7t5ydpegc3knd667wn6m
       rc-notification: 4.5.7_sfoxds7t5ydpegc3knd667wn6m
       rc-pagination: 3.1.15_sfoxds7t5ydpegc3knd667wn6m
-      rc-picker: 2.6.5_sfoxds7t5ydpegc3knd667wn6m
+      rc-picker: 2.6.7_sfoxds7t5ydpegc3knd667wn6m
       rc-progress: 3.2.4_sfoxds7t5ydpegc3knd667wn6m
       rc-rate: 2.9.1_sfoxds7t5ydpegc3knd667wn6m
       rc-resize-observer: 1.2.0_sfoxds7t5ydpegc3knd667wn6m
@@ -6177,10 +6177,6 @@ packages:
     resolution: {integrity: sha512-pHZ/cySF00FVENDWIDzJyoObFahK6Eg4d0papqm6d7yMkxWTZ/S/csqJX1A3PsYy4t5k3z2QnlwuCfMW5lSEwA==}
     dev: false
 
-  /moment/2.29.1:
-    resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
-    dev: false
-
   /moment/2.29.3:
     resolution: {integrity: sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==}
     dev: false
@@ -7520,8 +7516,8 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /rc-picker/2.6.5_sfoxds7t5ydpegc3knd667wn6m:
-    resolution: {integrity: sha512-4pcg0PgEz4YXBfdwMuHIKaRWaADm3k3g0NtoPIgeGM+VVeOBdUowTx0YSXnT8mQEXcE9lWXX+ZX3biAzQwDM1w==}
+  /rc-picker/2.6.7_sfoxds7t5ydpegc3knd667wn6m:
+    resolution: {integrity: sha512-+P2Grt0r2kmCkw2XTp9ew3zTCwBCFEOQLd5BYs+hFaGDSSZwEWJtlbGXAGqWnAUMFx6JrCsKYkDKXDxAWlRz3A==}
     engines: {node: '>=8.x'}
     peerDependencies:
       react: '>=16.9.0'
