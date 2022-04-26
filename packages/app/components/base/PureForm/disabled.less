@@ -1,0 +1,65 @@
+.disabled_styles() {
+	padding: 0 18px;
+	padding-top: 12px;
+	padding-right: 6px;
+	border-radius: var(--radius);
+	background-color: var(--color_bg_nav);
+
+	.xgen-form-item-label {
+		label {
+			margin-bottom: 0;
+		}
+	}
+
+	.xgen-form-item-control-input {
+		.xgen-checkbox-group,
+		.xgen-radio-group {
+			padding: 0;
+		}
+	}
+
+	.xgen-input[disabled],
+	.xgen-input-disabled,
+	.xgen-picker.xgen-picker-disabled,
+	.xgen-select-disabled.xgen-select:not(.xgen-select-customize-input) .xgen-select-selector {
+		padding-left: 0;
+		background-color: transparent;
+		color: var(--color_text);
+	}
+
+	.xgen-select-disabled.xgen-select-multiple .xgen-select-selection-item {
+		color: var(--color_text);
+	}
+
+	.xgen-checkbox-disabled {
+		& + span {
+			color: var(--color_text);
+		}
+
+		&.xgen-checkbox-checked {
+			.xgen-checkbox-inner {
+				background-color: var(--color_main);
+
+				&::after {
+					border-color: white;
+				}
+			}
+		}
+	}
+
+	.xgen-radio-disabled {
+		& + span {
+			color: var(--color_text);
+		}
+
+		&.xgen-radio-checked {
+			.xgen-radio-inner {
+				border-color: var(--color_main) !important;
+
+				&::after {
+					background-color: var(--color_main);
+				}
+			}
+		}
+	}
+}

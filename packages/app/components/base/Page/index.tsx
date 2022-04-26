@@ -1,6 +1,7 @@
 import { useTitle } from 'ahooks'
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
+import { useCallback } from 'react'
 
 import { useGlobal } from '@/context/app'
 
@@ -12,14 +13,7 @@ import styles from './index.less'
 import type { IProps, IPropsLeft } from './types'
 
 const Index = (props: IProps) => {
-	const {
-		children,
-		className,
-		style,
-		title: props_title,
-		actions = [],
-		isChart
-	} = props
+	const { children, className, style, title: props_title, actions = [], isChart } = props
 	const global = useGlobal()
 	const menu = global.menu.slice()
 	const visible_menu = global.visible_menu
@@ -32,7 +26,7 @@ const Index = (props: IProps) => {
 	const props_left: IPropsLeft = {
 		visible_menu,
 		title,
-		toggleMenu: global.toggleMenu
+		toggleMenu: useCallback(global.toggleMenu, [])
 	}
 
 	return (
