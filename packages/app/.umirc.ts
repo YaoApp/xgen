@@ -11,7 +11,6 @@ export default defineConfig({
 	publicPath: config.base,
 	proxy,
 	links,
-	moment2dayjs: {},
 	antd: { import: false },
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
 	polyfill: { imports: ['core-js/features/promise/try'] },

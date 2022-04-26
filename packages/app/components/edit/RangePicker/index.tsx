@@ -18,8 +18,6 @@ const Custom = (props: TimeRangePickerProps) => {
 	useEffect(() => {
 		if (!props.value) return
 
-		console.log(props.value)
-
 		setValue([moment(props.value[0] as MomentInput), moment(props.value[1] as MomentInput)])
 	}, [props.value])
 
@@ -37,7 +35,13 @@ const Custom = (props: TimeRangePickerProps) => {
 		setValue(v)
 	}
 
-	return <RangePicker {...props} value={value} onChange={onChange}></RangePicker>
+	return (
+		<RangePicker
+			{...props}
+			value={value}
+			onChange={onChange}
+		></RangePicker>
+	)
 }
 
 const Index = (props: IProps) => {

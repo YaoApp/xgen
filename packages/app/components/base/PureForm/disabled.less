@@ -1,7 +1,6 @@
 .disabled_styles() {
 	padding: 0 18px;
 	padding-top: 12px;
-	padding-right: 6px;
 	border-radius: var(--radius);
 	background-color: var(--color_bg_nav);
 
@@ -26,7 +25,7 @@
 	.xgen-select-disabled .xgen-select-selector {
 		padding-left: 0;
 		background-color: transparent;
-            color: var(--color_text);
+		color: var(--color_text);
 	}
 
 	.xgen-input-number-disabled {
@@ -44,6 +43,10 @@
 
 	.xgen-select-disabled.xgen-select-multiple .xgen-select-selection-item {
 		color: var(--color_text);
+	}
+
+	.xgen-select-arrow {
+		display: none;
 	}
 
 	.xgen-checkbox-disabled {
@@ -75,6 +78,14 @@
 					background-color: var(--color_main);
 				}
 			}
+		}
+	}
+
+	.xgen-picker-disabled {
+		padding-right: 0;
+            
+		input {
+			color: var(--color_text);
 		}
 	}
 }
