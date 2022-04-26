@@ -118,12 +118,12 @@ importers:
   packages/utils:
     specifiers:
       '@types/react': ^18.0.5
-      fast-deep-equal: ^3.1.3
+      fast-equals: ^3.0.1
       parcel: ^2.3.2
       react: ^17.0.2
       react-dom: ^17.0.2
     dependencies:
-      fast-deep-equal: 3.1.3
+      fast-equals: 3.0.1
       parcel: 2.4.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -4676,6 +4676,10 @@ packages:
 
   /fast-deep-equal/3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
+    dev: false
+
+  /fast-equals/3.0.1:
+    resolution: {integrity: sha512-J9FxqqC9E/ja0C+SYhoG3Jl6pQuhP92HNcVC75xDEhB+GUzPnjEp3vMfPIxPprYZFfXS5hpVvvPCWUMiDSMS8Q==}
     dev: false
 
   /fast-glob/3.2.11:

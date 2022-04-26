@@ -3,7 +3,7 @@ import '@matrixage/atom.css/atom.min.css'
 
 import { ConfigProvider } from 'antd'
 import { observer } from 'mobx-react-lite'
-import { Fragment, useLayoutEffect, useState } from 'react'
+import { Fragment, useCallback, useLayoutEffect, useState } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
 import store from 'store2'
 import { container } from 'tsyringe'
@@ -52,16 +52,16 @@ const Index = () => {
 		menu: menu,
 		visible_nav: global.visible_nav,
 		current_nav: global.current_nav,
-		setTheme: global.setTheme,
-		setAvatar: global.setAvatar,
-		setCurrentNav(current: GlobalModel['current_nav']) {
+		setTheme: useCallback(global.setTheme, []),
+		setAvatar: useCallback(global.setAvatar, []),
+		setCurrentNav: useCallback((current: GlobalModel['current_nav']) => {
 			global.current_nav = current
 			global.current_menu = 0
 
 			store.set('current_nav', current)
 			store.set('current_menu', 0)
-		},
-		getUserMenu: global.getUserMenu
+		}, []),
+		getUserMenu: useCallback(global.getUserMenu, [])
 	}
 
 	const props_menu: IPropsMenu = {
@@ -71,11 +71,11 @@ const Index = () => {
 		title: menu[global.current_nav]?.name,
 		items: menu[global.current_nav]?.children || [],
 		current_menu: global.current_menu,
-		setCurrentMenu(current: GlobalModel['current_menu']) {
+		setCurrentMenu: useCallback((current: GlobalModel['current_menu']) => {
 			global.current_menu = current
 
 			store.set('current_menu', current)
-		}
+		},[])
 	}
 
 	const props_container: IPropsContainer = {
