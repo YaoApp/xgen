@@ -6,6 +6,7 @@ import { CheckOutlined } from '@ant-design/icons'
 import { hidePopover } from '@yaoapp/utils'
 
 import ViewContent from '../ViewContent'
+import getWidth from './getWidth'
 import styles from './index.less'
 
 import type { IPropsComponentCommon } from '../../types'
@@ -23,7 +24,7 @@ const Index = (props: IPropsComponentCommon) => {
 		__name: field_detail.name,
 		__data_item: data_item,
 		value: form_value,
-		style: { width: 240 }
+		style: { width: getWidth(field_detail.edit.type) }
 	}
 
 	const onFinish = (v: any) => {
@@ -37,7 +38,7 @@ const Index = (props: IPropsComponentCommon) => {
 
 	const edit_content = (
 		<Form
-			className='flex'
+			className='flex justify_between'
 			name={`form_table_td_${field_detail.bind}`}
 			initialValues={{ [field_detail.bind]: form_value }}
 			onFinish={onFinish}
@@ -63,7 +64,7 @@ const Index = (props: IPropsComponentCommon) => {
 	return (
 		<Popover
 			id='td_popover'
-			overlayClassName={clsx([styles._local, edit_type])}
+			overlayClassName={clsx([styles._local, styles[edit_type]])}
 			placement={edit_type === 'upload' ? 'bottom' : 'topLeft'}
 			trigger='click'
 			destroyTooltipOnHide={{ keepParent: false }}

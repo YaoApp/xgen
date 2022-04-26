@@ -7,17 +7,17 @@ import { getLocale } from '@umijs/max'
 
 import type { DatePickerProps } from 'antd'
 import type { Component } from '@/types'
-import type { Moment } from 'moment'
+import type { Moment, MomentInput } from 'moment'
 
 type IProps = DatePickerProps & Component.PropsEditComponent & {}
 
-const CustomDatePicker = (props: DatePickerProps) => {
+const Custom = (props: DatePickerProps) => {
 	const [value, setValue] = useState<Moment>()
 
 	useEffect(() => {
 		if (!props.value) return
 
-		setValue(moment(props.value as any))
+		setValue(moment(props.value as MomentInput))
 	}, [props.value])
 
 	const onChange = (v: any) => {
@@ -28,13 +28,7 @@ const CustomDatePicker = (props: DatePickerProps) => {
 		setValue(v)
 	}
 
-	return (
-		<DatePicker
-			{...props}
-			value={value}
-			onChange={onChange}
-		></DatePicker>
-	)
+	return <DatePicker {...props} value={value} onChange={onChange}></DatePicker>
 }
 
 const Index = (props: IProps) => {
@@ -43,10 +37,10 @@ const Index = (props: IProps) => {
 
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
-			<CustomDatePicker
+			<Custom
 				placeholder={`${is_cn ? '请选择' : 'Please select '}${__name}`}
 				{...rest_props}
-			></CustomDatePicker>
+			></Custom>
 		</Item>
 	)
 }
