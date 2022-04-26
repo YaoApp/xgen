@@ -1,0 +1,25 @@
+._local {
+	:global {
+		.xgen-select-selector {
+			.xgen-select-selection-placeholder {
+				line-height: var(--base_height);
+			}
+
+			.xgen-select-selection-item {
+				line-height: var(--base_height);
+			}
+		}
+	}
+}
+
+._dropdown {
+	padding: 0;
+	background-color: var(--color_bg_menu);
+
+	:global {
+		.xgen-select-item-option-selected:not(.xgen-select-item-option-disabled) {
+			background-color: transparent;
+			color: var(--color_main);
+		}
+	}
+}
