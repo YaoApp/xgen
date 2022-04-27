@@ -1,5 +1,5 @@
 import Block from '../components/Block'
-import { getRender, shouldGroupUpdate } from '../utils'
+import { getRender, shouldGroupUpdate, shouldViewUpdate } from '../utils'
 
 import type { Common } from '@/types'
 import type { IPropsPureTable, TableColumn } from '../types'
@@ -18,6 +18,10 @@ export default (
 		target_col_item['title'] = raw_col_item.name
 
 		if (raw_col_item.view?.components) {
+			target_col_item['shouldCellUpdate'] = (new_val, old_val) => {
+				return shouldGroupUpdate(new_val, old_val, raw_col_item)
+			}
+
 			target_col_item['render'] = (_, data_item) => (
 				<Block
 					namespace={namespace}
@@ -27,12 +31,11 @@ export default (
 					data_item={data_item}
 				></Block>
 			)
-
-			/** For composite components, extract dependent fields and manually manage whether to update */
-			target_col_item['shouldCellUpdate'] = (new_val, old_val) => {
-				return shouldGroupUpdate(new_val, old_val, raw_col_item)
-			}
 		} else {
+			target_col_item['shouldCellUpdate'] = (new_val, old_val) => {
+				return shouldViewUpdate(new_val, old_val, raw_col_item)
+			}
+
 			target_col_item['render'] = (_, data_item) => {
 				return getRender(namespace, primary, raw_col_item, data_item)
 			}

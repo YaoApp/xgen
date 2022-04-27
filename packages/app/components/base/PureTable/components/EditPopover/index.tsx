@@ -6,6 +6,7 @@ import { CheckOutlined } from '@ant-design/icons'
 import { hidePopover } from '@yaoapp/utils'
 
 import ViewContent from '../ViewContent'
+import getPlacement from './getPlacement'
 import getWidth from './getWidth'
 import styles from './index.less'
 
@@ -65,7 +66,7 @@ const Index = (props: IPropsComponentCommon) => {
 		<Popover
 			id='td_popover'
 			overlayClassName={clsx([styles._local, styles[edit_type]])}
-			placement={edit_type === 'upload' ? 'bottom' : 'topLeft'}
+			placement={getPlacement(field_detail.edit.type)}
 			trigger='click'
 			destroyTooltipOnHide={{ keepParent: false }}
 			content={edit_content}

@@ -7,20 +7,21 @@ import styles from './index.less'
 import type { Component } from '@/types'
 import type { ImageProps } from 'antd'
 
-interface IProps extends Component.PropsViewComponent, ImageProps {}
+interface IProps extends Component.PropsViewComponent, ImageProps { }
 
 const Index = (props: IProps) => {
 	const { __value } = props
-	const is_local = __value?.indexOf('https://') !== -1
 
 	if (Array.isArray(__value)) {
 		return (
 			<div className={styles._local}>
 				{__value.map((item: string, index: number) => (
 					<Image
-						{...props}
-						src={is_local ? getFileSrc(item) : item}
+						width={48}
+						height={48}
+						src={getFileSrc(item)}
 						key={index}
+						{...props}
 					></Image>
 				))}
 			</div>
@@ -29,7 +30,7 @@ const Index = (props: IProps) => {
 
 	return (
 		<div className={styles._local}>
-			<Image {...props} src={is_local ? getFileSrc(__value) : __value}></Image>
+			<Image width={48} height={48} src={getFileSrc(__value)} {...props}></Image>
 		</div>
 	)
 }
