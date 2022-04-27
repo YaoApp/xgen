@@ -11,7 +11,7 @@ import type { Moment, MomentInput } from 'moment'
 
 type IProps = DatePickerProps & Component.PropsEditComponent & {}
 
-const Custom = (props: DatePickerProps) => {
+const Custom = window.$app.memo((props: DatePickerProps) => {
 	const [value, setValue] = useState<Moment>()
 
 	useEffect(() => {
@@ -29,7 +29,7 @@ const Custom = (props: DatePickerProps) => {
 	}
 
 	return <DatePicker {...props} value={value} onChange={onChange}></DatePicker>
-}
+})
 
 const Index = (props: IProps) => {
 	const { __bind, __name, __data_item, itemProps, ...rest_props } = props

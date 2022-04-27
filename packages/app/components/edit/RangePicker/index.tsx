@@ -12,7 +12,7 @@ const { RangePicker } = DatePicker
 
 type IProps = TimeRangePickerProps & Component.PropsEditComponent & {}
 
-const Custom = (props: TimeRangePickerProps) => {
+const Custom = window.$app.memo((props: TimeRangePickerProps) => {
 	const [value, setValue] = useState<[Moment, Moment]>()
 
 	useEffect(() => {
@@ -35,14 +35,8 @@ const Custom = (props: TimeRangePickerProps) => {
 		setValue(v)
 	}
 
-	return (
-		<RangePicker
-			{...props}
-			value={value}
-			onChange={onChange}
-		></RangePicker>
-	)
-}
+	return <RangePicker {...props} value={value} onChange={onChange}></RangePicker>
+})
 
 const Index = (props: IProps) => {
 	const { __bind, __name, __data_item, itemProps, ...rest_props } = props

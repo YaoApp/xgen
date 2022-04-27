@@ -88,4 +88,28 @@
 			color: var(--color_text);
 		}
 	}
+
+      .xgen-input-disabled{
+            resize: none;
+      }
+
+      .xgen-tree{
+            padding-left: 0;
+
+            .xgen-tree-checkbox-disabled {
+                  & + span {
+                        color: var(--color_text);
+                  }
+      
+                  &.xgen-tree-checkbox-checked {
+                        .xgen-tree-checkbox-inner {
+                              background-color: var(--color_main);
+      
+                              &::after {
+                                    border-color: white;
+                              }
+                        }
+                  }
+            }
+      }
 }
