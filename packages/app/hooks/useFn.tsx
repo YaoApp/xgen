@@ -1,6 +1,6 @@
 import { useCallback, useLayoutEffect, useRef } from 'react'
 
-function hook<T extends Function>(fn: T) {
+export default <T extends Function>(fn: T) => {
 	const ref = useRef(fn)
 
 	useLayoutEffect(() => {
@@ -11,5 +11,3 @@ function hook<T extends Function>(fn: T) {
 		return ref.current(...args)
 	}, [])
 }
-
-export default hook
