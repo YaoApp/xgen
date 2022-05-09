@@ -36,11 +36,11 @@
             ]
       },
       "devDependencies": {
-            "@parcel/packager-ts": "^2.4.1",
-            "@parcel/transformer-typescript-types": "^2.4.1",
+            "@parcel/packager-ts": "^2.5.0",
+            "@parcel/transformer-typescript-types": "^2.5.0",
             "lint-staged": "^12.3.4",
             "prettier": "^2.6.2",
-            "turbo": "^1.2.4",
+            "turbo": "^1.2.8",
             "yorkie": "^2.0.0"
       }
 }
