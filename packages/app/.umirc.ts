@@ -10,7 +10,7 @@ export default defineConfig({
 	base: config.base,
 	publicPath: config.base,
 	proxy,
-	links,
+      links,
 	antd: { import: false },
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
 	polyfill: { imports: ['core-js/features/promise/try'] },

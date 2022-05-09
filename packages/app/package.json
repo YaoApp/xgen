@@ -1,5 +1,5 @@
 {
-      "name": "xgen",
+      "name": "app",
       "version": "1.0.0",
       "author": "Wendao",
       "description": "Next-generation low-code dashboard.",
@@ -50,7 +50,8 @@
             "store2": "^2.13.2",
             "tslib": "^2.4.0",
             "tsyringe": "^4.6.0",
-            "url-pattern": "^1.0.3"
+            "url-pattern": "^1.0.3",
+            "framer-motion": "^6.3.3"
       },
       "devDependencies": {
             "@types/node": "^17.0.31",
