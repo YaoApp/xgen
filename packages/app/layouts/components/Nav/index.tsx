@@ -21,7 +21,7 @@ const Index = (props: IPropsNav) => {
 		setCurrentNav,
 		getUserMenu
 	} = props
-      
+
 	const props_logo: IPropsLogo = {
 		logo: app_info.icons
 	}

@@ -1,20 +1,30 @@
 import { useTitle } from 'ahooks'
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
-import { useCallback } from 'react'
 
 import { useGlobal } from '@/context/app'
+import { useFn, useMounted } from '@/hooks'
 
 import Action from './components/Action'
 import Left from './components/Left'
+import Loading from './components/Loading'
 import { usePageTitle } from './hooks'
 import styles from './index.less'
 
-import type { IProps, IPropsLeft } from './types'
+import type { IProps, IPropsLoading, IPropsLeft } from './types'
 
 const Index = (props: IProps) => {
-	const { children, className, style, title: props_title, actions = [], isChart } = props
+	const {
+		children,
+		className,
+		style,
+		loading,
+		title: props_title,
+		actions = [],
+		isChart
+	} = props
 	const global = useGlobal()
+	const mounted = useMounted()
 	const menu = global.menu.slice()
 	const visible_menu = global.visible_menu
 	const visible_header = global.visible_header
@@ -23,31 +33,43 @@ const Index = (props: IProps) => {
 
 	useTitle(`${global.app_info.name} - ${menu[global.current_nav]?.name} - ${title}`)
 
+	const props_loading: IPropsLoading = {
+		loading: loading && !mounted
+	}
+
 	const props_left: IPropsLeft = {
 		visible_menu,
 		title,
-		toggleMenu: useCallback(global.toggleMenu, [])
+		toggleMenu: useFn(global.toggleMenu)
 	}
 
 	return (
 		<div
-			className={clsx([styles._local, className, isChart ? styles.chart : ''])}
+			className={clsx([
+				styles._local,
+				className,
+				isChart ? styles.chart : '',
+				'relative'
+			])}
 			style={style}
 		>
-			<header
-				className={clsx(
-					'header w_100 border_box flex justify_between align_center',
-					!visible_header ? 'invisible' : ''
-				)}
-			>
-				<Left {...props_left}></Left>
-				<div className='options_wrap flex align_center'>
-					{actions?.map((item, index) => (
-						<Action {...item} key={index}></Action>
-					))}
-				</div>
-			</header>
-			<div className='page_wrap'>{children}</div>
+			<Loading {...props_loading}></Loading>
+			<div className='page_content_wrap flex flex_column'>
+				<header
+					className={clsx(
+						'header w_100 border_box flex justify_between align_center',
+						!visible_header ? 'invisible' : ''
+					)}
+				>
+					<Left {...props_left}></Left>
+					<div className='options_wrap flex align_center'>
+						{actions?.map((item, index) => (
+							<Action {...item} key={index}></Action>
+						))}
+					</div>
+				</header>
+				<div className='page_wrap'>{children}</div>
+			</div>
 		</div>
 	)
 }

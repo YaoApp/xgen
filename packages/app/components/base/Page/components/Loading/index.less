@@ -1,0 +1,37 @@
+@keyframes spinner {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+._local {
+	background-color: var(--color_bg);
+
+	:global {
+		.inner {
+			width: 48px;
+			height: 48px;
+			border-top:  @border;
+			border-right: @border;
+			border-bottom: @border;
+			border-left: 2px solid var(--color_main);
+			border-radius: 50%;
+
+			@border:2px solid rgba(var(--r), var(--g), var(--b), 0.15);
+
+			:local {
+				animation: spinner 600ms infinite linear;
+			}
+		}
+
+		.text {
+			height: 20px;
+			letter-spacing: 2px;
+			font-size: 12px;
+		}
+	}
+}

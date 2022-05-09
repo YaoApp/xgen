@@ -1,9 +1,10 @@
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
-import { useCallback, useLayoutEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
 import { Page, PureForm } from '@/components'
+import { useFn } from '@/hooks'
 import { getLocale } from '@umijs/max'
 
 import Anchor from './components/Anchor'
@@ -25,11 +26,11 @@ const Index = (props: Component.FormComponent) => {
 	const page_title_prefix = usePageTitle(locale_messages, id!, form!.type)
 	const title = page_title_prefix + x.setting.name
 
-	const onFormBack = useCallback(() => {
+	const onFormBack = useFn(() => {
 		if (onBack) return onBack()
 
 		history.back()
-	}, [onBack])
+	})
 
 	useLayoutEffect(() => {
 		x.init(parent, model, id, form, onFormBack)

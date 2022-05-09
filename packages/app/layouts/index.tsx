@@ -3,12 +3,13 @@ import '@matrixage/atom.css/atom.min.css'
 
 import { ConfigProvider } from 'antd'
 import { observer } from 'mobx-react-lite'
-import { Fragment, useCallback, useLayoutEffect, useState } from 'react'
+import { Fragment, useLayoutEffect, useState } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
 import store from 'store2'
 import { container } from 'tsyringe'
 
 import { GlobalContext, GlobalModel } from '@/context/app'
+import { useFn } from '@/hooks'
 import { Outlet, useIntl, useLocation } from '@umijs/max'
 
 import Container from './components/Container'
@@ -33,7 +34,7 @@ const Index = () => {
 		return () => {
 			global.stack.off()
 		}
-	}, [])
+	})
 
 	useLayoutEffect(() => {
 		global.stack.reset()
@@ -52,16 +53,16 @@ const Index = () => {
 		menu: menu,
 		visible_nav: global.visible_nav,
 		current_nav: global.current_nav,
-		setTheme: useCallback(global.setTheme, []),
-		setAvatar: useCallback(global.setAvatar, []),
-		setCurrentNav: useCallback((current: GlobalModel['current_nav']) => {
+		setTheme: useFn(global.setTheme),
+		setAvatar: useFn(global.setAvatar),
+		setCurrentNav: useFn((current: GlobalModel['current_nav']) => {
 			global.current_nav = current
 			global.current_menu = 0
 
 			store.set('current_nav', current)
 			store.set('current_menu', 0)
-		}, []),
-		getUserMenu: useCallback(global.getUserMenu, [])
+		}),
+		getUserMenu: useFn(global.getUserMenu)
 	}
 
 	const props_menu: IPropsMenu = {
@@ -71,11 +72,11 @@ const Index = () => {
 		title: menu[global.current_nav]?.name,
 		items: menu[global.current_nav]?.children || [],
 		current_menu: global.current_menu,
-		setCurrentMenu: useCallback((current: GlobalModel['current_menu']) => {
+		setCurrentMenu: useFn((current: GlobalModel['current_menu']) => {
 			global.current_menu = current
 
 			store.set('current_menu', current)
-		},[])
+		})
 	}
 
 	const props_container: IPropsContainer = {

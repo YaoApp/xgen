@@ -12,10 +12,15 @@ export interface Action {
 export interface IProps {
 	children: React.ReactNode
 	className?: string
-      style?: React.CSSProperties
+	style?: React.CSSProperties
 	title?: string
+	loading?: boolean
 	actions?: Array<Action>
 	isChart?: boolean
+}
+
+export interface IPropsLoading {
+	loading: boolean | undefined
 }
 
 export interface IPropsLeft {
