@@ -14,13 +14,8 @@ export interface IProps {
 	className?: string
 	style?: React.CSSProperties
 	title?: string
-	loading?: boolean
 	actions?: Array<Action>
 	isChart?: boolean
-}
-
-export interface IPropsLoading {
-	loading: boolean | undefined
 }
 
 export interface IPropsLeft {

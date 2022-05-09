@@ -24,6 +24,7 @@ export default class GlobalModel {
 	visible_nav: boolean = true
 	visible_menu: boolean = true
 	visible_header: boolean = true
+	loading: boolean = false
 
 	constructor(private service: Service, public stack: Stack) {
 		makeAutoObservable(this, {}, { autoBind: true })

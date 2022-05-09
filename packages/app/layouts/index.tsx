@@ -14,10 +14,11 @@ import { Outlet, useIntl, useLocation } from '@umijs/max'
 
 import Container from './components/Container'
 import Helmet from './components/Helmet'
+import Loading from './components/Loading'
 import Menu from './components/Menu'
 import Nav from './components/Nav'
 
-import type { IPropsHelmet, IPropsNav, IPropsMenu, IPropsContainer } from './types'
+import type { IPropsHelmet, IPropsLoading, IPropsNav, IPropsMenu, IPropsContainer } from './types'
 
 const Index = () => {
 	const { messages } = useIntl()
@@ -43,6 +44,12 @@ const Index = () => {
 	const props_helmet: IPropsHelmet = {
 		theme: global.theme,
 		app_info: global.app_info
+	}
+
+	const props_loading: IPropsLoading = {
+		loading: global.loading,
+		visible_nav: global.visible_nav,
+		visible_menu: global.visible_menu
 	}
 
 	const props_nav: IPropsNav = {
@@ -93,6 +100,7 @@ const Index = () => {
 						<Outlet />
 					) : (
 						<Fragment>
+							<Loading {...props_loading}></Loading>
 							<Nav {...props_nav}></Nav>
 							<Menu {...props_menu}></Menu>
 							<Container {...props_container}>

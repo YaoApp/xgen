@@ -9,7 +9,7 @@ import { filterEmpty } from '@yaoapp/utils'
 
 import Service from './services'
 
-import type { TableType, Common as CommonType } from '@/types'
+import type { Global, TableType, Common as CommonType } from '@/types'
 import type { Component } from '@/types'
 
 @injectable()
@@ -22,6 +22,7 @@ export default class Model {
 	table_columns = [] as Array<CommonType.Column>
 	pagination = { page: 1, pagesize: 10, total: 0 } as Omit<TableType.Data, 'data'>
 	search_params = {} as TableType.SearchParams
+	rendered = false
 
 	constructor(
 		private service: Service,
@@ -42,12 +43,15 @@ export default class Model {
 
 		if (err) return
 
+		this.rendered = true
 		this.setting = res
 		this.filter_columns = this.column_utils.reduce(res.filter.columns, res.fileds.filter)
 		this.table_columns = this.column_utils.reduce(res.table.columns, res.fileds.table)
 	}
 
 	async search(params?: TableType.SearchParams) {
+		if (this.rendered === false) this.global.loading = true
+
 		const hideLoading = message.loading(this.global.locale_messages.messages.table.search)
 
 		this.search_params = { ...this.search_params, ...filterEmpty(params) }
@@ -56,6 +60,8 @@ export default class Model {
 			this.model,
 			this.search_params
 		)
+
+		this.global.loading = false
 
 		hideLoading()
 

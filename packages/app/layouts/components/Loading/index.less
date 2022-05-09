@@ -9,13 +9,26 @@
 }
 
 ._local {
+	margin-left: 320px;
+	width: calc(100vw - 80px - 240px);
 	background-color: var(--color_bg);
+	transition: all ease 0.3s;
+
+	&.no_menu {
+		margin-left: 80px;
+		width: calc(100vw - 80px);
+	}
+
+	&.no_nav {
+		margin-left: 0;
+		width: 100vw;
+	}
 
 	:global {
 		.inner {
 			width: 48px;
 			height: 48px;
-			border-top:  @border;
+			border-top: @border;
 			border-right: @border;
 			border-bottom: @border;
 			border-left: 2px solid var(--color_main);
@@ -32,6 +45,7 @@
 			height: 20px;
 			letter-spacing: 2px;
 			font-size: 12px;
+                  opacity: 0.3;
 		}
 	}
 }

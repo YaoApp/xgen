@@ -15,7 +15,7 @@ const Index = (props: IPropsContainer & { children: React.ReactNode }) => {
 			className={clsx([
 				styles._local,
 				!visible_menu ? styles.no_menu : '',
-				!visible_menu && !visible_nav ? styles.no_left_nav : '',
+				!visible_menu && !visible_nav ? styles.no_nav : '',
 				history.location.pathname.indexOf('/iframe') !== -1 ? styles.iframe : ''
 			])}
 		>

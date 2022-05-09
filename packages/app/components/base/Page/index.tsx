@@ -3,28 +3,25 @@ import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 
 import { useGlobal } from '@/context/app'
-import { useFn, useMounted } from '@/hooks'
+import { useFn } from '@/hooks'
 
 import Action from './components/Action'
 import Left from './components/Left'
-import Loading from './components/Loading'
 import { usePageTitle } from './hooks'
 import styles from './index.less'
 
-import type { IProps, IPropsLoading, IPropsLeft } from './types'
+import type { IProps, IPropsLeft } from './types'
 
 const Index = (props: IProps) => {
 	const {
 		children,
 		className,
 		style,
-		loading,
 		title: props_title,
 		actions = [],
 		isChart
 	} = props
 	const global = useGlobal()
-	const mounted = useMounted()
 	const menu = global.menu.slice()
 	const visible_menu = global.visible_menu
 	const visible_header = global.visible_header
@@ -32,10 +29,6 @@ const Index = (props: IProps) => {
 	const title = usePageTitle(menu_title, props_title)
 
 	useTitle(`${global.app_info.name} - ${menu[global.current_nav]?.name} - ${title}`)
-
-	const props_loading: IPropsLoading = {
-		loading: loading && !mounted
-	}
 
 	const props_left: IPropsLeft = {
 		visible_menu,
@@ -53,7 +46,6 @@ const Index = (props: IProps) => {
 			])}
 			style={style}
 		>
-			<Loading {...props_loading}></Loading>
 			<div className='page_content_wrap flex flex_column'>
 				<header
 					className={clsx(

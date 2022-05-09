@@ -1,9 +1,15 @@
 import type { Locale, App } from '@/types'
 import type { GlobalModel } from '@/context/app'
 
-export interface IPropsHelmet{
-      theme: GlobalModel[ 'theme' ]
+export interface IPropsHelmet {
+	theme: GlobalModel['theme']
 	app_info: GlobalModel['app_info']
+}
+
+export interface IPropsLoading {
+	loading: boolean
+	visible_nav: GlobalModel['visible_nav']
+	visible_menu: GlobalModel['visible_menu']
 }
 
 export interface IPropsNav {
