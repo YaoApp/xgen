@@ -1,5 +1,3 @@
-export const toFirstUpperCase = (str: string) => {
-	if (!str) return ''
+export { default as getCurrentMenuItem } from './getCurrentMenuItem'
+export { default as toFirstUpperCase } from './toFirstUpperCase'
 
-	return str.charAt(0).toUpperCase() + str.slice(1)
-}

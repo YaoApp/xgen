@@ -50,7 +50,7 @@ export default class Model {
 	}
 
 	async search(params?: TableType.SearchParams) {
-		if (this.rendered === false) this.global.loading = true
+		if (this.parent === 'Page' && this.rendered === false) this.global.loading = true
 
 		const hideLoading = message.loading(this.global.locale_messages.messages.table.search)
 

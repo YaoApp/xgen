@@ -3,7 +3,7 @@ import qs from 'query-string'
 import store from 'store2'
 import { injectable } from 'tsyringe'
 
-import { Select } from '@/services'
+import { Remote } from '@/services'
 import { getDeepValue } from '@yaoapp/utils'
 
 import type { Component, Global } from '@/types'
@@ -13,7 +13,7 @@ export default class Index {
 	raw_props = {} as Global.AnyObject
 	options = [] as Array<any>
 
-	constructor(private service: Select) {
+	constructor(private service: Remote) {
 		makeAutoObservable(this, {}, { autoBind: true })
 	}
 
@@ -64,7 +64,7 @@ export default class Index {
 		this.options = res
 	}
 
-      init() {
+	init() {
 		if (this.raw_props.options) this.options = this.raw_props.options
 		if (this.raw_props.xProps?.remote) this.getOptions()
 	}

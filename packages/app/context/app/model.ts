@@ -82,5 +82,5 @@ export default class GlobalModel {
 
 	toggleMenu() {
 		this.visible_menu = !this.visible_menu
-	}
+      }
 }

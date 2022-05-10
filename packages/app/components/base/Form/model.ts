@@ -19,7 +19,7 @@ export default class Model {
 	setting = {} as FormType.Setting
 	data = {} as Global.AnyObject
 	sections = [] as Array<FormType.SectionResult>
-      rendered = false
+	rendered = false
 
 	constructor(
 		private service: Service,
@@ -35,20 +35,20 @@ export default class Model {
 	async getSetting() {
 		const { res, err } = await this.common.getSetting<FormType.Setting>('form', this.model)
 
-            if (err) return
-            
+		if (err) return
+
 		this.rendered = true
 		this.setting = res
 		this.sections = this.column_utils.reduceSections(res.form.sections, res.fileds.form)
 	}
 
-      async find() {
-		if (this.rendered === false) this.global.loading = true
-            
+	async find() {
+		if (this.parent === 'Page' && this.rendered === false) this.global.loading = true
+
 		const { res, err } = await this.service.find<any>(this.model, this.id)
 
-            if (err) return
-            
+		if (err) return
+
 		this.global.loading = false
 		this.data = res
 	}

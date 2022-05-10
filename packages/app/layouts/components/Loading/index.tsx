@@ -20,7 +20,7 @@ const Index = (props: IPropsLoading) => {
 					])}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
-					transition={{ duration: 0.45, ease: 'backOut' }}
+					transition={{ delay: 0.18, duration: 0.15, ease: 'backOut' }}
 				>
 					<div className='inner mb_20' />
 					<div className='text'>loading</div>

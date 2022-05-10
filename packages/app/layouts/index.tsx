@@ -28,8 +28,9 @@ const Index = () => {
 	const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
 
 	useLayoutEffect(() => {
-		global.locale_messages = messages
+		window.$global = global
 
+		global.locale_messages = messages
 		global.stack.on()
 
 		return () => {
@@ -38,6 +39,7 @@ const Index = () => {
 	})
 
 	useLayoutEffect(() => {
+		global.loading = false
 		global.stack.reset()
 	}, [pathname])
 
