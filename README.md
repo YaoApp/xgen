@@ -4,8 +4,6 @@
 
 Before you run dev, you must generate theme css files to public by `pnpm run build:theme`.
 
-.umirc.ts `mfsu: false` for packages debugging `pnpm run dev:all`.
-
 ## What`s new
 
 - umi 4
@@ -44,7 +42,7 @@ Of course, the configuration of the base components is mostly unchanged.
 - [x] Multilingual support
 - [x] Design error capture based on EventListner
 - [x] Table rebuilding
-- [ ] Form rebuilding
+- [x] Form rebuilding
 - [ ] Design of extension components based on React/Vue/Lit Element
 - [ ] JSON field prompt vscode json.$schema
 
