@@ -7,9 +7,8 @@ export const onRouteChange = ({ location }: any) => {
 	const item = getCurrentMenuItem(menu, location.pathname)
 
 	if (!window.$global) return
-	if (!item) return
 
-	if (item.path.indexOf('/0/edit') !== -1) {
+	if (item?.path.indexOf('/0/edit') !== -1) {
 		window.$global.loading = true
 	}
 

@@ -39,7 +39,6 @@ const Index = () => {
 	})
 
 	useLayoutEffect(() => {
-		global.loading = false
 		global.stack.reset()
 	}, [pathname])
 

@@ -118,7 +118,11 @@ export default class Model {
 
 		this.getSetting()
 
-		if (Number(id) !== 0) this.find()
+		if (Number(id) === 0) {
+			this.global.loading = false
+		} else {
+			this.find()
+		}
 
 		this.on(onBack)
 	}
