@@ -39,18 +39,3 @@ input:-internal-autofill-selected {
 a {
 	color: var(--color_text);
 }
-
-#nprogress {
-	position: relative;
-	z-index: 9999999;
-}
-
-#nprogress .bar {
-	border-radius: 2px;
-	background-color: var(--color_main);
-}
-
-#nprogress .spinner-icon {
-	border-top-color: var(--color_main);
-	border-left-color: var(--color_main);
-}
