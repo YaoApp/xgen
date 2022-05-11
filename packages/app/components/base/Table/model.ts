@@ -9,7 +9,7 @@ import { filterEmpty } from '@yaoapp/utils'
 
 import Service from './services'
 
-import type { Global, TableType, Common as CommonType } from '@/types'
+import type { TableType, Common as CommonType } from '@/types'
 import type { Component } from '@/types'
 
 @injectable()
