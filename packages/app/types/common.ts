@@ -2,6 +2,11 @@ export declare namespace Common {
 	interface BaseColumn {
 		name: string
 		width?: number
+      }
+      
+      interface WideColumn {
+		name: string
+		width: number
 	}
 
 	interface ViewComponents {

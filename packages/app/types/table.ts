@@ -4,13 +4,13 @@ import type { Action, Common } from '@/types'
 export declare namespace TableType {
 	interface Filter {
 		btnAddText: string
-		columns: Array<Common.BaseColumn>
+		columns: Array<Common.WideColumn>
 	}
 
 	interface Header {
 		preset: {
 			batch: {
-				columns: Array<Common.BaseColumn>
+				columns: Array<Common.WideColumn>
 				delete: boolean
 			}
 			import: {

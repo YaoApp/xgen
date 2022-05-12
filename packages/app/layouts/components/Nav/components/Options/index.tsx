@@ -85,7 +85,7 @@ const Index = (props: IPropsOptions) => {
 				overlayClassName='popover_user_wrap'
 				trigger='click'
 				placement='rightTop'
-				align={{ offset: [24, -6] }}
+				align={{ offset: [20, -6] }}
 				content={
 					<UserModalContent {...props_user_modal_content}></UserModalContent>
 				}
