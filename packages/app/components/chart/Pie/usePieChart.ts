@@ -2,7 +2,7 @@ import * as echarts from 'echarts/core'
 import { useLayoutEffect } from 'react'
 import store from 'store2'
 
-import { tooltip } from '@/components/chart/theme/common'
+import dark_theme from '@/components/chart/theme/dark'
 import light_theme from '@/components/chart/theme/light'
 
 import type { RefObject } from 'react'
@@ -52,11 +52,9 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 			})
 		})
 
-		const chart = echarts.init(ref.current, is_dark ? 'dark' : light_theme)
+		const chart = echarts.init(ref.current, is_dark ? dark_theme : light_theme)
 
-		const option: Option = {
-			tooltip: is_dark ? tooltip : {},
-			backgroundColor: 'transparent',
+            const option: Option = {
 			title: props.hide_label
 				? {
 						left: 'left',
@@ -70,7 +68,8 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 				: undefined,
 			aria: {
 				decal: { show: true }
-			},
+                  },
+                  tooltip: {},
 			legend: {
 				orient: 'vertical',
 				left: 'left',

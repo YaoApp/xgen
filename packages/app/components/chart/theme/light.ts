@@ -1,4 +1,12 @@
 export default {
+      tooltip: {
+            textStyle: {
+                  color: '#111',
+                  fontSize: 12
+            },
+            backgroundColor: '#f9f9f9',
+            borderRadius: 6
+      },
 	color: ['#516b91', '#59c4e6', '#edafda', '#93b7e3', '#a5e7f0', '#cbb0e3'],
 	textStyle: {},
 	title: {
@@ -218,22 +226,6 @@ export default {
 	legend: {
 		textStyle: {
 			color: '#999999'
-		}
-	},
-	tooltip: {
-		textStyle: {
-			fontSize: 12
-		},
-		borderRadius: 6,
-		axisPointer: {
-			lineStyle: {
-				color: '#cccccc',
-				width: 1
-			},
-			crossStyle: {
-				color: '#cccccc',
-				width: 1
-			}
 		}
 	},
 	timeline: {
