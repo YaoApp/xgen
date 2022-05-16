@@ -5,7 +5,8 @@ export interface IPropsFilter {
 	model: string
 	columns: Array<Common.Column>
 	btnAddText?: TableType.Setting['filter']['btnAddText']
-	onAdd: () => void
+	isChart?: boolean
+	onAdd?: () => void
 	onFinish: (v: any) => void
 	resetSearchParams: Model['resetSearchParams']
 }

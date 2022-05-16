@@ -6,9 +6,12 @@ export declare namespace Component {
 	type IdType = number
 	type FormType = 'view' | 'edit'
 
-	interface StackComponent {
+	interface BaseComponent {
 		parent: 'Page' | 'Modal'
 		model: string
+	}
+
+	interface StackComponent extends BaseComponent {
 		id?: IdType
 		form?: { type: FormType }
 	}

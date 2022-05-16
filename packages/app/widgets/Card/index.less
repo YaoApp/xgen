@@ -1,0 +1,26 @@
+._local {
+	position: relative;
+	display: flex;
+	overflow: hidden;
+	flex-direction: column;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	padding: 24px;
+	width: 100%;
+	border: 1px solid var(--color_border);
+	border-radius: 6px;
+	background-color: var(--color_bg_menu);
+
+	:global {
+		.card_title_wrap {
+			margin-bottom: 20px;
+			height: 24px;
+
+			.card_title {
+				color: var(--color_title);
+				font-weight: 600;
+				line-height: 1;
+			}
+		}
+	}
+}

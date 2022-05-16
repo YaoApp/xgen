@@ -15,7 +15,7 @@ import type { IPropsFilter } from './types'
 const { useForm } = Form
 
 const Index = (props: IPropsFilter) => {
-	const { model, columns, btnAddText, onAdd, onFinish, resetSearchParams } = props
+	const { model, columns, btnAddText, isChart, onAdd, onFinish, resetSearchParams } = props
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
 	const [form] = useForm()
@@ -31,7 +31,7 @@ const Index = (props: IPropsFilter) => {
 
 	return (
 		<Form
-			className={styles._local}
+			className={clsx(styles._local, isChart ? styles.chart : '')}
 			form={form}
 			name={`form_filter_${model}`}
 			onFinish={onFinish}

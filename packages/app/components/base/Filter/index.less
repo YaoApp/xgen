@@ -2,9 +2,9 @@
 	._local {
 		:global {
 			.more_wrap {
-                        .xgen-form-item-control{
-                              border: none;
-                        }
+				.xgen-form-item-control {
+					border: none;
+				}
 			}
 		}
 	}
@@ -14,8 +14,13 @@
 	display: flex;
 	flex-direction: column;
 
+      &.chart {
+		padding: 0 8px;
+	}
+
 	:global {
-		.xgen-select {
+		.xgen-select,
+		.xgen-picker {
 			width: 100%;
 		}
 
@@ -30,10 +35,10 @@
 				display: none;
 			}
 
-                  .xgen-form-item-control-input{
-                        border-radius: var(--radius);
-                        background-color: var(--color_bg_nav);
-                  }
+			.xgen-form-item-control-input {
+				border-radius: var(--radius);
+				background-color: var(--color_bg_nav);
+			}
 		}
 
 		.btn_more {
@@ -48,7 +53,7 @@
 			border: 1px solid var(--color_border);
 			border-radius: 6px;
 			background-color: transparent;
-                  background-color: var(--color_bg_menu);
+			background-color: var(--color_bg_menu);
 			opacity: 0;
 
 			&.opacity {
@@ -59,10 +64,10 @@
 				display: flex;
 			}
 
-                 .xgen-form-item-control{
-                       border: 1px solid var(--color_border_soft);
-                       border-radius: var(--radius);
-                 }
+			.xgen-form-item-control {
+				border: 1px solid var(--color_border_soft);
+				border-radius: var(--radius);
+			}
 
 			.icon_wrap {
 				top: 0px;

@@ -1,10 +1,13 @@
 import { injectable } from 'tsyringe'
 
-import type { Common, FormType } from '@/types'
+import type { Common, FormType, Chart } from '@/types'
+
+type Item = { name: string }
+type Fileds = { [key: string]: any }
 
 @injectable()
 export class ColumnUtils {
-	private handleNormalColumn(item: Common.BaseColumn, fileds: Common.Fileds) {
+	private handleAnyColumn<I, F>(item: I & Item, fileds: F & Fileds) {
 		const handled_item = fileds[item.name]
 		const target_item = { ...item, ...handled_item }
 
@@ -12,7 +15,7 @@ export class ColumnUtils {
 	}
 
 	private handleTableColumn(item: Common.BaseColumn, fileds: Common.Fileds) {
-		const target_item = this.handleNormalColumn(item, fileds)
+		const target_item = this.handleAnyColumn(item, fileds)
 
 		if (target_item.view?.components) {
 			target_item.view.components = Object.keys(target_item.view?.components).reduce(
@@ -36,6 +39,14 @@ export class ColumnUtils {
 		}, [])
 	}
 
+	reduceAny<I, O, F>(columns: Array<I & Item>, fileds: F & Fileds) {
+		return columns.reduce((total: Array<O>, item) => {
+			total.push(this.handleAnyColumn(item, fileds))
+
+			return total
+		}, [])
+	}
+
 	reduceSections(sections: Array<FormType.Section>, fileds: Common.Fileds) {
 		const getSectionColumns = (
 			total: Array<FormType.ColumnResult>,
@@ -47,7 +58,7 @@ export class ColumnUtils {
 					tabs: this.reduceSections(item.tabs, fileds)
 				})
 			} else {
-				total.push(this.handleNormalColumn(item, fileds))
+				total.push(this.handleAnyColumn(item, fileds))
 			}
 
 			return total

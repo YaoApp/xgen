@@ -35,4 +35,6 @@ export declare namespace Chart {
 			chart: Fileds
 		}
 	}
+
+	interface Column extends Common.WideColumn, FiledDetail {}
 }

@@ -1,3 +1,5 @@
+export type BaseType = 'table' | 'form' | 'chart'
+
 export declare namespace Global {
 	interface StringObject {
 		[key: string]: string
