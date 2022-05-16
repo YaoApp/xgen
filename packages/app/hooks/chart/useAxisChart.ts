@@ -2,6 +2,9 @@ import * as echarts from 'echarts/core'
 import { useLayoutEffect } from 'react'
 import store from 'store2'
 
+import { tooltip } from '@/components/chart/theme/common'
+import light_theme from '@/components/chart/theme/light'
+
 import wrapText from './utils/wrapText'
 
 import type { RefObject } from 'react'
@@ -42,6 +45,7 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 		const x_data: Array<string> = []
 		const y_data: Array<any> = []
 		const series: Array<BarSeriesOption> = []
+		const is_dark = store.get('xgen-theme') === 'dark'
 
 		props.data.map((item) => {
 			x_data.push(item[props.x_key])
@@ -65,9 +69,11 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 			})
 		})
 
-		const chart = echarts.init(ref.current, store.get('xgen-theme'))
+		const chart = echarts.init(ref.current, is_dark ? 'dark' : light_theme)
 
 		const option: Option = {
+			tooltip: is_dark ? tooltip : {},
+			backgroundColor: 'transparent',
 			title: props.hide_label
 				? {
 						left: 'left',
@@ -79,18 +85,8 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 						}
 				  }
 				: undefined,
-			backgroundColor: 'transparent',
 			aria: {
 				decal: { show: true }
-			},
-			tooltip: {
-				trigger: 'axis',
-				textStyle: {
-					color: '#a2a5b9',
-					fontSize: 12
-				},
-				backgroundColor: '#232326',
-				borderRadius: 6
 			},
 			grid: {
 				top: props.hide_label ? '16%' : '8%',

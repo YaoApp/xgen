@@ -2,6 +2,9 @@ import * as echarts from 'echarts/core'
 import { useLayoutEffect } from 'react'
 import store from 'store2'
 
+import { tooltip } from '@/components/chart/theme/common'
+import light_theme from '@/components/chart/theme/light'
+
 import type { RefObject } from 'react'
 import type { BarSeriesOption } from 'echarts/charts'
 import type {
@@ -36,6 +39,7 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 		if (!props.data) return
 
 		const series: Array<BarSeriesOption> = []
+		const is_dark = store.get('xgen-theme') === 'dark'
 
 		props.series.map((item) => {
 			series.push({
@@ -48,9 +52,11 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 			})
 		})
 
-		const chart = echarts.init(ref.current, store.get('xgen-theme'))
+		const chart = echarts.init(ref.current, is_dark ? 'dark' : light_theme)
 
 		const option: Option = {
+			tooltip: is_dark ? tooltip : {},
+			backgroundColor: 'transparent',
 			title: props.hide_label
 				? {
 						left: 'left',
@@ -62,12 +68,8 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 						}
 				  }
 				: undefined,
-			backgroundColor: 'transparent',
 			aria: {
 				decal: { show: true }
-			},
-			tooltip: {
-				...props.tooltip
 			},
 			legend: {
 				orient: 'vertical',
