@@ -1,4 +1,5 @@
 import { message } from 'antd'
+import { findIndex } from 'lodash-es'
 import { makeAutoObservable } from 'mobx'
 import store from 'store2'
 import { injectable } from 'tsyringe'
@@ -85,23 +86,25 @@ export default class Model {
 			return
 		}
 
+		const entry = this.global.app_info?.login?.entry?.[this.user_type]
+
+		if (!entry) return message.warning(this.global.locale_messages.login.no_entry)
+
+		const current_nav = findIndex(res.menus, (item) => item.path === entry) || 0
+
 		this.global.user = res.user
 		this.global.menu = res.menus
-		this.global.current_nav = 0
+		this.global.current_nav = current_nav
 
 		store.session.set('token', res.token)
 		store.set('user', res.user)
 		store.set('menu', res.menus)
-		store.set('current_nav', 0)
+		store.set('current_nav', current_nav)
 		store.set('login_url', history.location.pathname)
 
 		await window.$app.sleep(600)
 
 		this.loading.login = false
-
-		const entry = this.global.app_info?.login?.entry?.[this.user_type]
-
-		if (!entry) return message.warning(this.global.locale_messages.login.no_entry)
 
 		history.push(entry)
 	}
