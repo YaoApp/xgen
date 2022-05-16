@@ -1,5 +1,6 @@
 import * as echarts from 'echarts/core'
 import { useLayoutEffect } from 'react'
+import store from 'store2'
 
 import wrapText from './utils/wrapText'
 
@@ -64,7 +65,7 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 			})
 		})
 
-		const chart = echarts.init(ref.current, 'dark')
+		const chart = echarts.init(ref.current, store.get('xgen-theme'))
 
 		const option: Option = {
 			title: props.hide_label

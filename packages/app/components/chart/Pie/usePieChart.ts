@@ -1,5 +1,6 @@
 import * as echarts from 'echarts/core'
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
+import store from 'store2'
 
 import type { RefObject } from 'react'
 import type { BarSeriesOption } from 'echarts/charts'
@@ -30,7 +31,7 @@ export interface IProps {
 }
 
 export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!ref.current) return
 		if (!props.data) return
 
@@ -47,9 +48,7 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 			})
 		})
 
-		console.log(series)
-
-		const chart = echarts.init(ref.current, 'dark')
+		const chart = echarts.init(ref.current, store.get('xgen-theme'))
 
 		const option: Option = {
 			title: props.hide_label
