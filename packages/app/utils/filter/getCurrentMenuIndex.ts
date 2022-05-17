@@ -4,8 +4,8 @@ const Index = (
 	arr: Array<App.Menu>,
 	url: string,
 	parent_index?: number
-): { nav: number; menu: number } => {
-	const target = { nav: 0, menu: 0 }
+): { nav: number; menu: number; hit: boolean } => {
+	const target = { nav: 0, menu: 0, hit: false }
 
 	arr.map((item, index) => {
 		if (item.path === url) {
@@ -15,6 +15,8 @@ const Index = (
 			} else {
 				target.nav = index
 			}
+
+			target.hit = true
 		} else {
 			if (item.children && item.children.length) {
 				Index(item.children, url, index)

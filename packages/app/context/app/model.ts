@@ -87,8 +87,10 @@ export default class GlobalModel {
 	}
 
 	updateMenuIndex() {
-		const { nav, menu } = getCurrentMenuIndex(this.menu, history.location.pathname)
-            
+		const { nav, menu, hit } = getCurrentMenuIndex(this.menu, history.location.pathname)
+
+		if (!hit) return
+
 		this.current_nav = nav
 		this.current_menu = menu
 	}
