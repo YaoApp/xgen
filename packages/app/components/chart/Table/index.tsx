@@ -5,7 +5,7 @@ import styles from './index.less'
 import type { TableProps } from 'antd'
 
 interface IProps {
-	height?: number
+	height: number
 	columns: TableProps<any>['columns']
 	data: Array<any>
 }
@@ -16,7 +16,7 @@ const Index = (props: IProps) => {
 			<Table
 				columns={props.columns}
 				dataSource={props.data}
-				rowKey={(item) => item.id}
+				rowKey={(item) => item[Object.keys(item)[0]]}
 				pagination={false}
 			></Table>
 		</div>

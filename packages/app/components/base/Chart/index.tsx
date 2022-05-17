@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
@@ -38,7 +37,7 @@ const Index = (props: Component.BaseComponent) => {
 
 	if (parent === 'Page') {
 		return (
-			<Page className='w_100' isChart>
+			<Page className='w_100' isChart actions={x.setting.operation.actions}>
 				<Filter {...props_filter} isChart></Filter>
 				<PureChart {...props_chart}></PureChart>
 			</Page>

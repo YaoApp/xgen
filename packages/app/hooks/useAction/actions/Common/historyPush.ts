@@ -6,26 +6,34 @@ import { getDeepValue } from '@yaoapp/utils'
 import type { Component, Action } from '@/types'
 
 interface Args {
-	data_item: Component.Props['__data_item']
+	data_item?: Component.Props['__data_item']
 	action: Action.HistoryPush
 }
 
 export default ({ data_item, action }: Args) => {
-	const params = action.pathname.split('/').reduce((total: any, item: string) => {
-		if (item && item.indexOf(':') !== -1) {
-			const key = item.replace(':', '')
+	if (!data_item) {
+		history.push({ pathname: action.pathname })
+	} else {
+		const params = action.pathname.split('/').reduce((total: any, item: string) => {
+			if (item && item.indexOf(':') !== -1) {
+				const key = item.replace(':', '')
 
-			total[key] = getDeepValue(key, data_item)
+				total[key] = getDeepValue(key, data_item)
+			}
+
+			return total
+		}, {})
+
+		const pattern = new UrlPattern(action.pathname)
+		const target = {
+			pathname: pattern.stringify(params),
+			search: new URLSearchParams(action.search).toString()
 		}
 
-		return total
-	}, {})
-
-	const pattern = new UrlPattern(action.pathname)
-	const target = {
-		pathname: pattern.stringify(params),
-		search: new URLSearchParams(action.search).toString()
+		history.push(target)
 	}
 
-	history.push(target)
+	setTimeout(() => {
+		window.$app.Event.emit('app/updateMenuIndex')
+	})
 }

@@ -7,6 +7,7 @@ export declare namespace Chart {
 
 	interface FiledDetail {
 		bind: string
+		link?: string
 		view: {
 			type: string
 			props: any

@@ -1,20 +1,12 @@
 import type { GlobalModel } from '@/context/app'
-
-export interface Action {
-	title: string
-	icon: string
-	props: {
-		type: string
-		payload: any
-	}
-}
+import type { Action } from '@/types'
 
 export interface IProps {
 	children: React.ReactNode
 	className?: string
 	style?: React.CSSProperties
 	title?: string
-	actions?: Array<Action>
+	actions?: Array<Action.Props>
 	isChart?: boolean
 }
 

@@ -2,15 +2,31 @@ import { Col } from 'antd'
 
 import { X } from '@/components'
 import { Card } from '@/widgets'
+import { useIntl } from '@umijs/max'
+
+import locales from '../locales'
+import ChartLink from './ChartLink'
 
 import type { IPropsChartItem } from '../types'
 
 const Index = (props: IPropsChartItem) => {
 	const { item, data } = props
+	const { locale } = useIntl()
+	const locale_messages = locales[locale]
 
 	return (
 		<Col span={item.width}>
-			<Card title={item.view.type !== 'Number' ? item.name : ''}>
+			<Card
+				title={item.view.type !== 'Number' ? item.name : ''}
+				options={
+					item.link && (
+						<ChartLink
+							link_tooltip={locale_messages.link_tooltip}
+							link={item.link}
+						></ChartLink>
+					)
+				}
+			>
 				<X
 					type='chart'
 					name={item.view.type}

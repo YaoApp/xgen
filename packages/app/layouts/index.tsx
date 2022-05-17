@@ -31,9 +31,11 @@ const Index = () => {
 		window.$global = global
 
 		global.locale_messages = messages
+		global.on()
 		global.stack.on()
 
 		return () => {
+			global.off()
 			global.stack.off()
 		}
 	})

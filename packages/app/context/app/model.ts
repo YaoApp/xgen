@@ -6,6 +6,8 @@ import { singleton } from 'tsyringe'
 
 import { Stack } from '@/models'
 import Service from '@/services/app'
+import { getCurrentMenuIndex } from '@/utils/filter'
+import { history } from '@umijs/max'
 
 import type { AvatarFullConfig } from 'react-nice-avatar'
 
@@ -82,5 +84,20 @@ export default class GlobalModel {
 
 	toggleMenu() {
 		this.visible_menu = !this.visible_menu
-      }
+	}
+
+	updateMenuIndex() {
+		const { nav, menu } = getCurrentMenuIndex(this.menu, history.location.pathname)
+            
+		this.current_nav = nav
+		this.current_menu = menu
+	}
+
+	on() {
+		window.$app.Event.on('app/updateMenuIndex', this.updateMenuIndex)
+	}
+
+	off() {
+		window.$app.Event.off('app/updateMenuIndex', this.updateMenuIndex)
+	}
 }

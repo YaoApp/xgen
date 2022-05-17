@@ -6,7 +6,18 @@ export interface IPropsPureChart {
 	columns: Model['chart_columns']
 }
 
-export interface IPropsChartItem{
-      item: Chart.Column
+export interface IPropsChartItem {
+	item: Chart.Column
 	data: Model['data']
+}
+
+export interface IPropsChartLink {
+	link_tooltip: string
+	link: string
+}
+
+export interface Locale {
+	[key: string]: {
+		link_tooltip: string
+	}
 }
