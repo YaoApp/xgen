@@ -47,9 +47,10 @@ export default class Model {
 
 		const { res, err } = await this.service.find<any>(this.model, this.id)
 
+		this.global.loading = false
+
 		if (err) return
 
-		this.global.loading = false
 		this.data = res
 	}
 

@@ -52,9 +52,10 @@ export default class Model {
 			this.search_params
 		)
 
+		this.global.loading = false
+
 		if (err) return
 
-		this.global.loading = false
 		this.data = res
 	}
 

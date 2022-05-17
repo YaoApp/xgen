@@ -1,3 +1,52 @@
 ._local {
+	overflow-y: scroll;
 	width: 100%;
+
+	:global {
+		.xgen-table {
+			.xgen-table-thead {
+				tr {
+					th {
+						padding: 6px 0;
+						border: none !important;
+						background-color: transparent;
+						opacity: 0.6;
+
+						&::before {
+							display: none;
+						}
+
+						&:last-child {
+							text-align: right;
+						}
+					}
+				}
+			}
+
+			.xgen-table-tbody {
+				tr {
+					td {
+						padding: 9px 0;
+						height: auto;
+						border: none !important;
+						line-height: 1;
+
+						&:last-child {
+							text-align: right;
+						}
+
+						&.xgen-table-cell-row-hover {
+							background-color: transparent;
+						}
+					}
+
+					&:last-child {
+						td {
+							padding-bottom: 0;
+						}
+					}
+				}
+			}
+		}
+	}
 }

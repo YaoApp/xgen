@@ -21,6 +21,20 @@ const Index = (props: IPropsChartItem) => {
 						__name: item.name
 					}}
 				></X>
+				{item.refer && (
+					<div className='refer_wrap w_100'>
+						<X
+							type='chart'
+							name={item.refer.type}
+							props={{
+								...item.refer.props,
+								data: data[item.bind],
+								__bind: item.bind,
+								__name: item.name
+							}}
+						></X>
+					</div>
+				)}
 			</Card>
 		</Col>
 	)
