@@ -1,4 +1,8 @@
 export default {
+	darkMode: true,
+	aria: {
+		decal: { show: true }
+	},
 	tooltip: {
 		textStyle: {
 			color: '#a2a5b9',
@@ -6,8 +10,26 @@ export default {
 		},
 		backgroundColor: '#232326',
 		borderRadius: 6
-	},
-	darkMode: true,
+      },
+      legend: {
+		orient: 'vertical',
+		left: 'left',
+		top: 'middle',
+		itemWidth: 15,
+		itemHeight: 9,
+		textStyle: {
+			color: '#a2a5b9',
+			fontSize: 12
+		}
+      },
+      grid: {
+            top: '8%',
+            bottom: '4%',
+            left: '2%',
+            right: '2%',
+            containLabel: true,
+            show: false
+      },
 	color: [
 		'#4992ff',
 		'#7cffb2',
@@ -29,11 +51,6 @@ export default {
 		},
 		label: {
 			color: '#fff'
-		}
-	},
-	legend: {
-		textStyle: {
-			color: '#B9B8CE'
 		}
 	},
 	textStyle: {

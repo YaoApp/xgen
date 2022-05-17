@@ -1,12 +1,34 @@
 export default {
-      tooltip: {
-            textStyle: {
-                  color: '#111',
-                  fontSize: 12
-            },
-            backgroundColor: '#f9f9f9',
-            borderRadius: 6
-      },
+	aria: {
+		decal: { show: true }
+	},
+	tooltip: {
+		textStyle: {
+			color: '#111',
+			fontSize: 12
+		},
+		backgroundColor: '#f9f9f9',
+		borderRadius: 6
+	},
+	legend: {
+		orient: 'vertical',
+		left: 'left',
+		top: 'middle',
+		itemWidth: 15,
+		itemHeight: 9,
+		textStyle: {
+			color: '#111',
+			fontSize: 12
+		}
+	},
+	grid: {
+		top: '8%',
+		bottom: '4%',
+		left: '2%',
+		right: '2%',
+		containLabel: true,
+		show: false
+	},
 	color: ['#516b91', '#59c4e6', '#edafda', '#93b7e3', '#a5e7f0', '#cbb0e3'],
 	textStyle: {},
 	title: {
@@ -221,11 +243,6 @@ export default {
 			iconStyle: {
 				borderColor: '#666666'
 			}
-		}
-	},
-	legend: {
-		textStyle: {
-			color: '#999999'
 		}
 	},
 	timeline: {

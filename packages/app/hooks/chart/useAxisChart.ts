@@ -2,8 +2,7 @@ import * as echarts from 'echarts/core'
 import { useLayoutEffect } from 'react'
 import store from 'store2'
 
-import dark_theme from '@/components/chart/theme/dark'
-import light_theme from '@/components/chart/theme/light'
+import { dark, light } from '@/components/chart/theme'
 
 import wrapText from './utils/wrapText'
 
@@ -28,13 +27,12 @@ export interface IProps {
 	name: string
 	height: number
 	data: Array<any>
-	x_key: string
+	base: string
 	axisLabel: any
 	vertical: boolean
 	textWrap: boolean
 	textLength: number
 	series: Array<any>
-	hide_label: boolean
 }
 
 export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
@@ -48,7 +46,7 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 		const is_dark = store.get('xgen-theme') === 'dark'
 
 		props.data.map((item) => {
-			x_data.push(item[props.x_key])
+			x_data.push(item[props.base])
 		})
 
 		props.series.map((item, index) => {
@@ -69,32 +67,11 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 			})
 		})
 
-		const chart = echarts.init(ref.current, is_dark ? dark_theme : light_theme)
+		const chart = echarts.init(ref.current, is_dark ? dark : light)
 
 		const option: Option = {
-			title: props.hide_label
-				? {
-						left: 'left',
-						text: props.name,
-						textStyle: {
-							color: '#aaaab3',
-							fontSize: 14,
-							fontWeight: 500
-						}
-				  }
-				: undefined,
-			aria: {
-				decal: { show: true }
-                  },
+			aria: {},
 			tooltip: {},
-			grid: {
-				top: props.hide_label ? '16%' : '8%',
-				bottom: '4%',
-				left: '2%',
-				right: '2%',
-				containLabel: true,
-				show: false
-			},
 			[!props.vertical ? 'xAxis' : 'yAxis']: {
 				type: 'category',
 				data: x_data,
