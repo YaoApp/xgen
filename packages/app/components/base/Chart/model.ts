@@ -38,14 +38,21 @@ export default class Model {
 
 		this.rendered = true
 		this.setting = res
-		this.filter_columns = this.column_utils.reduce(res.filter.columns, res.fileds.filter)
-            this.chart_columns = this.column_utils.reduceAny(res.chart.columns, res.fileds.chart)
+
+		this.chart_columns = this.column_utils.reduceAny(res.chart.columns, res.fileds.chart)
+
+		if (res.filter && res.fileds.filter) {
+			this.filter_columns = this.column_utils.reduce(
+				res.filter.columns,
+				res.fileds.filter
+			)
+		}
 	}
 
 	async search(params?: Global.StringObject) {
 		if (this.parent === 'Page' && this.rendered === false) this.global.loading = true
 
-		this.search_params = filterEmpty(params) 
+		this.search_params = filterEmpty(params)
 
 		const { res, err } = await this.service.search<Global.StringObject, Global.AnyObject>(
 			this.model,
@@ -65,9 +72,9 @@ export default class Model {
 
 		this.getSetting()
 		this.search()
-      }
-      
-      resetSearchParams() {
+	}
+
+	resetSearchParams() {
 		this.search_params = {}
 	}
 }

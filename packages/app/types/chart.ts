@@ -27,12 +27,12 @@ export declare namespace Chart {
 		operation: {
 			actions: Array<Action.Props>
 		}
-		filter: Filter
+		filter?: Filter
 		chart: {
 			columns: Array<Common.WideColumn>
 		}
 		fileds: {
-			filter: Common.Fileds
+			filter?: Common.Fileds
 			chart: Fileds
 		}
 	}

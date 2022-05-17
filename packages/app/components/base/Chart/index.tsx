@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useLayoutEffect, useState } from 'react'
+import { Fragment, useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
 import { Filter, Page, PureChart } from '@/components'
@@ -35,21 +35,22 @@ const Index = (props: Component.BaseComponent) => {
 		columns: x.chart_columns
 	}
 
+	const Content = (
+		<Fragment>
+			{x.filter_columns.length > 0 && <Filter {...props_filter} isChart></Filter>}
+			<PureChart {...props_chart}></PureChart>
+		</Fragment>
+	)
+
 	if (parent === 'Page') {
 		return (
 			<Page className='w_100' isChart actions={x.setting.operation.actions}>
-				<Filter {...props_filter} isChart></Filter>
-				<PureChart {...props_chart}></PureChart>
+				{Content}
 			</Page>
 		)
 	}
 
-	return (
-		<div className='w_100'>
-			<Filter {...props_filter}></Filter>
-			<PureChart {...props_chart}></PureChart>
-		</div>
-	)
+	return <div className='w_100'>{Content}</div>
 }
 
 export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

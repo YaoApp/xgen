@@ -1,6 +1,7 @@
 import '@/styles/index.less'
 import '@matrixage/atom.css/atom.min.css'
 
+import { useEventListener } from 'ahooks'
 import { ConfigProvider } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { Fragment, useLayoutEffect, useState } from 'react'
@@ -25,7 +26,11 @@ const Index = () => {
 	const [global] = useState(() => container.resolve(GlobalModel))
 	const menu = global.menu.slice()
 	const { pathname } = useLocation()
-	const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
+      const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
+      
+      useEventListener('popstate', () => {
+		window.$app.Event.emit('app/updateMenuIndex')
+	})
 
 	useLayoutEffect(() => {
 		window.$global = global
