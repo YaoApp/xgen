@@ -36,6 +36,7 @@
             "lodash-es": "^4.17.21",
             "mobx": "^6.5.0",
             "mobx-react-lite": "^3.4.0",
+            "react-color-palette": "^6.2.0",
             "mustache": "^4.2.0",
             "query-string": "^7.1.1",
             "react": "^17.0.2",

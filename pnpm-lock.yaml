@@ -49,6 +49,7 @@ importers:
       postcss: ^8.4.5
       query-string: ^7.1.1
       react: ^17.0.2
+      react-color-palette: ^6.2.0
       react-countup: ^6.2.0
       react-dom: ^17.0.2
       react-error-boundary: ^3.1.4
@@ -81,6 +82,7 @@ importers:
       mustache: 4.2.0
       query-string: 7.1.1
       react: 17.0.2
+      react-color-palette: 6.2.0_react@17.0.2
       react-countup: 6.2.0_react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-error-boundary: 3.1.4_react@17.0.2
@@ -7962,6 +7964,15 @@ packages:
       rc-util: 5.21.2_sfoxds7t5ydpegc3knd667wn6m
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+    dev: false
+
+  /react-color-palette/6.2.0_react@17.0.2:
+    resolution: {integrity: sha512-9rIboaRJNoeF8aCI2f3J8wgMyhl74SnGmZLDjor3bKf0iDBhP2EBv0/jGmm0hrj6OackGCqtWl5ZvM89XUc3sg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 17.0.2
     dev: false
 
   /react-countup/6.2.0_react@17.0.2:
