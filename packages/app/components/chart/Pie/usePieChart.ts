@@ -1,8 +1,8 @@
 import * as echarts from 'echarts/core'
 import { useLayoutEffect } from 'react'
-import store from 'store2'
 
 import { dark, light } from '@/components/chart/theme'
+import { useGlobal } from '@/context/app'
 
 import type { RefObject } from 'react'
 import type { BarSeriesOption } from 'echarts/charts'
@@ -32,12 +32,15 @@ export interface IProps {
 }
 
 export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
+	const global = useGlobal()
+
 	useLayoutEffect(() => {
 		if (!ref.current) return
 		if (!props.data) return
 
 		const series: Array<BarSeriesOption> = []
-		const is_dark = store.get('xgen-theme') === 'dark'
+		const is_dark = global.theme === 'dark'
+		const theme = is_dark ? dark : light
 
 		props.series.map((item) => {
 			series.push({
@@ -50,7 +53,7 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 			})
 		})
 
-		const chart = echarts.init(ref.current, is_dark ? dark : light)
+		const chart = echarts.init(ref.current, theme)
 
 		const option: Option = {
 			aria: {},
@@ -60,5 +63,9 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 		}
 
 		chart.setOption(option)
-	}, [ref.current, props])
+
+		return () => {
+			chart.dispose()
+		}
+	}, [ref.current, props, global.theme])
 }

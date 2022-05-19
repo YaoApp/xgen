@@ -1,13 +1,13 @@
 import * as echarts from 'echarts/core'
 import { useLayoutEffect } from 'react'
-import store from 'store2'
 
 import { dark, light } from '@/components/chart/theme'
+import { useGlobal } from '@/context/app'
 
 import wrapText from './utils/wrapText'
 
 import type { RefObject } from 'react'
-import type { BarSeriesOption } from 'echarts/charts'
+import type { BarSeriesOption, LineSeriesOption } from 'echarts/charts'
 import type {
 	GridComponentOption,
 	AriaComponentOption,
@@ -16,6 +16,7 @@ import type {
 } from 'echarts/components'
 
 type Option = echarts.ComposeOption<
+	| LineSeriesOption
 	| BarSeriesOption
 	| GridComponentOption
 	| AriaComponentOption
@@ -25,17 +26,20 @@ type Option = echarts.ComposeOption<
 
 export interface IProps {
 	name: string
-	height: number
 	data: Array<any>
 	base: string
-	axisLabel: any
-	vertical: boolean
-	textWrap: boolean
-	textLength: number
 	series: Array<any>
+	vertical?: boolean
+	textWrap?: boolean
+	textLength?: number
+	height?: number
+	axisLabel?: any
+	option?: Option
 }
 
 export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
+	const global = useGlobal()
+
 	useLayoutEffect(() => {
 		if (!ref.current) return
 		if (!props.data) return
@@ -43,7 +47,8 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 		const x_data: Array<string> = []
 		const y_data: Array<any> = []
 		const series: Array<BarSeriesOption> = []
-		const is_dark = store.get('xgen-theme') === 'dark'
+		const is_dark = global.theme === 'dark'
+		const theme = is_dark ? dark : light
 
 		props.data.map((item) => {
 			x_data.push(item[props.base])
@@ -67,11 +72,12 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 			})
 		})
 
-		const chart = echarts.init(ref.current, is_dark ? dark : light)
+		const chart = echarts.init(ref.current, theme)
 
 		const option: Option = {
 			aria: {},
 			tooltip: {},
+			...props.option,
 			[!props.vertical ? 'xAxis' : 'yAxis']: {
 				type: 'category',
 				data: x_data,
@@ -80,7 +86,7 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 				axisLabel: {
 					...(props.axisLabel || {}),
 					formatter: (v: string) =>
-						wrapText(v, props.textWrap, props.textLength)
+						wrapText(v, props.textWrap || false, props.textLength || 8)
 				}
 			},
 			[props.vertical ? 'xAxis' : 'yAxis']: y_data,
@@ -88,5 +94,9 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 		}
 
 		chart.setOption(option)
-	}, [ref.current, props])
+
+		return () => {
+			chart.dispose()
+		}
+	}, [ref.current, props, global.theme])
 }

@@ -1,32 +1,21 @@
-import clsx from 'clsx'
 import CountUp from 'react-countup'
 
 import type { IProps } from '../index'
 
-const Index = (props: IProps & { data: number; mutation?: string }) => {
+const Index = (props: IProps & { number: number }) => {
 	return (
 		<div className='num_wrap flex align_end'>
 			{props.prefix && <span className='num'>{props.prefix}</span>}
 			<CountUp
 				className='num'
 				start={0}
-				end={props.data}
+				end={props.number}
 				duration={3}
 				decimals={props.decimals || 0}
 				useEasing
 				separator=','
 			/>
 			{props.unit && <span className='unit'>{props.unit}</span>}
-			{props.mutation && (
-				<span
-					className={clsx([
-						'mutaion',
-						props.mutation.indexOf('+') !== -1 ? 'up' : 'down'
-					])}
-				>
-					{props.mutation}%
-				</span>
-			)}
 		</div>
 	)
 }

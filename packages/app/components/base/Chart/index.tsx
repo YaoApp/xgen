@@ -19,6 +19,7 @@ const Index = (props: Component.BaseComponent) => {
 	}, [x, parent, model])
 
 	if (!x.setting.chart) return null
+	if (!Object.keys(x.data).length) return null
 
 	const props_filter: IPropsFilter = {
 		model: x.model,

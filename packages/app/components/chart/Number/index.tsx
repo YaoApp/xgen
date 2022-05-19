@@ -16,6 +16,7 @@ export interface IProps extends Component.PropsChartComponent {
 				current: number
 				prev: number
 		  }
+	prefix?: string
 	unit?: string
 	decimals?: number
 	prev_title?: string
@@ -23,7 +24,6 @@ export interface IProps extends Component.PropsChartComponent {
 
 const Index = (props: IProps) => {
 	const mutaion = useMemo(() => {
-		if (!props.data) return ''
 		if (typeof props.data === 'number') return ''
 
 		const duration = props.data.current - props.data.prev
@@ -33,8 +33,6 @@ const Index = (props: IProps) => {
 			props.data.prev
 		).toFixed(1)}`
 	}, [props.data])
-
-	if (!props.data) return null
 
 	if (typeof props.data === 'number') {
 		return (
