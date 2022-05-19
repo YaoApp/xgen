@@ -234,7 +234,26 @@ export default {
 		}
 	},
 	line: {
-		symbol: 'circle'
+		itemStyle: {
+			borderWidth: '2'
+		},
+		lineStyle: {
+			width: '2'
+		},
+		symbolSize: '6',
+		symbol: 'emptyCircle',
+		smooth: true
+      },
+      radar: {
+		itemStyle: {
+			borderWidth: '2'
+		},
+		lineStyle: {
+			width: '2'
+		},
+		symbolSize: '6',
+		symbol: 'emptyCircle',
+		smooth: true
 	},
 	graph: {
 		color: [

@@ -41,6 +41,7 @@ const Index = (props: IProps) => {
 	const ref = useRef<HTMLDivElement>(null)
 	const current = props.data[props.data.length - 1]
 	const is_dark = global.theme === 'dark'
+	const is_line = props.type === 'line'
 
 	useAxisChart(ref, {
 		name: props.__name,
@@ -51,7 +52,7 @@ const Index = (props: IProps) => {
 				name: props.value_key,
 				type: props.type || 'bar',
 				itemStyle: {
-					borderRadius: 3,
+					borderRadius: 6,
 					color: props.color || '#3371fc',
 					opacity: is_dark ? 0.5 : 0.1
 				},
@@ -59,16 +60,21 @@ const Index = (props: IProps) => {
 					itemStyle: { opacity: 1 }
 				},
 				splitLine: { show: false },
-				axisLabel: { show: false }
+				axisLabel: { show: false },
+				areaStyle: {
+					opacity: is_dark ? 0.15 : 0.1
+				},
+				symbol: 'none'
 			}
 		],
 		axisLabel: { show: false },
 		option: {
+			tooltip: is_line ? { trigger: 'axis' } : {},
 			grid: {
-				top: '2%',
-				bottom: '2%',
-				left: '-2%',
-				right: '-2%',
+				top: is_line ? '3%' : 0,
+				bottom: is_line ? '-2%' : 0,
+				left: is_line ? '-10%' : '-2%',
+				right: is_line ? '-10%' : '-2%',
 				containLabel: true,
 				show: false
 			}
@@ -77,7 +83,12 @@ const Index = (props: IProps) => {
 
 	return (
 		<div className={clsx([styles._local, 'w_100 flex flex_column'])}>
-			<div className='flex justify_between align_end'>
+			<div
+				className={clsx([
+					'base_number_wrap w_100 border_box flex justify_between align_end',
+					is_line && 'is_line'
+				])}
+			>
 				<BaseNumber {...props} number={current[props.value_key]}></BaseNumber>
 			</div>
 			<div
