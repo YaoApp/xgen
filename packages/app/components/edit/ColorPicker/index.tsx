@@ -13,11 +13,14 @@ import type { Color } from 'react-color-palette'
 import type { ColorPickerProps } from 'react-color-palette/lib/interfaces/ColorPicker.interface'
 import type { Component } from '@/types'
 
-interface IProps extends ColorPickerProps, Component.PropsEditComponent {
+interface ICustom {
 	value: string
+	disabled?: boolean
 }
 
-const Custom = window.$app.memo((props: ColorPickerProps & { value: string }) => {
+interface IProps extends ColorPickerProps, Component.PropsEditComponent, ICustom {}
+
+const Custom = window.$app.memo((props: ColorPickerProps & ICustom) => {
 	const [value, setValue] = useColor('hex', '#121212')
 
 	useEffect(() => {
@@ -37,7 +40,7 @@ const Custom = window.$app.memo((props: ColorPickerProps & { value: string }) =>
 
 	return (
 		<Popover
-			className='relative'
+			className={clsx(['relative', props.disabled ? 'disabled' : ''])}
 			overlayClassName={styles._local}
 			trigger='click'
 			content={
@@ -53,9 +56,13 @@ const Custom = window.$app.memo((props: ColorPickerProps & { value: string }) =>
 				></ColorPicker>
 			}
 		>
-			<Input value={value.hex} readOnly></Input>
+			<Input value={value.hex} disabled={props.disabled} readOnly></Input>
 			<div
-				className={clsx([styles.indicator, 'absolute'])}
+				className={clsx([
+					styles.indicator,
+					props.disabled ? styles.disabled : '',
+					'absolute'
+				])}
 				style={{ backgroundColor: value.hex }}
 			></div>
 		</Popover>

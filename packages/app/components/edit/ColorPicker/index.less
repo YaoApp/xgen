@@ -4,20 +4,24 @@
 			padding: 0;
 		}
 
-            .rcp-fields-element-input{
-                  border-width:1px ;
-            }
+		.rcp-fields-element-input {
+			border-width: 1px;
+		}
 
-            .rcp-fields-element-label{
-                  display: none;
-            }
+		.rcp-fields-element-label {
+			display: none;
+		}
 	}
 }
 
-.indicator{
-      top: -3px;
-      right: 6px;
-      width: 24px;
-      height: 24px;
-      border-radius: var(--radius);
+.indicator {
+	top: -3px;
+	right: 6px;
+	width: 24px;
+	height: 24px;
+	border-radius: var(--radius);
+
+	&.disabled {
+		right: -12px;
+	}
 }

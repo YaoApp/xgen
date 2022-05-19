@@ -4,8 +4,7 @@
 	overflow: hidden;
 	flex-direction: column;
 	box-sizing: border-box;
-	margin-bottom: 20px;
-	padding: 24px;
+	margin-bottom: 16px;
 	width: 100%;
 	border: 1px solid var(--color_border);
 	border-radius: 6px;
@@ -13,13 +12,22 @@
 
 	:global {
 		.card_title_wrap {
-			margin-bottom: 16px;
+			margin-top: 16px;
+			margin-bottom: 12px;
+			padding: 0 20px;
+			padding-bottom: 0;
+			height: 24px;
 
 			.card_title {
 				color: var(--color_title);
 				font-weight: 600;
 				line-height: 1;
 			}
+		}
+
+		.card_content_wrap {
+			padding: 18px 20px;
+			padding-top: 0;
 		}
 	}
 }

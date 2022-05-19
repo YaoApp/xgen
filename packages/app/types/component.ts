@@ -37,6 +37,9 @@ export declare namespace Component {
 		__value: any
 	}
 
+	interface PropsChartComponent
+		extends Omit<Props, '__namespace' | '__primary' | '__data_item'> {}
+
 	interface Params {
 		[key: string]: any
 	}

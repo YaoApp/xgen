@@ -17,7 +17,7 @@ const Index = (props: IPropsChartItem) => {
 	return (
 		<Col span={item.width}>
 			<Card
-				title={item.view.type !== 'Number' ? item.name : ''}
+				title={item.name}
 				options={
 					item.link && (
 						<ChartLink
@@ -26,6 +26,7 @@ const Index = (props: IPropsChartItem) => {
 						></ChartLink>
 					)
 				}
+				style={item.cardStyle}
 			>
 				<X
 					type='chart'

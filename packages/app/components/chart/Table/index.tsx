@@ -3,8 +3,9 @@ import { Table } from 'antd'
 import styles from './index.less'
 
 import type { TableProps } from 'antd'
+import type { Component } from '@/types'
 
-interface IProps {
+interface IProps extends Component.PropsChartComponent {
 	height: number
 	columns: TableProps<any>['columns']
 	data: Array<any>

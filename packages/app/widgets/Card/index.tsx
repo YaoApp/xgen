@@ -2,6 +2,8 @@ import clsx from 'clsx'
 
 import styles from './index.less'
 
+import type { CSSProperties } from 'react'
+
 interface IProps {
 	children: React.ReactNode
 	className?: string
@@ -9,10 +11,11 @@ interface IProps {
 	options?: React.ReactNode
 	width?: string | number
 	height?: string | number
+	style?: CSSProperties
 }
 
 const Index = (props: IProps) => {
-	const { children, className, title, options, width, height } = props
+	const { children, className, title, options, width, height, style } = props
 
 	return (
 		<div
@@ -25,7 +28,7 @@ const Index = (props: IProps) => {
 					<div className='options_wrap'>{options}</div>
 				</div>
 			)}
-			<div className='card_content_wrap w_100' style={{ height: `calc(100% - 44px)` }}>
+			<div className='card_content_wrap w_100' style={{ ...style }}>
 				{children}
 			</div>
 		</div>

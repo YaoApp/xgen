@@ -1,3 +1,54 @@
 ._local {
-	width: 100%;
+	&.has_prev {
+		:global {
+			.num_wrap {
+				padding: 0 20px;
+			}
+		}
+	}
+
+	:global {
+		.num_wrap {
+			line-height: 1;
+
+			.num {
+				font-weight: bold;
+				font-size: 24px;
+			}
+
+			.unit {
+				margin-bottom: 2px;
+				margin-left: 6px;
+				font-size: 13px;
+			}
+		}
+
+		.mutaion {
+			margin-left: 6px;
+			padding: 6px 9px;
+			border-radius: var(--radius);
+			font-weight: bold;
+			font-size: 12px;
+
+			&.up {
+				background-color: rgba(0, 200, 83, 0.1);
+				color: var(--color_success);
+			}
+
+			&.down {
+				background-color: rgba(230, 41, 101, 0.1);
+				color: var(--color_danger);
+			}
+		}
+
+		.prev_wrap {
+			margin-top: 16px;
+			padding: 12px 20px;
+			border-top: 1px solid var(--color_border_light);
+			color: var(--color_text_grey);
+			font-weight: bold;
+			font-size: 13px;
+			line-height: 1;
+		}
+	}
 }

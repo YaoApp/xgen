@@ -1,4 +1,5 @@
 import type { Action, Common } from '@/types'
+import type { CSSProperties } from 'react'
 
 export declare namespace Chart {
 	interface Filter {
@@ -8,6 +9,7 @@ export declare namespace Chart {
 	interface FiledDetail {
 		bind: string
 		link?: string
+		cardStyle?: CSSProperties
 		view: {
 			type: string
 			props: any
