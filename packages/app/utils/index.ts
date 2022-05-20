@@ -1,4 +1,4 @@
 export * from './preset'
 export * from './filter'
 export * from './reg'
-export * from './operation'
+export { default as retryUntil } from './retryUntil'

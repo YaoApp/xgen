@@ -24,9 +24,9 @@ const Index = () => {
 	const [global] = useState(() => container.resolve(GlobalModel))
 	const menu = global.menu.slice()
 	const { pathname } = useLocation()
-	const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
-
-	useLayoutEffect(() => {
+      const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
+     
+      useLayoutEffect(() => {
 		window.$global = global
 
 		global.locale_messages = messages

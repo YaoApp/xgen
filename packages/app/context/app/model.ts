@@ -86,20 +86,28 @@ export default class GlobalModel {
 		this.visible_menu = !this.visible_menu
 	}
 
-	updateMenuIndex() {
-		const { nav, menu, hit } = getCurrentMenuIndex(this.menu, history.location.pathname)
+	updateMenuStatus() {
+		if (history.location.pathname.indexOf('/0/edit') !== -1) {
+			window.$global.loading = true
+		}
 
-		if (!hit) return
+		const { nav, menu, hit, menu_item } = getCurrentMenuIndex(
+			this.menu,
+			history.location.pathname
+		)
+
+		if (!hit) return (this.visible_menu = false)
 
 		this.current_nav = nav
 		this.current_menu = menu
+		this.visible_menu = menu_item?.visible_menu || false
 	}
 
 	on() {
-		window.$app.Event.on('app/updateMenuIndex', this.updateMenuIndex)
+		window.$app.Event.on('app/updateMenuStatus', this.updateMenuStatus)
 	}
 
 	off() {
-		window.$app.Event.off('app/updateMenuIndex', this.updateMenuIndex)
+		window.$app.Event.off('app/updateMenuStatus', this.updateMenuStatus)
 	}
 }

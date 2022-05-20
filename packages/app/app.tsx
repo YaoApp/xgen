@@ -1,18 +1,8 @@
-import store from 'store2'
+import { retryUntil } from '@/utils'
 
-import { getCurrentMenuItem } from '@/utils/filter'
-
-export const onRouteChange = ({ location }: any) => {
-	window.$app.Event.emit('app/updateMenuIndex')
-
-	const menu = store.get('menu') || []
-	const item = getCurrentMenuItem(menu, location.pathname)
-
-	if (!window.$global) return 
-
-	if (item?.path.indexOf('/0/edit') !== -1) {
-		window.$global.loading = true
-	}
-
-	window.$global.visible_menu = item?.visible_menu || false
+export const onRouteChange = () => {
+	retryUntil(
+		() => window.$app.Event.emit('app/updateMenuStatus'),
+		() => window.$global !== undefined
+	)
 }
