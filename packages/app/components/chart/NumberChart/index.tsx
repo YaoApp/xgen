@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { BarChart, LineChart } from 'echarts/charts'
 import { AriaComponent, GridComponent, TitleComponent, TooltipComponent } from 'echarts/components'
-import * as echarts from 'echarts/core'
+import echarts from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { observer } from 'mobx-react-lite'
 import { useRef } from 'react'
