@@ -8,7 +8,7 @@ import styles from './index.less'
 
 import type { IPropsItems } from '@/layouts/types'
 
-const Index = ({ menu, current_nav, setCurrentNav }: IPropsItems) => {
+const Index = ({ menu, current_nav }: IPropsItems) => {
 	return (
 		<div className={styles._local}>
 			{menu.map((item, index) => (
@@ -19,7 +19,6 @@ const Index = ({ menu, current_nav, setCurrentNav }: IPropsItems) => {
 							current_nav === index ? 'active' : ''
 						])}
 						to={item.path}
-						onClick={() => setCurrentNav(index)}
 					>
 						<Icon name={item.icon} size={20}></Icon>
 					</Link>

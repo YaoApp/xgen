@@ -3,10 +3,12 @@ import store from 'store2'
 import { getCurrentMenuItem } from '@/utils/filter'
 
 export const onRouteChange = ({ location }: any) => {
+	window.$app.Event.emit('app/updateMenuIndex')
+
 	const menu = store.get('menu') || []
 	const item = getCurrentMenuItem(menu, location.pathname)
 
-	if (!window.$global) return
+	if (!window.$global) return 
 
 	if (item?.path.indexOf('/0/edit') !== -1) {
 		window.$global.loading = true

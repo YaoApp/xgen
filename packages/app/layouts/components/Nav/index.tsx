@@ -18,7 +18,6 @@ const Index = (props: IPropsNav) => {
 		current_nav,
 		setTheme,
 		setAvatar,
-		setCurrentNav,
 		getUserMenu
 	} = props
 
@@ -29,7 +28,6 @@ const Index = (props: IPropsNav) => {
 	const props_items: IPropsItems = {
 		menu,
 		current_nav,
-		setCurrentNav
 	}
 
 	const props_options: IPropsOptions = {

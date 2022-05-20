@@ -22,7 +22,6 @@ export interface IPropsNav {
 	current_nav: GlobalModel['current_nav']
 	setTheme: GlobalModel['setTheme']
 	setAvatar: GlobalModel['setAvatar']
-	setCurrentNav: (current: GlobalModel['current_nav']) => void
 	getUserMenu: GlobalModel['getUserMenu']
 }
 
@@ -33,7 +32,6 @@ export interface IPropsLogo {
 export interface IPropsItems {
 	menu: Array<App.Menu>
 	current_nav: GlobalModel['current_nav']
-	setCurrentNav: (current: GlobalModel['current_nav']) => void
 }
 
 export interface IPropsOptions {
@@ -53,7 +51,6 @@ export interface IPropsMenu {
 	title: App.Menu['name']
 	items: Array<any>
 	current_menu: GlobalModel['current_menu']
-	setCurrentMenu: (current: GlobalModel['current_menu']) => void
 }
 
 export interface IPropsContainer {

@@ -26,8 +26,8 @@ echarts.use([
 
 export interface IProps extends Component.PropsChartComponent {
 	data: Array<any>
-	name_key: string
-	value_key: string
+	nameKey: string
+	valueKey: string
 	type: 'bar' | 'line'
 	prefix?: string
 	unit?: string
@@ -46,10 +46,10 @@ const Index = (props: IProps) => {
 	useAxisChart(ref, {
 		name: props.__name,
 		data: props.data,
-		base: props.name_key,
+		base: props.nameKey,
 		series: [
 			{
-				name: props.value_key,
+				name: props.valueKey,
 				type: props.type || 'bar',
 				itemStyle: {
 					borderRadius: 6,
@@ -89,7 +89,7 @@ const Index = (props: IProps) => {
 					is_line && 'is_line'
 				])}
 			>
-				<BaseNumber {...props} number={current[props.value_key]}></BaseNumber>
+				<BaseNumber {...props} number={current[props.valueKey]}></BaseNumber>
 			</div>
 			<div
 				className='chart_wrap w_100 flex justify_between align_center'

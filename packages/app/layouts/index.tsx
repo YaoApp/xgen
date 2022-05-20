@@ -1,12 +1,10 @@
 import '@/styles/index.less'
 import '@matrixage/atom.css/atom.min.css'
 
-import { useEventListener } from 'ahooks'
 import { ConfigProvider } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { Fragment, useLayoutEffect, useState } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
-import store from 'store2'
 import { container } from 'tsyringe'
 
 import { GlobalContext, GlobalModel } from '@/context/app'
@@ -26,11 +24,7 @@ const Index = () => {
 	const [global] = useState(() => container.resolve(GlobalModel))
 	const menu = global.menu.slice()
 	const { pathname } = useLocation()
-      const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
-      
-      useEventListener('popstate', () => {
-		window.$app.Event.emit('app/updateMenuIndex')
-	})
+	const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
 
 	useLayoutEffect(() => {
 		window.$global = global
@@ -70,13 +64,6 @@ const Index = () => {
 		current_nav: global.current_nav,
 		setTheme: useFn(global.setTheme),
 		setAvatar: useFn(global.setAvatar),
-		setCurrentNav: useFn((current: GlobalModel['current_nav']) => {
-			global.current_nav = current
-			global.current_menu = 0
-
-			store.set('current_nav', current)
-			store.set('current_menu', 0)
-		}),
 		getUserMenu: useFn(global.getUserMenu)
 	}
 
@@ -86,12 +73,7 @@ const Index = () => {
 		blocks: !!menu[global.current_nav]?.blocks,
 		title: menu[global.current_nav]?.name,
 		items: menu[global.current_nav]?.children || [],
-		current_menu: global.current_menu,
-		setCurrentMenu: useFn((current: GlobalModel['current_menu']) => {
-			global.current_menu = current
-
-			store.set('current_menu', current)
-		})
+		current_menu: global.current_menu
 	}
 
 	const props_container: IPropsContainer = {

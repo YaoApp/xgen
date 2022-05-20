@@ -13,11 +13,6 @@ const Index = (props: IPropsChartLink) => {
 			<Link
 				className='chart_link flex justify_center align_center'
 				to={link}
-				onClick={() => {
-					setTimeout(() => {
-						window.$app.Event.emit('app/updateMenuIndex')
-					})
-				}}
 			>
 				<Icon name='icon-arrow-right' size={12}></Icon>
 			</Link>

@@ -12,7 +12,7 @@ import styles from './index.less'
 import type { IPropsMenu } from '../../types'
 
 const Index = (props: IPropsMenu) => {
-	const { locale_messages, visible, blocks, title, items, setCurrentMenu } = props
+	const { locale_messages, visible, blocks, title, items } = props
 	const [visible_input, { toggle }] = useBoolean(false)
 	const [current_items, setCurrentItems] = useState<IPropsMenu['items']>([])
 	const [input, setInput] = useState('')
@@ -78,7 +78,6 @@ const Index = (props: IPropsMenu) => {
 								])}
 								to={item.path}
 								key={index}
-								onClick={() => setCurrentMenu(index)}
 							>
 								<div className='icon_wrap flex justify_center align_center'>
 									<Icon name={item.icon}></Icon>
