@@ -1,5 +1,23 @@
 ._local {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
+	overflow-y: scroll;
+	max-height: calc(100vh - @top - @bottom);
+
+	@top: 60px;
+	@bottom: 188px + 48px;
+
+	:global {
+		.mask {
+			height: 27px;
+
+			&.top_mask {
+				top: @top;
+				background: linear-gradient(to bottom, var(--color_bg_nav), transparent);
+			}
+
+			&.bottom_mask {
+				bottom: @bottom;
+				background: linear-gradient(to top, var(--color_bg_nav), transparent);
+			}
+		}
+	}
 }
