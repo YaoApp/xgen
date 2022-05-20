@@ -14,6 +14,8 @@ const Index = (props: IPropsChartItem) => {
 	const { locale } = useIntl()
 	const locale_messages = locales[locale]
 
+	console.log(JSON.parse(JSON.stringify(item)))
+
 	return (
 		<Col span={item.width}>
 			<Card

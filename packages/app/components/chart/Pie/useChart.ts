@@ -5,7 +5,7 @@ import { dark, light } from '@/components/chart/theme'
 import { useGlobal } from '@/context/app'
 
 import type { RefObject } from 'react'
-import type { BarSeriesOption } from 'echarts/charts'
+import type { PieSeriesOption } from 'echarts/charts'
 import type {
 	AriaComponentOption,
 	TooltipComponentOption,
@@ -14,7 +14,7 @@ import type {
 } from 'echarts/components'
 
 type Option = echarts.ComposeOption<
-	| BarSeriesOption
+	| PieSeriesOption
 	| AriaComponentOption
 	| TooltipComponentOption
 	| LegendComponentOption
@@ -23,12 +23,10 @@ type Option = echarts.ComposeOption<
 
 export interface IProps {
 	name: string
-	height: number
 	data: Array<any>
-	base: string
-	tooltip: TooltipComponentOption
-	legend: LegendComponentOption
 	series: Array<any>
+	nameKey?: string
+	height?: number
 }
 
 export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
@@ -38,15 +36,19 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 		if (!ref.current) return
 		if (!props.data) return
 
-		const series: Array<BarSeriesOption> = []
+		const series: Array<PieSeriesOption> = []
 		const is_dark = global.theme === 'dark'
 		const theme = is_dark ? dark : light
 
 		props.series.map((item) => {
 			series.push({
 				...item,
+				type: 'pie',
 				data: props.data.reduce((total, it) => {
-					total.push({ value: it[item.name], name: it[props.base] })
+					total.push({
+						name: it[props.nameKey || 'name'],
+						value: it[item.valueKey || 'value']
+					})
 
 					return total
 				}, [])
@@ -58,7 +60,7 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 		const option: Option = {
 			aria: {},
 			tooltip: {},
-			legend: { ...props.legend },
+			legend: {},
 			series
 		}
 

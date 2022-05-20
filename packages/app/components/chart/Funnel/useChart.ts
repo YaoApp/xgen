@@ -4,37 +4,39 @@ import { useLayoutEffect } from 'react'
 import { dark, light } from '@/components/chart/theme'
 import { useGlobal } from '@/context/app'
 
-import wrapText from './utils/wrapText'
-
 import type { RefObject } from 'react'
-import type { BarSeriesOption, LineSeriesOption } from 'echarts/charts'
+import type { FunnelSeriesOption } from 'echarts/charts'
 import type {
-	GridComponentOption,
 	AriaComponentOption,
 	TooltipComponentOption,
+	LegendComponentOption,
 	TitleComponentOption
 } from 'echarts/components'
 
 type Option = echarts.ComposeOption<
-	| LineSeriesOption
-	| BarSeriesOption
-	| GridComponentOption
+	| FunnelSeriesOption
 	| AriaComponentOption
 	| TooltipComponentOption
+	| LegendComponentOption
 	| TitleComponentOption
 >
 
 export interface IProps {
 	name: string
 	data: Array<any>
-	series: Array<any>
 	nameKey?: string
-	vertical?: boolean
-	textWrap?: boolean
-	textLength?: number
 	height?: number
-	axisLabel?: any
-	option?: Option
+	series: Array<any>
+}
+
+const base_config: FunnelSeriesOption = {
+	type: 'funnel',
+	gap: 0,
+	bottom: 6,
+	maxSize: '100%',
+	label: { show: false },
+	itemStyle: { borderWidth: 0 },
+	emphasis: { label: { show: false } }
 }
 
 export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
@@ -44,31 +46,22 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 		if (!ref.current) return
 		if (!props.data) return
 
-		const x_data: Array<string> = []
-		const y_data: Array<any> = []
-		const series: Array<BarSeriesOption> = []
+		const series: Array<FunnelSeriesOption> = []
 		const is_dark = global.theme === 'dark'
 		const theme = is_dark ? dark : light
 
-		props.data.map((item) => {
-			x_data.push(item[props.nameKey || 'name'])
-		})
-
-		props.series.map((item, index) => {
+		props.series.map((item) => {
 			series.push({
+				...base_config,
 				...item,
-				yAxisIndex: index,
 				data: props.data.reduce((total, it) => {
-					total.push(it[item.valueKey || 'value'])
+					total.push({
+						name: it[props.nameKey || 'name'],
+						value: it[item.valueKey || 'value']
+					})
 
 					return total
 				}, [])
-			})
-
-			y_data.push({
-				...item,
-				name: '',
-				type: 'value'
 			})
 		})
 
@@ -77,19 +70,14 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 		const option: Option = {
 			aria: {},
 			tooltip: {},
-			...props.option,
-			[!props.vertical ? 'xAxis' : 'yAxis']: {
-				type: 'category',
-				data: x_data,
-				axisTick: { show: false },
-				axisLine: { show: false },
-				axisLabel: {
-					...(props.axisLabel || {}),
-					formatter: (v: string) =>
-						wrapText(v, props.textWrap || false, props.textLength || 8)
-				}
+			title: { show: false },
+			legend: {
+				orient: 'horizontal',
+				left: 'center',
+				top: 'top',
+				itemWidth: 20,
+				itemHeight: 12
 			},
-			[props.vertical ? 'xAxis' : 'yAxis']: y_data,
 			series
 		}
 
