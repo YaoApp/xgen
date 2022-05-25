@@ -21,6 +21,7 @@ importers:
   packages/app:
     specifiers:
       '@ant-design/icons': ^4.7.0
+      '@formkit/auto-animate': ^1.0.0-beta.1
       '@matrixage/atom.css': ^2.0.1
       '@types/less': ^3.0.3
       '@types/lodash-es': ^4.17.6
@@ -65,6 +66,7 @@ importers:
       url-pattern: ^1.0.3
     dependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
+      '@formkit/auto-animate': 1.0.0-beta.1_react@17.0.2
       '@matrixage/atom.css': 2.0.1
       '@umijs/max': 4.0.0-rc.15_dvy46uj32wtz6p3oceudfemjlq
       '@yaoapp/utils': link:../utils
@@ -824,6 +826,20 @@ packages:
   /@formatjs/intl-utils/2.3.0:
     resolution: {integrity: sha512-KWk80UPIzPmUg+P0rKh6TqspRw0G6eux1PuJr+zz47ftMaZ9QDwbGzHZbtzWkl5hgayM/qrKRutllRC7D/vVXQ==}
     deprecated: the package is rather renamed to @formatjs/ecma-abstract with some changes in functionality (primarily selectUnit is removed and we don't plan to make any further changes to this package
+    dev: false
+
+  /@formkit/auto-animate/1.0.0-beta.1_react@17.0.2:
+    resolution: {integrity: sha512-I3OWOBaPZKSJL4bsooXI8kC3q7bcgibD2oML0P/Lir6MnbvUe/0/7EH8br024juvM/Ulm9C9xGx9CJUQYrOWSA==}
+    peerDependencies:
+      react: ^16.8.0
+      vue: ^3.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      vue:
+        optional: true
+    dependencies:
+      react: 17.0.2
     dev: false
 
   /@humanwhocodes/config-array/0.9.5:

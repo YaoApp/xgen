@@ -51,7 +51,8 @@
             "tslib": "^2.4.0",
             "tsyringe": "^4.6.0",
             "url-pattern": "^1.0.3",
-            "framer-motion": "^6.3.3"
+            "framer-motion": "^6.3.3",
+            "@formkit/auto-animate": "^1.0.0-beta.1"
       },
       "devDependencies": {
             "@types/node": "^17.0.31",
