@@ -13,13 +13,13 @@ const Index = (props: IPropsFormItem) => {
 				type='edit'
 				name={item.edit.type}
 				props={{
+					disabled,
 					...item.edit.props,
 					__namespace: namespace,
 					__primary: primary,
 					__bind: item.bind,
 					__name: item.name,
-					__data_item: data,
-					disabled
+					__data_item: data
 				}}
 			></X>
 		</Col>
