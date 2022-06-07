@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import { useEffect } from 'react'
 import { ColorPicker, toColor, useColor } from 'react-color-palette'
 
-import Item from '@/components/edit/Item'
+import { Item } from '@/components'
 
 import styles from './index.less'
 

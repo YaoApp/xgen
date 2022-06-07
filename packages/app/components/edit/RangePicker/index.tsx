@@ -2,7 +2,7 @@ import { DatePicker } from 'antd'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 
-import Item from '@/components/edit/Item'
+import { Item } from '@/components'
 
 import type { TimeRangePickerProps } from 'antd'
 import type { Component } from '@/types'

@@ -13,7 +13,7 @@ interface IProps extends FormItemProps {
 
 const Index = (props: IProps) => {
 	const { children, __bind, __name, hideLabel, ...rest_props } = props
-
+      
 	const real_props = {
 		label: hideLabel ? (
 			''

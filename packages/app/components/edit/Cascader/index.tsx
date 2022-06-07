@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
-import Item from '@/components/edit/Item'
+import { Item } from '@/components'
 import { getLocale } from '@umijs/max'
 
 import styles from './index.less'

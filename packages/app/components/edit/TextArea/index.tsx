@@ -1,6 +1,6 @@
 import { Input } from 'antd'
 
-import Item from '@/components/edit/Item'
+import { Item } from '@/components'
 import { getLocale } from '@umijs/max'
 
 import type { TextAreaProps } from 'antd/lib/input/TextArea'
