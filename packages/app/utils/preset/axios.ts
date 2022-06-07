@@ -5,7 +5,9 @@ import store from 'store2'
 import { history } from '@umijs/max'
 
 axios.interceptors.request.use((config) => {
-	const session = `Bearer ${store.session.get('token')}` || ''
+	const is_session_token = store.get('token_storage') === 'sessionStorage'
+	const token = is_session_token ? store.session.get('token') : store.local.get('token')
+	const session = `Bearer ${token}` || ''
 
 	return {
 		...config,

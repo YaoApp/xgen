@@ -44,9 +44,10 @@ export default class GlobalModel {
 
 		if (err) return
 
-		store.set('__mode', res.mode)
-
-		this.app_info = res
+            this.app_info = res
+            
+            store.set('__mode', res.mode)
+		store.set('token_storage', res.token?.storage || 'sessionStorage')
 	}
 
 	async getUserMenu() {

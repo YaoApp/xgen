@@ -96,7 +96,12 @@ export default class Model {
 		this.global.menu = res.menus
 		this.global.current_nav = current_nav
 
-		store.session.set('token', res.token)
+		if (this.global.app_info.token?.storage === 'localStorage') {
+			store.local.set('token', res.token)
+		} else {
+			store.session.set('token', res.token)
+		}
+
 		store.set('user', res.user)
 		store.set('menu', res.menus)
 		store.set('current_nav', current_nav)

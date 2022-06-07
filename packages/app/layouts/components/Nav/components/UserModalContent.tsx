@@ -35,6 +35,7 @@ const Index = (props: IPropsUserModalContent) => {
 						store.remove('menu')
 						store.remove('current_nav')
 						store.remove('current_menu')
+						store.local.remove('token')
 						store.session.remove('token')
 
 						history.push(store.get('login_url') || '/')

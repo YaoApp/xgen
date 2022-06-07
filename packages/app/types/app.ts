@@ -28,6 +28,11 @@ export declare namespace App {
 		icons?: {
 			png: string
 		}
+		/** define token behavior, default is sessionStorage */
+		token?: {
+			/** way of token storage */
+			storage: 'sessionStorage' | 'localStorage'
+		}
 		optional?: {
 			/** Hide the navigation bar notification */
 			hideNotification?: boolean
