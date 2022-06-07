@@ -16,6 +16,7 @@ import Helmet from './components/Helmet'
 import Loading from './components/Loading'
 import Menu from './components/Menu'
 import Nav from './components/Nav'
+import LoginWrapper from './wrappers/Login'
 
 import type { IPropsHelmet, IPropsLoading, IPropsNav, IPropsMenu, IPropsContainer } from './types'
 
@@ -24,9 +25,9 @@ const Index = () => {
 	const [global] = useState(() => container.resolve(GlobalModel))
 	const menu = global.menu.slice()
 	const { pathname } = useLocation()
-      const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
-     
-      useLayoutEffect(() => {
+	const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
+
+	useLayoutEffect(() => {
 		window.$global = global
 
 		global.locale_messages = messages
@@ -87,7 +88,9 @@ const Index = () => {
 			<ConfigProvider prefixCls='xgen'>
 				<GlobalContext.Provider value={global}>
 					{is_login ? (
-						<Outlet />
+						<LoginWrapper>
+							<Outlet />
+						</LoginWrapper>
 					) : (
 						<Fragment>
 							<Loading {...props_loading}></Loading>
