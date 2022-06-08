@@ -14,6 +14,6 @@ export default class Index {
 
 	@catchError()
 	getUserMenu<Res>() {
-		return axios.get<{}, Response<Res>>(`/api/xiang/user/menu`)
+		return axios.get<{}, Response<Res>>(`/api/${localStorage.getItem('__api_prefix')}/user/menu`)
 	}
 }

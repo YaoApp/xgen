@@ -16,8 +16,5 @@ export default defineConfig({
 	polyfill: { imports: ['core-js/features/promise/try'] },
 	extraBabelPlugins,
 	chainWebpack,
-	conventionRoutes,
-	define: {
-		__Test: 123
-	}
+	conventionRoutes
 })

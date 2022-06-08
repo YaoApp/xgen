@@ -26,7 +26,7 @@ const Custom = (props: ICustom) => {
 	const [data, setData] = useState<Array<any>>([])
 
 	const api = {
-		setting: `/api/__yao/setting/${props.setting}`
+		setting: `/api/${localStorage.getItem('__api_prefix')}/setting/${props.setting}`
 	}
 
 	const getSetting = async () => {
@@ -45,8 +45,8 @@ const Custom = (props: ICustom) => {
 		if (!props.value) return
 
 		setData(Array.isArray(props.value) ? props.value : props.value.data)
-      }, [ props.value ])
-      
+	}, [props.value])
+
 	return (
 		<div className={styles._local}>
 			<div

@@ -3,17 +3,14 @@ import axios from 'axios'
 import store from 'store2'
 
 import { history } from '@umijs/max'
+import { getToken } from '@yaoapp/utils'
 
 axios.interceptors.request.use((config) => {
-	const is_session_token = store.get('token_storage') === 'sessionStorage'
-	const token = is_session_token ? store.session.get('token') : store.local.get('token')
-	const session = `Bearer ${token}` || ''
-
 	return {
 		...config,
 		headers: {
 			...config['headers'],
-			authorization: session
+			authorization: getToken()
 		}
 	}
 })

@@ -1,3 +1,3 @@
 export default {
-	getStorage: '/api/xiang/storage/url'
+	getStorage: `/api/${localStorage.getItem('__api_prefix')}/storage/url`
 }

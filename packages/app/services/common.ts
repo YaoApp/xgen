@@ -9,6 +9,8 @@ import type { Response, BaseType } from '@/types'
 export default class Index {
 	@catchError()
 	getSetting<Res>(type: BaseType, model: string) {
-		return axios.get<{}, Response<Res>>(`/api/__yao/${type}/${model}/setting`)
+		return axios.get<{}, Response<Res>>(
+			`/api/${localStorage.getItem('__api_prefix')}/${type}/${model}/setting`
+		)
 	}
 }

@@ -2,6 +2,7 @@ import { Upload } from 'antd'
 import clsx from 'clsx'
 
 import { Item } from '@/components'
+import { getToken } from '@yaoapp/utils'
 
 import UploadBtn from './components/UploadBtn'
 import filemap from './filemap'
@@ -35,8 +36,8 @@ const Custom = window.$app.memo((props: CustomProps) => {
 		name: 'file',
 		listType: filemap[filetype].listType,
 		className: clsx(['form_item_upload_wrap', filemap[filetype].className]),
-		action: '/api/xiang/storage/upload',
-		headers: { authorization: `Bearer ${sessionStorage.getItem('token')}` || '' },
+		action: `/api/${localStorage.getItem('__api_prefix')}/storage/upload`,
+		headers: { authorization: getToken() },
 		fileList: list,
 		isImageUrl: () => filetype === 'image',
 		onChange

@@ -8,6 +8,9 @@ export declare namespace App {
 		description?: string
 		/** runtime mode, note: may affect user experience! */
 		mode?: 'development' | 'production'
+		/** api prefix, default is __yao */
+            apiPrefix?: string
+		/** login config */
 		login: {
 			/** Configure the jump page after administrator and user login */
 			entry: {

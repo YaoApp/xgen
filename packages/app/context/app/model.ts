@@ -7,7 +7,6 @@ import { singleton } from 'tsyringe'
 import { Stack } from '@/models'
 import Service from '@/services/app'
 import { getCurrentMenuIndex } from '@/utils/filter'
-import { history } from '@umijs/max'
 
 import type { AvatarFullConfig } from 'react-nice-avatar'
 
@@ -48,6 +47,8 @@ export default class GlobalModel {
 
 		store.set('__mode', res.mode)
 		store.set('token_storage', res.token?.storage || 'sessionStorage')
+
+		localStorage.setItem('__api_prefix', res.apiPrefix || '__yao')
 	}
 
 	async getUserMenu() {

@@ -9,6 +9,6 @@ import type { Response } from '@/types'
 export default class Index {
 	@catchError()
 	find<Res>(model: string, primary_value: number) {
-		return axios.get<{}, Response<Res>>(`/api/xiang/table/${model}/find/${primary_value}`)
+		return axios.get<{}, Response<Res>>(`/api/${localStorage.getItem('__api_prefix')}/table/${model}/find/${primary_value}`)
 	}
 }

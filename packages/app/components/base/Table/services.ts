@@ -9,20 +9,20 @@ import type { Response } from '@/types'
 export default class Index {
 	@catchError()
 	search<Req, Res>(model: string, params?: Req) {
-		return axios.get<Req, Response<Res>>(`/api/xiang/table/${model}/search`, { params })
+		return axios.get<Req, Response<Res>>(`/api/${localStorage.getItem('__api_prefix')}/table/${model}/search`, { params })
 	}
 
 	@catchError()
 	batchDelete<Res>(model: string, primary_key: string, ids: Array<number>) {
 		return axios.post<{}, Response<Res>>(
-			`/api/xiang/table/${model}/delete/in?primary=${primary_key}&ids=${ids.join(',')}`
+			`/api/${localStorage.getItem('__api_prefix')}/table/${model}/delete/in?primary=${primary_key}&ids=${ids.join(',')}`
 		)
 	}
 
 	@catchError()
 	batchUpdate<Data, Res>(model: string, primary_key: string, ids: Array<number>, data: Data) {
 		return axios.post<{}, Response<Res>>(
-			`/api/xiang/table/${model}/update/in?primary=${primary_key}&ids=${ids.join(',')}`,
+			`/api/${localStorage.getItem('__api_prefix')}/table/${model}/update/in?primary=${primary_key}&ids=${ids.join(',')}`,
 			data
 		)
 	}
