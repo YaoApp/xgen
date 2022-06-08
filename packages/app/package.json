@@ -68,6 +68,7 @@
             "postcss": "^8.4.5",
             "ts-node": "^10.7.0",
             "typescript": "^4.6.4",
-            "webpack-chain":"^6.5.1"
+            "webpack-chain":"^6.5.1",
+            "dotenv":"^16.0.1"
       }
 }

@@ -1,5 +1,4 @@
 import type Config from 'webpack-chain'
-import config from '../config'
 
 export const env = process.env.NODE_ENV as 'development' | 'production'
 
@@ -28,8 +27,8 @@ export const conventionRoutes = {
 }
 
 export const links = [
-	{ rel: 'stylesheet', href: `${config.base}icon_font.css` },
-	{ rel: 'stylesheet', href: `${config.base}theme/light.css` }
+	{ rel: 'stylesheet', href: `${process.env.BASE}icon_font.css` },
+	{ rel: 'stylesheet', href: `${process.env.BASE}theme/light.css` }
 ]
 
 export const chainWebpack = (config: Config) => {
