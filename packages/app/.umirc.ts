@@ -4,17 +4,20 @@ import { chainWebpack, conventionRoutes, extraBabelPlugins, links, proxy } from 
 import config from './config'
 
 export default defineConfig({
-      mfsu: { esbuild: true },
+	mfsu: { esbuild: true },
 	monorepoRedirect: { srcDir: ['./'] },
 	npmClient: 'pnpm',
 	base: config.base,
 	publicPath: config.base,
 	proxy,
-      links,
+	links,
 	antd: { import: false },
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
 	polyfill: { imports: ['core-js/features/promise/try'] },
 	extraBabelPlugins,
 	chainWebpack,
-      conventionRoutes
+	conventionRoutes,
+	define: {
+		__Test: 123
+	}
 })

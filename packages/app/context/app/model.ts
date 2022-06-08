@@ -44,9 +44,9 @@ export default class GlobalModel {
 
 		if (err) return
 
-            this.app_info = res
-            
-            store.set('__mode', res.mode)
+		this.app_info = res
+
+		store.set('__mode', res.mode)
 		store.set('token_storage', res.token?.storage || 'sessionStorage')
 	}
 
@@ -87,15 +87,12 @@ export default class GlobalModel {
 		this.visible_menu = !this.visible_menu
 	}
 
-	updateMenuStatus() {
-		if (history.location.pathname.indexOf('/0/edit') !== -1) {
+	updateMenuStatus(pathname: string) {
+		if (pathname.indexOf('/0/edit') !== -1) {
 			window.$global.loading = true
 		}
 
-		const { nav, menu, hit, menu_item } = getCurrentMenuIndex(
-			this.menu,
-			history.location.pathname
-		)
+		const { nav, menu, hit, menu_item } = getCurrentMenuIndex(this.menu, pathname)
 
 		if (!hit) return (this.visible_menu = false)
 
