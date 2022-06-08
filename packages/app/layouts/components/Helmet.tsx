@@ -15,7 +15,9 @@ const Index = (props: IPropsHelmet) => {
 				type='image/x-icon'
 				href={require('@/public/favicon.ico')}
 			/>
-			{theme === 'dark' && <link rel='stylesheet' href={`/theme/dark.css`} />}
+			{theme === 'dark' && (
+				<link rel='stylesheet' href={`${$runtime.BASE}theme/dark.css`} />
+			)}
 			<style>{InitCss}</style>
 			<title>
 				{app_info.name ? `${app_info.name} - ${app_info.description}` : config.name}

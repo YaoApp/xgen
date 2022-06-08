@@ -7,8 +7,8 @@ interface IProps extends Component.PropsViewComponent {
 }
 
 const Index = (props: IProps) => {
-	const { __value } = props
-
+      const { __value } = props
+      
 	if (props?.format) {
 		if (Array.isArray(__value)) {
 			return (
