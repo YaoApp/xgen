@@ -1,6 +1,7 @@
 import { Button, Switch } from 'antd'
 
 import { ReloadOutlined } from '@ant-design/icons'
+import { setLocale } from '@umijs/max'
 
 import type { IPropsSettingModalContent } from '@/layouts/types'
 
@@ -40,6 +41,7 @@ const Index = (props: IPropsSettingModalContent) => {
 						checkedChildren='EN'
 						unCheckedChildren='中文'
 						checked={!is_cn}
+						onChange={(v) => setLocale(v ? 'en-US' : 'zh-CN')}
 					/>
 				</div>
 				<div className='setting_item w_100 border_box flex justify_between align_center'>
