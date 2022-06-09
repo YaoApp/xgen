@@ -10,7 +10,8 @@ import styles from './index.less'
 import type { IPropsActions } from '../../types'
 
 const Index = (props: IPropsActions) => {
-	const { locale_messages, namespace, primary, type, id, operation, data, onBack } = props
+	const { locale_messages, namespace, primary, type, id, operation, data, onBack, submit } =
+		props
 	const [stick, setStick] = useState<boolean | undefined>(false)
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled(data)
@@ -64,7 +65,7 @@ const Index = (props: IPropsActions) => {
 							<Button
 								className='btn_action'
 								type='primary'
-								htmlType='submit'
+								onClick={submit}
 							>
 								{locale_messages.save}
 							</Button>

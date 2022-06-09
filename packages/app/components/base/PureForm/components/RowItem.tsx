@@ -6,20 +6,18 @@ import TabsItem from './TabsItem'
 import type { IPropsRowItem, IPropsTabsItem, IPropsFormItem } from '../types'
 
 const Index = (props: IPropsRowItem) => {
-	const { namespace, primary, data, columns, disabled } = props
+	const { namespace, primary, data, columns } = props
 
 	const props_tabs_item: Omit<IPropsTabsItem, 'item'> = {
 		namespace,
 		primary,
-		data,
-		disabled
+		data
 	}
 
 	const props_form_item: Omit<IPropsFormItem, 'item'> = {
 		namespace,
 		primary,
-		data,
-		disabled
+		data
 	}
 
 	return (

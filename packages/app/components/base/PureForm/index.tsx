@@ -18,7 +18,7 @@ const Index = (props: IPropsPureForm) => {
 		props
 	const [form] = useForm()
 	const locale = getLocale()
-	const { setFieldsValue, resetFields } = form
+	const { setFieldsValue, resetFields, submit } = form
 	const locale_messages = locales[locale]
 	const disabled = type === 'view'
 
@@ -36,36 +36,41 @@ const Index = (props: IPropsPureForm) => {
 		id,
 		operation,
 		data,
-		onBack
+		onBack,
+		submit
 	}
 
 	const props_sections: IPropsSections = {
 		namespace,
 		primary,
 		data,
-		sections,
-		disabled
+		sections
 	}
 
 	return (
-		<Form
+		<div
 			className={clsx([
 				styles._local,
 				disabled && styles.disabled,
 				'w_100 border_box flex flex_column'
 			])}
-			form={form}
-			name={namespace}
-			onFinish={onSave}
 		>
 			<div className='form_title_wrap w_100 border_box flex justify_between align_center relative'>
 				<span className='title no_wrap'>{title}</span>
 				<Actions {...props_actions}></Actions>
 			</div>
-			<div className='form_wrap w_100 border_box'>
-				<Sections {...props_sections}></Sections>
-			</div>
-		</Form>
+			<Form
+				form={form}
+				name={namespace}
+				onFinish={onSave}
+				// @ts-ignore
+				disabled={disabled}
+			>
+				<div className='form_wrap w_100 border_box'>
+					<Sections {...props_sections}></Sections>
+				</div>
+			</Form>
+		</div>
 	)
 }
 

@@ -24,6 +24,7 @@ export interface IPropsActions {
 	operation: Model['setting']['operation']
 	data: Model['data']
 	onBack: IPropsPureForm['onBack']
+	submit: () => void
 }
 
 export interface IPropsSections {
@@ -31,39 +32,34 @@ export interface IPropsSections {
 	primary: Model['setting']['primary']
 	data: Model['data']
 	sections: Model['sections']
-	disabled: boolean
 }
 
 export interface IPropsSection {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
 	data: Model['data']
-      item: FormType.SectionResult
-	disabled: boolean
+	item: FormType.SectionResult
 }
 
 export interface IPropsRowItem {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
 	data: Model['data']
-      columns: Array<FormType.ColumnResult>
-	disabled: boolean
+	columns: Array<FormType.ColumnResult>
 }
 
 export interface IPropsFormItem {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
 	data: Model['data']
-      item: Common.Column
-	disabled: boolean
+	item: Common.Column
 }
 
 export interface IPropsTabsItem {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
 	data: Model['data']
-      item: FormType.TargetTab
-	disabled: boolean
+	item: FormType.TargetTab
 }
 
 export interface Locale {

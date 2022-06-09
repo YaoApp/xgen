@@ -24,10 +24,10 @@
       "dependencies": {
             "@ant-design/icons": "^4.7.0",
             "@matrixage/atom.css": "^2.0.1",
-            "@umijs/max": "^4.0.0-rc.21",
+            "@umijs/max": "^4.0.0-rc.22",
             "@yaoapp/utils": "workspace:*",
             "ahooks": "^3.3.10",
-            "antd": "^4.20.3",
+            "antd": "^4.21.0",
             "axios": "^0.27.2",
             "clsx": "^1.1.1",
             "moment": "^2.29.3",
