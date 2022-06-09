@@ -1,13 +1,15 @@
 import { defineConfig } from '@umijs/max'
 
-import { chainWebpack, conventionRoutes, extraBabelPlugins, links, proxy } from './build/config'
+import {
+	base, chainWebpack, conventionRoutes, extraBabelPlugins, links, proxy
+} from './build/config'
 
 export default defineConfig({
 	mfsu: { esbuild: true },
 	monorepoRedirect: { srcDir: ['./'] },
 	npmClient: 'pnpm',
-	base: process.env.BASE,
-	publicPath: process.env.BASE,
+	base,
+	publicPath: base,
 	proxy,
 	links,
 	antd: { import: false },

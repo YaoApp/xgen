@@ -2,6 +2,7 @@ import { message } from 'antd'
 import axios from 'axios'
 import store from 'store2'
 
+import { getPath } from '@/utils'
 import { history } from '@umijs/max'
 import { getToken } from '@yaoapp/utils'
 
@@ -29,6 +30,13 @@ axios.interceptors.response.use(
 		}
 
 		if (data?.code === 401 || data?.code === 403) {
+			if (
+				getPath(history.location.pathname) === '' ||
+				getPath(history.location.pathname) === '/'
+			) {
+				return Promise.reject(error)
+			}
+
 			const login_url = store.get('login_url')
 
 			if (login_url) history.push(login_url)

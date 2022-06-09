@@ -16,7 +16,7 @@ const Index = (props: IPropsHelmet) => {
 				href={require('@/public/favicon.ico')}
 			/>
 			{theme === 'dark' && (
-				<link rel='stylesheet' href={`${$runtime.BASE}theme/dark.css`} />
+				<link rel='stylesheet' href={`/${$runtime.BASE}/theme/dark.css`} />
 			)}
 			<style>{InitCss}</style>
 			<title>

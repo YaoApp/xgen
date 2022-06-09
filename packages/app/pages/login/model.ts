@@ -5,7 +5,7 @@ import store from 'store2'
 import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
-import { reg_email, reg_mobile } from '@/utils/reg'
+import { getPath, reg_email, reg_mobile } from '@/utils'
 import { history } from '@umijs/max'
 
 import Service from './services'
@@ -105,7 +105,7 @@ export default class Model {
 		store.set('user', res.user)
 		store.set('menu', res.menus)
 		store.set('current_nav', current_nav)
-		store.set('login_url', history.location.pathname)
+		store.set('login_url', getPath(history.location.pathname))
 
 		await window.$app.sleep(600)
 

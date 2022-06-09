@@ -2,6 +2,8 @@ import type Config from 'webpack-chain'
 
 export const env = process.env.NODE_ENV as 'development' | 'production'
 
+export const base = `/${process.env.BASE}/`
+
 export const proxy = {
 	'/api': {
 		target: 'http://local.iqka.com:5099',
@@ -27,8 +29,8 @@ export const conventionRoutes = {
 }
 
 export const links = [
-	{ rel: 'stylesheet', href: `${process.env.BASE}icon_font.css` },
-	{ rel: 'stylesheet', href: `${process.env.BASE}theme/light.css` }
+	{ rel: 'stylesheet', href: `/${process.env.BASE}/icon_font.css` },
+	{ rel: 'stylesheet', href: `/${process.env.BASE}/theme/light.css` }
 ]
 
 export const chainWebpack = (config: Config) => {
