@@ -42,7 +42,8 @@ const Index = (props: IPropsPureForm) => {
 
 	const props_sections: IPropsSections = {
 		namespace,
-		primary,
+            primary,
+            type,
 		data,
 		sections
 	}

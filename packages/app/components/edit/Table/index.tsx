@@ -1,23 +1,38 @@
+import clsx from 'clsx'
+
 import Table from '@/components/base/Table'
+import { getDeepValue } from '@yaoapp/utils'
+
+import styles from './index.less'
 
 import type { IProps as IPropsTable } from '@/components/base/Table'
+import type { Component } from '@/types'
 
-interface IProps {
+interface IProps extends Component.PropsEditComponent {
 	model: IPropsTable['model']
 	query: IPropsTable['query']
 }
 
 const Index = (props: IProps) => {
-	const { model, query } = props
+	const { __data_item, __name, model, query } = props
+
+	if (!Object.keys(__data_item).length) return null
 
 	const props_table: IPropsTable = {
 		parent: 'Form',
 		model,
-		query
+		query: query ? getDeepValue(query, __data_item) : {}
 	}
 
-	// return <Table {...props_table}></Table>
-	return <div>123</div>
+	return (
+		<div className='w_100 flex flex_column'>
+			<div className={clsx([styles.header, 'w_100 flex justify_between align_center'])}>
+				<span className='title'>{__name}</span>
+				<div className='actions_wrap'></div>
+			</div>
+			<Table {...props_table}></Table>
+		</div>
+	)
 }
 
 export default window.$app.memo(Index)

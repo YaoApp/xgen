@@ -1,5 +1,5 @@
 import { message } from 'antd'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, toJS } from 'mobx'
 import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
@@ -11,6 +11,7 @@ import Service from './services'
 
 import type { TableType, Common as CommonType } from '@/types'
 import type { Component } from '@/types'
+import type { IProps } from './index'
 
 @injectable()
 export default class Model {
@@ -111,10 +112,26 @@ export default class Model {
 		this.search()
 	}
 
-	init(parent: Component.StackComponent['parent'], model: Component.StackComponent['model']) {
-		this.global.stack.push(`Table-${parent}-${model}`)
+	init(
+		parent: Component.StackComponent['parent'],
+		model: Component.StackComponent['model'],
+		query: IProps['query']
+	) {
+		if (parent === 'Page' || parent === 'Modal') {
+			this.global.stack.push(`Table-${parent}-${model}`)
+			this.namespace.paths = toJS(this.global.stack.paths)
+		}
 
-		this.namespace.paths = this.global.stack.paths
+		if (parent === 'Form') {
+			const global_stack_paths = toJS(this.global.stack.paths)
+
+			global_stack_paths.push(`Table-${parent}-${model}`)
+
+			this.namespace.paths = global_stack_paths
+		}
+
+		if (query) this.search_params = { ...query }
+
 		this.parent = parent
 		this.model = model
 

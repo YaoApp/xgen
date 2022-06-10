@@ -12,9 +12,6 @@ const Index = (props: IProps) => {
 	const { __bind, __name, itemProps, ...rest_props } = props
       const is_cn = getLocale() === 'zh-CN'
       
-      console.log(123);
-      
-
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
 			<InputNumber

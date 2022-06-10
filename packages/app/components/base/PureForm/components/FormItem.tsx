@@ -6,7 +6,7 @@ import { X } from '@/components'
 import type { IPropsFormItem } from '../types'
 
 const Index = (props: IPropsFormItem) => {
-	const { namespace, primary, data, item } = props
+	const { namespace, primary, type, data, item } = props
 
 	return (
 		<Col span={item.width}>
@@ -17,6 +17,7 @@ const Index = (props: IPropsFormItem) => {
 					...toJS(item.edit.props),
 					__namespace: namespace,
 					__primary: primary,
+					__type: type,
 					__bind: item.bind,
 					__name: item.name,
 					__data_item: toJS(data)

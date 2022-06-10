@@ -23,6 +23,7 @@ export declare namespace Component {
 	interface Props {
 		__namespace: string
 		__primary: string
+		__type: FormType
 		__bind: string
 		__name: string
 		__data_item: any

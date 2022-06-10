@@ -24,12 +24,12 @@ const Index = (props: IProps) => {
 	const [x] = useState(() => container.resolve(Model))
 
 	useLayoutEffect(() => {
-		x.init(parent, model)
+		x.init(parent, model, query)
 
 		return () => {
 			x.off()
 		}
-	}, [x, parent, model])
+	}, [x, parent, model, query])
 
 	if (!x.setting.table) return null
 
@@ -66,10 +66,10 @@ const Index = (props: IProps) => {
 				<PureTable {...props_table}></PureTable>
 			</Page>
 		)
-      }
+	}
 
 	return (
-		<div className={clsx([styles._local, 'w_100'])}>
+		<div className={clsx([styles._local, x.parent === 'Form' ? styles.in_form : 'w_100'])}>
 			<PureTable {...props_table}></PureTable>
 		</div>
 	)

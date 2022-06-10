@@ -30,6 +30,7 @@ export interface IPropsActions {
 export interface IPropsSections {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
+	type: Model['type']
 	data: Model['data']
 	sections: Model['sections']
 }
@@ -37,6 +38,7 @@ export interface IPropsSections {
 export interface IPropsSection {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
+	type: Model['type']
 	data: Model['data']
 	item: FormType.SectionResult
 }
@@ -44,6 +46,7 @@ export interface IPropsSection {
 export interface IPropsRowItem {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
+	type: Model['type']
 	data: Model['data']
 	columns: Array<FormType.ColumnResult>
 }
@@ -51,6 +54,7 @@ export interface IPropsRowItem {
 export interface IPropsFormItem {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
+	type: Model['type']
 	data: Model['data']
 	item: Common.Column
 }
@@ -58,6 +62,7 @@ export interface IPropsFormItem {
 export interface IPropsTabsItem {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
+	type: Model['type']
 	data: Model['data']
 	item: FormType.TargetTab
 }

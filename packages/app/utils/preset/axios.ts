@@ -38,9 +38,7 @@ axios.interceptors.response.use(
 				return Promise.reject(error)
 			}
 
-			const login_url = store.get('login_url')
-
-			if (login_url) history.push(login_url)
+			history.push(store.get('login_url') || '/')
 		}
 
 		return Promise.reject(error)

@@ -1,5 +1,5 @@
 import { message } from 'antd'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, toJS } from 'mobx'
 import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
@@ -111,7 +111,7 @@ export default class Model {
 	) {
 		this.global.stack.push(`Form-${parent}-${model}`)
 
-		this.namespace.paths = this.global.stack.paths
+		this.namespace.paths = toJS(this.global.stack.paths)
 		this.parent = parent
 		this.model = model
 		this.id = Number(id)

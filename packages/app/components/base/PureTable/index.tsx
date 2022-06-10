@@ -1,10 +1,8 @@
 import { Table } from 'antd'
-import clsx from 'clsx'
 
 import { getLocale } from '@umijs/max'
 
 import { useColumns } from './hooks'
-import styles from './index.less'
 import locales from './locales'
 
 import type { TablePaginationConfig } from 'antd'
@@ -22,7 +20,7 @@ const Index = (props: IPropsPureTable) => {
 		operation
 	} = props
 	const locale = getLocale()
-	const is_inner = parent === 'Modal'
+	const in_form = parent === 'Form'
 
 	const list_columns = useColumns(namespace, primary, columns, table_props, operation)
 
@@ -39,12 +37,11 @@ const Index = (props: IPropsPureTable) => {
 
 	return (
 		<Table
-			className={clsx([styles._local, is_inner ? styles.inline : ''])}
 			dataSource={list}
 			columns={list_columns}
-			sticky={is_inner ? false : { offsetHeader: 52 }}
+			sticky={in_form ? false : { offsetHeader: 52 }}
 			rowKey={(item) => item.id}
-			pagination={is_inner ? false : table_pagination}
+			pagination={in_form ? false : table_pagination}
 			onChange={({ current: page, pageSize: pagesize }) => {
 				window.$app.Event.emit(`${namespace}/search`, { page, pagesize })
 			}}

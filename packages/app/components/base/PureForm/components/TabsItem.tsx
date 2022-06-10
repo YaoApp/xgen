@@ -7,11 +7,12 @@ import type { IPropsTabsItem, IPropsRowItem } from '../types'
 const { TabPane } = Tabs
 
 const Index = (props: IPropsTabsItem) => {
-	const { namespace, primary, data, item } = props
+	const { namespace, primary, type, data, item } = props
 
 	const props_row_item: Omit<IPropsRowItem, 'columns'> = {
 		namespace,
 		primary,
+		type,
 		data
 	}
 
