@@ -17,3 +17,4 @@ const Index = () => {
 }
 
 export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
+

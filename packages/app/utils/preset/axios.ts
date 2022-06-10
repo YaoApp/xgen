@@ -32,7 +32,8 @@ axios.interceptors.response.use(
 		if (data?.code === 401 || data?.code === 403) {
 			if (
 				getPath(history.location.pathname) === '' ||
-				getPath(history.location.pathname) === '/'
+				getPath(history.location.pathname) === '/' ||
+				getPath(history.location.pathname).indexOf('login') !== -1
 			) {
 				return Promise.reject(error)
 			}
