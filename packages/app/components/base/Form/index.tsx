@@ -41,6 +41,7 @@ const Index = (props: Component.FormComponent) => {
 	}, [x, parent, model, id, form, onFormBack])
 
 	if (!x.setting.form) return null
+	if (!Object.keys(x.data).length) return null
 
 	const props_breadcrumb: IPropsBreadcrumb = {
 		model,

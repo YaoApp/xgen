@@ -1,4 +1,5 @@
 import { Col } from 'antd'
+import { toJS } from 'mobx'
 
 import { X } from '@/components'
 
@@ -13,12 +14,12 @@ const Index = (props: IPropsFormItem) => {
 				type='edit'
 				name={item.edit.type}
 				props={{
-					...item.edit.props,
+					...toJS(item.edit.props),
 					__namespace: namespace,
 					__primary: primary,
 					__bind: item.bind,
 					__name: item.name,
-					__data_item: data
+					__data_item: toJS(data)
 				}}
 			></X>
 		</Col>

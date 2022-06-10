@@ -1,3 +1,5 @@
+import { toJS } from 'mobx'
+
 import { X } from '@/components'
 
 import { getText } from '../utils'
@@ -11,13 +13,13 @@ const Index = (props: IPropsComponentCommon) => {
 	if (!field_detail.view?.type) return <div className='line_clamp_2'>{view_text || '-'}</div>
 
 	const props_view_component = {
-		...field_detail.view.props,
+		...toJS(field_detail.view.props),
 		__namespace: namespace,
 		__primary: primary,
 		__bind: field_detail.bind,
 		__name: field_detail.name,
-		__value: form_value,
-		__data_item: data_item
+		__value: toJS(form_value),
+		__data_item: toJS(data_item)
 	}
 
 	return <X type='view' name={field_detail.view.type} props={props_view_component}></X>

@@ -13,9 +13,14 @@ import type { Component } from '@/types'
 
 import type { IPropsFilter } from '@/components/base/Filter/types'
 import type { IPropsPureTable } from '@/components/base/PureTable/types'
+import type { Global } from '@/types'
 
-const Index = (props: Component.StackComponent) => {
-	const { parent, model } = props
+export interface IProps extends Component.StackComponent {
+	query?: Global.StringObject
+}
+
+const Index = (props: IProps) => {
+	const { parent, model, query } = props
 	const [x] = useState(() => container.resolve(Model))
 
 	useLayoutEffect(() => {
@@ -61,7 +66,7 @@ const Index = (props: Component.StackComponent) => {
 				<PureTable {...props_table}></PureTable>
 			</Page>
 		)
-	}
+      }
 
 	return (
 		<div className={clsx([styles._local, 'w_100'])}>

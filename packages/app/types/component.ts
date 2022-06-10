@@ -7,7 +7,7 @@ export declare namespace Component {
 	type FormType = 'view' | 'edit'
 
 	interface BaseComponent {
-		parent: 'Page' | 'Modal'
+		parent: 'Page' | 'Modal' | 'Form'
 		model: string
 	}
 

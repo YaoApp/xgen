@@ -1,5 +1,6 @@
 import { Button, Col, Form, Row, Tooltip } from 'antd'
 import clsx from 'clsx'
+import { toJS } from 'mobx'
 
 import { X } from '@/components'
 import { Icon } from '@/widgets'
@@ -44,7 +45,7 @@ const Index = (props: IPropsFilter) => {
 							type='edit'
 							name={item.edit.type}
 							props={{
-								...item.edit.props,
+								...toJS(item.edit.props),
 								__bind: item.bind,
 								__name: item.name
 							}}
@@ -118,7 +119,7 @@ const Index = (props: IPropsFilter) => {
 									type='edit'
 									name={item.edit.type}
 									props={{
-										...item.edit.props,
+										...toJS(item.edit.props),
 										__bind: item.bind,
 										__name: item.name
 									}}

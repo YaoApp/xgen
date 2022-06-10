@@ -1,5 +1,6 @@
 import { Button, Form, Popover } from 'antd'
 import clsx from 'clsx'
+import { toJS } from 'mobx'
 
 import { X } from '@/components'
 import { CheckOutlined } from '@ant-design/icons'
@@ -18,13 +19,13 @@ const Index = (props: IPropsComponentCommon) => {
 	const edit_type = field_detail.edit.type
 
 	const props_edit_component: Component.PropsEditComponent = {
-		...field_detail.edit.props,
+		...toJS(field_detail.edit.props),
 		__namespace: namespace,
 		__primary: primary,
 		__bind: field_detail.bind,
 		__name: field_detail.name,
-		__data_item: data_item,
-		value: form_value,
+		__data_item: toJS(data_item),
+		value: toJS(form_value),
 		style: { width: getWidth(field_detail.edit.type) }
 	}
 

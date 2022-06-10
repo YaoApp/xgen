@@ -1,4 +1,5 @@
 import { Col } from 'antd'
+import { toJS } from 'mobx'
 
 import { X } from '@/components'
 import { Card } from '@/widgets'
@@ -32,8 +33,8 @@ const Index = (props: IPropsChartItem) => {
 					type='chart'
 					name={item.view.type}
 					props={{
-						...item.view.props,
-						data: data[item.bind],
+						...toJS(item.view.props),
+						data: toJS(data[item.bind]),
 						__bind: item.bind,
 						__name: item.name
 					}}
@@ -44,8 +45,8 @@ const Index = (props: IPropsChartItem) => {
 							type='chart'
 							name={item.refer.type}
 							props={{
-								...item.refer.props,
-								data: data[item.bind],
+								...toJS(item.refer.props),
+								data: toJS(data[item.bind]),
 								__bind: item.bind,
 								__name: item.name
 							}}
