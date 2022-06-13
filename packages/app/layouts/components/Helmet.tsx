@@ -13,7 +13,7 @@ const Index = (props: IPropsHelmet) => {
 			<link
 				rel='shortcut icon'
 				type='image/x-icon'
-				href={require('@/public/favicon.ico')}
+				href={app_info.favicon ?? require('@/public/favicon.ico')}
 			/>
 			{theme === 'dark' && (
 				<link rel='stylesheet' href={`/${$runtime.BASE}/theme/dark.css`} />

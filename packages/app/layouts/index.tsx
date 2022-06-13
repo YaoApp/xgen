@@ -18,7 +18,14 @@ import Menu from './components/Menu'
 import Nav from './components/Nav'
 import LoginWrapper from './wrappers/Login'
 
-import type { IPropsHelmet, IPropsLoading, IPropsNav, IPropsMenu, IPropsContainer } from './types'
+import type {
+	IPropsHelmet,
+	IPropsLoginWrapper,
+	IPropsLoading,
+	IPropsNav,
+	IPropsMenu,
+	IPropsContainer
+} from './types'
 
 const Index = () => {
 	const { messages } = useIntl()
@@ -47,6 +54,11 @@ const Index = () => {
 	const props_helmet: IPropsHelmet = {
 		theme: global.theme,
 		app_info: global.app_info
+	}
+
+	const props_Login_wrapper: IPropsLoginWrapper = {
+		logo: global.app_info?.logo,
+		layout: global.app_info.login?.layout
 	}
 
 	const props_loading: IPropsLoading = {
@@ -88,7 +100,7 @@ const Index = () => {
 			<ConfigProvider prefixCls='xgen'>
 				<GlobalContext.Provider value={global}>
 					{is_login ? (
-						<LoginWrapper>
+						<LoginWrapper {...props_Login_wrapper}>
 							<Outlet />
 						</LoginWrapper>
 					) : (

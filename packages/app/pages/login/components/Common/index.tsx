@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { toFirstUpperCase } from '@/utils/filter'
 import { Icon } from '@/widgets'
-import { getLocale, Link, useIntl } from '@umijs/max'
+import { Link, useIntl } from '@umijs/max'
 
 import Form from './components/Form'
 import Sns from './components/Sns'
@@ -13,8 +13,6 @@ import type { IPropsCommon, IPropsForm } from '@/pages/login/types'
 
 const Index = ({ x, type }: IPropsCommon) => {
 	const { messages } = useIntl()
-	const locale = getLocale()
-	const is_cn = locale === 'zh-CN'
 	const is_dark = x.global.theme == 'dark'
 
 	const props_form: IPropsForm = {
@@ -61,17 +59,7 @@ const Index = ({ x, type }: IPropsCommon) => {
 				<span className='user_type absolute white'>{toFirstUpperCase(type)}</span>
 			</div>
 			<Form {...props_form}></Form>
-			{is_cn ? (
-				<div className='copyright w_100 absolute flex justify_center'>
-					<span>由</span>
-					<a href='https://www.iqka.com/' target='_blank'>
-						象传智慧
-					</a>
-					<span>提供技术支持</span>
-				</div>
-			) : (
-				<Sns></Sns>
-			)}
+			{x.global.app_info.login?.layout?.showSNS && <Sns></Sns>}
 		</div>
 	)
 }

@@ -12,6 +12,10 @@ export const proxy = {
 	'/extend': {
 		target: 'http://local.iqka.com:5099',
 		changeOrigin: true
+      },
+      '/assets': {
+		target: 'http://local.iqka.com:5099',
+		changeOrigin: true
 	}
 }
 

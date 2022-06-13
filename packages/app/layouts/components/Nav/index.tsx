@@ -22,12 +22,12 @@ const Index = (props: IPropsNav) => {
 	} = props
 
 	const props_logo: IPropsLogo = {
-		logo: app_info.icons
+		logo: app_info?.logo
 	}
 
 	const props_items: IPropsItems = {
 		menu,
-		current_nav,
+		current_nav
 	}
 
 	const props_options: IPropsOptions = {

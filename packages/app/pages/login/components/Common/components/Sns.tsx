@@ -17,11 +17,6 @@ const sns = [
 		name: 'Twitter',
 		icon: 'icon-twitter',
 		href: 'https://twitter.com/YaoApp'
-	},
-	{
-		name: 'Slack',
-		icon: 'icon-slack',
-		href: 'https://join.slack.com/t/yaoapps/shared_invite/zt-13dm0cwvo-R9Q8xFGbrLZUffeygm9tXQ'
 	}
 ]
 

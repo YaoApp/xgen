@@ -9,13 +9,28 @@ export declare namespace App {
 		/** runtime mode, note: may affect user experience! */
 		mode?: 'development' | 'production'
 		/** api prefix, default is __yao */
-            apiPrefix?: string
+		apiPrefix?: string
+		/** brand logo, default is YAO */
+            logo?: string
+		/** favicon, default is YAO */
+		favicon?: string
 		/** login config */
 		login: {
 			/** Configure the jump page after administrator and user login */
 			entry: {
 				admin: string
 				user: string
+			}
+			/** Configure login page brand and cover */
+			layout?: {
+				/** login page cover image */
+				cover?: string
+				/** default is 'Make Your Dream With Yao App Engine' */
+				slogan?: string
+				/** default is yaoapps.com */
+                        site?: string
+				/** show Social media */
+                        showSNS?:boolean
 			}
 			/** Configure the staff login related apis */
 			user?: {
@@ -27,9 +42,6 @@ export declare namespace App {
 				authUrl: string
 				login: string
 			}
-		}
-		icons?: {
-			png: string
 		}
 		/** define token behavior, default is sessionStorage */
 		token?: {

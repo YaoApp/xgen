@@ -2,11 +2,15 @@ import clsx from 'clsx'
 
 import dot from '@/assets/images/dot.svg'
 import image_login_left from '@/assets/images/image_login_left.svg'
-import logo from '@/assets/images/logo.svg'
+import logo_yao from '@/assets/images/logo.svg'
 
 import styles from './index.less'
 
-const Index = () => {
+import type { IPropsLoginWrapper } from '../../../../types'
+
+const Index = (props: Pick<IPropsLoginWrapper, 'logo' | 'layout'>) => {
+	const { logo, layout } = props
+
 	return (
 		<div
 			className={clsx([
@@ -19,29 +23,29 @@ const Index = () => {
 				style={{ backgroundImage: `url(${dot})` }}
 			></div>
 			<div className='logo_wrap absolute flex justify_center align_center bg_white'>
-				<img className='logo' src={logo} alt='logo' />
+				<img className='logo' src={logo ?? logo_yao} alt='logo' />
 			</div>
 			<div className='circle absolute'></div>
 			<div className='content_wrap flex flex_column justify_center align_center relative'>
 				<img
 					className='image_login_left'
-					src={image_login_left}
+					src={layout?.cover ?? image_login_left}
 					alt='image_login_left'
 				/>
 				<a
 					className='words_wrap text_center'
 					target='_blank'
-					href='https://yaoapps.com'
+					href={layout?.site ?? 'https://yaoapps.com'}
 				>
-					Make Your Dream With Yao App Engine
+					{layout?.slogan ?? 'Make Your Dream With Yao App Engine'}
 				</a>
 			</div>
 			<a
 				className='link_wrap w_100 text_center absolute'
 				target='_blank'
-				href='https://yaoapps.com'
+				href={layout?.site ?? 'https://yaoapps.com'}
 			>
-				more info visit yaoapps.com
+				{layout?.site ?? 'more info visit yaoapps.com'}
 			</a>
 		</div>
 	)

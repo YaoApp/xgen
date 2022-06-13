@@ -6,6 +6,11 @@ export interface IPropsHelmet {
 	app_info: GlobalModel['app_info']
 }
 
+export interface IPropsLoginWrapper {
+	logo: GlobalModel['app_info']['logo']
+	layout: GlobalModel['app_info']['login']['layout']
+}
+
 export interface IPropsLoading {
 	loading: boolean
 	visible_nav: GlobalModel['visible_nav']
@@ -26,7 +31,7 @@ export interface IPropsNav {
 }
 
 export interface IPropsLogo {
-	logo: GlobalModel['app_info']['icons']
+	logo: GlobalModel['app_info']['logo']
 }
 
 export interface IPropsItems {
