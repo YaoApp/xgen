@@ -16,6 +16,10 @@ export const proxy = {
       '/assets': {
 		target: 'http://local.iqka.com:5099',
 		changeOrigin: true
+      },
+      '/iframe': {
+		target: 'http://local.iqka.com:5099',
+		changeOrigin: true
 	}
 }
 
