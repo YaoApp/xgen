@@ -13,7 +13,15 @@ import styles from './index.less'
 import type { IProps, IPropsLeft } from './types'
 
 const Index = (props: IProps) => {
-	const { children, className, style, title: props_title, actions = [], isChart } = props
+	const {
+		children,
+		className,
+		style,
+		title: props_title,
+		actions = [],
+		isChart,
+		customAction
+	} = props
 	const global = useGlobal()
 	const menu = global.menu.slice()
 	const visible_menu = global.visible_menu
@@ -50,6 +58,7 @@ const Index = (props: IProps) => {
 				>
 					<Left {...props_left}></Left>
 					<div className='options_wrap flex align_center'>
+						{customAction}
 						{actions?.map((item, index) => (
 							<Action {...item} key={index}></Action>
 						))}

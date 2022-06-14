@@ -9,12 +9,20 @@ export declare namespace TableType {
 
 	interface Header {
 		preset: {
-			batch: {
+			batch?: {
 				columns: Array<Common.WideColumn>
 				delete: boolean
 			}
-			import: {
-				bind: string
+			import?: {
+				api: {
+					setting: string
+					mapping: string
+					preview: string
+					import: string
+					mapping_setting_model: string
+					preview_setting_model: string
+				}
+				operation: Array<any>
 			}
 		}
 		actions: Array<{

@@ -115,19 +115,25 @@ export default class Model {
 	init(
 		parent: Component.StackComponent['parent'],
 		model: Component.StackComponent['model'],
-		query: IProps['query']
+		query: IProps['query'],
+		data: IProps['data'],
+		namespace: IProps['namespace']
 	) {
-		if (parent === 'Page' || parent === 'Modal') {
-			this.global.stack.push(`Table-${parent}-${model}`)
-			this.namespace.paths = toJS(this.global.stack.paths)
-		}
+		if (!namespace) {
+			if (parent === 'Page' || parent === 'Modal') {
+				this.global.stack.push(`Table-${parent}-${model}`)
+				this.namespace.paths = toJS(this.global.stack.paths)
+			}
 
-		if (parent === 'Form') {
-			const global_stack_paths = toJS(this.global.stack.paths)
+			if (parent === 'Form') {
+				const global_stack_paths = toJS(this.global.stack.paths)
 
-			global_stack_paths.push(`Table-${parent}-${model}`)
+				global_stack_paths.push(`Table-${parent}-${model}`)
 
-			this.namespace.paths = global_stack_paths
+				this.namespace.paths = global_stack_paths
+			}
+		} else {
+			this.namespace.paths = [namespace]
 		}
 
 		if (query) this.search_params = { ...query }
@@ -136,7 +142,12 @@ export default class Model {
 		this.model = model
 
 		this.getSetting()
-		this.search()
+
+		if (!data) {
+			this.search()
+		} else {
+			this.list = data
+		}
 
 		this.on()
 	}

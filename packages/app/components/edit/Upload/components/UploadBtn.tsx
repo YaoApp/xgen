@@ -9,8 +9,8 @@ import type { IPropsUploadBtn } from '../types'
 
 const Index = (props: IPropsUploadBtn) => {
 	const { length, filetype, maxCount, desc } = props
-	const locale = getLocale()
-
+      const locale = getLocale()
+      
 	return (
 		<div
 			className={clsx([

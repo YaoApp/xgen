@@ -3,7 +3,7 @@ import { lazy, Suspense } from 'react'
 
 import type { Global } from '@/types'
 
-type ComponentsType = 'base' | 'edit' | 'view' | 'chart' | 'group' | 'option'
+type ComponentsType = 'base' | 'edit' | 'view' | 'chart' | 'group' | 'optional'
 
 interface IProps {
 	type: ComponentsType

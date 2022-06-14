@@ -55,9 +55,11 @@ const Custom = window.$app.memo((props: CustomProps) => {
 	}
 
 	return (
-		<Upload {...props_upload}>
-			{visible_btn && <UploadBtn {...props_upload_btn}></UploadBtn>}
-		</Upload>
+		<div className={clsx([styles._local, styles[filetype]])}>
+			<Upload {...props_upload}>
+				{visible_btn && <UploadBtn {...props_upload_btn}></UploadBtn>}
+			</Upload>
+		</div>
 	)
 })
 
@@ -65,11 +67,7 @@ const Index = (props: IProps) => {
 	const { __bind, __name, __data_item, itemProps, ...rest_props } = props
 
 	return (
-		<Item
-			className={clsx([styles._local, styles[rest_props.filetype]])}
-			{...itemProps}
-			{...{ __bind, __name }}
-		>
+		<Item {...itemProps} {...{ __bind, __name }}>
 			<Custom {...rest_props}></Custom>
 		</Item>
 	)

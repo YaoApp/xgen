@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
-import { Filter, Page, PureTable } from '@/components'
+import { Filter, Page, PureTable, X } from '@/components'
 import { history } from '@umijs/max'
 
 import styles from './index.less'
@@ -17,14 +17,16 @@ import type { Global } from '@/types'
 
 export interface IProps extends Component.StackComponent {
 	query?: Global.StringObject
+	data?: Array<any>
+	namespace?: string
 }
 
 const Index = (props: IProps) => {
-	const { parent, model, query } = props
+	const { parent, model, query, data, namespace } = props
 	const [x] = useState(() => container.resolve(Model))
 
 	useLayoutEffect(() => {
-		x.init(parent, model, query)
+		x.init(parent, model, query, data, namespace)
 
 		return () => {
 			x.off()
@@ -45,6 +47,18 @@ const Index = (props: IProps) => {
 	}
 
 	if (parent === 'Page') {
+		const customAction = (
+			<div className='flex align_center'>
+				{x.setting.header.preset?.import && (
+					<X
+						type='optional'
+						name='Table/Import'
+						props={x.setting.header.preset.import}
+					></X>
+				)}
+			</div>
+		)
+
 		const props_filter: IPropsFilter = {
 			model: x.model,
 			columns: x.filter_columns,
@@ -61,7 +75,7 @@ const Index = (props: IProps) => {
 		}
 
 		return (
-			<Page className={clsx([styles._local, 'w_100'])}>
+			<Page className={clsx([styles._local, 'w_100'])} customAction={customAction}>
 				<Filter {...props_filter}></Filter>
 				<PureTable {...props_table}></PureTable>
 			</Page>
