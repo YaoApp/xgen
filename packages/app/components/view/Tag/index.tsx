@@ -1,5 +1,6 @@
 import { Tag } from 'antd'
 import clsx from 'clsx'
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
@@ -60,7 +61,7 @@ const Index = (props: IProps) => {
 					return (
 						<CommonTag
 							pure={props.pure}
-							item={x.find(item.value)}
+							item={x.find(item.value || item)}
 							key={index}
 						></CommonTag>
 					)

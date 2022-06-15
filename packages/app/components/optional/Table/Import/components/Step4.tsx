@@ -23,11 +23,14 @@ const Index = (props: IPropsStep4) => {
 			data: preview_payload
 		})
 
+		setResult(result)
 		close()
 
-		message.success('导入成功')
-
-		setResult(result)
+		if (result.failure !== result.total) {
+			message.success('导入成功')
+		} else {
+			message.success('导入失败')
+		}
 	}
 
 	useEffect(() => {

@@ -14,8 +14,8 @@ const Index = (props: IPropsStep3) => {
 	const [data, setData] = useState<any>({})
 	const namespace = 'Page/Import/preview'
 
-	const save = useFn((v: any) => {
-		const index = findIndex(data, v.id)
+      const save = useFn((v: any) => {
+		const index = findIndex(data.data, (item: any) => item.id === v.id)
 		const _data = cloneDeep(data.data)
 
 		_data[index] = { ..._data[index], ...v }
@@ -47,10 +47,11 @@ const Index = (props: IPropsStep3) => {
 	}
 
 	const props_table: IPropsTable = {
-		parent: 'Modal',
+		parent: 'Custom',
 		model: api.preview_setting_model,
 		data: data.data,
-		namespace
+		namespace,
+		hidePagination: true
 	}
 
 	return <Table {...props_table}></Table>

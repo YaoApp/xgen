@@ -32,7 +32,7 @@ const Index = (props: IProps) => {
 	return (
 		<Switch
 			{...rest_props}
-			defaultChecked={__value === checkedValue}
+			checked={__value === checkedValue}
 			onChange={onChange}
 		></Switch>
 	)

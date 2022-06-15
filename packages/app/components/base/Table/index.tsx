@@ -19,10 +19,11 @@ export interface IProps extends Component.StackComponent {
 	query?: Global.StringObject
 	data?: Array<any>
 	namespace?: string
+	hidePagination?: IPropsPureTable['hidePagination']
 }
 
 const Index = (props: IProps) => {
-	const { parent, model, query, data, namespace } = props
+	const { parent, model, query, data, namespace, hidePagination } = props
 	const [x] = useState(() => container.resolve(Model))
 
 	useLayoutEffect(() => {
@@ -31,7 +32,7 @@ const Index = (props: IProps) => {
 		return () => {
 			x.off()
 		}
-	}, [x, parent, model, query])
+	}, [x, parent, model, query, data])
 
 	if (!x.setting.table) return null
 
@@ -43,7 +44,8 @@ const Index = (props: IProps) => {
 		columns: x.table_columns,
 		pagination: x.pagination,
 		props: x.setting.table.props,
-		operation: x.setting.table.operation
+		operation: x.setting.table.operation,
+		hidePagination
 	}
 
 	if (parent === 'Page') {
@@ -53,7 +55,10 @@ const Index = (props: IProps) => {
 					<X
 						type='optional'
 						name='Table/Import'
-						props={x.setting.header.preset.import}
+						props={{
+							...x.setting.header.preset.import,
+							search: () => x.search()
+						}}
 					></X>
 				)}
 			</div>

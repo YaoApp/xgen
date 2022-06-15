@@ -46,8 +46,14 @@ export default class Model {
 
 		this.rendered = true
 		this.setting = res
-		this.filter_columns = this.column_utils.reduce(res.filter.columns, res.fileds.filter)
 		this.table_columns = this.column_utils.reduce(res.table.columns, res.fileds.table)
+
+		if (res.filter?.columns) {
+			this.filter_columns = this.column_utils.reduce(
+				res.filter.columns,
+				res.fileds.filter
+			)
+		}
 	}
 
 	async search(params?: TableType.SearchParams) {
@@ -143,12 +149,13 @@ export default class Model {
 
 		this.getSetting()
 
-		if (!data) {
-			this.search()
-		} else {
-			this.list = data
+		if (this.parent === 'Custom') {
+			this.list = data!
+
+			return
 		}
 
+		this.search()
 		this.on()
 	}
 

@@ -1,4 +1,5 @@
 import { Select } from 'antd'
+import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
@@ -28,7 +29,10 @@ const Index = (props: IProps) => {
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
 			<Select
-				className={styles._local}
+				className={clsx([
+					styles._local,
+					rest_props.mode === 'multiple' && styles.multiple
+				])}
 				dropdownClassName={styles._dropdown}
 				placeholder={`${is_cn ? '请输入' : 'Please input '}${__name}`}
 				options={x.options}

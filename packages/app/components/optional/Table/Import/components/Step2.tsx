@@ -14,15 +14,15 @@ const Index = (props: IPropsStep2) => {
 	const namespace = 'Page/Import/mapping'
 
 	const save = useFn((v: any) => {
-            const index = findIndex(data, v.id)
-            const _data = cloneDeep(data.data)
+		const index = findIndex(data.data, (item: any) => item.field === v.field)
+		const _data = cloneDeep(data.data)
 
 		_data[index] = { ..._data[index], ...v }
 
 		setData({ ...data, data: _data })
-      })
-      
-      useEffect(() => {
+	})
+
+	useEffect(() => {
 		window.$app.Event.on(`${namespace}/save`, save)
 
 		return () => {
@@ -52,11 +52,14 @@ const Index = (props: IPropsStep2) => {
 	}
 
 	const props_table: IPropsTable = {
-		parent: 'Modal',
+		parent: 'Custom',
 		model: api.mapping_setting_model,
-		data,
-		namespace
+		data: data.data,
+		namespace,
+		hidePagination: true
 	}
+
+	if (!data?.data?.length) return null
 
 	return <Table {...props_table}></Table>
 }

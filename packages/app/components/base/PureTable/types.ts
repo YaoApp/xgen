@@ -10,7 +10,8 @@ export interface IPropsPureTable {
 	columns: Model['table_columns']
 	pagination: Model['pagination']
 	props: Model['setting']['table']['props']
-	operation: Model['setting']['table']['operation']
+      operation: Model[ 'setting' ][ 'table' ][ 'operation' ]
+	hidePagination?: boolean
 }
 
 export interface IPropsBlock {

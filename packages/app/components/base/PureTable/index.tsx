@@ -17,7 +17,8 @@ const Index = (props: IPropsPureTable) => {
 		columns,
 		pagination,
 		props: table_props,
-		operation
+		operation,
+		hidePagination
 	} = props
 	const locale = getLocale()
 	const in_form = parent === 'Form'
@@ -39,9 +40,9 @@ const Index = (props: IPropsPureTable) => {
 		<Table
 			dataSource={list}
 			columns={list_columns}
-			sticky={in_form ? false : { offsetHeader: 52 }}
-			rowKey={(item) => item.id}
-			pagination={in_form ? false : table_pagination}
+			sticky={in_form || hidePagination ? false : { offsetHeader: 52 }}
+			rowKey={(item) => item.id || item[Object.keys(item)[0]]}
+			pagination={hidePagination ? false : table_pagination}
 			onChange={({ current: page, pageSize: pagesize }) => {
 				window.$app.Event.emit(`${namespace}/search`, { page, pagesize })
 			}}

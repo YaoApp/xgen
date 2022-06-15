@@ -21,7 +21,8 @@ const Index = (props: IProps) => {
 	const props_table: IPropsTable = {
 		parent: 'Form',
 		model,
-		query: query ? getDeepValue(query, __data_item) : {}
+		query: query ? getDeepValue(query, __data_item) : {},
+		hidePagination: true
 	}
 
 	return (
