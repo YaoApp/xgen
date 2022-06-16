@@ -1,0 +1,80 @@
+.modal_batch {
+	:global {
+            .select_wrap{
+                  .xgen-checkbox-inner {
+                        background-color: var(--color_bg_menu);
+                  }
+
+                  .xgen-checkbox-checked {
+                        .xgen-checkbox-inner {
+                              background-color: var(--color_main);
+                        }
+                  }
+            }
+
+            .form_batch {
+                  margin-top: 36px;
+		}
+
+		.xgen-modal-content {
+			background-color: var(--color_bg);
+
+			.xgen-modal-header {
+				border-color: var(--color_border);
+				background-color: var(--color_bg);
+			}
+
+			.xgen-modal-footer {
+				border-color: var(--color_border);
+				background-color: var(--color_bg);
+			}
+		}
+
+		.xgen-form-item {
+                  display: flex;
+                  flex-direction: column;
+                  vertical-align: initial;
+
+                  .xgen-form-item-label {
+                        display: flex;
+
+                        label {
+                              margin-bottom: 8px;
+                              height: auto;
+                              color: var(--color_text);
+                              font-weight: 700;
+                              font-size: 12.6px;
+
+                              &::after {
+                                    display: none;
+                              }
+                        }
+                  }
+
+                  .xgen-form-item-control {
+                        min-height: auto;
+                        height: auto;
+                  }
+
+                  .xgen-form-item-explain {
+                        position: absolute;
+                        top: -26px;
+                        right: 2px;
+                        font-size: 13px;
+                  }
+
+                  &.xgen-form-item-with-help {
+                        margin-bottom: 24px;
+                  }
+
+                  .xgen-input-number {
+                        width: 100%;
+                  }
+
+                  .xgen-picker{
+                        width: 100%;
+                        border: none;
+                  }
+            }
+	}
+}

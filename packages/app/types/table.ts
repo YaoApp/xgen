@@ -11,7 +11,7 @@ export declare namespace TableType {
 		preset: {
 			batch?: {
 				columns: Array<Common.WideColumn>
-				delete: boolean
+				deletable: boolean
 			}
 			import?: {
 				api: {
@@ -57,6 +57,11 @@ export declare namespace TableType {
 
 	interface SearchParams {
 		[key: 'page' | 'pagesize' | string]: number | string
+	}
+
+	interface Batch {
+		active: boolean
+		selected: Array<number>
 	}
 
 	interface Data {

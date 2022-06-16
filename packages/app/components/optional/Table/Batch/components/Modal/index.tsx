@@ -1,26 +1,26 @@
 import { Button, Checkbox, Col, Form, Modal, Row } from 'antd'
 import { cloneDeep, pickBy } from 'lodash-es'
+import { toJS } from 'mobx'
 
 import { X } from '@/components'
 
 import { useOptions } from './hooks'
 import styles from './index.less'
 
-import type { ModalProps } from 'antd'
+import type { IProps as IPropsBatch } from '../../index'
 
 const { confirm } = Modal
 const { useForm } = Form
 
-interface IProps extends ModalProps {
-	setting: any
+interface IProps extends Omit<IPropsBatch, 'batch'> {
+	visible_modal: boolean
 	setVisibleModal: (v: boolean) => void
-	onBatchDelete: () => void
-	onBatchUpdate: (data: any) => void
 }
 
 const Index = (props: IProps) => {
-	const { setting, setVisibleModal, onBatchDelete, onBatchUpdate } = props
-	const { options, setOptions } = useOptions(setting)
+	const { namespace, columns, deletable, visible_modal, setBatchActive, setVisibleModal } =
+		props
+	const { options, setOptions } = useOptions(columns)
 	const [form] = useForm()
 	const { getFieldsValue } = form
 
@@ -37,13 +37,21 @@ const Index = (props: IProps) => {
 
 		if (!Object.keys(v).length) return
 
-		onBatchUpdate(v)
+		window.$app.Event.emit(`${namespace}/batchUpdate`, v)
+
+		setBatchActive(false)
+	}
+
+	const onDelete = () => {
+		window.$app.Event.emit(`${namespace}/batchDelete`)
+
+		setBatchActive(false)
 	}
 
 	const Footer = (
 		<div className='flex w_100 justify_between'>
 			<div className='left_options'>
-				{setting.list.option?.batch?.delete && (
+				{deletable && (
 					<Button
 						danger
 						onClick={() =>
@@ -51,9 +59,7 @@ const Index = (props: IProps) => {
 								title: '确认进行批量删除',
 								content: '删除之后数据不可恢复，请谨慎操作！',
 								centered: true,
-								onOk() {
-									onBatchDelete()
-								}
+								onOk: onDelete
 							})
 						}
 					>
@@ -72,8 +78,8 @@ const Index = (props: IProps) => {
 
 	return (
 		<Modal
-			{...props}
-			className={styles.modal_batch}
+			wrapClassName={styles.modal_batch}
+			visible={visible_modal}
 			title='批量编辑'
 			centered
 			onCancel={() => setVisibleModal(false)}
@@ -82,26 +88,26 @@ const Index = (props: IProps) => {
 			<div className='select_wrap w_100 border_box flex flex_wrap'>
 				{options.map((item, index) => (
 					<Checkbox
-						key={item.label}
+						key={item.name}
 						onChange={({ target: { checked } }) => onChange(index, checked)}
 					>
-						{item.label}
+						{item.name}
 					</Checkbox>
 				))}
 			</div>
-			<Form className='form_batch' name={`form_batch_${setting.name}`} form={form}>
+			<Form className='form_batch' name={`form_batch_${namespace}`} form={form}>
 				<Row gutter={16} wrap={true}>
 					{options.map(
-						(item: any, index: number) =>
+						(item, index) =>
 							item.checked && (
-								<Col span={item.span} key={index}>
+								<Col span={item.width} key={index}>
 									<X
 										type='edit'
 										name={item.edit.type}
 										props={{
-											...item.edit.props,
-											name: item.edit.props.value,
-											label: item.label
+											...toJS(item.edit.props),
+											__bind: item.bind,
+											__name: item.name
 										}}
 									></X>
 								</Col>

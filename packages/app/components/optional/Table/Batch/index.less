@@ -1,0 +1,39 @@
+._local {
+	:global {
+		.options_group_wrap {
+			overflow: hidden;
+			margin-right: 6px;
+			margin-left: 12px;
+			height: 30px;
+
+			.btn_confirm {
+				padding: 0 12px;
+				border-radius: 30px;
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+				background-color: var(--color_main);
+				color: white;
+				font-size: 13px;
+				line-height: 1;
+				opacity: 1;
+
+				&.disabled {
+					opacity: 0.4;
+				}
+			}
+
+			.btn_close {
+				width: 30px;
+				border: 1px solid var(--color_border);
+				border-radius: 30px;
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+				color: var(--color_text);
+
+				&:hover {
+					background-color: var(--color_bg_menu);
+				}
+			}
+		}
+	}
+}

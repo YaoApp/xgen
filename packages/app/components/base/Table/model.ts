@@ -9,7 +9,7 @@ import { filterEmpty } from '@yaoapp/utils'
 
 import Service from './services'
 
-import type { TableType, Common as CommonType } from '@/types'
+import type { TableType, Common as CommonType, Global } from '@/types'
 import type { Component } from '@/types'
 import type { IProps } from './index'
 
@@ -19,10 +19,12 @@ export default class Model {
 	model = '' as Component.StackComponent['model']
 	setting = {} as TableType.Setting
 	list = [] as TableType.Data['data']
+	batch_columns = [] as Array<CommonType.Column>
 	filter_columns = [] as Array<CommonType.Column>
 	table_columns = [] as Array<CommonType.Column>
 	pagination = { page: 1, pagesize: 10, total: 0 } as Omit<TableType.Data, 'data'>
 	search_params = {} as TableType.SearchParams
+	batch = { active: false, selected: [] } as TableType.Batch
 	rendered = false
 
 	constructor(
@@ -46,7 +48,13 @@ export default class Model {
 
 		this.rendered = true
 		this.setting = res
-		this.table_columns = this.column_utils.reduce(res.table.columns, res.fileds.table)
+
+		if (res.header.preset?.batch?.columns) {
+			this.batch_columns = this.column_utils.reduce(
+				res.header.preset.batch.columns,
+				res.fileds.table
+			)
+		}
 
 		if (res.filter?.columns) {
 			this.filter_columns = this.column_utils.reduce(
@@ -54,6 +62,8 @@ export default class Model {
 				res.fileds.filter
 			)
 		}
+
+		this.table_columns = this.column_utils.reduce(res.table.columns, res.fileds.table)
 	}
 
 	async search(params?: TableType.SearchParams) {
@@ -118,6 +128,47 @@ export default class Model {
 		this.search()
 	}
 
+	async batchDelete() {
+		const hideLoading = message.loading(
+			this.global.locale_messages.messages.table.delete.loading
+		)
+
+		const { err } = await this.service.batchDelete<TableType.DeleteResponse>(
+			this.model,
+			this.setting.primary,
+			this.batch.selected
+		)
+
+		hideLoading()
+
+		if (err) return
+
+		message.success(this.global.locale_messages.messages.table.delete.success)
+
+		this.search()
+	}
+
+	async batchUpdate(data: Global.AnyObject) {
+		const hideLoading = message.loading(
+			this.global.locale_messages.messages.table.save.loading
+		)
+
+		const { err } = await this.service.batchUpdate<Global.AnyObject, TableType.SaveRequest>(
+			this.model,
+			this.setting.primary,
+			this.batch.selected,
+			data
+		)
+
+		hideLoading()
+
+		if (err) return
+
+		message.success(this.global.locale_messages.messages.table.save.success)
+
+		this.search()
+	}
+
 	init(
 		parent: Component.StackComponent['parent'],
 		model: Component.StackComponent['model'],
@@ -167,12 +218,16 @@ export default class Model {
 		window.$app.Event.on(`${this.namespace.value}/search`, this.search)
 		window.$app.Event.on(`${this.namespace.value}/save`, this.save)
 		window.$app.Event.on(`${this.namespace.value}/delete`, this.delete)
+		window.$app.Event.on(`${this.namespace.value}/batchDelete`, this.batchDelete)
+		window.$app.Event.on(`${this.namespace.value}/batchUpdate`, this.batchUpdate)
 	}
 
 	off() {
 		window.$app.Event.off(`${this.namespace.value}/search`, this.search)
 		window.$app.Event.off(`${this.namespace.value}/save`, this.save)
-		window.$app.Event.off(`${this.namespace.value}/delete`, this.delete)
+            window.$app.Event.off(`${this.namespace.value}/delete`, this.delete)
+            window.$app.Event.off(`${this.namespace.value}/batchDelete`, this.batchDelete)
+		window.$app.Event.off(`${this.namespace.value}/batchUpdate`, this.batchUpdate)
 
 		this.global.stack.remove(this.namespace.paths.slice(-1)[0])
 	}

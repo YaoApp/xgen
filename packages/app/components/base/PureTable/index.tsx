@@ -7,6 +7,7 @@ import locales from './locales'
 
 import type { TablePaginationConfig } from 'antd'
 import type { IPropsPureTable } from './types'
+import type { TableRowSelection } from 'antd/es/table/interface'
 
 const Index = (props: IPropsPureTable) => {
 	const {
@@ -18,7 +19,9 @@ const Index = (props: IPropsPureTable) => {
 		pagination,
 		props: table_props,
 		operation,
-		hidePagination
+		batch,
+		hidePagination,
+		setBatchSelected
 	} = props
 	const locale = getLocale()
 	const in_form = parent === 'Form'
@@ -36,13 +39,19 @@ const Index = (props: IPropsPureTable) => {
 			locales[locale].pagination.total.after
 	}
 
+	const row_selection: TableRowSelection<any> = {
+		type: 'checkbox',
+		onChange: (v) => setBatchSelected(v as Array<number>)
+	}
+
 	return (
 		<Table
 			dataSource={list}
 			columns={list_columns}
 			sticky={in_form || hidePagination ? false : { offsetHeader: 52 }}
-			rowKey={(item) => item.id || item[Object.keys(item)[0]]}
+			rowKey={(item) => item[primary] || item[Object.keys(item)[0]]}
 			pagination={hidePagination ? false : table_pagination}
+			rowSelection={batch.active ? row_selection : undefined}
 			onChange={({ current: page, pageSize: pagesize }) => {
 				window.$app.Event.emit(`${namespace}/search`, { page, pagesize })
 			}}

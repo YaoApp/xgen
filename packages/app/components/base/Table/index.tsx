@@ -1,6 +1,7 @@
 import clsx from 'clsx'
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useLayoutEffect, useState } from 'react'
+import { Fragment, useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
 import { Filter, Page, PureTable, X } from '@/components'
@@ -45,12 +46,16 @@ const Index = (props: IProps) => {
 		pagination: x.pagination,
 		props: x.setting.table.props,
 		operation: x.setting.table.operation,
-		hidePagination
+		batch: toJS(x.batch),
+		hidePagination,
+		setBatchSelected(v: Array<number>) {
+			x.batch.selected = v
+		}
 	}
 
 	if (parent === 'Page') {
 		const customAction = (
-			<div className='flex align_center'>
+			<Fragment>
 				{x.setting.header.preset?.import && (
 					<X
 						type='optional'
@@ -61,7 +66,23 @@ const Index = (props: IProps) => {
 						}}
 					></X>
 				)}
-			</div>
+				{x.setting.header.preset?.batch && (
+					<X
+						type='optional'
+						name='Table/Batch'
+						props={{
+							namespace: x.namespace.value,
+							columns: toJS(x.batch_columns),
+							deletable: x.setting.header.preset?.batch.deletable,
+							batch: toJS(x.batch),
+							setBatchActive(v: boolean) {
+								x.batch.active = v
+								x.batch.selected = []
+							}
+						}}
+					></X>
+				)}
+			</Fragment>
 		)
 
 		const props_filter: IPropsFilter = {
