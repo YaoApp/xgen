@@ -46,8 +46,8 @@ export default class GlobalModel {
 		this.app_info = res
 
 		store.set('__mode', res.mode)
-		store.set('token_storage', res.token?.storage || 'sessionStorage')
 
+		localStorage.setItem('token_storage', res.token?.storage || 'sessionStorage')
 		localStorage.setItem('__api_prefix', res.apiPrefix || '__yao')
 	}
 
