@@ -45,7 +45,7 @@ const Index = () => {
 			global.off()
 			global.stack.off()
 		}
-	})
+	},[])
 
 	useLayoutEffect(() => {
 		global.stack.reset()
