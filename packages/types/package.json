@@ -1,0 +1,13 @@
+{
+      "name": "@yaoapp/types",
+      "version": "1.0.1",
+      "description": "",
+      "main": "index.js",
+      "scripts": {},
+      "keywords": [],
+      "author": "",
+      "license": "MIT",
+      "devDependencies": {
+            "father": "^4.0.5"
+      }
+}

@@ -2,7 +2,7 @@
       "name": "xgen",
       "version": "1.0.0",
       "author": "Wendao",
-      "description": "10x productive management system lib for Yao",
+      "description": "10x productive management system lib for Yao.",
       "private": false,
       "license": "Apache-2.0",
       "homepage": "https://yaoapps.com",
@@ -16,7 +16,7 @@
       "scripts": {
             "dev": "turbo run dev",
             "build": "turbo run build",
-            "dev:app": "turbo run dev --scope=xgen",
+            "dev:app": "turbo run dev --scope=@yaoapp/app",
             "build:app": "turbo run build --scope=@yaoapp/app"
       },
       "gitHooks": {
