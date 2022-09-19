@@ -1,7 +1,7 @@
 import { Tooltip } from 'antd'
 
 import { Icon } from '@/widgets'
-import { getDeepValue } from '@yaoapp/utils'
+import { getDeepValue } from '@/knife'
 
 import type { Component } from '@/types'
 import type { TooltipProps } from 'antd'

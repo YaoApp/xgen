@@ -4,7 +4,7 @@ import store from 'store2'
 
 import { getPath } from '@/utils'
 import { history } from '@umijs/max'
-import { getToken } from '@yaoapp/utils'
+import { getToken } from '@/knife'
 
 axios.interceptors.request.use((config) => {
 	return {

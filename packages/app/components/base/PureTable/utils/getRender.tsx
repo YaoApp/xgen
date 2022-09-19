@@ -1,4 +1,4 @@
-import { getDeepValue } from '@yaoapp/utils'
+import { getDeepValue } from '@/knife'
 
 import EditPopover from '../components/EditPopover'
 import ViewContent from '../components/ViewContent'

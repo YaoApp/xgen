@@ -1,6 +1,6 @@
 import { BarChart } from 'echarts/charts'
 import { AriaComponent, GridComponent, TitleComponent, TooltipComponent } from 'echarts/components'
-import echarts from 'echarts/core'
+import * as echarts from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { observer } from 'mobx-react-lite'
 import { useRef } from 'react'

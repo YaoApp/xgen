@@ -5,7 +5,7 @@ import { injectable } from 'tsyringe'
 import { GlobalModel } from '@/context/app'
 import { Namespace } from '@/models'
 import { ColumnUtils, Common, Table } from '@/services'
-import { filterEmpty } from '@yaoapp/utils'
+import { filterEmpty } from '@/knife'
 
 import Service from './services'
 

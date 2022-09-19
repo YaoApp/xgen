@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { getFileSrc } from '@yaoapp/utils'
+import { getFileSrc } from '@/knife'
 
 import type { IProps } from '../types'
 import type { UploadFile } from 'antd/lib/upload/interface'

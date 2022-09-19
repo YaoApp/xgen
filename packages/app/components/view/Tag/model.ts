@@ -4,7 +4,7 @@ import qs from 'query-string'
 import store from 'store2'
 import { injectable } from 'tsyringe'
 
-import { getDeepValue } from '@yaoapp/utils'
+import { getDeepValue } from '@/knife'
 
 import Service from './services'
 

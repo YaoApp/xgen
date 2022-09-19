@@ -1,4 +1,4 @@
-import echarts from 'echarts/core'
+import * as echarts from 'echarts/core'
 import { useLayoutEffect } from 'react'
 
 import { dark, light } from '@/components/chart/theme'

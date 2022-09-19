@@ -1,5 +1,5 @@
 import { useFn } from '@/hooks'
-import { getDeepValue } from '@yaoapp/utils'
+import { getDeepValue } from '@/knife'
 
 import type { Action } from '@/types'
 

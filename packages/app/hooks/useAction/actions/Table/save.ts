@@ -1,4 +1,4 @@
-import { getDeepValue } from '@yaoapp/utils'
+import { getDeepValue } from '@/knife'
 
 import { showConfirm } from '../../utils'
 

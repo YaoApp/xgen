@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 import { Icon } from '@/widgets'
 import { history, Link } from '@umijs/max'
-import { fuzzyQuery } from '@yaoapp/utils'
+import { fuzzyQuery } from '@/knife'
 
 import styles from './index.less'
 

@@ -1,6 +1,6 @@
 import EventEmitter from 'eventemitter3'
 
-import { Handle, memo, sleep } from '@yaoapp/utils'
+import { Handle, memo, sleep } from '@/knife'
 
 window.$app = {
 	memo,

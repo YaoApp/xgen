@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 
 import Table from '@/components/base/Table'
-import { getDeepValue } from '@yaoapp/utils'
+import { getDeepValue } from '@/knife'
 
 import styles from './index.less'
 

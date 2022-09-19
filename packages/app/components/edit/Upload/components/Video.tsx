@@ -1,5 +1,5 @@
 import { DeleteOutlined } from '@ant-design/icons'
-import { getFileSrc } from '@yaoapp/utils'
+import { getFileSrc } from '@/knife'
 
 import type { IPropsVideo } from '../types'
 

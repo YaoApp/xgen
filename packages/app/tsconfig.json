@@ -1,21 +1,6 @@
 {
+      "extends": "./.umi/tsconfig.json",
 	"compilerOptions": {
-		"target": "esnext",
-		"module": "esnext",
-		"moduleResolution": "node",
-		"importHelpers": true,
-		"jsx": "react-jsx",
-		"esModuleInterop": true,
-		"sourceMap": true,
-		"baseUrl": ".",
-		"strict": true,
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
-		"paths": {
-			"@/*": ["*"],
-			"@@/*": [".umi/*"]
-		},
-		"types": ["./typings"],
-		"allowSyntheticDefaultImports": true
+		"experimentalDecorators": true
 	}
 }

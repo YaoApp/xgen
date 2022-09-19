@@ -2,7 +2,7 @@ import { Upload } from 'antd'
 import clsx from 'clsx'
 
 import { Item } from '@/components'
-import { getToken } from '@yaoapp/utils'
+import { getToken } from '@/knife'
 
 import UploadBtn from './components/UploadBtn'
 import filemap from './filemap'

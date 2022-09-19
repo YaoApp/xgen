@@ -1,6 +1,6 @@
 import { Image } from 'antd'
 
-import { getFileSrc } from '@yaoapp/utils'
+import { getFileSrc } from '@/knife'
 
 import styles from './index.less'
 

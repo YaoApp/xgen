@@ -4,7 +4,7 @@ import { toJS } from 'mobx'
 
 import { X } from '@/components'
 import { CheckOutlined } from '@ant-design/icons'
-import { hidePopover } from '@yaoapp/utils'
+import { hidePopover } from '@/knife'
 
 import ViewContent from '../ViewContent'
 import getPlacement from './getPlacement'

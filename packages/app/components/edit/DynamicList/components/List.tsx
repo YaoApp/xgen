@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { Fragment, useEffect, useState } from 'react'
 
 import { Icon } from '@/widgets'
-import { hidePopover } from '@yaoapp/utils'
+import { hidePopover } from '@/knife'
 
 import { useColumns } from '../hooks'
 import Children from './Children'

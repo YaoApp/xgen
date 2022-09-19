@@ -15,7 +15,8 @@ export default defineConfig({
 	antd: { import: false },
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
 	polyfill: { imports: ['core-js/features/promise/try'] },
-	extraBabelPlugins,
+      extraBabelPlugins,
+      // @ts-ignore
 	chainWebpack,
 	conventionRoutes,
 	define: { $runtime: { BASE: process.env.BASE } }

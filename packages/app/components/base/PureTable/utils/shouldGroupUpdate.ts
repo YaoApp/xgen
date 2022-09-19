@@ -1,4 +1,4 @@
-import { deepEqual, getDeepValue } from '@yaoapp/utils'
+import { deepEqual, getDeepValue } from '@/knife'
 
 import type { Common } from '@/types'
 

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { injectable } from 'tsyringe'
 
-import { catchError } from '@yaoapp/utils'
+import { catchError } from '@/knife'
 
 import type { Response, BaseType } from '@/types'
 

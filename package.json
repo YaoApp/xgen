@@ -2,11 +2,10 @@
       "name": "xgen",
       "version": "1.0.0",
       "author": "Wendao",
-      "description": "Next-generation low-code dashboard.",
+      "description": "10x productive management system lib for Yao",
       "private": false,
       "license": "Apache-2.0",
       "homepage": "https://yaoapps.com",
-      "packageManager": "pnpm@7.0.0-beta.2",
       "repository": {
             "type": "git",
             "url": "https://github.com/YaoApp/xgen"
@@ -18,11 +17,7 @@
             "dev": "turbo run dev",
             "build": "turbo run build",
             "dev:app": "turbo run dev --scope=xgen",
-            "dev:com": "turbo run dev --scope=@yaoapp/components",
-            "dev:utils": "turbo run dev --scope=@yaoapp/utils",
-            "build:app": "turbo run build --scope=@yaoapp/app",
-            "build:com": "turbo run build --scope=@yaoapp/components",
-            "build:utils": "turbo run build --scope=@yaoapp/utils"
+            "build:app": "turbo run build --scope=@yaoapp/app"
       },
       "gitHooks": {
             "pre-commit": "lint-staged --allow-empty"
@@ -36,11 +31,9 @@
             ]
       },
       "devDependencies": {
-            "@parcel/packager-ts": "^2.5.0",
-            "@parcel/transformer-typescript-types": "^2.5.0",
-            "lint-staged": "^12.3.4",
-            "prettier": "^2.6.2",
-            "turbo": "^1.2.8",
+            "lint-staged": "^13.0.3",
+            "prettier": "^2.7.1",
+            "turbo": "^1.4.7",
             "yorkie": "^2.0.0"
       }
 }
