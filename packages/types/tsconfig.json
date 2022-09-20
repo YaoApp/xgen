@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"outDir": "dist",
+		"module": "esnext",
+		"target": "esnext",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["*"]
+		}
+	},
+	"include": ["**/*.ts", "**/*.d.ts"]
+}
