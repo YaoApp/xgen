@@ -1,6 +1,6 @@
-import { Type } from '@/global'
+import type { Type } from '@/global'
 
-import { Connector } from './common'
+import type { Connector } from './common'
 
 type Options = {
 	file: Type<

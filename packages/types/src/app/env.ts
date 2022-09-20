@@ -1,4 +1,4 @@
-import { Host, Path, Port, Type } from '@/global'
+import type { Host, Path, Port, Type } from '@/global'
 
 export interface Env {
 	YAO_LANG: Type<

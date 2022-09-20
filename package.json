@@ -7,10 +7,10 @@
       "scripts": {
             "dev": "turbo run dev",
             "build": "turbo run build",
-            "dev:app": "turbo run dev --scope=@yaoapp/app",
-            "build:app": "turbo run build --scope=@yaoapp/app",
-            "dev:types": "turbo run build --scope=@yaoapp/types",
-            "build:types": "turbo run build --scope=@yaoapp/types"
+            "dev:app": "turbo run dev --filter=@yaoapp/app",
+            "build:app": "turbo run build --filter=@yaoapp/app",
+            "dev:types": "turbo run build --filter=@yaoapp/types",
+            "build:types": "turbo run build --filter=@yaoapp/types"
       },
       "gitHooks": {
             "pre-commit": "lint-staged --allow-empty"

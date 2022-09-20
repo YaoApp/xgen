@@ -1,9 +1,20 @@
 {
       "name": "@yaoapp/types",
       "version": "1.0.1",
-      "description": "",
-      "main": "index.js",
-      "scripts": {},
+      "description": "Metadata of Yao & Xgen for visual programming.",
+      "type": "module",
+      "module": "dist/esm/index.js",
+      "main": "dist/esm/index.js",
+      "types": "dist/esm/index.d.ts",
+      "files": [
+            "dist"
+      ],
+      "scripts": {
+            "dev": "father dev",
+            "build": "father build",
+            "doctor": "father doctor",
+            "version": "father version"
+      },
       "keywords": [],
       "author": "",
       "license": "MIT",

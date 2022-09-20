@@ -1,5 +1,7 @@
 {
 	"compilerOptions": {
+		"declaration": true,
+		"skipLibCheck": true,
 		"strict": true,
 		"esModuleInterop": true,
 		"moduleResolution": "node",
@@ -9,8 +11,7 @@
 		"target": "esnext",
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["*"]
+			"@/*": ["./src/*"]
 		}
-	},
-	"include": ["**/*.ts", "**/*.d.ts"]
+	}
 }

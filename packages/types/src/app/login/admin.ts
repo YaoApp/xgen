@@ -1,7 +1,7 @@
-import { Type } from '@/global'
+import type { Type } from '@/global'
 
-import { Action, Entry } from './common'
-import { Layout } from './layout'
+import type { Action, Entry } from './common'
+import type { Layout } from './layout'
 
 export interface Admin {
 	entry: Entry

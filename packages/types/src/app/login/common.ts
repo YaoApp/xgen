@@ -1,4 +1,4 @@
-import { Type } from '@/global'
+import type { Type } from '@/global'
 
 export type Entry = Type<
 	string,

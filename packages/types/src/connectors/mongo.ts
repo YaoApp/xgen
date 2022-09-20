@@ -1,6 +1,6 @@
-import { Type } from '@/global'
+import type { Type } from '@/global'
 
-import { Connector } from './common'
+import type { Connector } from './common'
 
 // https://www.mongodb.com/docs/drivers/go/current/fundamentals/connection/#connection-options
 type ConnectionOptions = {

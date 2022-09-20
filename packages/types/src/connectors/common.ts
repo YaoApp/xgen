@@ -1,4 +1,4 @@
-import { Type } from '@/global'
+import type { Type } from '@/global'
 
 type ConnectorType = 'mysql' | 'sqlite3' | 'mongo' | 'redis'
 
