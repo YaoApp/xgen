@@ -59,21 +59,6 @@ export interface AppJson {
 			'en-US': 'App version'
 		}
 	>
-	mode: Type<
-		'development' | 'production',
-		{
-			'zh-CN': '应用模式'
-			'en-US': 'App mode'
-		}
-	>
-	apiPrefix: Type<
-		string,
-		{
-			'zh-CN': '接口前缀'
-			'en-US': 'Api prefix'
-		},
-		'__yao'
-	>
 	logo: Type<
 		string,
 		{
