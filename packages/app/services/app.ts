@@ -9,11 +9,13 @@ import type { Response } from '@/types'
 export default class Index {
 	@catchError()
 	getAppInfo<Res>() {
-		return axios.get<{}, Response<Res>>(`/api/xiang/inspect`)
+		return axios.get<{}, Response<Res>>(`/api/__yao/app/setting`)
 	}
 
 	@catchError()
 	getUserMenu<Res>() {
-		return axios.get<{}, Response<Res>>(`/api/${localStorage.getItem('__api_prefix')}/user/menu`)
+		return axios.get<{}, Response<Res>>(
+			`/api/${localStorage.getItem('__api_prefix')}/user/menu`
+		)
 	}
 }

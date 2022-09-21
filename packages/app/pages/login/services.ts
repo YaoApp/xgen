@@ -10,14 +10,18 @@ export default class Index {
 	@catchError()
 	getCaptcha<Res>(url?: string) {
 		return axios.get<{}, Response<Res>>(
-			url ? url : `/api/${localStorage.getItem('__api_prefix')}/user/captcha?type=digit`
+			url
+				? url
+				: `/api/${localStorage.getItem(
+						'__api_prefix'
+				  )}/login/admin/captcha?type=digit`
 		)
 	}
 
 	@catchError()
 	login<Req, Res>(data: Req, url?: string) {
 		return axios.post<Req, Response<Res>>(
-			url ? url : `/api/${localStorage.getItem('__api_prefix')}/user/login`,
+			url ? url : `/api/${localStorage.getItem('__api_prefix')}/login/admin`,
 			data
 		)
 	}
