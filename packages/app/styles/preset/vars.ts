@@ -23,7 +23,7 @@ export default {
 	},
 	dark: {
 		...base,
-		color_main: '#6a96f9',
+		color_main: '#4580ff',
 		color_text: '#a2a5b9',
 		color_text_grey: '#aaa',
 		color_text_contrast: 'white',

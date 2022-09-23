@@ -79,7 +79,7 @@ export default class GlobalModel {
 		ConfigProvider.config({
 			prefixCls: 'xgen',
 			theme: {
-				primaryColor: theme === 'light' ? '#3371fc' : '#6a96f9'
+				primaryColor: theme === 'light' ? '#3371fc' : '#4580ff'
 			}
 		})
 	}
