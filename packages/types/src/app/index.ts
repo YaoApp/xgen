@@ -1,4 +1,12 @@
-export * from './login'
+import { AppJson as _AppJson } from './app_json'
+import { Connectors as _Connectors } from './connectors'
+import { Env as _Env } from './env'
+import { Login as _Login, PureLogin as _PureLogin } from './login'
 
-export type { Env as Env } from './env'
-export type { AppJson as AppJson } from './app_json'
+export namespace App {
+	export type Env = _Env
+	export type AppJson = _AppJson
+	export type Connectors = _Connectors
+	export type Login = _Login
+	export type PureLogin = _PureLogin
+}

@@ -1,4 +1,4 @@
-import type { Host, Path, Port, Type } from '@/global'
+import type { Host, Path, Port, Type, Pure } from '@/global'
 
 export interface Env {
 	YAO_LANG: Type<
@@ -65,3 +65,5 @@ export interface Env {
 		}
 	>
 }
+
+export type PureEnv = Pure<Env>

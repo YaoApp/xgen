@@ -1,4 +1,4 @@
-import type { Type } from '@/global'
+import type { Type, Pure } from '@/global'
 
 interface Menu {
 	process: Type<
@@ -96,4 +96,4 @@ export interface AppJson {
 	>
 }
 
-
+export type PureAppJson = Pure<AppJson>
