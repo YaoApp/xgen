@@ -1,6 +1,6 @@
 {
       "name": "@yaoapp/types",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "description": "Metadata of Yao & Xgen for visual programming.",
       "type": "module",
       "module": "dist/esm/index.js",
@@ -12,8 +12,7 @@
       "scripts": {
             "dev": "father dev",
             "build": "father build",
-            "doctor": "father doctor",
-            "version": "father version"
+            "doctor": "father doctor"
       },
       "keywords": [],
       "author": "",
