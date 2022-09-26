@@ -7,8 +7,8 @@ import { useGlobal } from '@/context/app'
 import styles from './index.less'
 
 const Index = () => {
-	const global = useGlobal()
-
+      const global = useGlobal()
+      
 	return (
 		<div
 			className={clsx([
@@ -17,7 +17,7 @@ const Index = () => {
 			])}
 		>
 			<img className='not_found' src={not_found} alt='404' />
-			<span className='text mt_20'>{global.locale_messages.layout.not_found}</span>
+			<span className='text mt_20'>{global.locale_messages?.layout?.not_found}</span>
 		</div>
 	)
 }
