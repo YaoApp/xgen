@@ -39,7 +39,7 @@ export default class Model {
 
 		this.rendered = true
 		this.setting = res
-		this.sections = this.column_utils.reduceSections(res.form.sections, res.fileds.form)
+		this.sections = this.column_utils.reduceSections(res.form.sections, res.fields.form)
 	}
 
 	async find() {

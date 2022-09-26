@@ -26,7 +26,7 @@ const hook = (
 			key: '__operation'
 		}
 
-		if (props.scroll) {
+		if (props && props.scroll) {
 			operation_col['fixed'] = 'right'
 			operation_col['className'] = 'scroll_table_options'
 		}

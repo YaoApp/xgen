@@ -52,18 +52,18 @@ export default class Model {
 		if (res.header.preset?.batch?.columns) {
 			this.batch_columns = this.column_utils.reduce(
 				res.header.preset.batch.columns,
-				res.fileds.table
+				res.fields.table
 			)
 		}
 
 		if (res.filter?.columns) {
 			this.filter_columns = this.column_utils.reduce(
 				res.filter.columns,
-				res.fileds.filter
+				res.fields.filter
 			)
 		}
 
-		this.table_columns = this.column_utils.reduce(res.table.columns, res.fileds.table)
+		this.table_columns = this.column_utils.reduce(res.table.columns, res.fields.table)
 	}
 
 	async search(params?: TableType.SearchParams) {
@@ -225,8 +225,8 @@ export default class Model {
 	off() {
 		window.$app.Event.off(`${this.namespace.value}/search`, this.search)
 		window.$app.Event.off(`${this.namespace.value}/save`, this.save)
-            window.$app.Event.off(`${this.namespace.value}/delete`, this.delete)
-            window.$app.Event.off(`${this.namespace.value}/batchDelete`, this.batchDelete)
+		window.$app.Event.off(`${this.namespace.value}/delete`, this.delete)
+		window.$app.Event.off(`${this.namespace.value}/batchDelete`, this.batchDelete)
 		window.$app.Event.off(`${this.namespace.value}/batchUpdate`, this.batchUpdate)
 
 		this.global.stack.remove(this.namespace.paths.slice(-1)[0])

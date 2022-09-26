@@ -39,12 +39,12 @@ export default class Model {
 		this.rendered = true
 		this.setting = res
 
-		this.chart_columns = this.column_utils.reduceAny(res.chart.columns, res.fileds.chart)
+		this.chart_columns = this.column_utils.reduceAny(res.chart.columns, res.fields.chart)
 
-		if (res.filter && res.fileds.filter) {
+		if (res.filter && res.fields.filter) {
 			this.filter_columns = this.column_utils.reduce(
 				res.filter.columns,
-				res.fileds.filter
+				res.fields.filter
 			)
 		}
 	}

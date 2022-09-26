@@ -41,8 +41,8 @@ export declare namespace FormType {
 			props: {}
 			sections: Array<Section>
 		}
-		fileds: {
-			form: Common.Fileds
+		fields: {
+			form: Common.Fields
 		}
 		config: {
 			showAnchor?: boolean

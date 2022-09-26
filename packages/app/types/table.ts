@@ -49,9 +49,9 @@ export declare namespace TableType {
 				actions: Array<Action.Props>
 			}
 		}
-		fileds: {
-			filter: Common.Fileds
-			table: Common.Fileds
+		fields: {
+			filter: Common.Fields
+			table: Common.Fields
 		}
 	}
 

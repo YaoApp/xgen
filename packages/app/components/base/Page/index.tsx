@@ -26,9 +26,10 @@ const Index = (props: IProps) => {
 	const menu = global.menu.slice()
 	const visible_menu = global.visible_menu
 	const visible_header = global.visible_header
-	const menu_title = menu[global.current_nav]?.children
-		? menu[global.current_nav]?.children?.[global.current_menu]?.name
-		: menu[global.current_nav].name
+	const current_menu = menu[global.current_nav] || {}
+	const menu_title = current_menu?.children
+		? current_menu?.children?.[global.current_menu]?.name
+		: current_menu.name
 	const title = usePageTitle(menu_title || '', props_title)
 
 	useTitle(`${global.app_info.name} - ${menu[global.current_nav]?.name} - ${title}`)

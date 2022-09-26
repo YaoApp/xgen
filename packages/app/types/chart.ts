@@ -20,7 +20,7 @@ export declare namespace Chart {
 		}
 	}
 
-	interface Fileds {
+	interface Fields {
 		[key: string]: FiledDetail
 	}
 
@@ -33,9 +33,9 @@ export declare namespace Chart {
 		chart: {
 			columns: Array<Common.WideColumn>
 		}
-		fileds: {
-			filter?: Common.Fileds
-			chart: Fileds
+		fields: {
+			filter?: Common.Fields
+			chart: Fields
 		}
 	}
 

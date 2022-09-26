@@ -3,24 +3,24 @@ import { injectable } from 'tsyringe'
 import type { Common, FormType, Chart } from '@/types'
 
 type Item = { name: string }
-type Fileds = { [key: string]: any }
+type Fields = { [key: string]: any }
 
 @injectable()
 export class ColumnUtils {
-	private handleAnyColumn<I, F>(item: I & Item, fileds: F & Fileds) {
-		const handled_item = fileds[item.name]
+	private handleAnyColumn<I, F>(item: I & Item, fields: F & Fields) {
+		const handled_item = fields[item.name]
 		const target_item = { ...item, ...handled_item }
 
 		return target_item
 	}
 
-	private handleTableColumn(item: Common.BaseColumn, fileds: Common.Fileds) {
-		const target_item = this.handleAnyColumn(item, fileds)
+	private handleTableColumn(item: Common.BaseColumn, fields: Common.Fields) {
+		const target_item = this.handleAnyColumn(item, fields)
 
 		if (target_item.view?.components) {
 			target_item.view.components = Object.keys(target_item.view?.components).reduce(
 				(components: { [key: string]: Common.FiledDetail }, key) => {
-					components[key] = fileds[key]
+					components[key] = fields[key]
 
 					return components
 				},
@@ -31,23 +31,23 @@ export class ColumnUtils {
 		return target_item
 	}
 
-	reduce(columns: Array<Common.BaseColumn>, fileds: Common.Fileds) {
+	reduce(columns: Array<Common.BaseColumn>, fields: Common.Fields) {
 		return columns.reduce((total: Array<Common.Column>, item) => {
-			total.push(this.handleTableColumn(item, fileds))
+			total.push(this.handleTableColumn(item, fields))
 
 			return total
 		}, [])
 	}
 
-	reduceAny<I, O, F>(columns: Array<I & Item>, fileds: F & Fileds) {
+	reduceAny<I, O, F>(columns: Array<I & Item>, fields: F & Fields) {
 		return columns.reduce((total: Array<O>, item) => {
-			total.push(this.handleAnyColumn(item, fileds))
+			total.push(this.handleAnyColumn(item, fields))
 
 			return total
 		}, [])
 	}
 
-	reduceSections(sections: Array<FormType.Section>, fileds: Common.Fileds) {
+	reduceSections(sections: Array<FormType.Section>, fields: Common.Fields) {
 		const getSectionColumns = (
 			total: Array<FormType.ColumnResult>,
 			item: FormType.Column
@@ -55,10 +55,10 @@ export class ColumnUtils {
 			if ('tabs' in item) {
 				total.push({
 					width: item?.width || 24,
-					tabs: this.reduceSections(item.tabs, fileds)
+					tabs: this.reduceSections(item.tabs, fields)
 				})
 			} else {
-				total.push(this.handleAnyColumn(item, fileds))
+				total.push(this.handleAnyColumn(item, fields))
 			}
 
 			return total

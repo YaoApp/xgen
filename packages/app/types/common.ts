@@ -2,9 +2,9 @@ export declare namespace Common {
 	interface BaseColumn {
 		name: string
 		width?: number
-      }
-      
-      interface WideColumn {
+	}
+
+	interface WideColumn {
 		name: string
 		width: number
 	}
@@ -26,7 +26,7 @@ export declare namespace Common {
 		}
 	}
 
-	interface Fileds {
+	interface Fields {
 		[key: string]: FiledDetail
 	}
 
