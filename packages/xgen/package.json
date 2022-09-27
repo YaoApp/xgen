@@ -1,5 +1,5 @@
 {
-      "name": "@yaoapp/xgen",
+      "name": "xgen",
       "version": "1.0.0",
       "author": "Wendao",
       "description": "10x productive management system lib for Yao",
@@ -21,7 +21,6 @@
             "build:after": "tsx ./build/after.ts"
       },
       "dependencies": {
-            "@yaoapp/types": "*",
             "@ant-design/icons": "^4.7.0",
             "@matrixage/atom.css": "^2.0.1",
             "@umijs/max": "^4.0.21",
