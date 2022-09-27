@@ -2,7 +2,7 @@ import type Config from 'webpack-chain'
 
 export const env = process.env.NODE_ENV as 'development' | 'production'
 
-export const base = `/${process.env.BASE}/`
+export const base = `/${process.env.XGEN_BASE}/`
 
 export const proxy = {
 	'/api': {
@@ -12,12 +12,12 @@ export const proxy = {
 	'/extend': {
 		target: 'http://local.iqka.com:5099',
 		changeOrigin: true
-      },
-      '/assets': {
+	},
+	'/assets': {
 		target: 'http://local.iqka.com:5099',
 		changeOrigin: true
-      },
-      '/iframe': {
+	},
+	'/iframe': {
 		target: 'http://local.iqka.com:5099',
 		changeOrigin: true
 	}
@@ -37,8 +37,8 @@ export const conventionRoutes = {
 }
 
 export const links = [
-	{ rel: 'stylesheet', href: `/${process.env.BASE}/icon_font.css` },
-	{ rel: 'stylesheet', href: `/${process.env.BASE}/theme/light.css` }
+	{ rel: 'stylesheet', href: `/${process.env.XGEN_BASE}/icon_font.css` },
+	{ rel: 'stylesheet', href: `/${process.env.XGEN_BASE}/theme/light.css` }
 ]
 
 export const chainWebpack = (config: Config) => {
