@@ -4,7 +4,7 @@ import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
 import { Namespace } from '@/models'
-import { ColumnUtils, Common, Table } from '@/services'
+import { ColumnUtils, Common, Form } from '@/services'
 
 import Service from './services'
 
@@ -24,7 +24,7 @@ export default class Model {
 	constructor(
 		private service: Service,
 		private common: Common,
-		private table: Table,
+		private form: Form,
 		private column_utils: ColumnUtils,
 		public global: GlobalModel,
 		public namespace: Namespace
@@ -59,7 +59,7 @@ export default class Model {
 			this.global.locale_messages.messages.table.save.loading
 		)
 
-		const { err } = await this.table.save<TableType.SaveRequest, TableType.SaveResponse>(
+		const { err } = await this.form.save<TableType.SaveRequest, TableType.SaveResponse>(
 			this.model,
 			data
 		)
@@ -84,7 +84,7 @@ export default class Model {
 			this.global.locale_messages.messages.table.delete.loading
 		)
 
-		const { err } = await this.table.delete<TableType.DeleteResponse>(
+		const { err } = await this.form.delete<TableType.DeleteResponse>(
 			this.model,
 			primary_value
 		)
