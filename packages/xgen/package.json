@@ -25,7 +25,7 @@
             "@matrixage/atom.css": "^2.0.1",
             "@umijs/max": "^4.0.21",
             "ahooks": "^3.7.1",
-            "antd": "^4.21.0",
+            "antd": "^4.23.3",
             "axios": "^0.27.2",
             "clsx": "^1.2.1",
             "echarts": "^5.3.3",

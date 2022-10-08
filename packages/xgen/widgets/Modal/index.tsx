@@ -17,7 +17,7 @@ const Index = (props: IProps) => {
 	const { visible, title, width, actions, content } = props
 
 	const props_modal: ModalProps = {
-		visible,
+		open: visible,
 		centered: true,
 		width: width || 900,
 		footer: false,

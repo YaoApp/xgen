@@ -29,7 +29,7 @@ const Index = (props: IProps) => {
 		<Item {...itemProps} {...{ __bind, __name }}>
 			<Cascader
 				className={styles._local}
-				dropdownClassName={styles._dropdown}
+				popupClassName={styles._dropdown}
 				placeholder={`${is_cn ? '请输入' : 'Please input '}${__name}`}
 				options={x.options}
 				{...rest_props}

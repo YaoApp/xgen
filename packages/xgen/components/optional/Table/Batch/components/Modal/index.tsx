@@ -79,7 +79,7 @@ const Index = (props: IProps) => {
 	return (
 		<Modal
 			wrapClassName={styles.modal_batch}
-			visible={visible_modal}
+			open={visible_modal}
 			title='批量编辑'
 			centered
 			onCancel={() => setVisibleModal(false)}

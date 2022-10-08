@@ -31,7 +31,7 @@ const Index = (props: IProps) => {
 		<Item {...itemProps} {...{ __bind, __name }}>
 			<Mentions
 				className={styles._local}
-				dropdownClassName={styles._dropdown}
+				popupClassName={styles._dropdown}
 				placeholder={`${
 					is_cn ? '请输入@选择' : 'Please input @ to mention someone'
 				}${__name}`}

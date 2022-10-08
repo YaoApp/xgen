@@ -47,7 +47,7 @@ const Index = (props: IProps) => {
 	}, [visible_modal])
 
 	const props_modal: ModalProps = {
-		visible: visible_modal,
+		open: visible_modal,
 		centered: true,
 		width: 900,
 		footer: false,

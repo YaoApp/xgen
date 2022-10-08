@@ -35,7 +35,7 @@ const Index = (props: IPropsOptions) => {
 	)
 
 	const props_setting_modal: ModalProps = {
-		visible: visible_setting_modal,
+		open: visible_setting_modal,
 		title: locale_messages.layout.setting.title,
 		className: styles.setting_modal,
 		wrapClassName: 'custom_modal',

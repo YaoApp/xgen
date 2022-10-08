@@ -18,7 +18,7 @@ const Index = (props: IPropsModalWrap) => {
 			<Modal
 				wrapClassName={styles._local}
 				width={width ?? 900}
-				visible={visible}
+				open={visible}
 				onCancel={onBack}
 				destroyOnClose
 				footer={false}
