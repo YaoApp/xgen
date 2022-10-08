@@ -1,4 +1,4 @@
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 
 import Modal from '@/components/base/Modal'
 
@@ -14,5 +14,5 @@ export default ({ namespace, primary, data_item, it }: OnAction) => {
 		config: it.action['Common.openModal']!
 	}
 
-	render(<Modal {...props_modal}></Modal>, createModalContainer(namespace))
+	createRoot(createModalContainer(namespace)).render(<Modal {...props_modal}></Modal>)
 }
