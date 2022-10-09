@@ -4,8 +4,6 @@ import RowItem from './RowItem'
 
 import type { IPropsTabsItem, IPropsRowItem } from '../types'
 
-const { TabPane } = Tabs
-
 const Index = (props: IPropsTabsItem) => {
 	const { namespace, primary, type, data, item } = props
 
@@ -18,13 +16,15 @@ const Index = (props: IPropsTabsItem) => {
 
 	return (
 		<Col span={item.width}>
-			<Tabs className='w_100' animated>
-				{item.tabs.map((it, idx: number) => (
-					<TabPane tab={it.title} key={idx} forceRender>
-						<RowItem {...props_row_item} columns={it.columns}></RowItem>
-					</TabPane>
-				))}
-			</Tabs>
+			<Tabs
+				className='w_100'
+				animated
+				items={item.tabs.map((it, idx) => ({
+					label: it.title,
+					key: it.title! + idx,
+					children: <RowItem {...props_row_item} columns={it.columns}></RowItem>
+				}))}
+			></Tabs>
 		</Col>
 	)
 }
