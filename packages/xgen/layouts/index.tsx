@@ -1,6 +1,4 @@
-import '@/styles/index.less'
-import '@matrixage/atom.css/atom.min.css'
-
+import { useMemoizedFn } from 'ahooks'
 import { ConfigProvider } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { Fragment, useLayoutEffect, useState } from 'react'
@@ -8,7 +6,6 @@ import { HelmetProvider } from 'react-helmet-async'
 import { container } from 'tsyringe'
 
 import { GlobalContext, GlobalModel } from '@/context/app'
-import { useFn } from '@/hooks'
 import { Outlet, useIntl, useLocation } from '@umijs/max'
 
 import Container from './components/Container'
@@ -26,9 +23,11 @@ import type {
 	IPropsMenu,
 	IPropsContainer
 } from './types'
+import type { LocaleMessages } from '@/types'
 
 const Index = () => {
-	const { messages } = useIntl()
+	const intl = useIntl()
+	const messages: LocaleMessages = intl.messages as any
 	const [global] = useState(() => container.resolve(GlobalModel))
 	const menu = global.menu.slice()
 	const { pathname } = useLocation()
@@ -45,7 +44,7 @@ const Index = () => {
 			global.off()
 			global.stack.off()
 		}
-	},[])
+	}, [])
 
 	useLayoutEffect(() => {
 		global.stack.reset()
@@ -75,9 +74,9 @@ const Index = () => {
 		menu: menu,
 		visible_nav: global.visible_nav,
 		current_nav: global.current_nav,
-		setTheme: useFn(global.setTheme),
-		setAvatar: useFn(global.setAvatar),
-		getUserMenu: useFn(global.getUserMenu)
+		setTheme: useMemoizedFn(global.setTheme),
+		setAvatar: useMemoizedFn(global.setAvatar),
+		getUserMenu: useMemoizedFn(global.getUserMenu)
 	}
 
 	const props_menu: IPropsMenu = {

@@ -95,7 +95,7 @@ const Index = (props: IProps) => {
 					</Checkbox>
 				))}
 			</div>
-			<Form className='form_batch' name={`form_batch_${namespace}`} form={form}>
+			<Form className='form_batch' name={`form_batch_${namespace}`} form={form} layout='vertical'>
 				<Row gutter={16} wrap={true}>
 					{options.map(
 						(item, index) =>

@@ -1,10 +1,11 @@
-import { useFn } from '@/hooks'
+import { useMemoizedFn } from 'ahooks'
+
 import { getDeepValue } from '@/knife'
 
 import type { Action } from '@/types'
 
 export default (data_item: any) => {
-	return useFn((disabled: Action.Props['disabled']) => {
+	return useMemoizedFn((disabled: Action.Props['disabled']) => {
 		if (!disabled) return ''
 
 		const real_value = getDeepValue(disabled.bind, data_item)

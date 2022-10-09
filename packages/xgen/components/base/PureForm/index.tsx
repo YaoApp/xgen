@@ -64,8 +64,8 @@ const Index = (props: IPropsPureForm) => {
 				form={form}
 				name={namespace}
 				onFinish={onSave}
-				// @ts-ignore
-				disabled={disabled}
+                        disabled={ disabled }
+                        layout='vertical'
 			>
 				<div className='form_wrap w_100 border_box'>
 					<Sections {...props_sections}></Sections>

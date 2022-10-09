@@ -3,9 +3,9 @@ import { makeAutoObservable, toJS } from 'mobx'
 import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
+import { filterEmpty } from '@/knife'
 import { Namespace } from '@/models'
 import { ColumnUtils, Common, Table } from '@/services'
-import { filterEmpty } from '@/knife'
 
 import Service from './services'
 
@@ -66,7 +66,7 @@ export default class Model {
 		this.table_columns = this.column_utils.reduce(res.table.columns, res.fields.table)
 	}
 
-	async search(params?: TableType.SearchParams) {
+      async search(params?: TableType.SearchParams) {
 		if (this.parent === 'Page' && this.rendered === false) this.global.loading = true
 
 		const hideLoading = message.loading(this.global.locale_messages.messages.table.search)
@@ -175,7 +175,7 @@ export default class Model {
 		query: IProps['query'],
 		data: IProps['data'],
 		namespace: IProps['namespace']
-	) {
+      ) {
 		if (!namespace) {
 			if (parent === 'Page' || parent === 'Modal') {
 				this.global.stack.push(`Table-${parent}-${model}`)
@@ -193,8 +193,9 @@ export default class Model {
 			this.namespace.paths = [namespace]
 		}
 
-		if (query) this.search_params = { ...query }
-
+            if (query) this.search_params = { ...query }
+            
+		this.rendered = false
 		this.parent = parent
 		this.model = model
 

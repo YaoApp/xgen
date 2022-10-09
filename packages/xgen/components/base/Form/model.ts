@@ -111,7 +111,8 @@ export default class Model {
 	) {
 		this.global.stack.push(`Form-${parent}-${model}`)
 
-		this.namespace.paths = toJS(this.global.stack.paths)
+            this.namespace.paths = toJS(this.global.stack.paths)
+		this.rendered = false
 		this.parent = parent
 		this.model = model
 		this.id = Number(id)

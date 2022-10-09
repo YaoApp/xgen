@@ -1,6 +1,5 @@
+import { useMemoizedFn } from 'ahooks'
 import { Switch } from 'antd'
-
-import { useFn } from '@/hooks'
 
 import type { SwitchProps } from 'antd'
 import type { Component } from '@/types'
@@ -22,7 +21,7 @@ const Index = (props: IProps) => {
 		...rest_props
 	} = props
 
-	const onChange = useFn((v: boolean) => {
+	const onChange = useMemoizedFn((v: boolean) => {
 		window.$app.Event.emit(`${__namespace}/save`, {
 			[__primary]: __data_item[__primary],
 			[__bind]: v ? checkedValue : unCheckedValue

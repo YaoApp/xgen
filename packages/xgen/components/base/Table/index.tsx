@@ -1,3 +1,4 @@
+import { useMemoizedFn } from 'ahooks'
 import clsx from 'clsx'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -26,14 +27,23 @@ export interface IProps extends Component.StackComponent {
 const Index = (props: IProps) => {
 	const { parent, model, query, data, namespace, hidePagination } = props
 	const [x] = useState(() => container.resolve(Model))
-
-	useLayoutEffect(() => {
+      
+      useLayoutEffect(() => {
 		x.init(parent, model, query, data, namespace)
 
 		return () => {
 			x.off()
 		}
 	}, [x, parent, model, query, data])
+
+	const setBatchSelected = useMemoizedFn((v: Array<number>) => (x.batch.selected = v))
+	const onFinish = useMemoizedFn((v: any) => {
+		x.resetSearchParams()
+
+		window.$app.Event.emit(`${x.namespace.value}/search`, v)
+	})
+	const onAdd = useMemoizedFn(() => history.push(`/x/Form/${model}/0/edit`))
+	const resetSearchParams = useMemoizedFn(x.resetSearchParams)
 
 	if (!x.setting.table) return null
 
@@ -48,9 +58,7 @@ const Index = (props: IProps) => {
 		operation: x.setting.table.operation,
 		batch: toJS(x.batch),
 		hidePagination,
-		setBatchSelected(v: Array<number>) {
-			x.batch.selected = v
-		}
+		setBatchSelected
 	}
 
 	if (parent === 'Page') {
@@ -89,15 +97,9 @@ const Index = (props: IProps) => {
 			model: x.model,
 			columns: x.filter_columns,
 			btnAddText: x.setting.filter?.btnAddText,
-			onFinish(v: any) {
-				x.resetSearchParams()
-
-				window.$app.Event.emit(`${x.namespace.value}/search`, v)
-			},
-			onAdd() {
-				history.push(`/x/Form/${model}/0/edit`)
-			},
-			resetSearchParams: x.resetSearchParams
+			onFinish,
+			onAdd,
+			resetSearchParams
 		}
 
 		return (

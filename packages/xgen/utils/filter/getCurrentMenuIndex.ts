@@ -20,7 +20,14 @@ const Index = (
 			target.menu_item = item
 		} else {
 			if (item.children && item.children.length) {
-				Index(item.children, url, index)
+				const { nav, menu, hit, menu_item } = Index(item.children, url, index)
+
+				if (hit) {
+					target.nav = nav
+					target.menu = menu
+					target.hit = hit
+					target.menu_item = menu_item
+				}
 			}
 		}
 	})

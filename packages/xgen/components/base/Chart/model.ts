@@ -2,9 +2,9 @@ import { makeAutoObservable } from 'mobx'
 import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
+import { filterEmpty } from '@/knife'
 import { Namespace } from '@/models'
 import { ColumnUtils, Common } from '@/services'
-import { filterEmpty } from '@/knife'
 
 import Service from './services'
 
@@ -66,7 +66,8 @@ export default class Model {
 		this.data = res
 	}
 
-	init(parent: Component.StackComponent['parent'], model: Component.StackComponent['model']) {
+      init(parent: Component.StackComponent[ 'parent' ], model: Component.StackComponent[ 'model' ]) {
+		this.rendered = false
 		this.parent = parent
 		this.model = model
 

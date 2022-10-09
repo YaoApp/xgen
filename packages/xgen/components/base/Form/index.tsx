@@ -1,10 +1,10 @@
+import { useMemoizedFn } from 'ahooks'
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
 import { Page, PureForm } from '@/components'
-import { useFn } from '@/hooks'
 import { getLocale } from '@umijs/max'
 
 import Anchor from './components/Anchor'
@@ -26,7 +26,7 @@ const Index = (props: Component.FormComponent) => {
 	const page_title_prefix = usePageTitle(locale_messages, id!, form!.type)
 	const title = page_title_prefix + x.setting.name
 
-	const onFormBack = useFn(() => {
+	const onFormBack = useMemoizedFn(() => {
 		if (onBack) return onBack()
 
 		history.back()

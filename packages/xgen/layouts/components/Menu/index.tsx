@@ -3,9 +3,9 @@ import { Input } from 'antd'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 
+import { fuzzyQuery } from '@/knife'
 import { Icon } from '@/widgets'
 import { history, Link } from '@umijs/max'
-import { fuzzyQuery } from '@/knife'
 
 import styles from './index.less'
 
@@ -15,7 +15,7 @@ const Index = (props: IPropsMenu) => {
 	const { locale_messages, visible, blocks, title, items } = props
 	const [visible_input, { toggle }] = useBoolean(false)
 	const [current_items, setCurrentItems] = useState<IPropsMenu['items']>([])
-	const [input, setInput] = useState('')
+      const [ input, setInput ] = useState('')
 
 	useEffect(() => {
 		if (!items) return
@@ -32,6 +32,10 @@ const Index = (props: IPropsMenu) => {
 		[input],
 		{ wait: 300 }
 	)
+
+	const getActiveStatus = (path: string) => {
+		return `/${$runtime.BASE}${path}` === history.location.pathname ? 'active' : ''
+	}
 
 	return (
 		<div className={clsx([styles._local, visible ? styles.visible : styles.unvisible])}>
@@ -72,9 +76,7 @@ const Index = (props: IPropsMenu) => {
 							<Link
 								className={clsx([
 									'menu_item flex align_center transition_normal',
-									item.path === history.location.pathname
-										? 'active'
-										: ''
+									getActiveStatus(item.path)
 								])}
 								to={item.path}
 								key={index}

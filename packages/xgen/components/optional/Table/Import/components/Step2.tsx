@@ -1,9 +1,9 @@
+import { useMemoizedFn } from 'ahooks'
 import axios from 'axios'
 import { cloneDeep, findIndex } from 'lodash-es'
 import { useEffect, useState } from 'react'
 
 import Table from '@/components/base/Table'
-import { useFn } from '@/hooks'
 
 import type { IProps as IPropsTable } from '@/components/base/Table'
 import type { IPropsStep2 } from '../types'
@@ -13,7 +13,7 @@ const Index = (props: IPropsStep2) => {
 	const [data, setData] = useState<any>({})
 	const namespace = 'Page/Import/mapping'
 
-	const save = useFn((v: any) => {
+	const save = useMemoizedFn((v: any) => {
 		const index = findIndex(data.data, (item: any) => item.field === v.field)
 		const _data = cloneDeep(data.data)
 

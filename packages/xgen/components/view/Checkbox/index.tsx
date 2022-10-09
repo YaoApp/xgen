@@ -1,6 +1,5 @@
+import { useMemoizedFn } from 'ahooks'
 import { Checkbox } from 'antd'
-
-import { useFn } from '@/hooks'
 
 import type { CheckboxProps } from 'antd'
 import type { Component } from '@/types'
@@ -13,7 +12,7 @@ interface IProps extends CheckboxProps, Component.PropsViewComponent {
 const Index = (props: IProps) => {
 	const { __namespace, __primary, __bind, __data_item, __value, text, ...rest_props } = props
 
-	const onChange = useFn((e: CheckboxChangeEvent) => {
+	const onChange = useMemoizedFn((e: CheckboxChangeEvent) => {
 		window.$app.Event.emit(`${__namespace}/save`, {
 			[__primary]: __data_item[__primary],
 			[__bind]: e.target.checked

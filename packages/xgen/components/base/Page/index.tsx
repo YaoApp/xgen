@@ -1,9 +1,8 @@
-import { useTitle } from 'ahooks'
+import { useMemoizedFn, useTitle } from 'ahooks'
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 
 import { useGlobal } from '@/context/app'
-import { useFn } from '@/hooks'
 
 import Action from './components/Action'
 import Left from './components/Left'
@@ -37,7 +36,7 @@ const Index = (props: IProps) => {
 	const props_left: IPropsLeft = {
 		visible_menu,
 		title,
-		toggleMenu: useFn(global.toggleMenu)
+		toggleMenu: useMemoizedFn(global.toggleMenu)
 	}
 
 	return (

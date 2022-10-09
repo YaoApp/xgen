@@ -1,5 +1,5 @@
 import { ConfigProvider, message } from 'antd'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, toJS } from 'mobx'
 import { genConfig } from 'react-nice-avatar'
 import store from 'store2'
 import { singleton } from 'tsyringe'
@@ -88,12 +88,12 @@ export default class GlobalModel {
 		this.visible_menu = !this.visible_menu
 	}
 
-	updateMenuStatus(pathname: string) {
-		if (pathname.indexOf('/0/edit') !== -1) {
+      updateMenuStatus(pathname: string) {
+            if (pathname.indexOf('/0/edit') !== -1) {
 			window.$global.loading = true
 		}
 
-		const { nav, menu, hit, menu_item } = getCurrentMenuIndex(this.menu, pathname)
+		const { nav, menu, hit, menu_item } = getCurrentMenuIndex(toJS(this.menu), pathname)
 
 		if (!hit) return (this.visible_menu = false)
 
