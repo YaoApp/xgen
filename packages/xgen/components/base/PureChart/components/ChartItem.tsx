@@ -12,6 +12,7 @@ import type { IPropsChartItem } from '../types'
 
 const Index = (props: IPropsChartItem) => {
 	const { item, data } = props
+	const { cardStyle, ...view_props } = item.view.props
 	const { locale } = useIntl()
 	const locale_messages = locales[locale]
 
@@ -27,13 +28,13 @@ const Index = (props: IPropsChartItem) => {
 						></ChartLink>
 					)
 				}
-				style={item.cardStyle}
+				style={toJS(cardStyle)}
 			>
 				<X
 					type='chart'
 					name={item.view.type}
 					props={{
-						...toJS(item.view.props),
+						...view_props,
 						data: toJS(data[item.bind]),
 						__bind: item.bind,
 						__name: item.name
@@ -45,7 +46,7 @@ const Index = (props: IPropsChartItem) => {
 							type='chart'
 							name={item.refer.type}
 							props={{
-								...toJS(item.refer.props),
+								...item.refer.props,
 								data: toJS(data[item.bind]),
 								__bind: item.bind,
 								__name: item.name

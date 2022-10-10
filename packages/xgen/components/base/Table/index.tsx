@@ -27,8 +27,8 @@ export interface IProps extends Component.StackComponent {
 const Index = (props: IProps) => {
 	const { parent, model, query, data, namespace, hidePagination } = props
 	const [x] = useState(() => container.resolve(Model))
-      
-      useLayoutEffect(() => {
+
+	useLayoutEffect(() => {
 		x.init(parent, model, query, data, namespace)
 
 		return () => {
@@ -51,11 +51,11 @@ const Index = (props: IProps) => {
 		parent,
 		namespace: x.namespace.value,
 		primary: x.setting.primary,
-		list: x.list,
-		columns: x.table_columns,
-		pagination: x.pagination,
-		props: x.setting.table.props,
-		operation: x.setting.table.operation,
+		list: toJS(x.list),
+		columns: toJS(x.table_columns),
+		pagination: toJS(x.pagination),
+		props: toJS(x.setting.table.props),
+		operation: toJS(x.setting.table.operation),
 		batch: toJS(x.batch),
 		hidePagination,
 		setBatchSelected
@@ -95,7 +95,7 @@ const Index = (props: IProps) => {
 
 		const props_filter: IPropsFilter = {
 			model: x.model,
-			columns: x.filter_columns,
+			columns: toJS(x.filter_columns),
 			btnAddText: x.setting.filter?.btnAddText,
 			onFinish,
 			onAdd,
@@ -117,4 +117,4 @@ const Index = (props: IProps) => {
 	)
 }
 
-export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
+export default new window.$app.Handle(Index).by(observer).get()

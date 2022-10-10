@@ -15,8 +15,8 @@ interface IProps {
 }
 
 const Index = (props: IProps) => {
-	const { children, className, title, options, width, height, style } = props
-
+      const { children, className, title, options, width, height, style } = props
+      
 	return (
 		<div
 			className={clsx([styles._local, className, 'card_wrap'])}

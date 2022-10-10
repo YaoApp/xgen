@@ -1,5 +1,6 @@
 import { useMemoizedFn } from 'ahooks'
 import clsx from 'clsx'
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
@@ -40,6 +41,14 @@ const Index = (props: Component.FormComponent) => {
 		}
 	}, [parent, model, id, form, onFormBack])
 
+	const onSave = useMemoizedFn((v) => {
+		const data = { ...v }
+
+		if (x.id !== 0) data[x.setting.primary] = x.id
+
+		window.$app.Event.emit(`${x.namespace.value}/save`, data)
+	})
+
 	if (!x.setting.form) return null
 
 	const props_breadcrumb: IPropsBreadcrumb = {
@@ -49,8 +58,8 @@ const Index = (props: Component.FormComponent) => {
 	}
 
 	const props_anchor: IPropsAnchor = {
-		sections: x.setting.form.sections
-      }
+		sections: toJS(x.setting.form.sections)
+	}
 
 	const props_form: IPropsPureForm = {
 		parent,
@@ -58,17 +67,11 @@ const Index = (props: Component.FormComponent) => {
 		primary: x.setting.primary,
 		type: x.type,
 		id: x.id,
-		data: x.data,
-		sections: x.sections,
-		operation: x.setting.operation,
+		data: toJS(x.data),
+		sections: toJS(x.sections),
+		operation: toJS(x.setting.operation),
 		title,
-		onSave(v) {
-			const data = { ...v }
-
-			if (x.id !== 0) data[x.setting.primary] = x.id
-
-			window.$app.Event.emit(`${x.namespace.value}/save`, data)
-		},
+		onSave,
 		onBack: onFormBack
 	}
 
@@ -97,4 +100,4 @@ const Index = (props: Component.FormComponent) => {
 	)
 }
 
-export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
+export default new window.$app.Handle(Index).by(observer).get()

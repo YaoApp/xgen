@@ -1,3 +1,5 @@
+import { useMemoizedFn } from 'ahooks'
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { Fragment, useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
@@ -18,17 +20,20 @@ const Index = (props: Component.BaseComponent) => {
 		x.init(parent, model)
 	}, [parent, model])
 
+	const onFinish = useMemoizedFn((v: any) => {
+		x.resetSearchParams()
+		x.search(v)
+	})
+	const resetSearchParams = useMemoizedFn(x.resetSearchParams)
+
 	if (!x.setting.chart) return null
 	if (!Object.keys(x.data).length) return null
 
 	const props_filter: IPropsFilter = {
 		model: x.model,
-		columns: x.filter_columns,
-		onFinish(v: any) {
-			x.resetSearchParams()
-			x.search(v)
-		},
-		resetSearchParams: x.resetSearchParams
+		columns: toJS(x.filter_columns),
+		onFinish,
+		resetSearchParams
 	}
 
 	const props_chart: IPropsPureChart = {
@@ -54,4 +59,4 @@ const Index = (props: Component.BaseComponent) => {
 	return <div className='w_100'>{Content}</div>
 }
 
-export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
+export default new window.$app.Handle(Index).by(observer).get()

@@ -12,7 +12,7 @@ const Index = () => {
 		['type', 'model', 'id', 'formType']
 	)
 
-      if (!model) history.push('/404')
+	if (!model) history.push('/404')
 
 	return (
 		<X
