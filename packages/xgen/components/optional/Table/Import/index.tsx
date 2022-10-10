@@ -14,7 +14,6 @@ import Steps from './components/Steps'
 import styles from './index.less'
 
 const { confirm } = Modal
-const { TabPane } = Tabs
 
 import type { ModalProps } from 'antd'
 
@@ -52,7 +51,7 @@ const Index = (props: IProps) => {
 		width: 900,
 		footer: false,
 		closable: false,
-            zIndex: 1000,
+		zIndex: 1000,
 		maskClosable: false,
 		destroyOnClose: true,
 		bodyStyle: { padding: 0 },
@@ -98,6 +97,37 @@ const Index = (props: IProps) => {
 			postAction()
 		}
 	}
+
+	const items = [
+		{
+			label: 0,
+			key: '0',
+			children: <Step1 {...{ file_name, setFileName, next }}></Step1>
+		},
+		{
+			label: 0,
+			key: '1',
+			children: (
+				<Step2
+					{...{
+						api,
+						file_name,
+						setPreviewPayload
+					}}
+				></Step2>
+			)
+		},
+		{
+			label: 0,
+			key: '2',
+			children: <Step3 {...{ api, preview_payload }}></Step3>
+		},
+		{
+			label: 0,
+			key: '3',
+			children: <Step4 {...{ api, preview_payload }}></Step4>
+		}
+	]
 
 	return (
 		<Fragment>
@@ -169,20 +199,12 @@ const Index = (props: IProps) => {
 					])}
 				>
 					<Steps {...{ step }}></Steps>
-					<Tabs activeKey={`${step}`} renderTabBar={undefined} animated>
-						<TabPane key={0}>
-							<Step1 {...{ file_name, setFileName, next }}></Step1>
-						</TabPane>
-						<TabPane key={1}>
-							<Step2 {...{ api, file_name, setPreviewPayload }}></Step2>
-						</TabPane>
-						<TabPane key={2}>
-							<Step3 {...{ api, preview_payload }}></Step3>
-						</TabPane>
-						<TabPane key={3}>
-							<Step4 {...{ api, preview_payload }}></Step4>
-						</TabPane>
-					</Tabs>
+					<Tabs
+						activeKey={`${step}`}
+						renderTabBar={undefined}
+						animated
+						items={items}
+					></Tabs>
 				</div>
 			</Modal>
 		</Fragment>
