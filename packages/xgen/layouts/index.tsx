@@ -52,11 +52,12 @@ const Index = () => {
 	const props_helmet: IPropsHelmet = {
 		theme: global.theme,
 		app_info: global.app_info
-	}
-
+      }
+      
 	const props_Login_wrapper: IPropsLoginWrapper = {
 		logo: global.app_info?.logo,
-		layout: global.app_info.login?.layout
+		admin: global.app_info?.login?.admin,
+		user: global.app_info?.login?.user
 	}
 
 	const props_loading: IPropsLoading = {
@@ -117,4 +118,4 @@ const Index = () => {
 	)
 }
 
-export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
+export default new window.$app.Handle(Index).by(observer).get()

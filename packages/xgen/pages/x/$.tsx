@@ -23,4 +23,4 @@ const Index = () => {
 	)
 }
 
-export default window.$app.memo(Index)
+export default Index

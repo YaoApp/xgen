@@ -45,10 +45,10 @@ export default class GlobalModel {
 
 		this.app_info = res
 
-		store.set('__mode', res.mode)
+		window.$app.api_prefix = res.apiPrefix || '__yao'
 
-		localStorage.setItem('token_storage', res.token?.storage || 'sessionStorage')
-		localStorage.setItem('__api_prefix', res.apiPrefix || '__yao')
+		store.set('__mode', res.mode)
+		store.set('token_storage', res.token?.storage || 'sessionStorage')
 	}
 
 	async getUserMenu() {
@@ -88,8 +88,8 @@ export default class GlobalModel {
 		this.visible_menu = !this.visible_menu
 	}
 
-      updateMenuStatus(pathname: string) {
-            if (pathname.indexOf('/0/edit') !== -1) {
+	updateMenuStatus(pathname: string) {
+		if (pathname.indexOf('/0/edit') !== -1) {
 			window.$global.loading = true
 		}
 

@@ -38,7 +38,7 @@ const Index = (props: Component.FormComponent) => {
 		return () => {
 			x.off(onFormBack)
 		}
-	}, [x, parent, model, id, form, onFormBack])
+	}, [parent, model, id, form, onFormBack])
 
 	if (!x.setting.form) return null
 

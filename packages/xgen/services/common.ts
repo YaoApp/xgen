@@ -10,7 +10,7 @@ export default class Index {
 	@catchError()
 	getSetting<Res>(type: BaseType, model: string) {
 		return axios.get<{}, Response<Res>>(
-			`/api/${localStorage.getItem('__api_prefix')}/${type}/${model}/setting`
+			`/api/${window.$app.api_prefix}/${type}/${model}/setting`
 		)
 	}
 }

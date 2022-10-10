@@ -8,7 +8,13 @@ export interface IPropsHelmet {
 
 export interface IPropsLoginWrapper {
 	logo: GlobalModel['app_info']['logo']
-	layout: GlobalModel['app_info']['login']['layout']
+	admin: GlobalModel['app_info']['login']['admin']
+	user: GlobalModel['app_info']['login']['user']
+}
+
+export interface IPropsLoginWrapperLeft {
+	logo: GlobalModel['app_info']['logo']
+	layout: App.Role['layout']
 }
 
 export interface IPropsLoading {

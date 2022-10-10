@@ -10,7 +10,7 @@ export default class Index {
 	@catchError()
 	save<Data, Res>(model: string, data: Data) {
 		return axios.post<{}, Response<Res>>(
-			`/api/${localStorage.getItem('__api_prefix')}/form/${model}/save`,
+			`/api/${window.$app.api_prefix}/form/${model}/save`,
 			data
 		)
 	}
@@ -18,9 +18,7 @@ export default class Index {
 	@catchError()
 	delete<Res>(model: string, primary_value: number) {
 		return axios.post<{}, Response<Res>>(
-			`/api/${localStorage.getItem(
-				'__api_prefix'
-			)}/form/${model}/delete/${primary_value}`
+			`/api/${window.$app.api_prefix}/form/${model}/delete/${primary_value}`
 		)
 	}
 }

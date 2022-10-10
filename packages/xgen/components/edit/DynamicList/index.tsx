@@ -26,7 +26,7 @@ const Custom = (props: ICustom) => {
 	const [data, setData] = useState<Array<any>>([])
 
 	const api = {
-		setting: `/api/${localStorage.getItem('__api_prefix')}/setting/${props.setting}`
+		setting: `/api/${window.$app.api_prefix}/setting/${props.setting}`
 	}
 
 	const getSetting = async () => {

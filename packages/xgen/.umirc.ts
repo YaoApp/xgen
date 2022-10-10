@@ -19,5 +19,5 @@ export default defineConfig({
 	// @ts-ignore
 	chainWebpack,
 	conventionRoutes,
-	define: { $runtime: { BASE: process.env.BASE } }
+	define: { $runtime: { BASE: process.env.BASE} }
 })

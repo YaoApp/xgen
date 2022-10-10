@@ -16,7 +16,7 @@ const Index = (props: Component.BaseComponent) => {
 
 	useLayoutEffect(() => {
 		x.init(parent, model)
-	}, [x, parent, model])
+	}, [parent, model])
 
 	if (!x.setting.chart) return null
 	if (!Object.keys(x.data).length) return null

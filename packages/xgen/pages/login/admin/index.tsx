@@ -16,5 +16,5 @@ const Index = () => {
 	return <Common type='admin' x={x}></Common>
 }
 
-export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
+export default new window.$app.Handle(Index).by(observer).get()
 

@@ -97,9 +97,9 @@ export default class Model {
 		this.global.current_nav = current_nav
 
 		if (this.global.app_info.token?.storage === 'localStorage') {
-			localStorage.setItem('token', res.token)
+			store.local.set('token', res.token)
 		} else {
-			sessionStorage.setItem('token', res.token)
+			store.session.set('token', res.token)
 		}
 
 		store.set('user', res.user)

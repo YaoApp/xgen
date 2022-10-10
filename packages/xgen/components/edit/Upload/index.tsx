@@ -36,7 +36,7 @@ const Custom = window.$app.memo((props: CustomProps) => {
 		name: 'file',
 		listType: filemap[filetype].listType,
 		className: clsx(['form_item_upload_wrap', filemap[filetype].className]),
-		action: `/api/${localStorage.getItem('__api_prefix')}/storage/upload`,
+		action: `/api/${window.$app.api_prefix}/storage/upload`,
 		headers: { authorization: getToken() },
 		fileList: list,
 		isImageUrl: () => filetype === 'image',

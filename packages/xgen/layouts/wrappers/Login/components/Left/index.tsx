@@ -6,9 +6,9 @@ import logo_yao from '@/assets/images/logo.svg'
 
 import styles from './index.less'
 
-import type { IPropsLoginWrapper } from '../../../../types'
+import type { IPropsLoginWrapperLeft } from '../../../../types'
 
-const Index = (props: Pick<IPropsLoginWrapper, 'logo' | 'layout'>) => {
+const Index = (props: IPropsLoginWrapperLeft) => {
 	const { logo, layout } = props
 
 	return (

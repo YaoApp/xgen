@@ -1,6 +1,22 @@
 export declare namespace App {
 	type Theme = 'light' | 'dark'
 
+	type Role = {
+		captcha: string
+		login: string
+		/** Configure login page brand and cover */
+		layout?: {
+			/** login page cover image */
+			cover?: string
+			/** default is 'Make Your Dream With Yao App Engine' */
+			slogan?: string
+			/** default is yaoapps.com */
+			site?: string
+			/** show Social media */
+			showSNS?: boolean
+		}
+	}
+
 	interface Info {
 		/** Application Name */
 		name: string
@@ -11,31 +27,19 @@ export declare namespace App {
 		/** api prefix, default is __yao */
 		apiPrefix?: string
 		/** brand logo, default is YAO */
-            logo?: string
+		logo?: string
 		/** favicon, default is YAO */
 		favicon?: string
 		/** login config */
-		login: {
+            login: {
+                  /** Configure admin login setting */
+			admin: Role
+                  /** Configure user login setting */
+			user?: Role
 			/** Configure the jump page after administrator and user login */
 			entry: {
 				admin: string
 				user: string
-			}
-			/** Configure login page brand and cover */
-			layout?: {
-				/** login page cover image */
-				cover?: string
-				/** default is 'Make Your Dream With Yao App Engine' */
-				slogan?: string
-				/** default is yaoapps.com */
-                        site?: string
-				/** show Social media */
-                        showSNS?:boolean
-			}
-			/** Configure the staff login related apis */
-			user?: {
-				captcha: string
-				login: string
 			}
 			/** Display and configure the Feishu login interface */
 			feishu?: {

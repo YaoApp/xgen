@@ -34,7 +34,7 @@ const Index = (props: IProps) => {
 		return () => {
 			x.off()
 		}
-	}, [x, parent, model, query, data])
+	}, [parent, model, query, data])
 
 	const setBatchSelected = useMemoizedFn((v: Array<number>) => (x.batch.selected = v))
 	const onFinish = useMemoizedFn((v: any) => {
