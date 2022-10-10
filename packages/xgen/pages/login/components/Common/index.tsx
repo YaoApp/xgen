@@ -2,9 +2,10 @@ import { Tooltip } from 'antd'
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 
+import { useIntl } from '@/hooks'
 import { toFirstUpperCase } from '@/utils/filter'
 import { Icon } from '@/widgets'
-import { Link, useIntl } from '@umijs/max'
+import { Link } from '@umijs/max'
 
 import Form from './components/Form'
 import Sns from './components/Sns'
@@ -12,7 +13,7 @@ import Sns from './components/Sns'
 import type { IPropsCommon, IPropsForm } from '@/pages/login/types'
 
 const Index = ({ x, type }: IPropsCommon) => {
-	const { messages } = useIntl()
+	const messages = useIntl()
 	const is_dark = x.global.theme == 'dark'
 
 	const props_form: IPropsForm = {

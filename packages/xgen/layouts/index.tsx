@@ -6,7 +6,8 @@ import { HelmetProvider } from 'react-helmet-async'
 import { container } from 'tsyringe'
 
 import { GlobalContext, GlobalModel } from '@/context/app'
-import { Outlet, useIntl, useLocation } from '@umijs/max'
+import { useIntl } from '@/hooks'
+import { Outlet, useLocation } from '@umijs/max'
 
 import Container from './components/Container'
 import Helmet from './components/Helmet'
@@ -23,11 +24,9 @@ import type {
 	IPropsMenu,
 	IPropsContainer
 } from './types'
-import type { LocaleMessages } from '@/types'
 
 const Index = () => {
-	const intl = useIntl()
-	const messages: LocaleMessages = intl.messages as any
+	const messages = useIntl()
 	const [global] = useState(() => container.resolve(GlobalModel))
 	const menu = global.menu.slice()
 	const { pathname } = useLocation()

@@ -3,15 +3,15 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import NiceAvatar from 'react-nice-avatar'
 
+import { useIntl } from '@/hooks'
 import { Icon } from '@/widgets'
-import { getLocale, useIntl } from '@umijs/max'
+import { getLocale } from '@umijs/max'
 
 import SettingModalContent from '../SettingModalContent'
 import UserModalContent from '../UserModalContent'
 import styles from './index.less'
 
 import type { ModalProps } from 'antd'
-import type { GlobalModel } from '@/context/app'
 
 import type {
 	IPropsOptions,
@@ -21,9 +21,8 @@ import type {
 
 const Index = (props: IPropsOptions) => {
 	const { theme, avatar, app_info, user, setTheme, setAvatar, getUserMenu } = props
-	const intl = useIntl()
+	const messages = useIntl()
 	const locale = getLocale()
-	const locale_messages: GlobalModel['locale_messages'] = intl.messages
 	const [visible_setting_modal, setVisibleSettingModal] = useState(false)
 
 	const Avatar = (
@@ -36,7 +35,7 @@ const Index = (props: IPropsOptions) => {
 
 	const props_setting_modal: ModalProps = {
 		open: visible_setting_modal,
-		title: locale_messages.layout.setting.title,
+		title: messages.layout.setting.title,
 		className: styles.setting_modal,
 		wrapClassName: 'custom_modal',
 		destroyOnClose: true,
@@ -47,7 +46,7 @@ const Index = (props: IPropsOptions) => {
 	}
 
 	const props_setting_modal_content: IPropsSettingModalContent = {
-		locale_messages: locale_messages,
+		locale_messages: messages,
 		locale,
 		theme,
 		setTheme,
@@ -56,7 +55,7 @@ const Index = (props: IPropsOptions) => {
 
 	const props_user_modal_content: IPropsUserModalContent = {
 		user,
-		locale_messages,
+		locale_messages: messages,
 		Avatar,
 		setAvatar
 	}

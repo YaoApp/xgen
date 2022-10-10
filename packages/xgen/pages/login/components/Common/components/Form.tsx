@@ -2,8 +2,9 @@ import { Button, Form, Input } from 'antd'
 import clsx from 'clsx'
 
 import logo_feishu from '@/assets/images/feishu.png'
+import { useIntl } from '@/hooks'
 import { Icon } from '@/widgets'
-import { getLocale, useIntl } from '@umijs/max'
+import { getLocale } from '@umijs/max'
 
 const { Item, useForm } = Form
 
@@ -13,7 +14,7 @@ const Index = (props: IPropsForm) => {
 	const { code, feishu, loading, getCaptcha, onFinish } = props
 	const [form] = useForm()
 	const { getFieldValue } = form
-	const { messages } = useIntl()
+	const messages = useIntl()
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
 
