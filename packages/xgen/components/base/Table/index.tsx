@@ -42,7 +42,6 @@ const Index = (props: IProps) => {
 
 		window.$app.Event.emit(`${x.namespace.value}/search`, v)
 	})
-	const onAdd = useMemoizedFn(() => history.push(`/x/Form/${model}/0/edit`))
 	const resetSearchParams = useMemoizedFn(x.resetSearchParams)
 
 	if (!x.setting.table) return null
@@ -96,9 +95,8 @@ const Index = (props: IProps) => {
 		const props_filter: IPropsFilter = {
 			model: x.model,
 			columns: toJS(x.filter_columns),
-			btnAddText: x.setting.filter?.btnAddText,
+			actions: toJS(x.setting.filter?.actions),
 			onFinish,
-			onAdd,
 			resetSearchParams
 		}
 

@@ -3,8 +3,16 @@ import type { Action, Common } from '@/types'
 
 export declare namespace TableType {
 	interface Filter {
-		btnAddText: string
 		columns: Array<Common.WideColumn>
+		actions: Array<
+			{
+				action: Pick<
+					Action.Props['action'],
+					'Common.historyPush' | 'Common.openModal'
+				>
+				width: number
+			} & Pick<Action.Props, 'title' | 'icon'>
+		>
 	}
 
 	interface Header {

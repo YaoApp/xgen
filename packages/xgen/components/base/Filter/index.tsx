@@ -4,30 +4,34 @@ import { toJS } from 'mobx'
 
 import { X } from '@/components'
 import { Icon } from '@/widgets'
-import { PlusOutlined } from '@ant-design/icons'
 import { getLocale } from '@umijs/max'
 
+import Actions from './components/Actions'
 import { useCalcLayout, useVisibleMore } from './hooks'
 import styles from './index.less'
 import locales from './locales'
 
-import type { IPropsFilter } from './types'
+import type { IPropsFilter, IPropsActions } from './types'
 
 const { useForm } = Form
 
 const Index = (props: IPropsFilter) => {
-	const { model, columns, btnAddText, isChart, onAdd, onFinish, resetSearchParams } = props
+	const { model, columns, actions, isChart, onFinish, resetSearchParams } = props
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
 	const [form] = useForm()
 	const { getFieldsValue, resetFields } = form
 	const { display_more, opacity_more, visible_more, setVisibleMore } = useVisibleMore()
-	const { base, more, visible_btn_more } = useCalcLayout(columns, btnAddText)
+	const { base, more, visible_btn_more } = useCalcLayout(columns, actions)
 
 	const onReset = () => {
 		resetFields()
 		resetSearchParams()
 		onFinish(getFieldsValue())
+	}
+
+	const props_actions: IPropsActions = {
+		actions
 	}
 
 	return (
@@ -85,16 +89,7 @@ const Index = (props: IPropsFilter) => {
 								></Button>
 							</Tooltip>
 						)}
-						{btnAddText && (
-							<Button
-								className='btn_add flex justify_center align_center ml_16'
-								type='primary'
-								onClick={onAdd}
-								icon={<PlusOutlined></PlusOutlined>}
-							>
-								{btnAddText}
-							</Button>
-						)}
+						<Actions {...props_actions}></Actions>
 					</div>
 				</Col>
 			</Row>
@@ -114,7 +109,7 @@ const Index = (props: IPropsFilter) => {
 					</a>
 					<Row gutter={16} style={{ marginBottom: 16 }}>
 						{more.map((item: any, index: number) => (
-							<Col span={item.span} key={index}>
+							<Col span={item.width} key={index}>
 								<X
 									type='edit'
 									name={item.edit.type}

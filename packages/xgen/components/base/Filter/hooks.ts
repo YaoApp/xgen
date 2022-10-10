@@ -29,14 +29,17 @@ export const useVisibleMore = () => {
 	return { visible_more, display_more, opacity_more, setVisibleMore }
 }
 
-export const useCalcLayout = (
-	columns: Array<Common.Column>,
-	btnAddText: IPropsFilter['btnAddText']
-) => {
+export const useCalcLayout = (columns: Array<Common.Column>, actions: IPropsFilter['actions']) => {
 	return useMemo(() => {
 		if (!columns.length) return { base: [], more: [], visible_btn_more: false }
 
-		const setting_cols = btnAddText ? 3 : 0
+		const actions_width = actions?.reduce((total, item) => {
+			total += item.width || 3
+
+			return total
+		}, 0)
+
+		const setting_cols = actions ? actions_width : 0
 		const base: Array<Common.Column> = []
 		const more: Array<Common.Column> = []
 

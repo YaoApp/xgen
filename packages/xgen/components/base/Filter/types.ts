@@ -4,11 +4,14 @@ import type Model from '@/components/base/Table/model'
 export interface IPropsFilter {
 	model: string
 	columns: Array<Common.Column>
-	btnAddText?: TableType.Setting['filter']['btnAddText']
+	actions: TableType.Setting['filter']['actions']
 	isChart?: boolean
-	onAdd?: () => void
 	onFinish: (v: any) => void
 	resetSearchParams: Model['resetSearchParams']
+}
+
+export interface IPropsActions{
+      actions: TableType.Setting['filter']['actions']
 }
 
 export interface Locale {
