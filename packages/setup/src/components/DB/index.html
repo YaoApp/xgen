@@ -1,0 +1,46 @@
+<form
+      id="form_db"
+      class="form flex_column"
+>
+      {#each Object.entries(metadata_connector) as [key, item]}
+      <div class="form_item flex flex_column">
+            <div class="flex justify_between">
+                  <span class="name">{item.name}</span>
+                  <span class="key">{key}</span>
+            </div>
+            <DynamicValue
+                  name="{key}"
+                  type="{item.value}"
+            ></DynamicValue>
+      </div>
+      {/each}
+
+      {#each Object.entries(metadata_connector_options[type]) as [key, item]}
+      <div class="form_item flex flex_column">
+            <div class="flex justify_between">
+                  <span class="name">{item.name}</span>
+                  <span class="key">{key}</span>
+            </div>
+            <DynamicValue
+                  name="{key}"
+                  type="{item.value}"
+                  parent="option"
+            ></DynamicValue>
+      </div>
+      {/each}
+
+      <div class="w_100 flex justify_between">
+            <button
+                  class="btn_test btn_action cursor_point flex justify_center align_center"
+                  on:click="{test}"
+            >
+                  <i class="icon-wifi mr_6"></i> 测试连接
+            </button>
+            <button
+                  class="btn_save btn_action cursor_point"
+                  on:click="{save}"
+            >
+                  <i class="icon-check"></i>
+            </button>
+      </div>
+</form>

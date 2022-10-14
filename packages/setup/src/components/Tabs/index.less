@@ -1,0 +1,29 @@
+.tabs_wrap {
+	max-width: var(--content_width);
+	margin: 0 auto;
+	margin-bottom: 48px;
+
+	.tabs_items {
+		border-radius: var(--radius);
+		overflow: hidden;
+            border: 1px solid var(--color_text);
+            
+		.tab_item {
+                  width: 90px;
+			padding: 6px 0;
+			line-height: 1;
+
+			&:last-child {
+				&.active {
+					border: none;
+				}
+			}
+
+			&.active {
+				background-color: var(--color_text);
+				color: var(--color_text_reverse);
+				border-right: 1px solid var(--color_border);
+			}
+		}
+	}
+}

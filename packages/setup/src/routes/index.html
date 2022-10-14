@@ -1,1 +1,14 @@
 <Header></Header>
+<Tabs></Tabs>
+
+<div class="content_wrap">
+      <div
+            class="content transition_normal step_{$steps}"
+            style="transform: translate(calc(-{$steps - 1} * (var(--content_width) + 3px)));"
+      >
+            <Env></Env>
+            <DB></DB>
+            <Loading></Loading>
+            <Success></Success>
+      </div>
+</div>

@@ -1,0 +1,26 @@
+<form
+      id="form_env"
+      class="form flex_column"
+>
+      {#each Object.entries(metadata_env) as [key, item]}
+      <div class="form_item flex flex_column">
+            <div class="flex justify_between">
+                  <span class="name">{item.name}</span>
+                  <span class="key">{key}</span>
+            </div>
+            <DynamicValue
+                  name="{key}"
+                  type="{item.value}"
+            ></DynamicValue>
+      </div>
+      {/each}
+
+      <div class="w_100 flex justify_center">
+            <button
+                  class="btn_next btn_action cursor_point"
+                  on:click="{next}"
+            >
+                  <i class="icon-chevron-right"></i>
+            </button>
+      </div>
+</form>

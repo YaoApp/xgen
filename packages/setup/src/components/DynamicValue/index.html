@@ -1,0 +1,79 @@
+<div class="value">
+      {#if type==='string'}
+      <input
+            class="w_100"
+            name="{parent?parent+'.'+name:name}"
+            type="text"
+            maxlength="60"
+            placeholder="请输入string类型的值"
+            required
+      >
+      {/if}
+
+      {#if type==='number'}
+      <input
+            class="w_100"
+            name="{parent?parent+'.'+name:name}"
+            type="number"
+            max="9999999"
+            placeholder="请输入number类型的值"
+            required
+      >
+      {/if}
+
+      {#if type==='boolean'}
+      <select
+            class="w_100"
+            name="{parent?parent+'.'+name:name}"
+            required
+      >
+            <option value="true">true</option>
+            <option value="false">false</option>
+      </select>
+      {/if}
+
+      {#if Array.isArray(type) && typeof type[0]==='string' }
+      <select
+            class="w_100"
+            name="{parent?parent+'.'+name:name}"
+            required
+      >
+            {#each type as item}
+            <option value="{item}">{item}</option>
+            {/each}
+      </select>
+      {/if}
+
+
+      {#if Array.isArray(type) && typeof type[0] === 'object'}
+      {#each Object.entries(type[0]) as [key, item]}
+      <div class="form_item inner flex flex_column">
+            <div class="flex justify_between">
+                  <span class="name">{item.name}</span>
+                  <span class="key">{key}</span>
+            </div>
+            <DynamicValue
+                  name="{key}"
+                  type="{item.value}"
+                  parent="{parent}"
+            ></DynamicValue>
+      </div>
+      {/each}
+      {/if}
+
+      {#if !Array.isArray(type) && typeof type === 'object' }
+      {#each Object.entries(type) as [key, item]}
+      <div class="form_item inner flex flex_column">
+            <div class="flex justify_between">
+                  <span class="name">{item.name}</span>
+                  <span class="key">{key}</span>
+            </div>
+            <DynamicValue
+                  name="{key}"
+                  type="{item.value}"
+                  parent="{parent?parent+'.'+Object.keys(type)[0]:Object.keys(type)[0]}"
+            ></DynamicValue>
+      </div>
+      {/each}
+      {/if}
+</div>
