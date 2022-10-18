@@ -28,7 +28,7 @@ const Index = (param: Key | Params, data_item: any) => {
 	} else {
 		return Object.keys(param).reduce((total: any, key: string) => {
 			if (param[key].indexOf(':') !== -1) {
-				total[key] = Index(key.replace(':', ''), data_item)
+				total[key] = Index(param[key].replace(':', ''), data_item)
 			} else {
 				total[key] = param[key]
 			}
