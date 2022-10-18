@@ -18,6 +18,7 @@ export interface ReqLogin {
 	email?: string
 	mobile?: string
 	is?: string
+	sid: string
 	password: string
 	captcha: {
 		id: string

@@ -139,6 +139,7 @@ export default class Model {
 				id: this.captcha.id,
 				code
 			},
+			sid: store.get('temp_sid'),
 			...(this.is ? { is: this.is } : {})
 		})
 	}

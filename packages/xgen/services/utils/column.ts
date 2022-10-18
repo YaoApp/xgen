@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe'
 
-import type { Common, FormType, Chart } from '@/types'
+import type { Common, FormType } from '@/types'
 
 type Item = { name: string }
 type Fields = { [key: string]: any }
