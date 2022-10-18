@@ -1,6 +1,6 @@
 export const api = {
-	save: 'http:localhost/save',
-	test: 'http:localhost/test'
+	check: '/api/__yao/app/check',
+	setup: '/api/__yao/app/setup'
 }
 
 export const metadata_env = {

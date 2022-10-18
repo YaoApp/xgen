@@ -32,15 +32,20 @@
       <div class="w_100 flex justify_between">
             <button
                   class="btn_test btn_action cursor_point flex justify_center align_center"
-                  on:click="{test}"
+                  on:click="{check}"
             >
                   <i class="icon-wifi mr_6"></i> 测试连接
             </button>
             <button
                   class="btn_save btn_action cursor_point"
-                  on:click="{save}"
+                  on:click="{setup}"
             >
                   <i class="icon-check"></i>
             </button>
       </div>
+
+
+      {#if info}
+      <div class="info">{info}</div>
+      {/if}
 </form>
