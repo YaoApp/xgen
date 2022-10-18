@@ -34,3 +34,4 @@ dist
 
 # svelte 
 .svelte-kit
+packages/setup/build
