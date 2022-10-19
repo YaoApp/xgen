@@ -6,7 +6,6 @@ import { Fragment, useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
 import { Filter, Page, PureTable, X } from '@/components'
-import { history } from '@umijs/max'
 
 import styles from './index.less'
 import Model from './model'
@@ -90,10 +89,11 @@ const Index = (props: IProps) => {
 					></X>
 				)}
 			</Fragment>
-            )
-            
+		)
+
 		const props_filter: IPropsFilter = {
 			model: x.model,
+			namespace: x.namespace.value,
 			columns: toJS(x.filter_columns),
 			actions: toJS(x.setting.filter?.actions),
 			onFinish,

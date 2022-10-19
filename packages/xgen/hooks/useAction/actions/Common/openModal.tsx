@@ -10,7 +10,7 @@ import type { OnAction } from '../../index'
 export default ({ namespace, primary, data_item, it }: OnAction) => {
 	const props_modal: IPropsModal = {
 		namespace,
-		id: data_item[primary],
+		id: data_item ? data_item[primary] : 0,
 		config: it.action['Common.openModal']!
 	}
 

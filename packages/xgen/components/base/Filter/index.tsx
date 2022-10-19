@@ -16,7 +16,7 @@ import type { IPropsFilter, IPropsActions } from './types'
 const { useForm } = Form
 
 const Index = (props: IPropsFilter) => {
-	const { model, columns, actions, isChart, onFinish, resetSearchParams } = props
+	const { model, columns, actions, namespace, isChart, onFinish, resetSearchParams } = props
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
 	const [form] = useForm()
@@ -31,6 +31,7 @@ const Index = (props: IPropsFilter) => {
 	}
 
 	const props_actions: IPropsActions = {
+		namespace,
 		actions
 	}
 

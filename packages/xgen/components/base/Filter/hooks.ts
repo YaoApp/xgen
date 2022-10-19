@@ -39,7 +39,7 @@ export const useCalcLayout = (columns: Array<Common.Column>, actions: IPropsFilt
 			return total
 		}, 0)
 
-		const setting_cols = actions ? actions_width : 0
+		const setting_cols = actions && actions_width ? actions_width : 0
 		const base: Array<Common.Column> = []
 		const more: Array<Common.Column> = []
 

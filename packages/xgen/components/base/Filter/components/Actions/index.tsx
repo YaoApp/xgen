@@ -1,4 +1,4 @@
-import { Button, Col } from 'antd'
+import { Button } from 'antd'
 import clsx from 'clsx'
 import { Fragment } from 'react'
 
@@ -8,7 +8,7 @@ import { Icon } from '@/widgets'
 import type { IPropsActions } from '../../types'
 
 const Index = (props: IPropsActions) => {
-	const { actions } = props
+	const { namespace, actions } = props
 	const onAction = useAction()
 
 	return (
@@ -23,7 +23,7 @@ const Index = (props: IPropsActions) => {
 					key={index}
 					onClick={() =>
 						onAction({
-							namespace: '',
+							namespace,
 							primary: '',
 							data_item: null,
 							it
