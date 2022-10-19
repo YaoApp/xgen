@@ -36,7 +36,8 @@ export declare namespace Chart {
 		fields: {
 			filter?: Common.Fields
 			chart: Fields
-		}
+            }
+            config?: Common.Config
 	}
 
 	interface Column extends Common.WideColumn, FiledDetail {}

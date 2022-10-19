@@ -93,8 +93,7 @@ const Index = () => {
 
 	const props_container: IPropsContainer = {
 		visible_nav: global.visible_nav,
-		visible_menu: global.visible_menu,
-		full: global.app_info?.optional?.layout?.full
+		visible_menu: global.visible_menu
 	}
 
 	return (

@@ -1,4 +1,8 @@
 export declare namespace Common {
+	interface Config {
+		full?: boolean
+	}
+
 	interface BaseColumn {
 		name: string
 		width?: number

@@ -29,7 +29,7 @@ export declare namespace App {
 		/** brand logo, default is YAO */
 		logo?: string
 		/** favicon, default is YAO */
-		favicon?: string
+            favicon?: string
 		/** login config */
 		login: {
 			/** Configure admin login setting */
@@ -57,10 +57,6 @@ export declare namespace App {
 			hideNotification?: boolean
 			/** Hide the navigation bar setting */
 			hideSetting?: boolean
-			/** global layout setting */
-			layout?: {
-				full?: boolean
-			}
 		}
 	}
 

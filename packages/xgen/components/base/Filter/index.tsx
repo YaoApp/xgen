@@ -24,6 +24,8 @@ const Index = (props: IPropsFilter) => {
 	const { display_more, opacity_more, visible_more, setVisibleMore } = useVisibleMore()
 	const { base, more, visible_btn_more } = useCalcLayout(columns, actions)
 
+	if (!columns.length) return null
+
 	const onReset = () => {
 		resetFields()
 		resetSearchParams()

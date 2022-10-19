@@ -9,6 +9,7 @@ import Left from './components/Left'
 import { usePageTitle } from './hooks'
 import styles from './index.less'
 
+import type { CSSProperties } from 'react'
 import type { IProps, IPropsLeft } from './types'
 
 const Index = (props: IProps) => {
@@ -19,7 +20,8 @@ const Index = (props: IProps) => {
 		title: props_title,
 		actions = [],
 		isChart,
-		customAction
+		customAction,
+		full
 	} = props
 	const global = useGlobal()
 	const menu = global.menu.slice()
@@ -37,8 +39,15 @@ const Index = (props: IProps) => {
 		visible_menu,
 		title,
 		toggleMenu: useMemoizedFn(global.toggleMenu)
-      }
-      
+	}
+
+	const wrap_style = full
+		? ({
+				padding: '0 60px',
+				maxWidth: '100%'
+		  } as CSSProperties)
+		: {}
+
 	return (
 		<div
 			className={clsx([
@@ -49,7 +58,11 @@ const Index = (props: IProps) => {
 			])}
 			style={style}
 		>
-			<div className='page_content_wrap flex flex_column'>
+			<div
+				id='page_content_wrap'
+				className='page_content_wrap flex flex_column transition_normal'
+				style={wrap_style}
+			>
 				<header
 					className={clsx(
 						'header w_100 border_box flex justify_between align_center',

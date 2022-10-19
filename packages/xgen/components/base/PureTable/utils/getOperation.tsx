@@ -13,7 +13,7 @@ export default (
 	const props_actions: IPropsActions = {
 		namespace,
 		primary,
-		actions: operation.actions,
+		actions: operation.actions || [],
 		data_item
 	}
 

@@ -47,7 +47,7 @@ export interface IPropsItems {
 }
 
 export interface IPropsOptions {
-	theme: GlobalModel['theme']
+      theme: GlobalModel[ 'theme' ]
 	avatar: GlobalModel['avatar']
 	app_info: GlobalModel['app_info']
 	user: GlobalModel['user']
@@ -68,7 +68,6 @@ export interface IPropsMenu {
 export interface IPropsContainer {
 	visible_nav: GlobalModel['visible_nav']
 	visible_menu: GlobalModel['visible_menu']
-	full?: DeepRequired<GlobalModel['app_info']>['optional']['layout']['full']
 }
 
 export interface IPropsSettingModalContent {

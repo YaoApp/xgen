@@ -61,6 +61,7 @@ export declare namespace TableType {
 			filter: Common.Fields
 			table: Common.Fields
 		}
+		config?: Common.Config
 	}
 
 	interface SearchParams {

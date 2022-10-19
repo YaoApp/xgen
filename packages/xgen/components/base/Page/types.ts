@@ -1,5 +1,5 @@
 import type { GlobalModel } from '@/context/app'
-import type { Action } from '@/types'
+import type { Action, Common } from '@/types'
 import type { ReactNode } from 'react'
 
 export interface IProps {
@@ -8,8 +8,9 @@ export interface IProps {
 	style?: React.CSSProperties
 	title?: string
 	actions?: Array<Action.Props>
-      isChart?: boolean
+	isChart?: boolean
 	customAction?: ReactNode
+	full?: Common.Config['full']
 }
 
 export interface IPropsLeft {

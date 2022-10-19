@@ -13,7 +13,7 @@ export interface IPropsFilter {
 }
 
 export interface IPropsActions{
-	namespace: Namespace['value']
+	namespace?: Namespace['value']
       actions: TableType.Setting[ 'filter' ][ 'actions' ]
 }
 

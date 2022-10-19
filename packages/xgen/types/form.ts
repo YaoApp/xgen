@@ -44,7 +44,7 @@ export declare namespace FormType {
 		fields: {
 			form: Common.Fields
 		}
-		config: {
+		config?: Common.Config & {
 			showAnchor?: boolean
 		}
 	}

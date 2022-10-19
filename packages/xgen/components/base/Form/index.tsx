@@ -77,13 +77,13 @@ const Index = (props: Component.FormComponent) => {
 
 	if (parent === 'Page') {
 		return (
-			<Page className={clsx([styles._local, 'w_100'])} title={title}>
+			<Page className={clsx([styles._local, 'w_100'])} title={title} full={x.setting?.config?.full}>
 				<div className='flex relative'>
 					<div className='w_100 flex flex_column'>
 						<Breadcrumb {...props_breadcrumb}></Breadcrumb>
 						<PureForm {...props_form}></PureForm>
 					</div>
-					{x.setting.config?.showAnchor && (
+					{x.setting?.config?.showAnchor && (
 						<div className='anchor_wrap absolute top_0'>
 							<Anchor {...props_anchor}></Anchor>
 						</div>

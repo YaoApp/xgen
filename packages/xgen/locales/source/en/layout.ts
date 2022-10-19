@@ -1,10 +1,10 @@
 export default {
 	layout: {
 		not_found: 'Not Found',
-            logout: 'Log out',
-            menu: {
-                  search_placeholder:'Search in menu'
-            },
+		logout: 'Log out',
+		menu: {
+			search_placeholder: 'Search in menu'
+		},
 		avatar: {
 			reset: 'Re-random avatar'
 		},
@@ -21,6 +21,9 @@ export default {
 			},
 			theme: {
 				title: 'Theme'
+			},
+			full: {
+				title: 'Layout'
 			}
 		}
 	}

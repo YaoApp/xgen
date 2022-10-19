@@ -101,7 +101,11 @@ const Index = (props: IProps) => {
 		}
 
 		return (
-			<Page className={clsx([styles._local, 'w_100'])} customAction={customAction}>
+			<Page
+				className={clsx([styles._local, 'w_100'])}
+				customAction={customAction}
+				full={x.setting?.config?.full}
+			>
 				<Filter {...props_filter}></Filter>
 				<PureTable {...props_table}></PureTable>
 			</Page>

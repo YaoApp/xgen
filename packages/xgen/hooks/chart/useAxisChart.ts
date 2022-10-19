@@ -95,8 +95,19 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 
 		chart.setOption(option)
 
+		const observer = new MutationObserver(() => setTimeout(() => chart.resize(), 300))
+
+		observer.observe(document.getElementById('page_content_wrap')!, {
+			attributes: true
+		})
+
+		setTimeout(() => {
+			chart.resize({ animation: { duration: 300 } })
+		}, 300)
+
 		return () => {
 			chart.dispose()
+			observer.disconnect()
 		}
-	}, [ref.current, props, global.theme])
+	}, [ref.current, props, global.theme, global.visible_menu])
 }

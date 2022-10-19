@@ -23,7 +23,7 @@ const Index = (props: IPropsActions) => {
 					key={index}
 					onClick={() =>
 						onAction({
-							namespace,
+							namespace: namespace ?? '',
 							primary: '',
 							data_item: null,
 							it

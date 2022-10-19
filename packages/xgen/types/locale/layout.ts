@@ -21,5 +21,8 @@ export default interface Layout {
 		theme: {
 			title: string
 		}
+		full: {
+			title: string
+		}
 	}
 }
