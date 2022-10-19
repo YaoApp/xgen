@@ -41,6 +41,8 @@ export default class GlobalModel {
 	async getAppInfo() {
 		const { res, err } = await this.service.getAppInfo<App.Info>()
 
+		console.log(err)
+
 		if (err) return
 
 		this.app_info = res

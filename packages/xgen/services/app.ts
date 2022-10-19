@@ -10,11 +10,11 @@ import type { Response } from '@/types'
 export default class Index {
 	@catchError()
 	getAppInfo<Res>() {
-		// const sid = window.crypto.randomUUID()
-		// const lang = window.navigator.language.toLowerCase()
-		// const time = new Date().toLocaleString().replaceAll('/', '-')
+		const sid = window.crypto.randomUUID()
+		const lang = window.navigator.language.toLowerCase()
+		const time = new Date().toLocaleString().replaceAll('/', '-')
 
-		// store.set('temp_sid', sid)
+		store.set('temp_sid', sid)
 
 		return axios.post<{}, Response<Res>>(`/api/__yao/app/setting`, {
 			sid: '',

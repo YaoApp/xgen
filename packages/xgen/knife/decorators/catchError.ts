@@ -7,13 +7,13 @@ export default () => {
 
 			try {
 				res = await fn.apply(this, args)
-			} catch (error) {
-				err = error.response
+			} catch (error: any) {
+				err = error.response || error
 			}
 
 			return { res, err }
-            }
-            
-            return descriptor
+		}
+
+		return descriptor
 	}
 }
