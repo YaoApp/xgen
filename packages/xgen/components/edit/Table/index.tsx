@@ -11,10 +11,11 @@ import type { Component } from '@/types'
 interface IProps extends Component.PropsEditComponent {
 	model: IPropsTable['model']
 	query: IPropsTable['query']
+	itemProps?: { label?: string }
 }
 
 const Index = (props: IProps) => {
-	const { __data_item, __name, model, query } = props
+	const { __data_item, __name, itemProps, model, query } = props
 
 	if (!Object.keys(__data_item).length) return null
 
@@ -27,10 +28,17 @@ const Index = (props: IProps) => {
 
 	return (
 		<div className='w_100 flex flex_column'>
-			<div className={clsx([styles.header, 'w_100 flex justify_between align_center'])}>
-				<span className='title'>{__name}</span>
-				<div className='actions_wrap'></div>
-			</div>
+			{itemProps?.label !== '' && (
+				<div
+					className={clsx([
+						styles.header,
+						'w_100 flex justify_between align_center'
+					])}
+				>
+					<span className='title'>{__name}</span>
+					<div className='actions_wrap'></div>
+				</div>
+			)}
 			<Table {...props_table}></Table>
 		</div>
 	)
