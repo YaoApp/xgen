@@ -1,6 +1,5 @@
 import { Tag } from 'antd'
 import clsx from 'clsx'
-import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'

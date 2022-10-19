@@ -4,7 +4,7 @@ import type { Action, Common } from '@/types'
 export declare namespace TableType {
 	interface Filter {
 		columns: Array<Common.WideColumn>
-		actions: Array<
+		actions?: Array<
 			{
 				action: Pick<
 					Action.Props['action'],
@@ -33,7 +33,7 @@ export declare namespace TableType {
 				operation: Array<any>
 			}
 		}
-		actions: Array<{
+		actions?: Array<{
 			title: string
 			icon: string
 			props: {

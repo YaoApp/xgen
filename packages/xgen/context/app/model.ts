@@ -43,12 +43,11 @@ export default class GlobalModel {
 
 		if (err) return
 
-		this.app_info = res || {}
+		this.app_info = res
 
-		console.log('getAppInfo DEBUG', res)
-		window.$app.api_prefix = res?.apiPrefix || '__yao'
+		window.$app.api_prefix = res.apiPrefix || '__yao'
 
-		store.set('__mode', res?.mode)
+		store.set('__mode', res?.mode || 'production')
 		store.set('token_storage', res?.token?.storage || 'sessionStorage')
 	}
 
