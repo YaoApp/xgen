@@ -45,10 +45,11 @@ export default class GlobalModel {
 
 		this.app_info = res || {}
 
-		window.$app.api_prefix = res.apiPrefix || '__yao'
+		console.log('getAppInfo DEBUG', res)
+		window.$app.api_prefix = res?.apiPrefix || '__yao'
 
-		store.set('__mode', res.mode)
-		store.set('token_storage', res.token?.storage || 'sessionStorage')
+		store.set('__mode', res?.mode)
+		store.set('token_storage', res?.token?.storage || 'sessionStorage')
 	}
 
 	async getUserMenu() {
