@@ -43,7 +43,7 @@ export default class GlobalModel {
 
 		if (err) return
 
-		this.app_info = res
+		this.app_info = res || {}
 
 		window.$app.api_prefix = res.apiPrefix || '__yao'
 
