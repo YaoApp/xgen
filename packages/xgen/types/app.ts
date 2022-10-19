@@ -31,10 +31,10 @@ export declare namespace App {
 		/** favicon, default is YAO */
 		favicon?: string
 		/** login config */
-            login: {
-                  /** Configure admin login setting */
+		login: {
+			/** Configure admin login setting */
 			admin: Role
-                  /** Configure user login setting */
+			/** Configure user login setting */
 			user?: Role
 			/** Configure the jump page after administrator and user login */
 			entry: {
@@ -57,6 +57,10 @@ export declare namespace App {
 			hideNotification?: boolean
 			/** Hide the navigation bar setting */
 			hideSetting?: boolean
+			/** global layout setting */
+			layout?: {
+				full?: boolean
+			}
 		}
 	}
 

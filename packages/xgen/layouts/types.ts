@@ -1,5 +1,6 @@
 import type { Locale, App } from '@/types'
 import type { GlobalModel } from '@/context/app'
+import type { DeepRequired } from '@/knife'
 
 export interface IPropsHelmet {
 	theme: GlobalModel['theme']
@@ -67,6 +68,7 @@ export interface IPropsMenu {
 export interface IPropsContainer {
 	visible_nav: GlobalModel['visible_nav']
 	visible_menu: GlobalModel['visible_menu']
+	full?: DeepRequired<GlobalModel['app_info']>['optional']['layout']['full']
 }
 
 export interface IPropsSettingModalContent {

@@ -55,8 +55,8 @@ const Index = () => {
 	const props_helmet: IPropsHelmet = {
 		theme: global.theme,
 		app_info: global.app_info
-      }
-      
+	}
+
 	const props_Login_wrapper: IPropsLoginWrapper = {
 		logo: global.app_info?.logo,
 		admin: global.app_info?.login?.admin,
@@ -93,7 +93,8 @@ const Index = () => {
 
 	const props_container: IPropsContainer = {
 		visible_nav: global.visible_nav,
-		visible_menu: global.visible_menu
+		visible_menu: global.visible_menu,
+		full: global.app_info?.optional?.layout?.full
 	}
 
 	return (
