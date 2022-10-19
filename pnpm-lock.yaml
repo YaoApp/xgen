@@ -67,6 +67,7 @@ importers:
       mobx-react-lite: ^3.4.0
       moment: ^2.29.4
       mustache: ^4.2.0
+      nanoid: ^4.0.0
       postcss: ^8.4.16
       query-string: ^7.1.1
       react-color-palette: ^6.2.0
@@ -100,6 +101,7 @@ importers:
       mobx-react-lite: 3.4.0_oa442kpwg6ubdqgpoaq5kfkuz4
       moment: 2.29.4
       mustache: 4.2.0
+      nanoid: 4.0.0
       query-string: 7.1.1
       react-color-palette: 6.2.0_react@16.14.0
       react-countup: 6.3.1_react@16.14.0
@@ -6765,6 +6767,12 @@ packages:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /nanoid/4.0.0:
+    resolution: {integrity: sha512-IgBP8piMxe/gf73RTQx7hmnhwz0aaEXYakvqZyE302IXW3HyVNhdNGC+O2MwMAVhLEnvXlvKtGbtJf6wvHihCg==}
+    engines: {node: ^14 || ^16 || >=18}
+    hasBin: true
+    dev: false
 
   /natural-compare/1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}

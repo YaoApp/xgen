@@ -41,16 +41,14 @@ export default class GlobalModel {
 	async getAppInfo() {
 		const { res, err } = await this.service.getAppInfo<App.Info>()
 
-		console.log(err)
-
 		if (err) return
 
 		this.app_info = res
 
 		window.$app.api_prefix = res.apiPrefix || '__yao'
 
-		store.set('__mode', res?.mode || 'production')
-		store.set('token_storage', res?.token?.storage || 'sessionStorage')
+		store.set('__mode', res.mode || 'production')
+		store.set('token_storage', res.token?.storage || 'sessionStorage')
 	}
 
 	async getUserMenu() {

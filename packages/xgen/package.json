@@ -37,6 +37,7 @@
             "mobx-react-lite": "^3.4.0",
             "moment": "^2.29.4",
             "mustache": "^4.2.0",
+            "nanoid": "^4.0.0",
             "query-string": "^7.1.1",
             "react-color-palette": "^6.2.0",
             "react-countup": "^6.3.1",
