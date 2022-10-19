@@ -37,8 +37,8 @@ const Index = (props: IProps) => {
 		visible_menu,
 		title,
 		toggleMenu: useMemoizedFn(global.toggleMenu)
-	}
-
+      }
+      
 	return (
 		<div
 			className={clsx([

@@ -90,8 +90,8 @@ const Index = (props: IProps) => {
 					></X>
 				)}
 			</Fragment>
-		)
-
+            )
+            
 		const props_filter: IPropsFilter = {
 			model: x.model,
 			columns: toJS(x.filter_columns),

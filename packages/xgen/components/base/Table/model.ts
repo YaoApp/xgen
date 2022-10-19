@@ -49,24 +49,26 @@ export default class Model {
 		this.rendered = true
 		this.setting = res
 
-		if (res.header.preset?.batch?.columns) {
+		if (res.header.preset?.batch?.columns && res.header.preset?.batch?.columns?.length) {
 			this.batch_columns = this.column_utils.reduce(
 				res.header.preset.batch.columns,
 				res.fields.table
 			)
 		}
 
-		if (res.filter?.columns) {
+		if (res.filter?.columns && res.filter?.columns?.length) {
 			this.filter_columns = this.column_utils.reduce(
 				res.filter.columns,
 				res.fields.filter
 			)
 		}
 
-		this.table_columns = this.column_utils.reduce(res.table.columns, res.fields.table)
+		if (res.table.columns && res.table.columns?.length) {
+			this.table_columns = this.column_utils.reduce(res.table.columns, res.fields.table)
+		}
 	}
 
-      async search(params?: TableType.SearchParams) {
+	async search(params?: TableType.SearchParams) {
 		if (this.parent === 'Page' && this.rendered === false) this.global.loading = true
 
 		const hideLoading = message.loading(this.global.locale_messages.messages.table.search)
@@ -175,7 +177,7 @@ export default class Model {
 		query: IProps['query'],
 		data: IProps['data'],
 		namespace: IProps['namespace']
-      ) {
+	) {
 		if (!namespace) {
 			if (parent === 'Page' || parent === 'Modal') {
 				this.global.stack.push(`Table-${parent}-${model}`)
@@ -193,8 +195,8 @@ export default class Model {
 			this.namespace.paths = [namespace]
 		}
 
-            if (query) this.search_params = { ...query }
-            
+		if (query) this.search_params = { ...query }
+
 		this.rendered = false
 		this.parent = parent
 		this.model = model
