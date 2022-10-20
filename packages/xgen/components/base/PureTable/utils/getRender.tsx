@@ -12,19 +12,39 @@ export default (
 	field_detail: Common.Column,
 	data_item: any
 ) => {
+	let form_value_view = null
+	let form_value_edit = null
+
 	const form_value = getDeepValue(field_detail.bind, data_item)
 
-	const props_common: IPropsComponentCommon = {
+	if (field_detail?.view?.bind) {
+		form_value_view = getDeepValue(field_detail.view.bind, data_item)
+	}
+
+	if (field_detail?.edit?.bind) {
+		form_value_edit = getDeepValue(field_detail.edit.bind, data_item)
+	}
+
+	const props_common: Omit<IPropsComponentCommon, 'form_value'> = {
 		namespace,
 		primary,
 		field_detail,
-		data_item,
-		form_value
+		data_item
 	}
 
 	if (field_detail.edit?.type) {
-		return <EditPopover {...props_common}></EditPopover>
+		return (
+			<EditPopover
+				{...props_common}
+				form_value={form_value_edit ?? form_value}
+			></EditPopover>
+		)
 	} else {
-		return <ViewContent {...props_common}></ViewContent>
+		return (
+			<ViewContent
+				{...props_common}
+				form_value={form_value_view ?? form_value}
+			></ViewContent>
+		)
 	}
 }

@@ -7,8 +7,8 @@
       "scripts": {
             "dev": "turbo run dev",
             "build": "turbo run build",
-            "dev:app": "turbo run dev --filter=xgen",
-            "build:app": "turbo run build --filter=xgen"
+            "dev:xgen": "turbo run dev --filter=xgen",
+            "build:xgen": "turbo run build --filter=xgen"
       },
       "gitHooks": {
             "pre-commit": "lint-staged --allow-empty"
