@@ -1,5 +1,6 @@
 import { historyBack, historyPush, openModal } from './actions/Common'
 import { delete as tableDelete, save } from './actions/Table'
+import { Service, Studio } from './actions/Yao'
 
 import type { Component, Action } from '@/types'
 
@@ -29,6 +30,14 @@ const onAction = ({ namespace, primary, data_item, it }: OnAction) => {
 
 	if (it.action?.['Table.delete']) {
 		tableDelete({ namespace, primary, data_item, it })
+	}
+
+	if (Object.keys(it.action)[0].startsWith('Service.')) {
+		Service({ it })
+      }
+      
+      if (Object.keys(it.action)[0].startsWith('Studio.')) {
+		Studio({ it })
 	}
 }
 

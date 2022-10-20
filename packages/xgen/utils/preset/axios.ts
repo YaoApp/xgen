@@ -2,9 +2,9 @@ import { message } from 'antd'
 import axios from 'axios'
 import store from 'store2'
 
+import { getToken } from '@/knife'
 import { getPath } from '@/utils'
 import { history } from '@umijs/max'
-import { getToken } from '@/knife'
 
 axios.interceptors.request.use((config) => {
 	return {

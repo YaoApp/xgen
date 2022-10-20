@@ -98,8 +98,12 @@ export default class Model {
 
 		if (this.global.app_info.token?.storage === 'localStorage') {
 			store.local.set('token', res.token)
+
+			if (res.studio) store.local.set('studio', res.studio)
 		} else {
 			store.session.set('token', res.token)
+
+			if (res.studio) store.session.set('studio', res.studio)
 		}
 
 		store.set('user', res.user)
