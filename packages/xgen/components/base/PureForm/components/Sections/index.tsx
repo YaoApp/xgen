@@ -1,5 +1,7 @@
 import clsx from 'clsx'
 
+import { getTemplateValue } from '@/utils'
+
 import Section from '../Section'
 import styles from './index.less'
 
@@ -17,7 +19,7 @@ const Index = (props: IPropsSections) => {
 
 	return (
 		<div className={clsx([styles._local, 'w_100 border_box flex flex_column'])}>
-			{sections.map((item, index) => (
+			{getTemplateValue(sections, data).map((item, index) => (
 				<Section {...props_section} item={item} key={index}></Section>
 			))}
 		</div>

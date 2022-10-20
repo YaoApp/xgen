@@ -1,4 +1,5 @@
 import { getDeepValue } from '@/knife'
+import { getTemplateValue } from '@/utils'
 
 import EditPopover from '../components/EditPopover'
 import ViewContent from '../components/ViewContent'
@@ -28,7 +29,7 @@ export default (
 	const props_common: Omit<IPropsComponentCommon, 'form_value'> = {
 		namespace,
 		primary,
-		field_detail,
+		field_detail: getTemplateValue(field_detail, data_item),
 		data_item
 	}
 

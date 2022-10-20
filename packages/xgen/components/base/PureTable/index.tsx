@@ -24,7 +24,7 @@ const Index = (props: IPropsPureTable) => {
 		setBatchSelected
 	} = props
 	const locale = getLocale()
-	const in_form = parent === 'Form'
+      const in_form = parent === 'Form'
 
 	const list_columns = useColumns(namespace, primary, columns, table_props, operation)
 

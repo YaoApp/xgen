@@ -23,7 +23,7 @@ const Index = (props: IPropsPureForm) => {
 	const disabled = type === 'view'
 
 	useLayoutEffect(() => {
-            if (id === 0) return resetFields()
+		if (id === 0) return resetFields()
 
 		setFieldsValue(data)
 	}, [id, data])
@@ -42,8 +42,8 @@ const Index = (props: IPropsPureForm) => {
 
 	const props_sections: IPropsSections = {
 		namespace,
-            primary,
-            type,
+		primary,
+		type,
 		data,
 		sections
 	}
@@ -64,8 +64,8 @@ const Index = (props: IPropsPureForm) => {
 				form={form}
 				name={namespace}
 				onFinish={onSave}
-                        disabled={ disabled }
-                        layout='vertical'
+				disabled={disabled}
+				layout='vertical'
 			>
 				<div className='form_wrap w_100 border_box'>
 					<Sections {...props_sections}></Sections>
