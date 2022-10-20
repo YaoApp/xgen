@@ -2,6 +2,7 @@ import { Popover } from 'antd'
 import clsx from 'clsx'
 
 import { useAction, useActionDisabled, useActionStyle } from '@/hooks'
+import { getTemplateValue } from '@/utils'
 import { Icon } from '@/widgets'
 
 import styles from './index.less'
@@ -16,7 +17,7 @@ const Index = (props: IPropsActions) => {
 
 	const Content = (
 		<div className={clsx([styles.table_option_items, 'flex flex_column'])}>
-			{actions.map((it, index) => (
+			{getTemplateValue(actions, data_item).map((it, index) => (
 				<div
 					className={clsx([
 						'table_option_item flex align_center cursor_point',

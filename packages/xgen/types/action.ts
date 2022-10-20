@@ -27,6 +27,17 @@ export declare namespace Action {
 			'Common.historyBack'?: {}
 			'Table.save'?: Global.StringObject
 			'Table.delete'?: {}
+                  'Yao.service'?: {
+                        name: string
+                        method: string
+                        args:Array<any>
+                  },
+                  'Yao.studio'?: {
+                        host:string
+                        name: string
+                        method: string
+                        args:Array<any>
+                  }
 		}
 		style?: 'danger' | 'success'
 		disabled?: {

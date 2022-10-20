@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import { useState } from 'react'
 
 import { useAction, useActionDisabled, useActionStyle } from '@/hooks'
+import { getTemplateValue } from '@/utils'
 import { Icon } from '@/widgets'
 
 import styles from './index.less'
@@ -29,7 +30,7 @@ const Index = (props: IPropsActions) => {
 			>
 				{visible_custom_actions && (
 					<div className='custom_actions flex align_center'>
-						{operation.actions.map((it, index) => (
+						{getTemplateValue(operation.actions, data).map((it, index) => (
 							<Button
 								className={clsx([
 									'btn_action border_box flex justify_center align_center clickable',

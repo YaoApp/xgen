@@ -2,6 +2,7 @@ import { Tooltip } from 'antd'
 import clsx from 'clsx'
 
 import { useAction, useActionDisabled, useActionStyle } from '@/hooks'
+import { getTemplateValue } from '@/utils'
 import { Icon } from '@/widgets'
 
 import styles from './index.less'
@@ -16,7 +17,7 @@ const Index = (props: IPropsActions) => {
 
 	return (
 		<div className={clsx([styles._local, 'flex justify_end'])}>
-			{actions.map((it, index) => (
+			{getTemplateValue(actions, data_item).map((it, index) => (
 				<Tooltip
 					title={it.title}
 					key={index}

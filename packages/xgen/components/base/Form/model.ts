@@ -38,8 +38,8 @@ export default class Model {
 		if (err) return
 
 		this.rendered = true
-		this.setting = res
-		this.sections = this.column_utils.reduceSections(res.form.sections, res.fields.form)
+            this.setting = res
+            this.sections = this.column_utils.reduceSections(res.form.sections, res.fields.form)
 	}
 
 	async find() {

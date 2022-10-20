@@ -23,7 +23,7 @@ const Index = (props: IPropsPureForm) => {
 	const disabled = type === 'view'
 
 	useLayoutEffect(() => {
-		if (id === 0) return resetFields()
+            if (id === 0) return resetFields()
 
 		setFieldsValue(data)
 	}, [id, data])
