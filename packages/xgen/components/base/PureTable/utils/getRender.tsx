@@ -26,7 +26,7 @@ export default (
 		form_value_edit = getDeepValue(field_detail.edit.bind, data_item)
 	}
 
-	const props_common: Omit<IPropsComponentCommon, 'form_value'> = {
+	const props_common: Omit<IPropsComponentCommon, 'form_value' | 'view_value'> = {
 		namespace,
 		primary,
 		field_detail: getTemplateValue(field_detail, data_item),
@@ -37,6 +37,7 @@ export default (
 		return (
 			<EditPopover
 				{...props_common}
+				view_value={form_value_view}
 				form_value={form_value_edit ?? form_value}
 			></EditPopover>
 		)
@@ -44,7 +45,8 @@ export default (
 		return (
 			<ViewContent
 				{...props_common}
-				form_value={form_value_view ?? form_value}
+				view_value={form_value_view}
+				form_value={form_value_edit ?? form_value}
 			></ViewContent>
 		)
 	}

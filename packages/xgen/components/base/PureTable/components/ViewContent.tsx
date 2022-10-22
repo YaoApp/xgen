@@ -7,7 +7,7 @@ import { getText } from '../utils'
 import type { IPropsComponentCommon } from '../types'
 
 const Index = (props: IPropsComponentCommon) => {
-	const { namespace, primary, field_detail, data_item, form_value } = props
+	const { namespace, primary, field_detail, data_item, form_value, view_value } = props
 	const view_text = getText(field_detail, data_item)
 
 	if (!field_detail.view?.type) return <div className='line_clamp_2'>{view_text || '-'}</div>
@@ -18,7 +18,7 @@ const Index = (props: IPropsComponentCommon) => {
 		__primary: primary,
 		__bind: field_detail.bind,
 		__name: field_detail.name,
-		__value: toJS(form_value),
+		__value: toJS(view_value ?? form_value),
 		__data_item: toJS(data_item)
 	}
 

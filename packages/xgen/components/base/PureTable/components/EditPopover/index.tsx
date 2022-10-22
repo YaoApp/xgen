@@ -15,7 +15,7 @@ import type { IPropsComponentCommon } from '../../types'
 import type { Component } from '@/types'
 
 const Index = (props: IPropsComponentCommon) => {
-	const { namespace, primary, field_detail, data_item, form_value } = props
+	const { namespace, primary, field_detail, data_item, form_value, view_value } = props
 	const edit_type = field_detail.edit.type
 
 	const props_edit_component: Component.PropsEditComponent = {
@@ -58,7 +58,7 @@ const Index = (props: IPropsComponentCommon) => {
 	const view_content = (
 		<div className='edit_text line_clamp_2'>
 			<ViewContent
-				{...{ namespace, primary, field_detail, data_item, form_value }}
+				{...{ namespace, primary, field_detail, data_item, form_value, view_value }}
 			></ViewContent>
 		</div>
 	)
