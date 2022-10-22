@@ -17,7 +17,7 @@ const Index = (props: IPropsActions) => {
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled(data)
 	const onAction = useAction()
-	const visible_custom_actions = id !== 0 && type === 'edit' && operation.actions?.length
+	const visible_custom_actions = id !== 0 && type === 'edit' && operation?.actions?.length
 
 	return (
 		<Affix offsetTop={11} style={{ zIndex: 101 }} onChange={(v) => setStick(v)}>
@@ -30,7 +30,7 @@ const Index = (props: IPropsActions) => {
 			>
 				{visible_custom_actions && (
 					<div className='custom_actions flex align_center'>
-						{getTemplateValue(operation.actions, data).map((it, index) => (
+						{getTemplateValue(operation?.actions, data).map((it, index) => (
 							<Button
 								className={clsx([
 									'btn_action border_box flex justify_center align_center clickable',
@@ -53,7 +53,7 @@ const Index = (props: IPropsActions) => {
 						))}
 					</div>
 				)}
-				{operation.preset && (
+				{operation?.preset && (
 					<div className='preset_actions flex'>
 						<Button
 							className='btn_action btn_preset'

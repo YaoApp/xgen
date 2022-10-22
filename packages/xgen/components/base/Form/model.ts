@@ -38,8 +38,11 @@ export default class Model {
 		if (err) return
 
 		this.rendered = true
-            this.setting = res
-            this.sections = this.column_utils.reduceSections(res.form.sections, res.fields.form)
+		this.setting = res
+		this.sections = this.column_utils.reduceSections(
+			res.form.sections || [],
+			res.fields.form
+		)
 	}
 
 	async find() {
@@ -111,7 +114,7 @@ export default class Model {
 	) {
 		this.global.stack.push(`Form-${parent}-${model}`)
 
-            this.namespace.paths = toJS(this.global.stack.paths)
+		this.namespace.paths = toJS(this.global.stack.paths)
 		this.rendered = false
 		this.parent = parent
 		this.model = model
