@@ -31,8 +31,6 @@ export interface IPropsComponentCommon {
 	primary: Model['setting']['primary']
 	field_detail: Common.Column
 	data_item: any
-	form_value: any
-	view_value: any
 }
 
 export interface IPropsActions {

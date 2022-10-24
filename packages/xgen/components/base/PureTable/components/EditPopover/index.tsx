@@ -1,10 +1,10 @@
 import { Button, Form, Popover } from 'antd'
 import clsx from 'clsx'
-import { toJS } from 'mobx'
+import { useMemo } from 'react'
 
 import { X } from '@/components'
+import { getDeepValue, hidePopover } from '@/knife'
 import { CheckOutlined } from '@ant-design/icons'
-import { hidePopover } from '@/knife'
 
 import ViewContent from '../ViewContent'
 import getPlacement from './getPlacement'
@@ -15,17 +15,31 @@ import type { IPropsComponentCommon } from '../../types'
 import type { Component } from '@/types'
 
 const Index = (props: IPropsComponentCommon) => {
-	const { namespace, primary, field_detail, data_item, form_value, view_value } = props
-	const edit_type = field_detail.edit.type
+	const { namespace, primary, field_detail, data_item } = props
+      const edit_type = field_detail.edit.type
+
+	const { form_bind, form_value } = useMemo(
+		() =>
+			field_detail?.edit?.bind
+				? {
+						form_bind: field_detail.view.bind,
+						form_value: getDeepValue(field_detail.edit.bind, data_item)
+				  }
+				: {
+						form_bind: field_detail.bind,
+						form_value: getDeepValue(field_detail.bind, data_item)
+				  },
+		[field_detail, data_item]
+	)
 
 	const props_edit_component: Component.PropsEditComponent = {
-		...toJS(field_detail.edit.props),
+		...field_detail.edit.props,
 		__namespace: namespace,
 		__primary: primary,
-		__bind: field_detail.bind,
+		__bind: form_bind,
 		__name: field_detail.name,
-		__data_item: toJS(data_item),
-		value: toJS(form_value),
+		__data_item: data_item,
+		value: form_value,
 		style: { width: getWidth(field_detail.edit.type) }
 	}
 
@@ -41,8 +55,8 @@ const Index = (props: IPropsComponentCommon) => {
 	const edit_content = (
 		<Form
 			className='flex justify_between'
-			name={`form_table_td_${field_detail.bind}`}
-			initialValues={{ [field_detail.bind]: form_value }}
+			name={`form_table_td_${form_bind}`}
+			initialValues={{ [form_bind!]: form_value }}
 			onFinish={onFinish}
 		>
 			<X type='edit' name={field_detail.edit.type} props={props_edit_component}></X>
@@ -57,9 +71,7 @@ const Index = (props: IPropsComponentCommon) => {
 
 	const view_content = (
 		<div className='edit_text line_clamp_2'>
-			<ViewContent
-				{...{ namespace, primary, field_detail, data_item, form_value, view_value }}
-			></ViewContent>
+			<ViewContent {...{ namespace, primary, field_detail, data_item }}></ViewContent>
 		</div>
 	)
 

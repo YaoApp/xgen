@@ -5,7 +5,7 @@ import {
 } from './build/config'
 
 export default defineConfig({
-	mfsu: { esbuild: true },
+	mfsu: { esbuild: true, strategy: 'normal' },
 	monorepoRedirect: { srcDir: ['./'] },
 	npmClient: 'pnpm',
 	base,
@@ -19,5 +19,5 @@ export default defineConfig({
 	// @ts-ignore
 	chainWebpack,
 	conventionRoutes,
-	define: { $runtime: { BASE: process.env.BASE} }
+	define: { $runtime: { BASE: process.env.BASE } }
 })

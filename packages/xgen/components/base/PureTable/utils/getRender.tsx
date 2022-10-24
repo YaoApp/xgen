@@ -1,4 +1,3 @@
-import { getDeepValue } from '@/knife'
 import { getTemplateValue } from '@/utils'
 
 import EditPopover from '../components/EditPopover'
@@ -13,41 +12,16 @@ export default (
 	field_detail: Common.Column,
 	data_item: any
 ) => {
-	let form_value_view = null
-	let form_value_edit = null
-
-	const form_value = getDeepValue(field_detail.bind, data_item)
-
-	if (field_detail?.view?.bind) {
-		form_value_view = getDeepValue(field_detail.view.bind, data_item)
-	}
-
-	if (field_detail?.edit?.bind) {
-		form_value_edit = getDeepValue(field_detail.edit.bind, data_item)
-	}
-
-	const props_common: Omit<IPropsComponentCommon, 'form_value' | 'view_value'> = {
+	const props_common: IPropsComponentCommon = {
 		namespace,
 		primary,
 		field_detail: getTemplateValue(field_detail, data_item),
-		data_item
+		data_item: data_item
 	}
 
 	if (field_detail.edit?.type) {
-		return (
-			<EditPopover
-				{...props_common}
-				view_value={form_value_view}
-				form_value={form_value_edit ?? form_value}
-			></EditPopover>
-		)
+		return <EditPopover {...props_common}></EditPopover>
 	} else {
-		return (
-			<ViewContent
-				{...props_common}
-				view_value={form_value_view}
-				form_value={form_value_edit ?? form_value}
-			></ViewContent>
-		)
+		return <ViewContent {...props_common}></ViewContent>
 	}
 }
