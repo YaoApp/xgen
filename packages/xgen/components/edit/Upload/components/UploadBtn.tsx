@@ -20,7 +20,7 @@ const Index = (props: IPropsUploadBtn) => {
 				filetype === 'file' && maxCount === 1 && 'one_file'
 			])}
 		>
-			<CloudUploadOutlined style={{ fontSize: 24 }} />
+			<CloudUploadOutlined style={{ fontSize: 21 }} />
 			<span className='desc'>{desc ?? filemap[filetype].desc[locale]}</span>
 		</div>
 	)

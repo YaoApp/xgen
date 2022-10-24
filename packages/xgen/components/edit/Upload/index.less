@@ -4,6 +4,9 @@
 	&.image {
 		:global {
 			.form_item_upload_wrap {
+				padding-top: 11px;
+				padding-left: 10px;
+
 				@image_size: 83px;
 
 				.xgen-upload-select-picture-card {
@@ -23,8 +26,7 @@
 		:global {
 			.form_item_upload_wrap {
 				display: flex;
-				flex-direction: column;
-				padding: 15px;
+				flex-direction: column-reverse;
 				border-radius: 6px;
 				background-color: var(--color_bg_nav);
 
@@ -38,6 +40,10 @@
 							border-radius: 6px;
 						}
 					}
+				}
+
+				.btn_upload_wrap {
+					padding: 0 9px;
 				}
 			}
 		}

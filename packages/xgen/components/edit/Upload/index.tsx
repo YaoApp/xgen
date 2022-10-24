@@ -1,3 +1,4 @@
+import { useMemoizedFn } from 'ahooks'
 import { Upload } from 'antd'
 import clsx from 'clsx'
 
@@ -15,11 +16,11 @@ import type { UploadProps } from 'antd'
 import type { IProps, CustomProps, IPropsUploadBtn } from './types'
 
 const Custom = window.$app.memo((props: CustomProps) => {
-	const { filetype, maxCount, desc, onChange: trigger } = props
+	const { api, filetype, maxCount, desc, onChange: trigger } = props
 	const { list, setList } = useList(props.value)
 	const visible_btn = useVisibleBtn(list.length, maxCount || 1)
 
-	const onChange: UploadProps['onChange'] = ({ file, fileList }) => {
+	const onChange: UploadProps['onChange'] = useMemoizedFn(({ file, fileList }) => {
 		const { status } = file
 
 		if (!trigger) return
@@ -29,14 +30,14 @@ const Custom = window.$app.memo((props: CustomProps) => {
 		}
 
 		setList(fileList)
-	}
+	})
 
 	const props_upload: UploadProps = {
 		...props,
 		name: 'file',
 		listType: filemap[filetype].listType,
 		className: clsx(['form_item_upload_wrap', filemap[filetype].className]),
-		action: `/api/${window.$app.api_prefix}/storage/upload`,
+		action: api,
 		headers: { authorization: getToken() },
 		fileList: list,
 		isImageUrl: () => filetype === 'image',

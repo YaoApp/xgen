@@ -7,10 +7,12 @@ import styles from './index.less'
 import type { Component } from '@/types'
 import type { ImageProps } from 'antd'
 
-interface IProps extends Component.PropsViewComponent, ImageProps { }
+interface IProps extends Component.PropsViewComponent, ImageProps {}
 
 const Index = (props: IProps) => {
 	const { __value } = props
+
+	if (!__value) return <span>-</span>
 
 	if (Array.isArray(__value)) {
 		return (

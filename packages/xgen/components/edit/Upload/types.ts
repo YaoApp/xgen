@@ -8,9 +8,13 @@ interface CommonProps {
 	desc?: string
 }
 
-export interface IProps extends UploadProps, Component.PropsEditComponent, CommonProps {}
+export interface IProps extends UploadProps, Component.PropsEditComponent, CommonProps {
+      api: string
+}
 
-export interface CustomProps extends UploadProps, CommonProps {}
+export interface CustomProps extends UploadProps, CommonProps {
+      api: string
+}
 
 export interface FileType {
 	[key: string]: {
