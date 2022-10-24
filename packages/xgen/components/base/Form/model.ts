@@ -5,10 +5,11 @@ import { injectable } from 'tsyringe'
 import { GlobalModel } from '@/context/app'
 import { Namespace } from '@/models'
 import { ColumnUtils, Common, Form } from '@/services'
+import { history } from '@umijs/max'
 
 import Service from './services'
 
-import type { FormType, TableType, Component, Global } from '@/types'
+import type { FormType, TableType, Component, Global, Action } from '@/types'
 
 @injectable()
 export default class Model {
@@ -77,12 +78,12 @@ export default class Model {
 			window.$app.Event.emit(`${this.namespace.parent}/search`)
 		}
 
-		if (!this.setting.operation.preset?.save?.back) return
-
-		window.$app.Event.emit(`${this.namespace.value}/back`)
+		if (this.setting.operation.preset?.save?.back) {
+			window.$app.Event.emit(`${this.namespace.value}/back`)
+		}
 	}
 
-	async delete(primary_value: number) {
+	async delete(primary_value: number, params: Action.FormDeleteParams) {
 		const hideLoading = message.loading(
 			this.global.locale_messages.messages.table.delete.loading
 		)
@@ -102,7 +103,15 @@ export default class Model {
 			window.$app.Event.emit(`${this.namespace.parent}/search`)
 		}
 
-		window.$app.Event.emit(`${this.namespace.value}/back`)
+		if (params?.back) {
+			window.$app.Event.emit(`${this.namespace.value}/back`)
+		}
+
+            if (params?.pathname) {
+			window.$app.Event.emit(`${this.namespace.value}/back`)
+                  
+			history.push(params.pathname)
+		}
 	}
 
 	init(

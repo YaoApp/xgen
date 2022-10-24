@@ -77,7 +77,11 @@ const Index = (props: Component.FormComponent) => {
 
 	if (parent === 'Page') {
 		return (
-			<Page className={clsx([styles._local, 'w_100'])} title={title} full={x.setting?.config?.full}>
+			<Page
+				className={clsx([styles._local, 'w_100'])}
+				title={title}
+				full={x.setting?.config?.full}
+			>
 				<div className='flex relative'>
 					<div className='w_100 flex flex_column'>
 						<Breadcrumb {...props_breadcrumb}></Breadcrumb>

@@ -18,6 +18,16 @@ export declare namespace Action {
 		search?: any
 	}
 
+	interface FormDeleteParams {
+		back?: boolean
+		pathname?: string
+	}
+
+	interface YaoParams {
+		method: string
+		args: Array<any>
+	}
+
 	interface Props {
 		title: string
 		icon: string
@@ -27,14 +37,10 @@ export declare namespace Action {
 			'Common.historyBack'?: {}
 			'Table.save'?: Global.StringObject
 			'Table.delete'?: {}
-			'Service.*'?: {
-				method: string
-				args: Array<any>
-			}
-			'Studio.*'?: {
-				method: string
-				args: Array<any>
-			}
+			'Form.save'?: Global.StringObject
+			'Form.delete'?: FormDeleteParams
+			'Service.*'?: YaoParams
+			'Studio.*'?: YaoParams
 		}
 		style?: 'danger' | 'success'
 		disabled?: {

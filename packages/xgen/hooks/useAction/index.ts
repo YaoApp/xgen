@@ -1,5 +1,6 @@
 import { historyBack, historyPush, openModal } from './actions/Common'
-import { delete as tableDelete, save } from './actions/Table'
+import { delete as FormDelete, save as FormSave } from './actions/Form'
+import { delete as tableDelete, save as TableSave } from './actions/Table'
 import { Service, Studio } from './actions/Yao'
 
 import type { Component, Action } from '@/types'
@@ -25,18 +26,26 @@ const onAction = ({ namespace, primary, data_item, it }: OnAction) => {
 	}
 
 	if (it.action?.['Table.save']) {
-		save({ namespace, primary, data_item, it })
+		TableSave({ namespace, primary, data_item, it })
 	}
 
 	if (it.action?.['Table.delete']) {
 		tableDelete({ namespace, primary, data_item, it })
+      }
+      
+      if (it.action?.['Form.save']) {
+		FormSave({ namespace, primary, data_item, it })
+	}
+
+	if (it.action?.['Form.delete']) {
+		FormDelete({ namespace, primary, data_item, it })
 	}
 
 	if (Object.keys(it.action)[0].startsWith('Service.')) {
 		Service({ it })
-      }
-      
-      if (Object.keys(it.action)[0].startsWith('Studio.')) {
+	}
+
+	if (Object.keys(it.action)[0].startsWith('Studio.')) {
 		Studio({ it })
 	}
 }
