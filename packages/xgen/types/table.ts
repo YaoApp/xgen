@@ -48,7 +48,7 @@ export declare namespace TableType {
 		header: Header
 		filter: Filter
 		table: {
-			props: TableProps<any>
+			props?: TableProps<any>
 			columns: Array<Common.BaseColumn>
 			operation: {
 				width?: number

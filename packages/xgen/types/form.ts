@@ -35,10 +35,9 @@ export declare namespace FormType {
 				save?: { back?: boolean }
 				back?: {}
 			}
-			actions: Array<Action.Props>
+			actions?: Array<Action.Props>
 		}
 		form: {
-			props: {}
 			sections: Array<Section>
 		}
 		fields: {
