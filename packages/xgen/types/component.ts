@@ -47,7 +47,7 @@ export declare namespace Component {
 
 	interface Request {
 		api: string
-		params?: { [key: string]: Common.DynamicValue }
+		params?: { [key: string]: any }
 	}
 
 	interface Option {

@@ -37,6 +37,4 @@ export declare namespace Common {
 	}
 
 	interface Column extends BaseColumn, FiledDetail {}
-
-	type DynamicValue = `:${string}` | string
 }
