@@ -11,6 +11,7 @@
             <DynamicValue
                   name="{key}"
                   type="{item.value}"
+                  value="{item.default}"
             ></DynamicValue>
       </div>
       {/each}
@@ -25,6 +26,7 @@
                   name="{key}"
                   type="{item.value}"
                   parent="option"
+                  value="{item.default}"
             ></DynamicValue>
       </div>
       {/each}

@@ -6,6 +6,20 @@
             type="text"
             maxlength="60"
             placeholder="请输入string类型的值"
+            value="{value ? value : ''}"
+            required
+      >
+      {/if}
+
+      {#if type==='password'}
+
+        <input
+            class="w_100"
+            name="{parent?parent+'.'+name:name}"
+            type="password"
+            maxlength="60"
+            placeholder="请输入数据库密码"
+            value="{value ? value : ''}"
             required
       >
       {/if}
@@ -15,8 +29,9 @@
             class="w_100"
             name="{parent?parent+'.'+name:name}"
             type="number"
-            max="9999999"
+            max="65535"
             placeholder="请输入number类型的值"
+            value="{value ? value : 0}"
             required
       >
       {/if}
@@ -56,6 +71,7 @@
                   name="{key}"
                   type="{item.value}"
                   parent="{parent}"
+                  value="{item.default}"
             ></DynamicValue>
       </div>
       {/each}
@@ -72,6 +88,7 @@
                   name="{key}"
                   type="{item.value}"
                   parent="{parent?parent+'.'+Object.keys(type)[0]:Object.keys(type)[0]}"
+                  value="{item.default}"
             ></DynamicValue>
       </div>
       {/each}

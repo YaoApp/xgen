@@ -5,7 +5,7 @@ import { steps } from '../../store'
 import { getFormJson } from '../../utils'
 import DynamicValue from '../DynamicValue/index.svelte'
 
-let type: string = 'mysql'
+let type: string = 'sqlite'
 let info: string = ''
 
 const getSqlType = (form: HTMLFormElement) => {
