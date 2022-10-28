@@ -16,6 +16,11 @@ export const metadata_env = {
 		name: '监听端口',
 		value: 'number',
 		default: 5099
+	},
+	YAO_STUDIO_PORT: {
+		name: 'Studio 端口',
+		value: 'number',
+		default: 5077
 	}
 }
 
