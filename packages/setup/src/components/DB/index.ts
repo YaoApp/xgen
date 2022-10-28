@@ -83,9 +83,10 @@ const setup = async () => {
 		return
 	}
 
-	info = '配置成功!'
-
+	info = `'配置成功! 3后进入管理后台 ${target.urls[0]}`
 	if (target.urls) {
-		window.location.href = target.urls[0]
+		window.setTimeout(() => {
+			window.location.href = target.urls[0]
+		}, 3000)
 	}
 }
