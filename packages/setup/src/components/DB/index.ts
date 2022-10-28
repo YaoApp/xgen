@@ -86,7 +86,7 @@ const setup = async () => {
 	info = `配置成功! 3秒后进入管理后台`
 	if (target.urls) {
 		window.setTimeout(() => {
-			window.location.href = target.urls[0]
+			window.location.href = `http://${window.location.hostname}:${target.port}/${target.root}/`
 		}, 3000)
 	}
 }
