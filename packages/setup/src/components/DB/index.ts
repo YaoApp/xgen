@@ -7,6 +7,7 @@ import DynamicValue from '../DynamicValue/index.svelte'
 
 let type: string = 'sqlite'
 let info: string = ''
+let loading_check: boolean = false
 
 const getSqlType = (form: HTMLFormElement) => {
 	type = getFormJson(form).type
@@ -28,16 +29,22 @@ onMount(() => {
 	}
 })
 
+const back = () => steps.update((v) => v - 1)
+
 const check = async () => {
 	const form = document.getElementById('form_db')! as HTMLFormElement
 
 	if (!form.checkValidity()) return
+
+	loading_check = true
 
 	const res = await fetch(api.check, {
 		method: 'POST',
 		headers: { 'Content-type': 'application/json' },
 		body: JSON.stringify(getFormJson(form))
 	})
+
+	loading_check = false
 
 	if (res.status !== 200) {
 		const target = await res.json().catch(() => {})
@@ -66,18 +73,19 @@ const setup = async () => {
 			db: getFormJson(form_db)
 		})
 	})
+	const target = await res.json().catch(() => {})
 
 	if (res.status !== 200) {
-		const target = await res.json().catch(() => {})
-
-		info = `Setup失败，失败原因:${target?.message || '无'}`
+		info = `配置失败，失败原因:${target?.message || '无'}`
 
 		steps.set(2)
 
 		return
 	}
 
-	steps.set(4)
+	info = '配置成功!'
 
-	info = 'Setup成功!'
+	if (target.urls) {
+		window.location.href = target.urls[0]
+	}
 }

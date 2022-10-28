@@ -36,14 +36,32 @@
                   class="btn_test btn_action cursor_point flex justify_center align_center"
                   on:click="{check}"
             >
-                  <i class="icon-wifi mr_6"></i> 测试连接
+                  {#if loading_check}
+                  <div class="lds-ring small mr_6">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                  </div>
+                  测试连接中
+                  {:else}
+                  <i class="icon-wifi mr_6"></i>测试连接
+                  {/if}
             </button>
-            <button
-                  class="btn_save btn_action cursor_point"
-                  on:click="{setup}"
-            >
-                  <i class="icon-check"></i>
-            </button>
+            <div class="flex">
+                  <button
+                        class="btn_back btn_action cursor_point mr_12"
+                        on:click="{back}"
+                  >
+                        <i class="icon-chevron-left"></i>
+                  </button>
+                  <button
+                        class="btn_save btn_action cursor_point"
+                        on:click="{setup}"
+                  >
+                        <i class="icon-check"></i>
+                  </button>
+            </div>
       </div>
 
 
