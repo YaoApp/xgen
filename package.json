@@ -1,9 +1,6 @@
 {
       "private": true,
       "homepage": "https://yaoapps.com",
-      "workspaces": [
-            "packages/*"
-      ],
       "scripts": {
             "dev": "turbo run dev",
             "build": "turbo run build",
