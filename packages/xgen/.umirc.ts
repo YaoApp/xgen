@@ -1,7 +1,12 @@
 import { defineConfig } from '@umijs/max'
 
 import {
-	base, chainWebpack, conventionRoutes, extraBabelPlugins, links, proxy
+	base,
+	chainWebpack,
+	conventionRoutes,
+	extraBabelPlugins,
+	links,
+	proxy
 } from './build/config'
 
 export default defineConfig({
