@@ -50,7 +50,12 @@ const Index = (props: Component.BaseComponent) => {
 
 	if (parent === 'Page') {
 		return (
-			<Page className='w_100' isChart actions={x.setting.operation.actions} full={x.setting?.config?.full}>
+			<Page
+				className='w_100'
+				isChart
+				actions={toJS(x.setting.operation.actions)}
+				full={x.setting?.config?.full}
+			>
 				{Content}
 			</Page>
 		)

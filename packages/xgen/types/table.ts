@@ -30,7 +30,11 @@ export declare namespace TableType {
 					mapping_setting_model: string
 					preview_setting_model: string
 				}
-				operation: Array<any>
+				actions?: Array<
+					{
+						action: Pick<Action.Props['action'], 'Common.historyPush'>
+					} & Pick<Action.Props, 'title' | 'icon'>
+				>
 			}
 		}
 		actions?: Array<{

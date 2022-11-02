@@ -18,7 +18,7 @@ const onAction = ({ namespace, primary, data_item, it }: OnAction) => {
 	}
 
 	if (it.action?.['Common.historyPush']) {
-		historyPush({ data_item, action: it.action['Common.historyPush'] })
+		historyPush({ action: it.action['Common.historyPush'] })
 	}
 
 	if (it.action?.['Common.historyBack']) {
@@ -31,9 +31,9 @@ const onAction = ({ namespace, primary, data_item, it }: OnAction) => {
 
 	if (it.action?.['Table.delete']) {
 		tableDelete({ namespace, primary, data_item, it })
-      }
-      
-      if (it.action?.['Form.save']) {
+	}
+
+	if (it.action?.['Form.save']) {
 		FormSave({ namespace, primary, data_item, it })
 	}
 

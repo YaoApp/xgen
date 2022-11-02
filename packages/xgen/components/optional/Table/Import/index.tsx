@@ -1,8 +1,9 @@
-import { Button, message, Modal, Tabs, Tooltip } from 'antd'
+import { Button, Modal, Tabs, Tooltip } from 'antd'
 import axios from 'axios'
 import clsx from 'clsx'
 import { Fragment, useEffect, useState } from 'react'
 
+import { useAction } from '@/hooks'
 import { Icon } from '@/widgets'
 import { UploadOutlined } from '@ant-design/icons'
 
@@ -20,12 +21,13 @@ import type { ModalProps } from 'antd'
 import type { IProps } from './types'
 
 const Index = (props: IProps) => {
-	const { api, operation, search } = props
+	const { api, actions, search } = props
 	const [visible_modal, setVisibleModal] = useState(false)
 	const [setting, setSetting] = useState<any>({})
 	const [step, setStep] = useState(0)
 	const [file_name, setFileName] = useState('')
 	const [preview_payload, setPreviewPayload] = useState<any>({})
+	const onAction = useAction()
 
 	const getSetting = async () => {
 		const setting = await axios.get(api.setting)
@@ -67,34 +69,6 @@ const Index = (props: IProps) => {
 		if (step === 3) {
 			search()
 			setVisibleModal(false)
-		}
-	}
-
-	const onItem = (it: any) => {
-		if (it?.link) {
-			window.open(it.link)
-
-			return
-		}
-
-		const postAction = async () => {
-			const res = await axios.post(it.api)
-
-			if (!res) return
-
-			message.success('操作成功！')
-		}
-
-		if (it?.confirm) {
-			confirm({
-				title: '操作提示',
-				content: `确认${it.title}？`,
-				onOk() {
-					postAction()
-				}
-			})
-		} else {
-			postAction()
 		}
 	}
 
@@ -143,15 +117,30 @@ const Index = (props: IProps) => {
 				<div className='header_wrap w_100 border_box flex justify_between align_center'>
 					<span className='title'>{setting.title ?? '导入'}</span>
 					<div className='action_items flex'>
-						{operation && (
-							<div className='operation_wrap flex align_center'>
-								{operation.map((item: any, index: number) => (
+						{actions && actions?.length > 0 && (
+							<div className='custom_actions flex align_center'>
+								{actions?.map((it, index) => (
 									<Button
-										className='btn_action mr_12'
+										className={clsx([
+											'btn_action border_box flex justify_center align_center clickable'
+										])}
+										icon={
+											<Icon
+												name={it.icon}
+												size={15}
+											></Icon>
+										}
 										key={index}
-										onClick={() => onItem(item)}
+										onClick={() =>
+											onAction({
+												namespace: '',
+												primary: '',
+												data_item: null,
+												it
+											})
+										}
 									>
-										{item.title}
+										{it.title}
 									</Button>
 								))}
 							</div>

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { useGlobal } from '@/context/app'
 
-import Action from './components/Action'
+import Actions from './components/Actions'
 import Left from './components/Left'
 import { usePageTitle } from './hooks'
 import styles from './index.less'
@@ -72,9 +72,7 @@ const Index = (props: IProps) => {
 					<Left {...props_left}></Left>
 					<div className='options_wrap flex align_center'>
 						{customAction}
-						{actions?.map((item, index) => (
-							<Action {...item} key={index}></Action>
-						))}
+						<Actions actions={actions}></Actions>
 					</div>
 				</header>
 				<div className='page_wrap'>{children}</div>

@@ -27,7 +27,14 @@ export declare namespace Chart {
 	interface Setting {
 		name: string
 		operation: {
-			actions: Array<Action.Props>
+			actions?: Array<
+				{
+					action: Pick<
+						Action.Props['action'],
+						'Common.historyPush' | 'Common.historyBack'
+					>
+				} & Pick<Action.Props, 'title' | 'icon'>
+			>
 		}
 		filter?: Filter
 		chart: {
@@ -36,8 +43,8 @@ export declare namespace Chart {
 		fields: {
 			filter?: Common.Fields
 			chart: Fields
-            }
-            config?: Common.Config
+		}
+		config?: Common.Config
 	}
 
 	interface Column extends Common.WideColumn, FiledDetail {}

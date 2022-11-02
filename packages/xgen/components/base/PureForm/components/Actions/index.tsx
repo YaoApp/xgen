@@ -30,7 +30,7 @@ const Index = (props: IPropsActions) => {
 			>
 				{visible_custom_actions && (
 					<div className='custom_actions flex align_center'>
-						{getTemplateValue(operation?.actions, data).map((it, index) => (
+						{getTemplateValue(operation?.actions!, data).map((it, index) => (
 							<Button
 								className={clsx([
 									'btn_action border_box flex justify_center align_center clickable',
