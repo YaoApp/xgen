@@ -1,6 +1,7 @@
 import { Button, Col, Form, Row, Tooltip } from 'antd'
 import clsx from 'clsx'
 import { toJS } from 'mobx'
+import { When } from 'react-if'
 
 import { X } from '@/components'
 import { Icon } from '@/widgets'
@@ -59,23 +60,25 @@ const Index = (props: IPropsFilter) => {
 						></X>
 					</Col>
 				))}
-				<Col span={2}>
-					<Button
-						className='w_100 flex justify_center align_center'
-						type='primary'
-						htmlType='submit'
-					>
-						{locales[locale].search}
-					</Button>
-				</Col>
-				<Col span={2}>
-					<Button
-						className='w_100 flex justify_center align_center'
-						htmlType='reset'
-					>
-						{locales[locale].reset}
-					</Button>
-				</Col>
+				<When condition={columns.length}>
+					<Col span={2}>
+						<Button
+							className='w_100 flex justify_center align_center'
+							type='primary'
+							htmlType='submit'
+						>
+							{locales[locale].search}
+						</Button>
+					</Col>
+					<Col span={2}>
+						<Button
+							className='w_100 flex justify_center align_center'
+							htmlType='reset'
+						>
+							{locales[locale].reset}
+						</Button>
+					</Col>
+				</When>
 				<Col flex='auto'>
 					<div className='flex justify_end'>
 						{visible_btn_more && (
