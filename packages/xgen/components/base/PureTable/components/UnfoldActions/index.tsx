@@ -1,5 +1,6 @@
 import { Tooltip } from 'antd'
 import clsx from 'clsx'
+import { useMemo } from 'react'
 
 import { useAction, useActionDisabled, useActionStyle } from '@/hooks'
 import { getTemplateValue } from '@/utils'
@@ -13,11 +14,13 @@ const Index = (props: IPropsActions) => {
 	const { namespace, primary, actions, data_item } = props
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled(data_item)
-	const onAction = useAction()
+      const onAction = useAction()
+      
+	const _actions = useMemo(() => getTemplateValue(actions, data_item), [actions, data_item])
 
 	return (
 		<div className={clsx([styles._local, 'flex justify_end'])}>
-			{getTemplateValue(actions, data_item).map((it, index) => (
+			{_actions.map((it, index) => (
 				<Tooltip
 					title={it.title}
 					key={index}

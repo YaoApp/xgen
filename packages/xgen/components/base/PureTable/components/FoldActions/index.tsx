@@ -1,5 +1,6 @@
 import { Popover } from 'antd'
 import clsx from 'clsx'
+import { useMemo } from 'react'
 
 import { useAction, useActionDisabled, useActionStyle } from '@/hooks'
 import { getTemplateValue } from '@/utils'
@@ -15,9 +16,11 @@ const Index = (props: IPropsActions) => {
 	const getDisabled = useActionDisabled(data_item)
 	const onAction = useAction()
 
+	const _actions = useMemo(() => getTemplateValue(actions, data_item), [actions, data_item])
+
 	const Content = (
 		<div className={clsx([styles.table_option_items, 'flex flex_column'])}>
-			{getTemplateValue(actions, data_item).map((it, index) => (
+			{_actions.map((it, index) => (
 				<div
 					className={clsx([
 						'table_option_item flex align_center cursor_point',

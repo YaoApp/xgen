@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { useMemo } from 'react'
 
 import { getTemplateValue } from '@/utils'
 
@@ -10,6 +11,8 @@ import type { IPropsSections, IPropsSection } from '../../types'
 const Index = (props: IPropsSections) => {
 	const { namespace, primary, type, data, sections } = props
 
+	const _sections = useMemo(() => getTemplateValue(sections, data), [sections, data])
+
 	const props_section: Omit<IPropsSection, 'item'> = {
 		namespace,
 		primary,
@@ -19,7 +22,7 @@ const Index = (props: IPropsSections) => {
 
 	return (
 		<div className={clsx([styles._local, 'w_100 border_box flex flex_column'])}>
-			{getTemplateValue(sections, data).map((item, index) => (
+			{_sections.map((item, index) => (
 				<Section {...props_section} item={item} key={index}></Section>
 			))}
 		</div>
