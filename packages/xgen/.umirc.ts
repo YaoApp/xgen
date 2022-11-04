@@ -10,19 +10,20 @@ import {
 } from './build/config'
 
 export default defineConfig({
-	mfsu: { esbuild: true, strategy: 'normal' },
+	mfsu: { esbuild: false, strategy: 'normal' },
 	monorepoRedirect: { srcDir: ['./'] },
 	npmClient: 'pnpm',
 	base,
 	publicPath: base,
 	proxy,
 	links,
-	antd: { import: false },
-	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
+      antd: { import: false },
+	codeSplitting: { jsStrategy: 'depPerChunk' },
+      locale: { default: 'zh-CN', antd: true, baseNavigator: true },
 	polyfill: { imports: ['core-js/features/promise/try'] },
 	extraBabelPlugins,
-	// @ts-ignore
-	chainWebpack,
 	conventionRoutes,
-	define: { $runtime: { BASE: process.env.BASE } }
+      define: { $runtime: { BASE: process.env.BASE } },
+      // @ts-ignore
+	chainWebpack,
 })
