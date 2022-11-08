@@ -29,10 +29,7 @@ export declare namespace Chart {
 		operation: {
 			actions?: Array<
 				{
-					action: Pick<
-						Action.Props['action'],
-						'Common.historyPush' | 'Common.historyBack'
-					>
+					action: Pick<Action.Props['action'], 'Common.historyPush' | 'Common.historyBack'>
 				} & Pick<Action.Props, 'title' | 'icon'>
 			>
 		}

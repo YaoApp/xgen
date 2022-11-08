@@ -16,10 +16,7 @@ const Index = (props: IProps) => {
 
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
-			<TextArea
-				placeholder={`${is_cn ? '请输入' : 'Please input '}${__name}`}
-				{...rest_props}
-			></TextArea>
+			<TextArea placeholder={`${is_cn ? '请输入' : 'Please input '}${__name}`} {...rest_props}></TextArea>
 		</Item>
 	)
 }

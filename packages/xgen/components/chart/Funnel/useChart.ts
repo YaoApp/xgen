@@ -14,11 +14,7 @@ import type {
 } from 'echarts/components'
 
 type Option = echarts.ComposeOption<
-	| FunnelSeriesOption
-	| AriaComponentOption
-	| TooltipComponentOption
-	| LegendComponentOption
-	| TitleComponentOption
+	FunnelSeriesOption | AriaComponentOption | TooltipComponentOption | LegendComponentOption | TitleComponentOption
 >
 
 export interface IProps {

@@ -19,12 +19,7 @@ const Index = (props: IPropsForm) => {
 	const is_cn = locale === 'zh-CN'
 
 	return (
-		<Form
-			className='form_wrap border_box flex flex_column'
-			name='form_login'
-			form={form}
-			onFinish={onFinish}
-		>
+		<Form className='form_wrap border_box flex flex_column' name='form_login' form={form} onFinish={onFinish}>
 			<div className='input_wrap'>
 				<Item noStyle shouldUpdate>
 					{() => (
@@ -37,12 +32,7 @@ const Index = (props: IPropsForm) => {
 								])}
 								type='text'
 								maxLength={30}
-								prefix={
-									<Icon
-										name='person_outline-outline'
-										size={21}
-									></Icon>
-								}
+								prefix={<Icon name='person_outline-outline' size={21}></Icon>}
 								autoComplete='off'
 							></Input>
 						</Item>
@@ -80,12 +70,7 @@ const Index = (props: IPropsForm) => {
 								])}
 								type='text'
 								maxLength={6}
-								prefix={
-									<Icon
-										name='security-outline'
-										size={20}
-									></Icon>
-								}
+								prefix={<Icon name='security-outline' size={20}></Icon>}
 							></Input>
 						</Item>
 					)}

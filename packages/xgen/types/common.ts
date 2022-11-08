@@ -19,14 +19,14 @@ export declare namespace Common {
 
 	interface FiledDetail {
 		bind: string
-            view: {
-                  bind?:string
+		view: {
+			bind?: string
 			type: string
-                  props: any
+			props: any
 			components?: ViewComponents
 		}
-            edit: {
-                  bind?:string
+		edit: {
+			bind?: string
 			type: string
 			props: any
 		}

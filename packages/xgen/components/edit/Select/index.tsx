@@ -29,10 +29,7 @@ const Index = (props: IProps) => {
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
 			<Select
-				className={clsx([
-					styles._local,
-					rest_props.mode === 'multiple' && styles.multiple
-				])}
+				className={clsx([styles._local, rest_props.mode === 'multiple' && styles.multiple])}
 				popupClassName={styles._dropdown}
 				placeholder={`${is_cn ? '请输入' : 'Please input '}${__name}`}
 				options={x.options}

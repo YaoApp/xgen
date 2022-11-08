@@ -10,5 +10,5 @@ export default class Index {
 	@catchError()
 	getOptions<Req, Res>(api: string, params: Req) {
 		return axios.get<Req, Response<Res>>(api, { params })
-      }
+	}
 }

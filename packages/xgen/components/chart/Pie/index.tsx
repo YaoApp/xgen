@@ -1,7 +1,5 @@
 import { PieChart } from 'echarts/charts'
-import {
-	AriaComponent, LegendComponent, TitleComponent, TooltipComponent
-} from 'echarts/components'
+import { AriaComponent, LegendComponent, TitleComponent, TooltipComponent } from 'echarts/components'
 import * as echarts from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { observer } from 'mobx-react-lite'
@@ -11,14 +9,7 @@ import useChart from './useChart'
 
 import type { IProps } from './useChart'
 
-echarts.use([
-	CanvasRenderer,
-	PieChart,
-	TitleComponent,
-	AriaComponent,
-	TooltipComponent,
-	LegendComponent
-])
+echarts.use([CanvasRenderer, PieChart, TitleComponent, AriaComponent, TooltipComponent, LegendComponent])
 
 const Index = (props: IProps) => {
 	const ref = useRef<HTMLDivElement>(null)

@@ -14,13 +14,7 @@ const Index = () => {
 
 	if (!model) history.push('/404')
 
-	return (
-		<X
-			type='base'
-			name={type}
-			props={{ parent: 'Page', model, id, form: { type: formType } }}
-		></X>
-	)
+	return <X type='base' name={type} props={{ parent: 'Page', model, id, form: { type: formType } }}></X>
 }
 
 export default Index

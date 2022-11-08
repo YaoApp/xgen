@@ -9,14 +9,7 @@ import useChart from '@/hooks/chart/useAxisChart'
 
 import type { IProps } from '@/hooks/chart/useAxisChart'
 
-echarts.use([
-	CanvasRenderer,
-	LineChart,
-	TitleComponent,
-	GridComponent,
-	AriaComponent,
-	TooltipComponent
-])
+echarts.use([CanvasRenderer, LineChart, TitleComponent, GridComponent, AriaComponent, TooltipComponent])
 
 const Index = (props: IProps) => {
 	const ref = useRef<HTMLDivElement>(null)

@@ -11,18 +11,14 @@ import styles from './index.less'
 import type { IPropsActions } from '../../types'
 
 const Index = (props: IPropsActions) => {
-	const { locale_messages, namespace, primary, type, id, operation, data, onBack, submit } =
-		props
+	const { locale_messages, namespace, primary, type, id, operation, data, onBack, submit } = props
 	const [stick, setStick] = useState<boolean | undefined>(false)
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled(data)
 	const onAction = useAction()
 	const visible_custom_actions = id !== 0 && type === 'edit' && operation?.actions?.length
 
-	const _actions = useMemo(
-		() => getTemplateValue(operation?.actions!, data),
-		[operation?.actions, data]
-	)
+	const _actions = useMemo(() => getTemplateValue(operation?.actions!, data), [operation?.actions, data])
 
 	return (
 		<Affix offsetTop={11} style={{ zIndex: 101 }} onChange={(v) => setStick(v)}>
@@ -68,11 +64,7 @@ const Index = (props: IPropsActions) => {
 							{locale_messages.back}
 						</Button>
 						{type === 'edit' && (
-							<Button
-								className='btn_action'
-								type='primary'
-								onClick={submit}
-							>
+							<Button className='btn_action' type='primary' onClick={submit}>
 								{locale_messages.save}
 							</Button>
 						)}

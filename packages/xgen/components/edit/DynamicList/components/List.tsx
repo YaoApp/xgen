@@ -64,10 +64,7 @@ const Index = (props: IPropsList) => {
 				<span className='table_title'>{label}</span>
 				<div className='flex'>
 					{type !== 'view' && (
-						<a
-							className='btn_save cursor_point clickable'
-							onClick={() => add(-1)}
-						>
+						<a className='btn_save cursor_point clickable' onClick={() => add(-1)}>
 							新增
 						</a>
 					)}

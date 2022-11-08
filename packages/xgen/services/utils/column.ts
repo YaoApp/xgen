@@ -48,10 +48,7 @@ export class ColumnUtils {
 	}
 
 	reduceSections(sections: Array<FormType.Section>, fields: Common.Fields) {
-		const getSectionColumns = (
-			total: Array<FormType.ColumnResult>,
-			item: FormType.Column
-		) => {
+		const getSectionColumns = (total: Array<FormType.ColumnResult>, item: FormType.Column) => {
 			if ('tabs' in item) {
 				total.push({
 					width: item?.width || 24,

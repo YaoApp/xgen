@@ -18,10 +18,7 @@ const Index = (props: IPropsLoginWrapperLeft) => {
 				'h_100 border_box relative flex justify_center align_center overflow_hidden'
 			])}
 		>
-			<div
-				className='grid w_100 h_100 absolute'
-				style={{ backgroundImage: `url(${dot})` }}
-			></div>
+			<div className='grid w_100 h_100 absolute' style={{ backgroundImage: `url(${dot})` }}></div>
 			<div className='logo_wrap absolute flex justify_center align_center bg_white'>
 				<img className='logo' src={logo ?? logo_yao} alt='logo' />
 			</div>

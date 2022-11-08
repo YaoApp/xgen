@@ -22,10 +22,7 @@ const Index = (props: IPropsChartItem) => {
 				title={item.name}
 				options={
 					item.link && (
-						<ChartLink
-							link_tooltip={locale_messages.link_tooltip}
-							link={item.link}
-						></ChartLink>
+						<ChartLink link_tooltip={locale_messages.link_tooltip} link={item.link}></ChartLink>
 					)
 				}
 				style={toJS(cardStyle)}

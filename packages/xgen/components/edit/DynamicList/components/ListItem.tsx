@@ -19,7 +19,7 @@ const Index = (props: IPropsItem) => {
 	const { value, ...props_no_value } = it.edit.props
 	const text = it.edit.type === 'label' ? it.edit.props.value : useItemText(it, item)
 
-      const change = (v: any) => {
+	const change = (v: any) => {
 		onChange(item_key, v)
 	}
 
@@ -47,9 +47,7 @@ const Index = (props: IPropsItem) => {
 						>
 							<Dynamic
 								type='edit'
-								name={it.edit.type.replace(/^\S/, (s: string) =>
-									s.toUpperCase()
-								)}
+								name={it.edit.type.replace(/^\S/, (s: string) => s.toUpperCase())}
 								props={{
 									...props_no_value,
 									name: it.key,

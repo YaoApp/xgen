@@ -9,11 +9,11 @@ interface CommonProps {
 }
 
 export interface IProps extends UploadProps, Component.PropsEditComponent, CommonProps {
-      api: string
+	api: string
 }
 
 export interface CustomProps extends UploadProps, CommonProps {
-      api: string
+	api: string
 }
 
 export interface FileType {

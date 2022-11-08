@@ -3,8 +3,8 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import type { IPropsLeft } from '../types'
 
 const Index = (props: IPropsLeft) => {
-      const { visible_menu, title, toggleMenu } = props
-      
+	const { visible_menu, title, toggleMenu } = props
+
 	return (
 		<div className='left_wrap flex align_center'>
 			<a

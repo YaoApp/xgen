@@ -67,12 +67,7 @@ const Index = (props: IProps) => {
 							></Child>
 						))}
 					</Row>
-					<div
-						className={clsx([
-							'table_options flex justify_end',
-							type === 'view' && 'disabled'
-						])}
-					>
+					<div className={clsx(['table_options flex justify_end', type === 'view' && 'disabled'])}>
 						<a
 							className='btn_option flex justify_center align_center cursor_point clickable'
 							onClick={() => add(index)}

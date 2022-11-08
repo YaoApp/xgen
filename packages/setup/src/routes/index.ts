@@ -5,4 +5,3 @@ import Loading from '../components/Loading/index.svelte'
 import Success from '../components/Success/index.svelte'
 import Tabs from '../components/Tabs/index.svelte'
 import { steps } from '../store'
-

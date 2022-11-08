@@ -13,11 +13,7 @@ import styles from './index.less'
 
 import type { ModalProps } from 'antd'
 
-import type {
-	IPropsOptions,
-	IPropsSettingModalContent,
-	IPropsUserModalContent
-} from '@/layouts/types'
+import type { IPropsOptions, IPropsSettingModalContent, IPropsUserModalContent } from '@/layouts/types'
 
 const Index = (props: IPropsOptions) => {
 	const { theme, avatar, app_info, user, setTheme, setAvatar, getUserMenu } = props
@@ -85,17 +81,10 @@ const Index = (props: IPropsOptions) => {
 				trigger='click'
 				placement='rightTop'
 				align={{ offset: [20, -6] }}
-				content={
-					<UserModalContent {...props_user_modal_content}></UserModalContent>
-				}
-				getPopupContainer={() =>
-					document.getElementById('option_item') as HTMLElement
-				}
+				content={<UserModalContent {...props_user_modal_content}></UserModalContent>}
+				getPopupContainer={() => document.getElementById('option_item') as HTMLElement}
 			>
-				<div
-					id='option_item'
-					className='option_item flex justify_center align_center'
-				>
+				<div id='option_item' className='option_item flex justify_center align_center'>
 					{Avatar}
 				</div>
 			</Popover>

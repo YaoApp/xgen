@@ -58,11 +58,7 @@ const Custom = window.$app.memo((props: ColorPickerProps & ICustom) => {
 		>
 			<Input value={value.hex} disabled={props.disabled} readOnly></Input>
 			<div
-				className={clsx([
-					styles.indicator,
-					props.disabled ? styles.disabled : '',
-					'absolute'
-				])}
+				className={clsx([styles.indicator, props.disabled ? styles.disabled : '', 'absolute'])}
 				style={{ backgroundColor: value.hex }}
 			></div>
 		</Popover>

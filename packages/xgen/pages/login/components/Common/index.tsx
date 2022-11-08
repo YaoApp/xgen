@@ -28,11 +28,7 @@ const Index = ({ x, type }: IPropsCommon) => {
 		<div className='right_wrap h_100 border_box flex flex_column align_center justify_center relative'>
 			<div className='top_wrap absolute top_0 left_0 w_100 border_box flex justify_between align_center'>
 				<Tooltip
-					title={
-						type === 'admin'
-							? messages.login.user_login_tip
-							: messages.login.admin_login_tip
-					}
+					title={type === 'admin' ? messages.login.user_login_tip : messages.login.admin_login_tip}
 					placement='right'
 				>
 					<Link
@@ -42,10 +38,7 @@ const Index = ({ x, type }: IPropsCommon) => {
 						])}
 						to={`/login/${type === 'admin' ? 'user' : 'admin'}`}
 					>
-						<Icon
-							name={`icon-user${type === 'admin' ? 's' : ''}`}
-							size={18}
-						></Icon>
+						<Icon name={`icon-user${type === 'admin' ? 's' : ''}`} size={18}></Icon>
 					</Link>
 				</Tooltip>
 				<div

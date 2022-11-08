@@ -11,8 +11,8 @@ import type { IPropsLoginWrapper, IPropsLoginWrapperLeft } from '../../types'
 const Index = (props: PropsWithChildren<IPropsLoginWrapper>) => {
 	const { children, logo, admin, user } = props
 	const { pathname } = useLocation()
-      const is_admin = pathname.indexOf('/admin') !== -1
-      
+	const is_admin = pathname.indexOf('/admin') !== -1
+
 	const props_left: IPropsLoginWrapperLeft = {
 		logo,
 		layout: is_admin ? admin?.layout : user?.layout

@@ -18,13 +18,7 @@ const Index = (props: IProps) => {
 		return (
 			<div className={styles._local}>
 				{__value.map((item: string, index: number) => (
-					<Image
-						width={48}
-						height={48}
-						src={getFileSrc(item)}
-						key={index}
-						{...props}
-					></Image>
+					<Image width={48} height={48} src={getFileSrc(item)} key={index} {...props}></Image>
 				))}
 			</div>
 		)

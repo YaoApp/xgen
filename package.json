@@ -5,7 +5,8 @@
             "dev": "turbo run dev",
             "build": "turbo run build",
             "dev:xgen": "turbo run dev --filter=xgen",
-            "build:xgen": "turbo run build --filter=xgen"
+            "build:xgen": "turbo run build --filter=xgen",
+            "prettier": "prettier --parser=typescript --write \"**/*.ts?(x)\""
       },
       "gitHooks": {
             "pre-commit": "lint-staged --allow-empty"

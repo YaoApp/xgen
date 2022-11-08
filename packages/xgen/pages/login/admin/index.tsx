@@ -17,4 +17,3 @@ const Index = () => {
 }
 
 export default new window.$app.Handle(Index).by(observer).get()
-

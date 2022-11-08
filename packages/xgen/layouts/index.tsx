@@ -19,14 +19,7 @@ import Menu from './components/Menu'
 import Nav from './components/Nav'
 import LoginWrapper from './wrappers/Login'
 
-import type {
-	IPropsHelmet,
-	IPropsLoginWrapper,
-	IPropsLoading,
-	IPropsNav,
-	IPropsMenu,
-	IPropsContainer
-} from './types'
+import type { IPropsHelmet, IPropsLoginWrapper, IPropsLoading, IPropsNav, IPropsMenu, IPropsContainer } from './types'
 
 const Index = () => {
 	const messages = useIntl()

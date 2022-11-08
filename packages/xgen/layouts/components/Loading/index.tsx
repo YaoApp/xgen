@@ -6,8 +6,8 @@ import styles from './index.less'
 import type { IPropsLoading } from '../../types'
 
 const Index = (props: IPropsLoading) => {
-      const { loading, visible_nav, visible_menu } = props 
-      
+	const { loading, visible_nav, visible_menu } = props
+
 	return (
 		<AnimatePresence>
 			{loading && (

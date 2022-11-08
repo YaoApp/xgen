@@ -26,21 +26,9 @@ const Index = (props: IPropsRowItem) => {
 		<Row gutter={16} wrap={true}>
 			{columns.map((item, index: number) => {
 				if ('tabs' in item) {
-					return (
-						<TabsItem
-							{...props_tabs_item}
-							item={item}
-							key={index}
-						></TabsItem>
-					)
+					return <TabsItem {...props_tabs_item} item={item} key={index}></TabsItem>
 				} else {
-					return (
-						<FormItem
-							{...props_form_item}
-							item={item}
-							key={index}
-						></FormItem>
-					)
+					return <FormItem {...props_form_item} item={item} key={index}></FormItem>
 				}
 			})}
 		</Row>

@@ -9,8 +9,6 @@ import type { Response, BaseType } from '@/types'
 export default class Index {
 	@catchError()
 	getSetting<Res>(type: BaseType, model: string) {
-		return axios.get<{}, Response<Res>>(
-			`/api/${window.$app.api_prefix}/${type}/${model}/setting`
-		)
+		return axios.get<{}, Response<Res>>(`/api/${window.$app.api_prefix}/${type}/${model}/setting`)
 	}
 }

@@ -32,10 +32,7 @@ export default class Index {
 			if (session_cache) return (this.options = session_cache)
 		}
 
-		const { res, err } = await this.service.getOptions<Component.Params, Array<any>>(
-			remote.api,
-			params
-		)
+		const { res, err } = await this.service.getOptions<Component.Params, Array<any>>(remote.api, params)
 
 		if (err) return
 
@@ -54,10 +51,7 @@ export default class Index {
 			[search.key]: v
 		}
 
-		const { res, err } = await this.service.searchOptions<Component.Params, Array<any>>(
-			search.api,
-			params
-		)
+		const { res, err } = await this.service.searchOptions<Component.Params, Array<any>>(search.api, params)
 
 		if (err) return
 

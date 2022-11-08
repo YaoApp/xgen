@@ -47,7 +47,7 @@ export interface IPropsItems {
 }
 
 export interface IPropsOptions {
-      theme: GlobalModel[ 'theme' ]
+	theme: GlobalModel['theme']
 	avatar: GlobalModel['avatar']
 	app_info: GlobalModel['app_info']
 	user: GlobalModel['user']

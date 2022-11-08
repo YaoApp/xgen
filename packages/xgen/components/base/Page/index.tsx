@@ -13,16 +13,7 @@ import type { CSSProperties } from 'react'
 import type { IProps, IPropsLeft } from './types'
 
 const Index = (props: IProps) => {
-	const {
-		children,
-		className,
-		style,
-		title: props_title,
-		actions = [],
-		isChart,
-		customAction,
-		full
-	} = props
+	const { children, className, style, title: props_title, actions = [], isChart, customAction, full } = props
 	const global = useGlobal()
 	const menu = global.menu.slice()
 	const visible_menu = global.visible_menu
@@ -49,15 +40,7 @@ const Index = (props: IProps) => {
 		: {}
 
 	return (
-		<div
-			className={clsx([
-				styles._local,
-				className,
-				isChart ? styles.chart : '',
-				'relative'
-			])}
-			style={style}
-		>
+		<div className={clsx([styles._local, className, isChart ? styles.chart : '', 'relative'])} style={style}>
 			<div
 				id='page_content_wrap'
 				className='page_content_wrap flex flex_column transition_normal'

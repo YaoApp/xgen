@@ -8,10 +8,7 @@ export default async ({ it }: Pick<OnAction, 'it'>) => {
 	const params = it.action[Object.keys(it.action)[0] as 'Service.*']
 
 	try {
-		const res = await axios.post<{}, { message: string }>(
-			`/api/__yao/app/service/${name}`,
-			params
-		)
+		const res = await axios.post<{}, { message: string }>(`/api/__yao/app/service/${name}`, params)
 
 		message.success(res?.message || 'The service executes success.')
 	} catch (_) {}

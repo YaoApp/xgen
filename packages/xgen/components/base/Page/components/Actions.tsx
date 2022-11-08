@@ -8,7 +8,7 @@ import type { IPropsActions } from '../types'
 
 const Index = (props: IPropsActions) => {
 	const { actions } = props
-      const onAction = useAction()
+	const onAction = useAction()
 
 	return (
 		<Fragment>

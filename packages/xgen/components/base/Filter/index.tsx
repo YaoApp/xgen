@@ -71,10 +71,7 @@ const Index = (props: IPropsFilter) => {
 						</Button>
 					</Col>
 					<Col span={2}>
-						<Button
-							className='w_100 flex justify_center align_center'
-							htmlType='reset'
-						>
+						<Button className='w_100 flex justify_center align_center' htmlType='reset'>
 							{locales[locale].reset}
 						</Button>
 					</Col>
@@ -85,12 +82,7 @@ const Index = (props: IPropsFilter) => {
 							<Tooltip title={is_cn ? '更多筛选项' : 'More Filters'}>
 								<Button
 									className='btn_more no_text w_100 flex justify_center align_center'
-									icon={
-										<Icon
-											name='icon-filter'
-											size={15}
-										></Icon>
-									}
+									icon={<Icon name='icon-filter' size={15}></Icon>}
 									onClick={() => setVisibleMore(true)}
 								></Button>
 							</Tooltip>

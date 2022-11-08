@@ -40,26 +40,6 @@ export default {
 }
 
 export const colors = {
-	light: [
-		'#516b91',
-		'#59c4e6',
-		'#edafda',
-		'#93b7e3',
-		'#a5e7f0',
-		'#cbb0e3',
-		'#e01f54',
-		'#ffb248',
-		'fe8463'
-	],
-	dark: [
-		'#4992ff',
-		'#7cffb2',
-		'#fddd60',
-		'#ff6e76',
-		'#58d9f9',
-		'#05c091',
-		'#ff8a45',
-		'#8d48e3',
-		'#dd79ff'
-	]
+	light: ['#516b91', '#59c4e6', '#edafda', '#93b7e3', '#a5e7f0', '#cbb0e3', '#e01f54', '#ffb248', 'fe8463'],
+	dark: ['#4992ff', '#7cffb2', '#fddd60', '#ff6e76', '#58d9f9', '#05c091', '#ff8a45', '#8d48e3', '#dd79ff']
 }

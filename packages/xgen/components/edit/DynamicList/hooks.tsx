@@ -83,10 +83,7 @@ export const useItemText = (it: any, item: any) => {
 			return data.reduce((total, item) => {
 				total.push({
 					label: item.name || item.label,
-					value:
-						props.string === '1'
-							? String(item.id || item.value)
-							: item.id || item.value
+					value: props.string === '1' ? String(item.id || item.value) : item.id || item.value
 				})
 
 				return total
@@ -109,10 +106,7 @@ export const useItemText = (it: any, item: any) => {
 			if (Array.isArray(item[it.key])) {
 				const target_label = item[it.key].reduce(
 					(total: { arr: Array<string>; target: any }, item: string) => {
-						const _target = find(
-							total.target,
-							(option) => option.value === item
-						)
+						const _target = find(total.target, (option) => option.value === item)
 
 						total.arr.push(_target?.label || it.title)
 						total.target = _target?.children || []
@@ -128,14 +122,11 @@ export const useItemText = (it: any, item: any) => {
 
 		if (it.edit.type === 'treeSelect') {
 			if (Array.isArray(item[it.key])) {
-				const target_label = item[it.key].reduce(
-					(total: Array<string>, item: string) => {
-						total.push(item.split(':')[0])
+				const target_label = item[it.key].reduce((total: Array<string>, item: string) => {
+					total.push(item.split(':')[0])
 
-						return total
-					},
-					[]
-				)
+					return total
+				}, [])
 
 				return target_label.join(' & ')
 			}

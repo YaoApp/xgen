@@ -40,10 +40,7 @@ export default class Model {
 
 		this.rendered = true
 		this.setting = res
-		this.sections = this.column_utils.reduceSections(
-			res.form.sections || [],
-			res.fields.form
-		)
+		this.sections = this.column_utils.reduceSections(res.form.sections || [], res.fields.form)
 	}
 
 	async find() {
@@ -59,14 +56,9 @@ export default class Model {
 	}
 
 	async save(data: TableType.SaveRequest) {
-		const hideLoading = message.loading(
-			this.global.locale_messages.messages.table.save.loading
-		)
+		const hideLoading = message.loading(this.global.locale_messages.messages.table.save.loading)
 
-		const { err } = await this.form.save<TableType.SaveRequest, TableType.SaveResponse>(
-			this.model,
-			data
-		)
+		const { err } = await this.form.save<TableType.SaveRequest, TableType.SaveResponse>(this.model, data)
 
 		hideLoading()
 
@@ -84,14 +76,9 @@ export default class Model {
 	}
 
 	async delete(primary_value: number, params: Action.FormDeleteParams) {
-		const hideLoading = message.loading(
-			this.global.locale_messages.messages.table.delete.loading
-		)
+		const hideLoading = message.loading(this.global.locale_messages.messages.table.delete.loading)
 
-		const { err } = await this.form.delete<TableType.DeleteResponse>(
-			this.model,
-			primary_value
-		)
+		const { err } = await this.form.delete<TableType.DeleteResponse>(this.model, primary_value)
 
 		hideLoading()
 
@@ -107,9 +94,9 @@ export default class Model {
 			window.$app.Event.emit(`${this.namespace.value}/back`)
 		}
 
-            if (params?.pathname) {
+		if (params?.pathname) {
 			window.$app.Event.emit(`${this.namespace.value}/back`)
-                  
+
 			history.push(params.pathname)
 		}
 	}

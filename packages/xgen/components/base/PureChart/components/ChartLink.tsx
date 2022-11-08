@@ -10,10 +10,7 @@ const Index = (props: IPropsChartLink) => {
 
 	return (
 		<Tooltip title={link_tooltip}>
-			<Link
-				className='chart_link flex justify_center align_center'
-				to={link}
-			>
+			<Link className='chart_link flex justify_center align_center' to={link}>
 				<Icon name='icon-arrow-right' size={12}></Icon>
 			</Link>
 		</Tooltip>

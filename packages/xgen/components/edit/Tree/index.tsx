@@ -49,8 +49,8 @@ const Index = (props: IProps) => {
 	}, [])
 
 	return (
-            <Item className={ styles._local } { ...itemProps } { ...{ __bind, __name } }>
-                  {/* @ts-ignore */}
+		<Item className={styles._local} {...itemProps} {...{ __bind, __name }}>
+			{/* @ts-ignore */}
 			<Custom {...rest_props} treeData={x.options} checkable></Custom>
 		</Item>
 	)

@@ -16,7 +16,7 @@ import type { Component } from '@/types'
 
 const Index = (props: IPropsComponentCommon) => {
 	const { namespace, primary, field_detail, data_item } = props
-      const edit_type = field_detail.edit.type
+	const edit_type = field_detail.edit.type
 
 	const { form_bind, form_value } = useMemo(
 		() =>

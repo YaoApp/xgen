@@ -57,9 +57,7 @@ const Custom = window.$app.memo((props: CustomProps) => {
 
 	return (
 		<div className={clsx([styles._local, styles[filetype]])}>
-			<Upload {...props_upload}>
-				{visible_btn && <UploadBtn {...props_upload_btn}></UploadBtn>}
-			</Upload>
+			<Upload {...props_upload}>{visible_btn && <UploadBtn {...props_upload_btn}></UploadBtn>}</Upload>
 		</div>
 	)
 })

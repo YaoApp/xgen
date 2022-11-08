@@ -18,8 +18,7 @@ interface IProps extends Omit<IPropsBatch, 'batch'> {
 }
 
 const Index = (props: IProps) => {
-	const { namespace, columns, deletable, visible_modal, setBatchActive, setVisibleModal } =
-		props
+	const { namespace, columns, deletable, visible_modal, setBatchActive, setVisibleModal } = props
 	const { options, setOptions } = useOptions(columns)
 	const [form] = useForm()
 	const { getFieldsValue } = form

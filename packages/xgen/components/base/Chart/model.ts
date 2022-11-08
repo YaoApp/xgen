@@ -42,10 +42,7 @@ export default class Model {
 		this.chart_columns = this.column_utils.reduceAny(res.chart.columns, res.fields.chart)
 
 		if (res.filter && res.fields.filter) {
-			this.filter_columns = this.column_utils.reduce(
-				res.filter.columns,
-				res.fields.filter
-			)
+			this.filter_columns = this.column_utils.reduce(res.filter.columns, res.fields.filter)
 		}
 	}
 
@@ -66,7 +63,7 @@ export default class Model {
 		this.data = res
 	}
 
-      init(parent: Component.StackComponent[ 'parent' ], model: Component.StackComponent[ 'model' ]) {
+	init(parent: Component.StackComponent['parent'], model: Component.StackComponent['model']) {
 		this.rendered = false
 		this.parent = parent
 		this.model = model

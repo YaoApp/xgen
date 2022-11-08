@@ -9,16 +9,11 @@ import type { Response } from '@/types'
 export default class Index {
 	@catchError()
 	save<Data, Res>(model: string, data: Data) {
-		return axios.post<{}, Response<Res>>(
-			`/api/${window.$app.api_prefix}/form/${model}/save`,
-			data
-		)
+		return axios.post<{}, Response<Res>>(`/api/${window.$app.api_prefix}/form/${model}/save`, data)
 	}
 
 	@catchError()
 	delete<Res>(model: string, primary_value: number) {
-		return axios.post<{}, Response<Res>>(
-			`/api/${window.$app.api_prefix}/form/${model}/delete/${primary_value}`
-		)
+		return axios.post<{}, Response<Res>>(`/api/${window.$app.api_prefix}/form/${model}/delete/${primary_value}`)
 	}
 }

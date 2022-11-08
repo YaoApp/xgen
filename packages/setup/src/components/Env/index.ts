@@ -6,7 +6,7 @@ import { getFormJson } from '../../utils'
 import DynamicValue from '../DynamicValue/index.svelte'
 
 const preventDefault = (e: SubmitEvent) => {
-      e.preventDefault()
+	e.preventDefault()
 }
 
 onMount(() => {
@@ -20,8 +20,8 @@ onMount(() => {
 })
 
 const next = () => {
-      const form = document.getElementById('form_env')! as HTMLFormElement
-      
+	const form = document.getElementById('form_env')! as HTMLFormElement
+
 	if (!form.checkValidity()) return
 
 	steps.set(2)

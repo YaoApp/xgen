@@ -24,7 +24,7 @@ const Index = (props: IPropsPureTable) => {
 		setBatchSelected
 	} = props
 	const locale = getLocale()
-      const in_form = parent === 'Form'
+	const in_form = parent === 'Form'
 
 	const list_columns = useColumns(namespace, primary, columns, table_props, operation)
 
@@ -34,9 +34,7 @@ const Index = (props: IPropsPureTable) => {
 		total: pagination.total,
 		showSizeChanger: true,
 		showTotal: (total: number) =>
-			locales[locale].pagination.total.before +
-			total +
-			locales[locale].pagination.total.after
+			locales[locale].pagination.total.before + total + locales[locale].pagination.total.after
 	}
 
 	const row_selection: TableRowSelection<any> = {

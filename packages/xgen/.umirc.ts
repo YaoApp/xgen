@@ -1,13 +1,6 @@
 import { defineConfig } from '@umijs/max'
 
-import {
-	base,
-	chainWebpack,
-	conventionRoutes,
-	extraBabelPlugins,
-	links,
-	proxy
-} from './build/config'
+import { base, chainWebpack, conventionRoutes, extraBabelPlugins, links, proxy } from './build/config'
 
 export default defineConfig({
 	mfsu: { esbuild: false, strategy: 'normal' },
@@ -17,13 +10,13 @@ export default defineConfig({
 	publicPath: base,
 	proxy,
 	links,
-      antd: { import: false },
+	antd: { import: false },
 	codeSplitting: { jsStrategy: 'depPerChunk' },
-      locale: { default: 'zh-CN', antd: true, baseNavigator: true },
+	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
 	polyfill: { imports: ['core-js/features/promise/try'] },
 	extraBabelPlugins,
 	conventionRoutes,
-      define: { $runtime: { BASE: process.env.BASE } },
-      // @ts-ignore
-	chainWebpack,
+	define: { $runtime: { BASE: process.env.BASE } },
+	// @ts-ignore
+	chainWebpack
 })

@@ -70,9 +70,7 @@ const Index = (props: IProps) => {
 		<If condition={range}>
 			<Then>
 				<Item {...itemProps} {...{ __bind, __name }}>
-					<CustomRangePicker
-						{...(rest_props as TimeRangePickerProps)}
-					></CustomRangePicker>
+					<CustomRangePicker {...(rest_props as TimeRangePickerProps)}></CustomRangePicker>
 				</Item>
 			</Then>
 			<Else>

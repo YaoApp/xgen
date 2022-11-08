@@ -15,7 +15,7 @@ const Index = (props: IPropsMenu) => {
 	const { locale_messages, visible, blocks, title, items } = props
 	const [visible_input, { toggle }] = useBoolean(false)
 	const [current_items, setCurrentItems] = useState<IPropsMenu['items']>([])
-      const [ input, setInput ] = useState('')
+	const [input, setInput] = useState('')
 
 	useEffect(() => {
 		if (!items) return
@@ -84,9 +84,7 @@ const Index = (props: IPropsMenu) => {
 								<div className='icon_wrap flex justify_center align_center'>
 									<Icon name={item.icon}></Icon>
 								</div>
-								<span className='text line_clamp_2'>
-									{item.name}
-								</span>
+								<span className='text line_clamp_2'>{item.name}</span>
 							</Link>
 						))}
 					</div>

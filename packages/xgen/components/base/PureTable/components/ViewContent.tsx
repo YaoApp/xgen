@@ -23,7 +23,7 @@ const Index = (props: IPropsComponentCommon) => {
 						form_value: getDeepValue(field_detail.bind, data_item)
 				  },
 		[field_detail, data_item]
-      )
+	)
 
 	if (!field_detail.view?.type) return <div className='line_clamp_2'>{view_text || '-'}</div>
 

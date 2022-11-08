@@ -34,9 +34,7 @@ const Index = (props: IProps) => {
 				<span className='title'>{title}</span>
 				{actions}
 			</div>
-			<div className='modal_content_wrap w_100 border_box flex flex_column'>
-				{content}
-			</div>
+			<div className='modal_content_wrap w_100 border_box flex flex_column'>{content}</div>
 		</Modal>
 	)
 }

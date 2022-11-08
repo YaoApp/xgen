@@ -10,10 +10,7 @@ const Index = (props: FallbackProps) => {
 	const { name, message, stack } = error
 
 	return (
-		<div
-			className={clsx([styles._local, 'w_100 border_box flex flex_column'])}
-			role='alert'
-		>
+		<div className={clsx([styles._local, 'w_100 border_box flex flex_column'])} role='alert'>
 			<div className='error_header w_100 flex justify_between align_center'>
 				<span className='error_name'>Error name: {name}</span>
 				<button

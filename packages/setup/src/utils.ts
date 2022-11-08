@@ -4,8 +4,7 @@ export const getFormJson = (form: HTMLFormElement) => {
 
 	formdata.forEach((value, key) => {
 		if (!jsondata[key]) {
-			jsondata[key] =
-				formdata.getAll(key).length > 1 ? formdata.getAll(key) : formdata.get(key)
+			jsondata[key] = formdata.getAll(key).length > 1 ? formdata.getAll(key) : formdata.get(key)
 		}
 	})
 

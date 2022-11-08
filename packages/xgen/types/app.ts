@@ -29,7 +29,7 @@ export declare namespace App {
 		/** brand logo, default is YAO */
 		logo?: string
 		/** favicon, default is YAO */
-            favicon?: string
+		favicon?: string
 		/** login config */
 		login: {
 			/** Configure admin login setting */

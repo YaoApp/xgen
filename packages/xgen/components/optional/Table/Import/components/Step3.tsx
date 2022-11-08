@@ -14,7 +14,7 @@ const Index = (props: IPropsStep3) => {
 	const [data, setData] = useState<any>({})
 	const namespace = 'Page/Import/preview'
 
-      const save = useMemoizedFn((v: any) => {
+	const save = useMemoizedFn((v: any) => {
 		const index = findIndex(data.data, (item: any) => item.id === v.id)
 		const _data = cloneDeep(data.data)
 

@@ -46,14 +46,11 @@ const Index = (props: IPropsItem) => {
 			onChange(item_key, { [v_key]: filter_value })
 		}
 		if (it.edit.type === 'treeSelect' && Array.isArray(v[v_key])) {
-			const value = v[v_key].reduce(
-				(total: Array<string>, item: { label: string; value: string }) => {
-					total.push(`${item.label}:${item.value}`)
+			const value = v[v_key].reduce((total: Array<string>, item: { label: string; value: string }) => {
+				total.push(`${item.label}:${item.value}`)
 
-					return total
-				},
-				[]
-			)
+				return total
+			}, [])
 
 			onChange(item_key, { [v_key]: value })
 		} else {
@@ -80,9 +77,7 @@ const Index = (props: IPropsItem) => {
 					>
 						<Dynamic
 							type='edit'
-							name={it.edit.type.replace(/^\S/, (s: string) =>
-								s.toUpperCase()
-							)}
+							name={it.edit.type.replace(/^\S/, (s: string) => s.toUpperCase())}
 							props={{
 								...it.edit.props,
 								name: v_key,

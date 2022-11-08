@@ -18,10 +18,7 @@ export default class Index {
 			target['showSearch'] = {
 				filter: (input, path) =>
 					path.some(
-						(option) =>
-							String(option?.label)
-								.toLowerCase()
-								.indexOf(input.toLowerCase()) >= 0
+						(option) => String(option?.label).toLowerCase().indexOf(input.toLowerCase()) >= 0
 					)
 			}
 		}

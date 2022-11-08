@@ -18,12 +18,7 @@ const Index = (props: IProps & { data: number; mutation?: string }) => {
 			/>
 			{props.unit && <span className='unit'>{props.unit}</span>}
 			{props.mutation && (
-				<span
-					className={clsx([
-						'mutaion',
-						props.mutation.indexOf('+') !== -1 ? 'up' : 'down'
-					])}
-				>
+				<span className={clsx(['mutaion', props.mutation.indexOf('+') !== -1 ? 'up' : 'down'])}>
 					{props.mutation}%
 				</span>
 			)}

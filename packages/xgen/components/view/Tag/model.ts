@@ -45,10 +45,7 @@ export default class Index {
 			if (session_cache) return (this.options = session_cache)
 		}
 
-		const { res, err } = await this.service.getOptions<Component.Params, Component.Options>(
-			remote.api,
-			params
-		)
+		const { res, err } = await this.service.getOptions<Component.Params, Component.Options>(remote.api, params)
 
 		if (err) return
 

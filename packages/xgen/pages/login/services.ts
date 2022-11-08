@@ -16,10 +16,7 @@ export default class Index {
 
 	@catchError()
 	login<Req, Res>(data: Req, url?: string) {
-		return axios.post<Req, Response<Res>>(
-			url ? url : `/api/${window.$app.api_prefix}/login/admin`,
-			data
-		)
+		return axios.post<Req, Response<Res>>(url ? url : `/api/${window.$app.api_prefix}/login/admin`, data)
 	}
 
 	@catchError()

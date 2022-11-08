@@ -5,6 +5,6 @@ import { Handle, memo, sleep } from '@/knife'
 window.$app = {
 	memo,
 	sleep,
-      Handle,
-      Event:new EventEmitter()
+	Handle,
+	Event: new EventEmitter()
 }

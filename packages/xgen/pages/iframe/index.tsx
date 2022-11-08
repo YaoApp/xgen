@@ -22,8 +22,8 @@ const Index = () => {
 	return (
 		<iframe
 			className='w_100 h_100vh'
-                  src={ src }
-                  frameBorder='0'
+			src={src}
+			frameBorder='0'
 			style={{ backgroundColor: 'var(--color_bg)' }}
 		></iframe>
 	)

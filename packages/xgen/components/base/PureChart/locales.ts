@@ -5,6 +5,6 @@ export default {
 		link_tooltip: '查看更多数据'
 	},
 	'en-US': {
-            link_tooltip: 'Check more data'
+		link_tooltip: 'Check more data'
 	}
 } as Locale

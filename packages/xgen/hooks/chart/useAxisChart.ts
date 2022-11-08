@@ -85,8 +85,7 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 				axisLine: { show: false },
 				axisLabel: {
 					...(props.axisLabel || {}),
-					formatter: (v: string) =>
-						wrapText(v, props.textWrap || false, props.textLength || 8)
+					formatter: (v: string) => wrapText(v, props.textWrap || false, props.textLength || 8)
 				}
 			},
 			[props.vertical ? 'xAxis' : 'yAxis']: y_data,

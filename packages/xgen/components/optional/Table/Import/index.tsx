@@ -124,12 +124,7 @@ const Index = (props: IProps) => {
 										className={clsx([
 											'btn_action border_box flex justify_center align_center clickable'
 										])}
-										icon={
-											<Icon
-												name={it.icon}
-												size={15}
-											></Icon>
-										}
+										icon={<Icon name={it.icon} size={15}></Icon>}
 										key={index}
 										onClick={() =>
 											onAction({
@@ -148,9 +143,7 @@ const Index = (props: IProps) => {
 						{step < 3 && (
 							<Button
 								className='btn btn_close'
-								icon={
-									<Icon name='icon-arrow-left' size={15}></Icon>
-								}
+								icon={<Icon name='icon-arrow-left' size={15}></Icon>}
 								onClick={() => {
 									confirm({
 										title: '确认取消导入?',
@@ -164,36 +157,18 @@ const Index = (props: IProps) => {
 							</Button>
 						)}
 						{step > 0 && step < 3 && (
-							<Button
-								className='btn ml_16'
-								onClick={() => setStep(step - 1)}
-							>
+							<Button className='btn ml_16' onClick={() => setStep(step - 1)}>
 								上一步
 							</Button>
 						)}
-						<Button
-							className='btn ml_16'
-							type='primary'
-							disabled={step === 0}
-							onClick={next}
-						>
+						<Button className='btn ml_16' type='primary' disabled={step === 0} onClick={next}>
 							{step === 3 ? '完成' : '下一步'}
 						</Button>
 					</div>
 				</div>
-				<div
-					className={clsx([
-						styles._local,
-						'custom_wrap w_100 border_box flex flex_column'
-					])}
-				>
+				<div className={clsx([styles._local, 'custom_wrap w_100 border_box flex flex_column'])}>
 					<Steps {...{ step }}></Steps>
-					<Tabs
-						activeKey={`${step}`}
-						renderTabBar={undefined}
-						animated
-						items={items}
-					></Tabs>
+					<Tabs activeKey={`${step}`} renderTabBar={undefined} animated items={items}></Tabs>
 				</div>
 			</Modal>
 		</Fragment>

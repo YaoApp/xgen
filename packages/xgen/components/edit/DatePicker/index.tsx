@@ -37,10 +37,7 @@ const Index = (props: IProps) => {
 
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
-			<Custom
-				placeholder={`${is_cn ? '请选择' : 'Please select '}${__name}`}
-				{...rest_props}
-			></Custom>
+			<Custom placeholder={`${is_cn ? '请选择' : 'Please select '}${__name}`} {...rest_props}></Custom>
 		</Item>
 	)
 }

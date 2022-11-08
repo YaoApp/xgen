@@ -9,9 +9,6 @@ import type { Response } from '@/types'
 export default class Index {
 	@catchError()
 	search<Req, Res>(model: string, params?: Req) {
-		return axios.get<Req, Response<Res>>(
-			`/api/${window.$app.api_prefix}/chart/${model}/data`,
-			{ params }
-		)
+		return axios.get<Req, Response<Res>>(`/api/${window.$app.api_prefix}/chart/${model}/data`, { params })
 	}
 }

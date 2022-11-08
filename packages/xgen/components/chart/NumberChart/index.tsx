@@ -14,15 +14,7 @@ import styles from './index.less'
 
 import type { Component } from '@/types'
 
-echarts.use([
-	CanvasRenderer,
-	BarChart,
-	LineChart,
-	TitleComponent,
-	GridComponent,
-	AriaComponent,
-	TooltipComponent
-])
+echarts.use([CanvasRenderer, BarChart, LineChart, TitleComponent, GridComponent, AriaComponent, TooltipComponent])
 
 export interface IProps extends Component.PropsChartComponent {
 	data: Array<any>
@@ -89,10 +81,7 @@ const Index = (props: IProps) => {
 					is_line && 'is_line'
 				])}
 			>
-				<BaseNumber
-					{...props}
-					number={current[props.valueKey || 'value']}
-				></BaseNumber>
+				<BaseNumber {...props} number={current[props.valueKey || 'value']}></BaseNumber>
 			</div>
 			<div
 				className='chart_wrap w_100 flex justify_between align_center'

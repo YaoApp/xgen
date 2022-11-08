@@ -32,9 +32,7 @@ const Index = (props: IProps) => {
 			<Mentions
 				className={styles._local}
 				dropdownClassName={styles._dropdown}
-				placeholder={`${
-					is_cn ? '请输入@选择' : 'Please input @ to mention someone'
-				}${__name}`}
+				placeholder={`${is_cn ? '请输入@选择' : 'Please input @ to mention someone'}${__name}`}
 				{...rest_props}
 				{...x.target_props}
 			>

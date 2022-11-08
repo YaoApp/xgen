@@ -26,9 +26,7 @@ const light_vars = getModifyVarsString(light_theme)
 const dark_vars = getModifyVarsString(dark_theme)
 
 const compile = (vars: string, type: 'light' | 'dark') => {
-	child_process.execSync(
-		`lessc --js --compress -x ${vars} ${antd_theme_path} ${output_path}/${type}.css`
-	)
+	child_process.execSync(`lessc --js --compress -x ${vars} ${antd_theme_path} ${output_path}/${type}.css`)
 }
 
 compile(light_vars, 'light')

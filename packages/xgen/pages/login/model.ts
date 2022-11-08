@@ -11,15 +11,7 @@ import { history } from '@umijs/max'
 import Service from './services'
 
 import type { Global, Utils } from '@/types'
-import type {
-	UserType,
-	Captcha,
-	ReqLogin,
-	ResLogin,
-	FormValues,
-	ResAuthByLark,
-	ReqLoginByLark
-} from './types'
+import type { UserType, Captcha, ReqLogin, ResLogin, FormValues, ResAuthByLark, ReqLoginByLark } from './types'
 
 @injectable()
 export default class Model {
@@ -124,15 +116,11 @@ export default class Model {
 
 		if (is_email) {
 			if (!reg_email.test(mobile)) {
-				return message.warning(
-					this.global.locale_messages.login.form.validate.email
-				)
+				return message.warning(this.global.locale_messages.login.form.validate.email)
 			}
 		} else {
 			if (!reg_mobile.test(mobile)) {
-				return message.warning(
-					this.global.locale_messages.login.form.validate.mobile
-				)
+				return message.warning(this.global.locale_messages.login.form.validate.mobile)
 			}
 		}
 

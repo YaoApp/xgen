@@ -59,10 +59,7 @@ const Index = (props: IProps) => {
 						className='option_item cursor_point flex justify_center align_center transition_normal clickable'
 						onClick={() => setBatchActive(true)}
 					>
-						<EditOutlined
-							className='icon_option'
-							style={{ fontSize: 15 }}
-						/>
+						<EditOutlined className='icon_option' style={{ fontSize: 15 }} />
 					</a>
 				</Tooltip>
 			)}

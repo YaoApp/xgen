@@ -10,8 +10,8 @@ interface IProps extends InputNumberProps, Component.PropsEditComponent {}
 
 const Index = (props: IProps) => {
 	const { __bind, __name, itemProps, ...rest_props } = props
-      const is_cn = getLocale() === 'zh-CN'
-      
+	const is_cn = getLocale() === 'zh-CN'
+
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
 			<InputNumber

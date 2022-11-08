@@ -39,10 +39,7 @@ export default class Model {
 	}
 
 	async getSetting() {
-		const { res, err } = await this.common.getSetting<TableType.Setting>(
-			'table',
-			this.model
-		)
+		const { res, err } = await this.common.getSetting<TableType.Setting>('table', this.model)
 
 		if (err) return
 
@@ -50,17 +47,11 @@ export default class Model {
 		this.setting = res
 
 		if (res.header.preset?.batch?.columns && res.header.preset?.batch?.columns?.length) {
-			this.batch_columns = this.column_utils.reduce(
-				res.header.preset.batch.columns,
-				res.fields.table
-			)
+			this.batch_columns = this.column_utils.reduce(res.header.preset.batch.columns, res.fields.table)
 		}
 
 		if (res.filter?.columns && res.filter?.columns?.length) {
-			this.filter_columns = this.column_utils.reduce(
-				res.filter.columns,
-				res.fields.filter
-			)
+			this.filter_columns = this.column_utils.reduce(res.filter.columns, res.fields.filter)
 		}
 
 		if (res.table.columns && res.table.columns?.length) {
@@ -93,14 +84,9 @@ export default class Model {
 	}
 
 	async save(data: TableType.SaveRequest) {
-		const hideLoading = message.loading(
-			this.global.locale_messages.messages.table.save.loading
-		)
+		const hideLoading = message.loading(this.global.locale_messages.messages.table.save.loading)
 
-		const { err } = await this.table.save<TableType.SaveRequest, TableType.SaveResponse>(
-			this.model,
-			data
-		)
+		const { err } = await this.table.save<TableType.SaveRequest, TableType.SaveResponse>(this.model, data)
 
 		hideLoading()
 
@@ -112,14 +98,9 @@ export default class Model {
 	}
 
 	async delete(primary_value: number) {
-		const hideLoading = message.loading(
-			this.global.locale_messages.messages.table.delete.loading
-		)
+		const hideLoading = message.loading(this.global.locale_messages.messages.table.delete.loading)
 
-		const { err } = await this.table.delete<TableType.DeleteResponse>(
-			this.model,
-			primary_value
-		)
+		const { err } = await this.table.delete<TableType.DeleteResponse>(this.model, primary_value)
 
 		hideLoading()
 
@@ -131,9 +112,7 @@ export default class Model {
 	}
 
 	async batchDelete() {
-		const hideLoading = message.loading(
-			this.global.locale_messages.messages.table.delete.loading
-		)
+		const hideLoading = message.loading(this.global.locale_messages.messages.table.delete.loading)
 
 		const { err } = await this.service.batchDelete<TableType.DeleteResponse>(
 			this.model,
@@ -151,9 +130,7 @@ export default class Model {
 	}
 
 	async batchUpdate(data: Global.AnyObject) {
-		const hideLoading = message.loading(
-			this.global.locale_messages.messages.table.save.loading
-		)
+		const hideLoading = message.loading(this.global.locale_messages.messages.table.save.loading)
 
 		const { err } = await this.service.batchUpdate<Global.AnyObject, TableType.SaveRequest>(
 			this.model,

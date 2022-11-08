@@ -29,12 +29,7 @@ const Index = (props: IProps) => {
 	return (
 		<div className='w_100 flex flex_column'>
 			{itemProps?.label !== '' && (
-				<div
-					className={clsx([
-						styles.header,
-						'w_100 flex justify_between align_center'
-					])}
-				>
+				<div className={clsx([styles.header, 'w_100 flex justify_between align_center'])}>
 					<span className='title'>{__name}</span>
 					<div className='actions_wrap'></div>
 				</div>
