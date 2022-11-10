@@ -1,4 +1,4 @@
-name: Deploy Actions
+name: Build | Release
 
 on:
       push:
@@ -9,8 +9,8 @@ on:
                   - LICENSE
 
 jobs:
-      Deploy:
-            runs-on: ubuntu-20.04
+      Build:
+            runs-on: ubuntu-latest
             steps:
                   - name: Checkout Repo
                     uses: actions/checkout@master
@@ -45,3 +45,29 @@ jobs:
 
                   - name: Test Build
                     run: npm run build --filter=xgen
+
+                  - name: Upload Artifact
+                    uses: actions/upload-artifact@v3
+                    if: "contains(github.event.head_commit.message, '[release]')"
+                    with:
+                          name: xgen_dist
+                          path: packages/xgen/dist
+
+      Release:
+            runs-on: ubuntu-latest
+            if: "contains(github.event.head_commit.message, '[release]')"
+            steps:
+                  - name: Checkout
+                    uses: actions/checkout@master
+
+                  - name: Download Artifact
+                    uses: actions/download-artifact@v3
+                    with:
+                          name: xgen_dist
+                          path: xgen_dist
+
+                  - name: Release
+                    uses: softprops/action-gh-release@v1
+                    with:
+                          files: xgen_dist
+                          body_path: CHANGELOG.md
