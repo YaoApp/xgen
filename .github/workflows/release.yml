@@ -12,10 +12,39 @@ jobs:
                   - name: Checkout Repo
                     uses: actions/checkout@master
 
-                  - name: Download Artifact
-                    uses: actions/download-artifact@v3
+                  - name: Setup Node.js
+                    uses: actions/setup-node@v3
                     with:
-                          name: release_xgen
+                          node-version: 18
+
+                  - name: Setup Pnpm
+                    uses: pnpm/action-setup@v2
+                    with:
+                          version: latest
+                          run_install: false
+
+                  - name: Get pnpm store directory
+                    id: pnpm-cache
+                    shell: bash
+                    run: |
+                          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+                  - uses: actions/cache@v3
+                    name: Setup pnpm cache
+                    with:
+                          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+                          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+                          restore-keys: |
+                                ${{ runner.os }}-pnpm-store-
+
+                  - name: Install
+                    run: pnpm install
+
+                  - name: Test Build
+                    run: pnpm run build --filter=xgen
+
+                  - name: Compress
+                    run: tar -zcvf release_xgen.tgz packages/xgen/dist
 
                   - name: Release
                     uses: softprops/action-gh-release@v1
