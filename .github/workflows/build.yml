@@ -1,4 +1,4 @@
-name: Build | Release
+name: Build
 
 on:
       push:
@@ -49,11 +49,10 @@ jobs:
                   - name: Compress
                     run: tar -zcvf release_xgen.tgz packages/xgen/dist
 
-                  - name: Release
-                    if: "contains(github.event.head_commit.message, '[release]')"
-                    uses: softprops/action-gh-release@v1
+                  - name: Upload Artifact
+                    uses: actions/upload-artifact@v3
                     with:
-                          files: release_xgen.tgz
-                          body_path: CHANGELOG.md
+                          name: release_xgen
+                          path: release_xgen.tgz
 
                  
