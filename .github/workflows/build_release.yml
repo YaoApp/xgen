@@ -44,30 +44,16 @@ jobs:
                     run: pnpm install
 
                   - name: Test Build
-                    run: npm run build --filter=xgen
+                    run: pnpm run build --filter=xgen
 
-                  - name: Upload Artifact
-                    uses: actions/upload-artifact@v3
-                    if: "contains(github.event.head_commit.message, '[release]')"
-                    with:
-                          name: xgen_dist
-                          path: packages/xgen/dist
-
-      Release:
-            runs-on: ubuntu-latest
-            if: "contains(github.event.head_commit.message, '[release]')"
-            steps:
-                  - name: Checkout
-                    uses: actions/checkout@master
-
-                  - name: Download Artifact
-                    uses: actions/download-artifact@v3
-                    with:
-                          name: xgen_dist
-                          path: xgen_dist
+                  - name: Compress
+                    run: tar -zcvf release_xgen.tgz packages/xgen/dist
 
                   - name: Release
+                    if: "contains(github.event.head_commit.message, '[release]')"
                     uses: softprops/action-gh-release@v1
                     with:
-                          files: xgen_dist
+                          files: release_xgen.tgz
                           body_path: CHANGELOG.md
+
+                 
