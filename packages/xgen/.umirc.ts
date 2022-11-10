@@ -11,7 +11,7 @@ export default defineConfig({
 	proxy,
 	links,
 	antd: { import: false },
-	codeSplitting: { jsStrategy: 'depPerChunk' },
+	codeSplitting: { jsStrategy: 'granularChunks' },
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
 	polyfill: { imports: ['core-js/features/promise/try'] },
 	extraBabelPlugins,
