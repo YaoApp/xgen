@@ -53,4 +53,4 @@ jobs:
                     uses: softprops/action-gh-release@v1
                     with:
                           files: release_xgen.tgz
-                          body_path: changelogs/$RELEASE_VERSION.md
+                          body_path: changelogs/${{ env.RELEASE_VERSION }}.md
