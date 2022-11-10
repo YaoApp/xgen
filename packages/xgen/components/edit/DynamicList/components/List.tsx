@@ -1,10 +1,10 @@
-import { useDynamicList } from 'ahooks'
+import { useDynamicList, useMemoizedFn } from 'ahooks'
 import { Empty, Row } from 'antd'
 import clsx from 'clsx'
 import { Fragment, useEffect, useState } from 'react'
 
-import { Icon } from '@/widgets'
 import { hidePopover } from '@/knife'
+import { Icon } from '@/widgets'
 
 import { useColumns } from '../hooks'
 import Children from './Children'
@@ -45,7 +45,7 @@ const Index = (props: IPropsList) => {
 		}
 	}
 
-	const onChange = (key: number, v: any) => {
+	const onChange = useMemoizedFn((key: number, v: any) => {
 		const index = getIndex(key)
 
 		const item = {
@@ -56,8 +56,8 @@ const Index = (props: IPropsList) => {
 		replace(index, item)
 
 		hidePopover('dynamic_list_td_popover')
-	}
-
+      })
+      
 	return (
 		<Fragment>
 			<div className='table_title_wrap flex justify_between align_center'>

@@ -19,7 +19,7 @@ export const useColumns = (setting: any) => {
 
 			if (it.width) item['width'] = it.width
 
-			item['key'] = _columns[item.label].edit.props.value.replace(':', '')
+			item['key'] = _columns[item.name].bind
 
 			total.push(item)
 
@@ -35,7 +35,7 @@ export const useColumns = (setting: any) => {
 
 			if (it.width) item['width'] = it.width
 
-			item['key'] = _columns[item.label].edit.props.value.replace(':', '')
+			item['key'] = _columns[item.name].bind
 
 			total.push(item)
 
@@ -79,7 +79,7 @@ export const useItemText = (it: any, item: any) => {
 	const options = useMemo(() => {
 		if (!data.length) return []
 
-		if (it.edit.type === 'select') {
+		if (it.edit.type === 'Select') {
 			return data.reduce((total, item) => {
 				total.push({
 					label: item.name || item.label,
@@ -96,44 +96,15 @@ export const useItemText = (it: any, item: any) => {
 	const text = useMemo(() => {
 		if (item[it.key] === undefined) return it.title
 
-		if (it.edit.type === 'select') {
+		if (it.edit.type === 'Select') {
 			const target = find(options, (option) => option.value === item[it.key])
-
-			return target?.label || it.title
-		}
-
-		if (it.edit.type === 'cascader') {
-			if (Array.isArray(item[it.key])) {
-				const target_label = item[it.key].reduce(
-					(total: { arr: Array<string>; target: any }, item: string) => {
-						const _target = find(total.target, (option) => option.value === item)
-
-						total.arr.push(_target?.label || it.title)
-						total.target = _target?.children || []
-
-						return total
-					},
-					{ arr: [], target: options }
-				)
-
-				return target_label.arr.join('/')
-			}
-		}
-
-		if (it.edit.type === 'treeSelect') {
-			if (Array.isArray(item[it.key])) {
-				const target_label = item[it.key].reduce((total: Array<string>, item: string) => {
-					total.push(item.split(':')[0])
-
-					return total
-				}, [])
-
-				return target_label.join(' & ')
-			}
+                  
+			return target.value
 		}
 
 		return item[it.key] !== undefined ? item[it.key] : it.title
-	}, [item, it, options])
+      }, [ item, it, options ])
+      
 
 	return text
 }

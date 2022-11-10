@@ -17,7 +17,7 @@ interface IPropsItem {
 const Index = (props: IPropsItem) => {
 	const { item, it, item_key, col_key, onChange } = props
 	const { value, ...props_no_value } = it.edit.props
-	const text = it.edit.type === 'label' ? it.edit.props.value : useItemText(it, item)
+	const text = it.edit.type === 'Label' ? it.edit.props.value : useItemText(it, item)
 
 	const change = (v: any) => {
 		onChange(item_key, v)
@@ -25,7 +25,7 @@ const Index = (props: IPropsItem) => {
 
 	return (
 		<Col span={it.width}>
-			{it.edit.type === 'label' ? (
+			{it.edit.type === 'Label' ? (
 				<div className='td_text label w_100 border_box h_100 flex justify_center align_center'>
 					<span className='text'>{text}</span>
 				</div>
@@ -47,7 +47,7 @@ const Index = (props: IPropsItem) => {
 						>
 							<Dynamic
 								type='edit'
-								name={it.edit.type.replace(/^\S/, (s: string) => s.toUpperCase())}
+								name={it.edit.type}
 								props={{
 									...props_no_value,
 									name: it.key,

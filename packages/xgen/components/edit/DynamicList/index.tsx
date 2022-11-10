@@ -1,3 +1,4 @@
+import { useAsyncEffect, useMemoizedFn } from 'ahooks'
 import axios from 'axios'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
@@ -23,22 +24,14 @@ interface IProps extends Component.PropsEditComponent, ICustom {}
 
 const Custom = (props: ICustom) => {
 	const [setting, setSetting] = useState<any>({})
-	const [data, setData] = useState<Array<any>>([])
+      const [ data, setData ] = useState<Array<any>>([])
 
-	const api = {
-		setting: `/api/${window.$app.api_prefix}/setting/${props.setting}`
-	}
+	useAsyncEffect(async () => {
+		if (!props.setting) return
 
-	const getSetting = async () => {
-		const data = await axios.get(api.setting)
+		const setting = await axios.get(`/api/${props.setting}`)
 
-		setSetting(data)
-	}
-
-	useEffect(() => {
-		if (!props?.setting) return
-
-		getSetting()
+		setSetting(setting)
 	}, [props.setting])
 
 	useEffect(() => {
@@ -46,6 +39,8 @@ const Custom = (props: ICustom) => {
 
 		setData(Array.isArray(props.value) ? props.value : props.value.data)
 	}, [props.value])
+
+	const trigger = useMemoizedFn(props.onChange)
 
 	return (
 		<div className={styles._local}>
@@ -63,7 +58,7 @@ const Custom = (props: ICustom) => {
 						type={props.type}
 						label={props.label}
 						query={props.query || {}}
-						trigger={props.onChange}
+						trigger={trigger}
 					></List>
 				)}
 			</div>
@@ -72,11 +67,11 @@ const Custom = (props: ICustom) => {
 }
 
 const Index = (props: IProps) => {
-	const { __bind, __name, __data_item, itemProps, ...rest_props } = props
+      const { __bind, __name, __data_item, itemProps, ...rest_props } = props
 
 	return (
-		<Item {...itemProps} {...{ __bind, __name }}>
-			<Custom {...rest_props}></Custom>
+		<Item {...itemProps} {...{ __bind, __name }} label=''>
+                  <Custom { ...rest_props } label={__name}></Custom>
 		</Item>
 	)
 }
