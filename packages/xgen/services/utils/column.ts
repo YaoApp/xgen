@@ -19,7 +19,7 @@ export class ColumnUtils {
 
 		if (target_item.view?.components) {
 			target_item.view.components = Object.keys(target_item.view?.components).reduce(
-				(components: { [key: string]: Common.FiledDetail }, key) => {
+				(components: { [key: string]: Common.FieldDetail }, key) => {
 					components[key] = fields[key]
 
 					return components
@@ -37,7 +37,7 @@ export class ColumnUtils {
 
 			return total
 		}, [])
-	}
+      }
 
 	reduceAny<I, O, F>(columns: Array<I & Item>, fields: F & Fields) {
 		return columns.reduce((total: Array<O>, item) => {
@@ -47,7 +47,7 @@ export class ColumnUtils {
 		}, [])
 	}
 
-	reduceSections(sections: Array<FormType.Section>, fields: Common.Fields) {
+	reduceSections(sections: Array<FormType.Section>, fields: Common.EditFields) {
 		const getSectionColumns = (total: Array<FormType.ColumnResult>, item: FormType.Column) => {
 			if ('tabs' in item) {
 				total.push({

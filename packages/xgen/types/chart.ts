@@ -6,7 +6,7 @@ export declare namespace Chart {
 		columns: Array<Common.WideColumn>
 	}
 
-	interface FiledDetail {
+	interface FieldDetail {
 		bind: string
 		link?: string
 		cardStyle?: CSSProperties
@@ -21,7 +21,7 @@ export declare namespace Chart {
 	}
 
 	interface Fields {
-		[key: string]: FiledDetail
+		[key: string]: FieldDetail
 	}
 
 	interface Setting {
@@ -44,5 +44,5 @@ export declare namespace Chart {
 		config?: Common.Config
 	}
 
-	interface Column extends Common.WideColumn, FiledDetail {}
+	interface Column extends Common.WideColumn, FieldDetail {}
 }

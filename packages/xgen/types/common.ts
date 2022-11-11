@@ -14,10 +14,10 @@ export declare namespace Common {
 	}
 
 	interface ViewComponents {
-		[key: string]: string | FiledDetail
+		[key: string]: string | FieldDetail
 	}
 
-	interface FiledDetail {
+	interface FieldDetail {
 		bind: string
 		view: {
 			bind?: string
@@ -32,9 +32,17 @@ export declare namespace Common {
 		}
 	}
 
+	type EditFieldDetail = Omit<FieldDetail, 'view'>
+
 	interface Fields {
-		[key: string]: FiledDetail
+		[key: string]: FieldDetail
 	}
 
-	interface Column extends BaseColumn, FiledDetail {}
+	interface EditFields {
+		[key: string]: EditFieldDetail
+	}
+
+	interface Column extends BaseColumn, FieldDetail {}
+
+	interface EditColumn extends BaseColumn, EditFieldDetail {}
 }

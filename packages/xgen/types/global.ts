@@ -1,4 +1,4 @@
-export type BaseType = 'table' | 'form' | 'chart'
+export type BaseType = 'table' | 'form' | 'chart' | 'list'
 
 export declare namespace Global {
 	interface StringObject {

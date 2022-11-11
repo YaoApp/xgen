@@ -25,7 +25,7 @@ export declare namespace FormType {
 
 	type Column = Common.BaseColumn | RawTab
 
-	type ColumnResult = Common.Column | TargetTab
+	type ColumnResult = Common.EditColumn | TargetTab
 
 	interface Setting {
 		name: string
@@ -41,7 +41,7 @@ export declare namespace FormType {
 			sections: Array<Section>
 		}
 		fields: {
-			form: Common.Fields
+			form: Common.EditFields
 		}
 		config?: Common.Config & {
 			showAnchor?: boolean
