@@ -77,6 +77,7 @@ importers:
       '@types/react': ^18.0.20
       '@types/react-dom': ^18.0.6
       '@types/react-slick': ^0.23.10
+      '@types/sortablejs': ^1.15.0
       '@umijs/max': ^4.0.30
       ahooks: ^3.7.1
       antd: ^4.23.3
@@ -96,6 +97,7 @@ importers:
       moment: ^2.29.4
       mustache: ^4.2.0
       nanoid: ^4.0.0
+      phosphor-react: ^1.4.1
       postcss: ^8.4.16
       query-string: ^7.1.1
       react-color-palette: ^6.2.0
@@ -106,7 +108,9 @@ importers:
       react-nice-avatar: ^1.2.4
       react-shadow: ^19.0.3
       react-slick: ^0.29.0
+      react-sortablejs: ^6.1.4
       reflect-metadata: ^0.1.13
+      sortablejs: ^1.15.0
       store2: ^2.14.2
       tslib: ^2.4.0
       tsx: ^3.9.0
@@ -132,6 +136,7 @@ importers:
       moment: 2.29.4
       mustache: 4.2.0
       nanoid: 4.0.0
+      phosphor-react: 1.4.1_react@16.14.0
       query-string: 7.1.1
       react-color-palette: 6.2.0_react@16.14.0
       react-countup: 6.3.1_react@16.14.0
@@ -141,7 +146,9 @@ importers:
       react-nice-avatar: 1.2.4_react@16.14.0
       react-shadow: 19.0.3_ccrd4luiijsxnlhe6bgkvyy2z4
       react-slick: 0.29.0_wcqkhtmu7mswc6yz4uyexck3ty
+      react-sortablejs: 6.1.4_od4kcjrdhupk5h3e2xn7bk4rby
       reflect-metadata: 0.1.13
+      sortablejs: 1.15.0
       store2: 2.14.2
       tslib: 2.4.0
       tsyringe: 4.7.0
@@ -154,6 +161,7 @@ importers:
       '@types/react': 18.0.21
       '@types/react-dom': 18.0.6
       '@types/react-slick': 0.23.10
+      '@types/sortablejs': 1.15.0
       babel-plugin-transform-typescript-metadata: 0.3.2
       dotenv: 16.0.2
       less: 4.1.3
@@ -2340,6 +2348,9 @@ packages:
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
+
+  /@types/sortablejs/1.15.0:
+    resolution: {integrity: sha512-qrhtM7M41EhH4tZQTNw2/RJkxllBx3reiJpTbgWCM2Dx0U1sZ6LwKp9lfNln9uqE26ZMKUaPEYaD4rzvOWYtZw==}
 
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
@@ -8610,6 +8621,15 @@ packages:
       sha.js: 2.4.11
     dev: false
 
+  /phosphor-react/1.4.1_react@16.14.0:
+    resolution: {integrity: sha512-gO5j7U0xZrdglTAYDYPACU4xDOFBTJmptrrB/GeR+tHhCZF3nUMyGmV/0hnloKjuTrOmpSFlbfOY78H39rgjUQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      react: 16.14.0
+    dev: false
+
   /picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
 
@@ -10169,6 +10189,22 @@ packages:
       react-dom: 16.14.0_react@16.14.0
     dev: false
 
+  /react-sortablejs/6.1.4_od4kcjrdhupk5h3e2xn7bk4rby:
+    resolution: {integrity: sha512-fc7cBosfhnbh53Mbm6a45W+F735jwZ1UFIYSrIqcO/gRIFoDyZeMtgKlpV4DdyQfbCzdh5LoALLTDRxhMpTyXQ==}
+    peerDependencies:
+      '@types/sortablejs': '1'
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
+      sortablejs: '1'
+    dependencies:
+      '@types/sortablejs': 1.15.0
+      classnames: 2.3.1
+      react: 16.14.0
+      react-dom: 16.14.0_react@16.14.0
+      sortablejs: 1.15.0
+      tiny-invariant: 1.2.0
+    dev: false
+
   /react-universal-interface/0.6.2_react@16.14.0+tslib@2.4.1:
     resolution: {integrity: sha512-dg8yXdcQmvgR13RIlZbTRQOoUrDciFVoSBZILwjE2LFISxZZ8loVJKAkuzswl5js8BHda79bIb2b84ehU8IjXw==}
     peerDependencies:
@@ -10790,6 +10826,10 @@ packages:
       globby: 10.0.0
       is-plain-obj: 2.1.0
       sort-object-keys: 1.1.3
+    dev: false
+
+  /sortablejs/1.15.0:
+    resolution: {integrity: sha512-bv9qgVMjUMf89wAvM6AxVvS/4MX3sPeN0+agqShejLU5z5GX4C75ow1O2e5k4L6XItUyAK3gH6AxSbXrOM5e8w==}
     dev: false
 
   /source-map-js/1.0.2:
