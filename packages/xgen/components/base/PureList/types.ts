@@ -8,8 +8,8 @@ export interface IProps {
 
 export interface IPropsList {
 	list: IProps['list']
-	parentId?: string
-	onChange: (v: Array<any>, parentId?: string) => void
+	parentIds?: Array<string>
+	onChange: (v: Array<any>, parentIds?: Array<string>) => void
 }
 
 export interface IPropsRow {

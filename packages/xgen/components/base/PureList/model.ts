@@ -27,7 +27,21 @@ export default class Model {
 					},
 					{
 						id: '1-3',
-						name: 'shrek 3'
+                                    name: 'shrek 3',
+                                    children: [
+                                          {
+                                                id: '1-3-1',
+                                                name: 'three 1'
+                                          },
+                                          {
+                                                id: '1-3-2',
+                                                name: 'three 2'
+                                          },
+                                          {
+                                                id: '1-3-3',
+                                                name: 'three 3',
+                                          }
+                                    ]
 					}
 				]
 			},
