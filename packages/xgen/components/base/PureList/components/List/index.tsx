@@ -1,4 +1,3 @@
-import { useMemoizedFn } from 'ahooks'
 import clsx from 'clsx'
 import { Else, If, Then } from 'react-if'
 import { ReactSortable } from 'react-sortablejs'
@@ -9,14 +8,11 @@ import styles from './index.less'
 import type { IPropsList } from '../../types'
 
 const Index = (props: IPropsList) => {
-	const { list, parentIds = [], onChange: _onChange } = props
-
-	const onChange = useMemoizedFn(_onChange)
+	const { list, parentIds = [], onChange, onAction } = props
 
 	return (
 		<div
 			className={clsx([
-				styles._local,
 				styles.list_wrap,
 				parentIds?.length && styles.children_wrap,
 				'w_100 border_box flex flex_column'
@@ -26,15 +22,28 @@ const Index = (props: IPropsList) => {
 				{list.map((item) => (
 					<If condition={!item.children?.length} key={item.id}>
 						<Then>
-							<Row dataItem={item}></Row>
+							<Row
+								dataItem={item}
+								parentIds={[...parentIds, item.id]}
+								fold={item?._fold}
+								onAction={onAction}
+							></Row>
 						</Then>
 						<Else>
-							<Row dataItem={item}></Row>
-							<Index
-								list={item.children}
-								parentIds={[...parentIds, item.id]}
-								onChange={onChange}
-							></Index>
+							<div className='w_100 flex flex_wrap'>
+								<Row
+									dataItem={item}
+									parentIds={[...parentIds, item.id]}
+									fold={item?._fold}
+									onAction={onAction}
+								></Row>
+								<Index
+									list={item?._fold ? [] : item.children}
+									parentIds={[...parentIds, item.id]}
+									onChange={onChange}
+									onAction={onAction}
+								></Index>
+							</div>
 						</Else>
 					</If>
 				))}
