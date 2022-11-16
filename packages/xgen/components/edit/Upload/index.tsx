@@ -18,7 +18,7 @@ import type { IProps, CustomProps, IPropsUploadBtn } from './types'
 const Custom = window.$app.memo((props: CustomProps) => {
 	const { api, filetype, maxCount, desc, onChange: trigger } = props
 	const { list, setList } = useList(props.value)
-	const visible_btn = useVisibleBtn(list.length, maxCount || 1)
+      const visible_btn = useVisibleBtn(list.length, maxCount || 1)
 
 	const onChange: UploadProps['onChange'] = useMemoizedFn(({ file, fileList }) => {
 		const { status } = file

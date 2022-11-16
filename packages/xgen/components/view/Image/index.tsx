@@ -14,11 +14,18 @@ const Index = (props: IProps) => {
 
 	if (!__value) return <span>-</span>
 
+	const props_image: ImageProps = {
+		width: 48,
+		height: 48,
+		preview: false,
+		...props
+	}
+
 	if (Array.isArray(__value)) {
 		return (
 			<div className={styles._local}>
 				{__value.map((item: string, index: number) => (
-					<Image width={48} height={48} src={getFileSrc(item)} key={index} {...props}></Image>
+					<Image {...props_image} src={getFileSrc(item)} key={index}></Image>
 				))}
 			</div>
 		)
@@ -26,7 +33,7 @@ const Index = (props: IProps) => {
 
 	return (
 		<div className={styles._local}>
-			<Image width={48} height={48} src={getFileSrc(__value)} {...props}></Image>
+			<Image {...props_image} src={getFileSrc(__value)}></Image>
 		</div>
 	)
 }

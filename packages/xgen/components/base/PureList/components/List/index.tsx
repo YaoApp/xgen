@@ -8,7 +8,7 @@ import styles from './index.less'
 import type { IPropsList } from '../../types'
 
 const Index = (props: IPropsList) => {
-	const { list, parentIds = [], onChange, onAction } = props
+	const { list, parentIds = [], onSort, onAction } = props
 
 	return (
 		<div
@@ -18,7 +18,7 @@ const Index = (props: IPropsList) => {
 				'w_100 border_box flex flex_column'
 			])}
 		>
-			<ReactSortable list={list} handle='.handle' animation={150} setList={(v) => onChange(v, parentIds)}>
+			<ReactSortable list={list} handle='.handle' animation={150} setList={(v) => onSort(v, parentIds)}>
 				{list.map((item) => (
 					<If condition={!item.children?.length} key={item.id}>
 						<Then>
@@ -40,7 +40,7 @@ const Index = (props: IPropsList) => {
 								<Index
 									list={item?._fold ? [] : item.children}
 									parentIds={[...parentIds, item.id]}
-									onChange={onChange}
+									onSort={onSort}
 									onAction={onAction}
 								></Index>
 							</div>

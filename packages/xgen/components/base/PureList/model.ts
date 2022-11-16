@@ -3,6 +3,10 @@ import { injectable } from 'tsyringe'
 
 import { ColumnUtils, Common } from '@/services'
 
+import { createId, handleChildren, updateChildren } from './utils'
+
+import type { ActionType, ParentIds } from './types'
+
 @injectable()
 export default class Model {
 	list = [] as Array<any>
@@ -27,21 +31,21 @@ export default class Model {
 					},
 					{
 						id: '1-3',
-                                    name: 'shrek 3',
-                                    children: [
-                                          {
-                                                id: '1-3-1',
-                                                name: 'three 1'
-                                          },
-                                          {
-                                                id: '1-3-2',
-                                                name: 'three 2'
-                                          },
-                                          {
-                                                id: '1-3-3',
-                                                name: 'three 3',
-                                          }
-                                    ]
+						name: 'shrek 3',
+						children: [
+							{
+								id: '1-3-1',
+								name: 'three 1'
+							},
+							{
+								id: '1-3-2',
+								name: 'three 2'
+							},
+							{
+								id: '1-3-3',
+								name: 'three 3'
+							}
+						]
 					}
 				]
 			},
@@ -64,5 +68,42 @@ export default class Model {
 				]
 			}
 		]
+	}
+
+	onAdd(parentIds: ParentIds) {
+		if (!parentIds.length) return this.list.push({ id: createId() })
+
+		this.list = handleChildren(this.list, 'add', parentIds)
+	}
+
+	onSort(v: Array<any>, parentIds?: ParentIds) {
+		const list = v.filter((v) => v)
+
+		if (!parentIds?.length) {
+			this.list = list
+		} else {
+			this.list = updateChildren(this.list, v, parentIds)
+		}
+	}
+
+	onAction(type: ActionType, parentIds: ParentIds) {
+		switch (type) {
+			case 'fold':
+				this.list = handleChildren(this.list, 'fold', parentIds)
+				break
+			case 'add':
+				if (!parentIds.length) return this.list.push({ id: createId() })
+
+				this.list = handleChildren(this.list, 'add', parentIds)
+				break
+			case 'addChild':
+				this.list = handleChildren(this.list, 'addChild', parentIds)
+				break
+			case 'remove':
+				this.list = handleChildren(this.list, 'remove', parentIds)
+				break
+			default:
+				break
+		}
 	}
 }

@@ -7,61 +7,18 @@ import { container } from 'tsyringe'
 
 import { Empty, Filter, List } from './components'
 import Model from './model'
-import { createId, handleChildren, updateChildren } from './utils'
 
-import type { IProps, IPropsFilter, IPropsList, ParentIds } from './types'
+import type { IProps, IPropsFilter, IPropsList } from './types'
 
 const Index = (props: IProps) => {
 	const { setting, list, onChangeForm } = props
 	const [x] = useState(() => container.resolve(Model))
 
-	useLayoutEffect(() => {
-		x.init(list)
-	}, [list])
+	useLayoutEffect(() => x.init(list), [list])
 
-	const onChange: IPropsList['onChange'] = useMemoizedFn((v, parentIds) => {
-		const list = v.filter((v) => v)
-
-		if (!parentIds?.length) {
-			x.list = list
-		} else {
-			x.list = updateChildren(x.list, v, parentIds)
-		}
-	})
-
-	const onFold = useMemoizedFn((parentIds: ParentIds) => {
-		x.list = handleChildren(x.list, 'fold', parentIds)
-	})
-	const onAdd = useMemoizedFn((parentIds: ParentIds) => {
-		if (!parentIds.length) return x.list.push({ id: createId() })
-
-		x.list = handleChildren(x.list, 'add', parentIds)
-	})
-	const onAddChild = useMemoizedFn((parentIds: ParentIds) => {
-		x.list = handleChildren(x.list, 'addChild', parentIds)
-	})
-	const onRemove = useMemoizedFn((parentIds: ParentIds) => {
-		x.list = handleChildren(x.list, 'remove', parentIds)
-	})
-
-	const onAction: IPropsList['onAction'] = useMemoizedFn((type, parentIds) => {
-		switch (type) {
-			case 'fold':
-				onFold(parentIds)
-				break
-			case 'add':
-				onAdd(parentIds)
-				break
-			case 'addChild':
-				onAddChild(parentIds)
-				break
-			case 'remove':
-				onRemove(parentIds)
-				break
-			default:
-				break
-		}
-	})
+	const onAdd = useMemoizedFn(x.onAdd)
+	const onSort = useMemoizedFn(x.onSort)
+	const onAction = useMemoizedFn(x.onAction)
 
 	const props_filter: IPropsFilter = {
 		onAdd
@@ -69,7 +26,7 @@ const Index = (props: IProps) => {
 
 	const props_list: IPropsList = {
 		list: toJS(x.list),
-		onChange,
+		onSort,
 		onAction
 	}
 
