@@ -8,7 +8,7 @@ import styles from './index.less'
 import type { IPropsList } from '../../types'
 
 const Index = (props: IPropsList) => {
-	const { list, parentIds = [], onSort, onAction } = props
+	const { setting, list, showLabel, parentIds = [], onSort, onAction } = props
 
 	return (
 		<div
@@ -23,6 +23,8 @@ const Index = (props: IPropsList) => {
 					<If condition={!item.children?.length} key={item.id}>
 						<Then>
 							<Row
+								setting={setting}
+								showLabel={showLabel}
 								dataItem={item}
 								parentIds={[...parentIds, item.id]}
 								fold={item?._fold}
@@ -32,13 +34,17 @@ const Index = (props: IPropsList) => {
 						<Else>
 							<div className='w_100 flex flex_wrap'>
 								<Row
+									setting={setting}
+									showLabel={showLabel}
 									dataItem={item}
 									parentIds={[...parentIds, item.id]}
 									fold={item?._fold}
 									onAction={onAction}
 								></Row>
 								<Index
+									setting={setting}
 									list={item?._fold ? [] : item.children}
+									showLabel={showLabel}
 									parentIds={[...parentIds, item.id]}
 									onSort={onSort}
 									onAction={onAction}

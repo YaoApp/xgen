@@ -7,11 +7,11 @@ import styles from './index.less'
 import type { IPropsRow } from '../../types'
 
 const Index = (props: IPropsRow) => {
-	const { dataItem, parentIds, fold, onAction } = props
+	const { setting, showLabel, dataItem, parentIds, fold, onAction } = props
 
 	return (
-		<div className={clsx([styles._local, 'w_100 flex align_center'])}>
-			<Fields dataItem={dataItem}></Fields>
+		<div className={clsx([styles._local, 'w_100 flex align_start'])}>
+			<Fields {...{ setting, showLabel, dataItem }}></Fields>
 			<Actions {...{ parentIds, fold, onAction }} hasChildren={dataItem?.children?.length > 0}></Actions>
 		</div>
 	)

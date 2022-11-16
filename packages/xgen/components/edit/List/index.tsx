@@ -14,6 +14,7 @@ import type { Component } from '@/types'
 
 interface ICustom {
 	name: string
+	showLabel?: boolean
 	value?: any
 	onChange?: (v: any) => void
 }
@@ -22,7 +23,7 @@ interface IProps extends Component.PropsEditComponent, ICustom {}
 
 const List = window.$app.memo(
 	observer((props: ICustom) => {
-		const { name } = props
+		const { name, showLabel } = props
 		const [x] = useState(() => container.resolve(Model))
 		const [value, setValue] = useState([])
 
@@ -42,7 +43,14 @@ const List = window.$app.memo(
 			setValue(v)
 		})
 
-		return <PureList setting={toJS(x.columns)} list={value} onChangeForm={onChange}></PureList>
+		return (
+			<PureList
+				setting={toJS(x.columns)}
+				list={value}
+				showLabel={showLabel}
+				onChangeForm={onChange}
+			></PureList>
+		)
 	})
 )
 
@@ -52,7 +60,7 @@ const Index = (props: IProps) => {
 	const { __bind, __name, __data_item, itemProps, ...rest_props } = props
 
 	return (
-            <Item className={styles._local} {...itemProps} {...{ __bind, __name }}>
+		<Item className={styles._local} {...itemProps} {...{ __bind, __name }}>
 			<Custom {...rest_props}></Custom>
 		</Item>
 	)

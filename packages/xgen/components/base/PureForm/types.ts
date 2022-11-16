@@ -56,7 +56,7 @@ export interface IPropsFormItem {
 	primary: Model['setting']['primary']
 	type: Model['type']
 	data: Model['data']
-	item: Common.Column
+	item: Common.EditColumn
 }
 
 export interface IPropsTabsItem {

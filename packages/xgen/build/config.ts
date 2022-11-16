@@ -41,28 +41,6 @@ export const links = [
 	{ rel: 'stylesheet', href: `/${process.env.BASE}/theme/light.css` }
 ]
 
-export const chainWebpack = (config: Config) => {
-	if (env === 'production') {
-		config.merge({
-			optimization: {
-				splitChunks: {
-					chunks: 'all',
-					minSize: 30000,
-					minChunks: 3,
-					automaticNameDelimiter: '.',
-					cacheGroups: {
-						vendor: {
-							name: 'vendors',
-							test({ resource }: any) {
-								return /[\\/]node_modules[\\/]/.test(resource)
-							},
-							priority: 10
-						}
-					}
-				}
-			}
-		})
-	}
-}
+export const chainWebpack = (config: Config) => {}
 
 export const extraBabelPlugins = ['babel-plugin-transform-typescript-metadata']

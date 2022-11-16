@@ -13,7 +13,7 @@ export default defineConfig({
 	antd: { import: false },
 	codeSplitting: { jsStrategy: 'granularChunks' },
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
-	polyfill: { imports: ['core-js/features/promise/try'] },
+      polyfill: { imports: [ 'core-js/features/promise/try' ] },
 	extraBabelPlugins,
 	conventionRoutes,
 	define: { $runtime: { BASE: process.env.BASE } },
