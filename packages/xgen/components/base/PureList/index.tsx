@@ -2,13 +2,14 @@ import { useMemoizedFn } from 'ahooks'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect, useState } from 'react'
+import { AliveScope } from 'react-activation'
 import { Else, If, Then } from 'react-if'
 import { container } from 'tsyringe'
 
 import { Empty, List } from './components'
 import Model from './model'
 
-import type { IProps, IPropsList } from './types'
+import type { IProps, IPropsList, IPropsEmpty } from './types'
 
 const Index = (props: IProps) => {
 	const { setting, list, showLabel, onChangeForm } = props
@@ -28,16 +29,22 @@ const Index = (props: IProps) => {
 		onAction
 	}
 
+	const props_empty: IPropsEmpty = {
+		onAdd
+	}
+
 	return (
 		<div className='flex flex_column'>
-			<If condition={x.list.length}>
-				<Then>
-					<List {...props_list}></List>
-				</Then>
-				<Else>
-					<Empty></Empty>
-				</Else>
-			</If>
+			<AliveScope>
+				<If condition={x.list.length}>
+					<Then>
+						<List {...props_list}></List>
+					</Then>
+					<Else>
+						<Empty {...props_empty}></Empty>
+					</Else>
+				</If>
+			</AliveScope>
 		</div>
 	)
 }

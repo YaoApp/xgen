@@ -11,7 +11,7 @@ export interface IProps {
 	onChangeForm?: (v: Array<any>) => void
 }
 
-export interface IPropsFilter {
+export interface IPropsEmpty{
 	onAdd: Model['onAdd']
 }
 

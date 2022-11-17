@@ -1,6 +1,3 @@
-import '@/styles/index.less'
-import '@matrixage/atom.css/atom.min.css'
-
 import { useMemoizedFn } from 'ahooks'
 import { ConfigProvider } from 'antd'
 import { observer } from 'mobx-react-lite'

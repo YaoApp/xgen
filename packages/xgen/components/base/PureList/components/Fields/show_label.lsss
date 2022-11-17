@@ -1,0 +1,45 @@
+:host {
+	.xgen-form-item {
+		padding: 0 18px;
+		padding-top: 12px;
+		border-radius: var(--radius);
+		background-color: var(--color_bg_nav);
+	}
+
+	.xgen-form-item-label {
+		display: flex;
+		padding-bottom: 0;
+
+		label {
+			height: auto;
+			color: var(--color_text);
+			font-weight: 700;
+			font-size: 12.6px;
+		}
+	}
+
+	.xgen-form-item-control {
+		min-height: auto;
+		height: auto;
+	}
+
+	.xgen-checkbox-group,
+	.xgen-radio-group {
+		padding: 0;
+	}
+
+	.xgen-input,
+	.xgen-input-number,
+	.xgen-input-number-input,
+	.xgen-mentions,
+	.xgen-picker,
+	.xgen-select,
+	.xgen-select-selector {
+		padding: 0 !important;
+		background-color: transparent !important;
+		color: var(--color_text);
+		border: none !important;
+		outline: none !important;
+		box-shadow: none !important;
+	}
+}

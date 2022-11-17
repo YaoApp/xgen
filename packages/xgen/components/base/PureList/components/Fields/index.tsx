@@ -1,11 +1,11 @@
 import { Form, Row } from 'antd'
 import root from 'react-shadow'
 
-import { useGlobal } from '@/context/app'
+import { ShadowTheme } from '@/widgets'
 
 import FormItem from '../FormItem'
 import styles from './index.less'
-import Styles from './styles'
+import Styles from './Styles'
 
 import type { IPropsFields } from '../../types'
 
@@ -13,12 +13,11 @@ const { useForm } = Form
 
 const Index = (props: IPropsFields) => {
 	const { setting, showLabel, dataItem } = props
-	const global = useGlobal()
 	const [form] = useForm()
 
 	return (
 		<root.div className={styles._local}>
-			<link rel='stylesheet' href={`/theme/${global.theme}.css`} />
+			<ShadowTheme></ShadowTheme>
 			<Styles showLabel={showLabel}></Styles>
 			<Form
 				form={form}
