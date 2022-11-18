@@ -44,3 +44,5 @@ const dark_css = fs.readFileSync(`${output_path}/dark.css`).toString()
 
 fs.writeFileSync(`${output_path}/light.css`, light_css + override_atom_styles + override_body_styles)
 fs.writeFileSync(`${output_path}/dark.css`, dark_css + override_atom_styles + override_body_styles)
+fs.writeFileSync(`${output_path}/light.sss`, light_css + override_atom_styles + override_body_styles)
+fs.writeFileSync(`${output_path}/dark.lsss`, dark_css + override_atom_styles + override_body_styles)

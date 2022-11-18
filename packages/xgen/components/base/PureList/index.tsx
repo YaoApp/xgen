@@ -4,9 +4,12 @@ import { observer } from 'mobx-react-lite'
 import { useLayoutEffect, useState } from 'react'
 import { AliveScope } from 'react-activation'
 import { Else, If, Then } from 'react-if'
+import root from 'react-shadow'
 import { container } from 'tsyringe'
 
-import { Empty, List } from './components'
+import { ShadowTheme } from '@/widgets'
+
+import { Empty, List, Styles } from './components'
 import Model from './model'
 
 import type { IProps, IPropsList, IPropsEmpty } from './types'
@@ -35,16 +38,20 @@ const Index = (props: IProps) => {
 
 	return (
 		<div className='flex flex_column'>
-			<AliveScope>
+			<root.div>
+				<ShadowTheme></ShadowTheme>
+				<Styles showLabel={showLabel}></Styles>
 				<If condition={x.list.length}>
 					<Then>
-						<List {...props_list}></List>
+						<AliveScope>
+							<List {...props_list}></List>
+						</AliveScope>
 					</Then>
 					<Else>
 						<Empty {...props_empty}></Empty>
 					</Else>
 				</If>
-			</AliveScope>
+			</root.div>
 		</div>
 	)
 }

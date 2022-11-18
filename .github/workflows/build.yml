@@ -46,8 +46,4 @@ jobs:
 
                   - name: Test Build
                     run: pnpm run build:xgen
-
-                  - name: Compress
-                    run: tar -zcvf release_xgen.tgz packages/xgen/dist
-
                  

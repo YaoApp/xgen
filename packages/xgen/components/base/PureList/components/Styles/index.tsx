@@ -10,7 +10,7 @@ interface IProps {
 }
 
 const Index = (props: IProps) => {
-	const { showLabel } = props
+      const { showLabel } = props
 
 	return (
 		<Fragment>

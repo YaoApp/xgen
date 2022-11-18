@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { CaretDown, CaretLeft, DotsSixVertical, GitMerge, Plus, X } from 'phosphor-react'
 import { Else, If, Then } from 'react-if'
 
-import styles from './index.less'
+import styles from './index.lsss'
 
 import type { IPropsActions } from '../../types'
 
@@ -11,7 +11,8 @@ const Index = (props: IPropsActions) => {
 	const { parentIds, fold, hasChildren, onAction } = props
 
 	return (
-		<div className={clsx([styles._local, 'border_box flex justify_between'])}>
+		<div className='actions_wrap border_box flex justify_between'>
+			<style>{styles}</style>
 			<Button
 				className={clsx([
 					'btn_action flex justify_center align_center clickable',

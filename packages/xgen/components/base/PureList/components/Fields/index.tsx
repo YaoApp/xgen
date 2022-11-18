@@ -1,11 +1,6 @@
 import { Form, Row } from 'antd'
-import root from 'react-shadow'
-
-import { ShadowTheme } from '@/widgets'
 
 import FormItem from '../FormItem'
-import ShadowStyles from '../Styles'
-import styles from './index.less'
 
 import type { IPropsFields } from '../../types'
 
@@ -16,9 +11,7 @@ const Index = (props: IPropsFields) => {
 	const [form] = useForm()
 
 	return (
-		<root.div className={styles._local}>
-			<ShadowTheme></ShadowTheme>
-			<ShadowStyles showLabel={showLabel}></ShadowStyles>
+		<div style={{ width: 'calc(100% - (38px * 4 + 12px * 5))' }}>
 			<Form
 				form={form}
 				layout='vertical'
@@ -31,7 +24,7 @@ const Index = (props: IPropsFields) => {
 					))}
 				</Row>
 			</Form>
-		</root.div>
+		</div>
 	)
 }
 
