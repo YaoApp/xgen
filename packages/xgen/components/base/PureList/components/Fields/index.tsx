@@ -4,8 +4,8 @@ import root from 'react-shadow'
 import { ShadowTheme } from '@/widgets'
 
 import FormItem from '../FormItem'
+import ShadowStyles from '../Styles'
 import styles from './index.less'
-import Styles from './Styles'
 
 import type { IPropsFields } from '../../types'
 
@@ -18,7 +18,7 @@ const Index = (props: IPropsFields) => {
 	return (
 		<root.div className={styles._local}>
 			<ShadowTheme></ShadowTheme>
-			<Styles showLabel={showLabel}></Styles>
+			<ShadowStyles showLabel={showLabel}></ShadowStyles>
 			<Form
 				form={form}
 				layout='vertical'
