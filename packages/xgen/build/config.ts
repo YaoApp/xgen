@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import type Config from 'webpack-chain'
 
 export const env = process.env.NODE_ENV as 'development' | 'production'
@@ -35,6 +37,8 @@ export const conventionRoutes = {
 		/locales\//
 	]
 }
+
+export const metas = [{ name: 'Built Time', content: moment().format() }]
 
 export const links = [
 	{ rel: 'preload', href: `/${process.env.BASE}/icon_font.css` },

@@ -8,7 +8,7 @@ const Index = () => {
 	const global = useGlobal()
 
 	return (
-		<If condition={global.theme === 'dark'}>
+		<If condition={(global?.theme || window.$global?.theme) === 'dark'}>
 			<Then>
 				<style>{dark_theme}</style>
 			</Then>

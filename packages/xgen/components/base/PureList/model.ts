@@ -1,79 +1,41 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, toJS } from 'mobx'
 import { injectable } from 'tsyringe'
 
-import { ColumnUtils, Common } from '@/services'
+import { createId, handleChildren, updateChildren, updateValue } from './utils'
 
-import { createId, handleChildren, updateChildren } from './utils'
-
-import type { ActionType, ParentIds } from './types'
+import type { ActionType, ParentIds, IProps } from './types'
+import type { Common } from '@/types'
 
 @injectable()
 export default class Model {
 	list = [] as Array<any>
+	setting = [] as Array<Common.EditColumn>
+	delete_ids = [] as Array<string | number>
+	onChangeForm: IProps['onChangeForm'] | null = null
 
-	constructor(private common: Common, private column_utils: ColumnUtils) {
+	constructor() {
 		makeAutoObservable(this, {}, { autoBind: true })
 	}
 
-	init(initial_value: Array<any>) {
-		this.list = [
-			{
-				id: '1',
-				name: 'shrek',
-				children: [
-					{
-						id: '1-1',
-						name: 'shrek 1'
-					},
-					{
-						id: '1-2',
-						name: 'shrek 2'
-					},
-					{
-						id: '1-3',
-						name: 'shrek 3',
-						children: [
-							{
-								id: '1-3-1',
-								name: 'three 1'
-							},
-							{
-								id: '1-3-2',
-								name: 'three 2'
-							},
-							{
-								id: '1-3-3',
-								name: 'three 3'
-							}
-						]
-					}
-				]
-			},
-			{
-				id: '2',
-				name: 'fiona',
-				children: [
-					{
-						id: '2-1',
-						name: 'fiona 1'
-					},
-					{
-						id: '2-2',
-						name: 'fiona 2'
-					},
-					{
-						id: '2-3',
-						name: 'fiona 3'
-					}
-				]
-			}
-		]
+	init(initial_value: Array<any>, setting: Array<Common.EditColumn>, onChangeForm: IProps['onChangeForm']) {
+		this.list = initial_value
+		this.setting = setting
+		this.onChangeForm = onChangeForm
+	}
+
+	submit() {
+		if (this.delete_ids.length) {
+			this.onChangeForm!({ data: toJS(this.list), delete: this.delete_ids })
+		} else {
+			this.onChangeForm!(toJS(this.list))
+		}
 	}
 
 	onAdd(parentIds: ParentIds) {
 		if (!parentIds.length) return this.list.push({ id: createId() })
 
 		this.list = handleChildren(this.list, 'add', parentIds)
+		this.submit()
 	}
 
 	onSort(v: Array<any>, parentIds?: ParentIds) {
@@ -84,6 +46,8 @@ export default class Model {
 		} else {
 			this.list = updateChildren(this.list, v, parentIds)
 		}
+
+		this.submit()
 	}
 
 	onAction(type: ActionType, parentIds: ParentIds) {
@@ -101,9 +65,26 @@ export default class Model {
 				break
 			case 'remove':
 				this.list = handleChildren(this.list, 'remove', parentIds)
+
+				const id = parentIds[parentIds.length - 1]
+
+				if (typeof id === 'string' && id.startsWith('_')) return
+
+				this.delete_ids.push(id)
+
 				break
 			default:
 				break
 		}
+
+		this.submit()
+	}
+
+	onChange(v: any, parentIds: ParentIds) {
+		const list = updateValue(this.list, v, parentIds)
+
+		this.list = list
+
+		this.submit()
 	}
 }

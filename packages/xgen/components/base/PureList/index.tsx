@@ -18,41 +18,41 @@ const Index = (props: IProps) => {
 	const { setting, list, showLabel, onChangeForm } = props
 	const [x] = useState(() => container.resolve(Model))
 
-	useLayoutEffect(() => x.init(list), [list])
+	useLayoutEffect(() => x.init(list, setting, onChangeForm), [list])
 
 	const onAdd = useMemoizedFn(x.onAdd)
 	const onSort = useMemoizedFn(x.onSort)
 	const onAction = useMemoizedFn(x.onAction)
+	const onChange = useMemoizedFn(x.onChange)
 
 	const props_list: IPropsList = {
 		setting,
 		list: toJS(x.list),
 		showLabel,
 		onSort,
-		onAction
+		onAction,
+		onChange
 	}
 
 	const props_empty: IPropsEmpty = {
 		onAdd
-	}
+      }
 
 	return (
-		<div className='flex flex_column'>
-			<root.div>
-				<ShadowTheme></ShadowTheme>
-				<Styles showLabel={showLabel}></Styles>
-				<If condition={x.list.length}>
-					<Then>
-						<AliveScope>
-							<List {...props_list}></List>
-						</AliveScope>
-					</Then>
-					<Else>
-						<Empty {...props_empty}></Empty>
-					</Else>
-				</If>
-			</root.div>
-		</div>
+		<root.div>
+			<ShadowTheme></ShadowTheme>
+			<Styles showLabel={showLabel}></Styles>
+			<If condition={x.list.length}>
+				<Then>
+					<AliveScope>
+						<List {...props_list}></List>
+					</AliveScope>
+				</Then>
+				<Else>
+					<Empty {...props_empty}></Empty>
+				</Else>
+			</If>
+		</root.div>
 	)
 }
 
