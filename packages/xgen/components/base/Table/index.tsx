@@ -2,11 +2,12 @@ import { useMemoizedFn } from 'ahooks'
 import clsx from 'clsx'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { Fragment, useLayoutEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
-import { Filter, Page, PureTable, X } from '@/components'
+import { Filter, Page, PureTable } from '@/components'
 
+import { CustomAction } from './components'
 import styles from './index.less'
 import Model from './model'
 
@@ -15,6 +16,7 @@ import type { Component } from '@/types'
 import type { IPropsFilter } from '@/components/base/Filter/types'
 import type { IPropsPureTable } from '@/components/base/PureTable/types'
 import type { Global } from '@/types'
+import type { IPropsCustomAction } from './types'
 
 export interface IProps extends Component.StackComponent {
 	query?: Global.StringObject
@@ -42,6 +44,11 @@ const Index = (props: IProps) => {
 		window.$app.Event.emit(`${x.namespace.value}/search`, v)
 	})
 	const resetSearchParams = useMemoizedFn(x.resetSearchParams)
+	const search = useMemoizedFn(x.search)
+	const setBatchActive = useMemoizedFn((v: boolean) => {
+		x.batch.active = v
+		x.batch.selected = []
+	})
 
 	if (!x.setting.table) return null
 
@@ -60,37 +67,6 @@ const Index = (props: IProps) => {
 	}
 
 	if (parent === 'Page') {
-		const customAction = (
-			<Fragment>
-				{x.setting.header.preset?.import && (
-					<X
-						type='optional'
-						name='Table/Import'
-						props={{
-							...x.setting.header.preset.import,
-							search: () => x.search()
-						}}
-					></X>
-				)}
-				{x.setting.header.preset?.batch && (
-					<X
-						type='optional'
-						name='Table/Batch'
-						props={{
-							namespace: x.namespace.value,
-							columns: toJS(x.batch_columns),
-							deletable: x.setting.header.preset?.batch.deletable,
-							batch: toJS(x.batch),
-							setBatchActive(v: boolean) {
-								x.batch.active = v
-								x.batch.selected = []
-							}
-						}}
-					></X>
-				)}
-			</Fragment>
-		)
-
 		const props_filter: IPropsFilter = {
 			model: x.model,
 			namespace: x.namespace.value,
@@ -100,10 +76,19 @@ const Index = (props: IProps) => {
 			resetSearchParams
 		}
 
+		const props_custom_action: IPropsCustomAction = {
+			setting: toJS(x.setting),
+			namespace: x.namespace.value,
+			batch_columns: toJS(x.batch_columns),
+			batch: toJS(x.batch),
+			search,
+			setBatchActive
+		}
+
 		return (
 			<Page
 				className={clsx([styles._local, 'w_100'])}
-				customAction={customAction}
+				customAction={<CustomAction {...props_custom_action}></CustomAction>}
 				full={x.setting?.config?.full}
 			>
 				<Filter {...props_filter}></Filter>

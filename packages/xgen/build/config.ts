@@ -1,6 +1,10 @@
+import fs from 'fs'
 import moment from 'moment'
 
 import type Config from 'webpack-chain'
+
+const packagejson = JSON.parse(fs.readFileSync(`${process.cwd()}/package.json`).toString())
+const version = packagejson.version
 
 export const env = process.env.NODE_ENV as 'development' | 'production'
 
@@ -38,7 +42,7 @@ export const conventionRoutes = {
 	]
 }
 
-export const metas = [{ name: 'Built Time', content: moment().format() }]
+export const metas = [{ name: 'Built Info', content: `time:${moment().format()}` + `|version:${version}` }]
 
 export const links = [
 	{ rel: 'preload', href: `/${process.env.BASE}/icon_font.css` },

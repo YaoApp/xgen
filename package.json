@@ -1,4 +1,5 @@
 {
+      "private": true,
       "homepage": "https://yaoapps.com",
       "scripts": {
             "dev": "turbo run dev",

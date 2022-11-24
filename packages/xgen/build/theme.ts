@@ -27,9 +27,7 @@ const light_vars = getModifyVarsString(light_theme)
 const dark_vars = getModifyVarsString(dark_theme)
 
 const compile = (vars: string, type: 'light' | 'dark', shadow?: boolean) => {
-	child_process.execSync(
-		`lessc --js --compress -x ${vars} ${antd_theme_path} ${output_path}/${type}.${shadow ? 's' : 'c'}ss`
-	)
+	child_process.execSync(`lessc --js ${vars} ${antd_theme_path} ${output_path}/${type}.${shadow ? 's' : 'c'}ss`)
 }
 
 compile(light_vars, 'light')
@@ -42,7 +40,7 @@ const override_atom_styles = fs.readFileSync(atom_style_path).toString()
 const light_css = fs.readFileSync(`${output_path}/light.css`).toString()
 const dark_css = fs.readFileSync(`${output_path}/dark.css`).toString()
 
-fs.writeFileSync(`${output_path}/light.css`, light_css + override_atom_styles + override_body_styles)
-fs.writeFileSync(`${output_path}/dark.css`, dark_css + override_atom_styles + override_body_styles)
-fs.writeFileSync(`${output_path}/light.sss`, light_css + override_atom_styles + override_body_styles)
-fs.writeFileSync(`${output_path}/dark.sss`, dark_css + override_atom_styles + override_body_styles)
+fs.writeFileSync(`${output_path}/light.css`, light_css + '\n' + override_atom_styles + '\n' + override_body_styles)
+fs.writeFileSync(`${output_path}/dark.css`, dark_css + '\n' + override_atom_styles + '\n' + override_body_styles)
+fs.writeFileSync(`${output_path}/light.sss`, light_css + '\n' + override_atom_styles + '\n' + override_body_styles)
+fs.writeFileSync(`${output_path}/dark.sss`, dark_css + '\n' + override_atom_styles + '\n' + override_body_styles)

@@ -32,8 +32,12 @@ export default (
 				></Block>
 			)
 		} else {
+			if (raw_col_item?.view?.bind) {
+				target_col_item['dataIndex'] = raw_col_item.view.bind
+			}
+
 			target_col_item['shouldCellUpdate'] = (new_val, old_val) => {
-				return shouldViewUpdate(new_val, old_val, raw_col_item)
+				return shouldViewUpdate(new_val, old_val, target_col_item.dataIndex as string)
 			}
 
 			target_col_item['render'] = (_, data_item) => {

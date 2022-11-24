@@ -1,23 +1,26 @@
-import { useMemo } from 'react'
+import { useDeepCompareLayoutEffect } from 'ahooks'
+import { useState } from 'react'
 
 import { getLocale } from '@umijs/max'
 
 import { getColumns, getOperation } from '../utils'
 
 import type { IPropsPureTable, TableColumn } from '../types'
+import type { TableProps } from 'antd'
 
 const hook = (
 	namespace: IPropsPureTable['namespace'],
 	primary: IPropsPureTable['primary'],
 	columns: IPropsPureTable['columns'],
-	props: IPropsPureTable['props'],
+	scroll: TableProps<any>['scroll'],
 	operation: IPropsPureTable['operation']
 ) => {
 	const locale = getLocale()
+	const [list_columns, setListColumns] = useState<Array<TableColumn>>([])
 	const is_cn = locale === 'zh-CN'
 
-	return useMemo(() => {
-		if (!columns.length) return []
+	useDeepCompareLayoutEffect(() => {
+		if (!columns.length) return setListColumns([])
 
 		const list_columns = getColumns(namespace, primary, columns)
 
@@ -26,7 +29,7 @@ const hook = (
 			key: '__operation'
 		}
 
-		if (props && props.scroll) {
+		if (scroll) {
 			operation_col['fixed'] = 'right'
 		}
 
@@ -38,8 +41,10 @@ const hook = (
 			return getOperation(namespace, primary, operation, data_item)
 		}
 
-		return list_columns
-	}, [columns, props, operation])
+		setListColumns(list_columns)
+	}, [columns, scroll, operation])
+
+	return list_columns
 }
 
 export default hook
