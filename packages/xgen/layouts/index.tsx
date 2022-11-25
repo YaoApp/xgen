@@ -1,3 +1,5 @@
+import '@/styles/index.less'
+
 import { useMemoizedFn } from 'ahooks'
 import { ConfigProvider } from 'antd'
 import { observer } from 'mobx-react-lite'
