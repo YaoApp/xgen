@@ -12,7 +12,6 @@ export default defineConfig({
 	links,
 	metas,
 	valtio: false,
-	favicons: ['/favicon.ico'],
 	antd: { import: false, style: undefined },
 	codeSplitting: { jsStrategy: 'granularChunks' },
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
