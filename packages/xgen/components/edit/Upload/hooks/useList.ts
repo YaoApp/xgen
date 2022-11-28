@@ -11,21 +11,24 @@ export default (value: IProps['value']) => {
 	useEffect(() => {
 		if (!value) return
 
-		const list = value.reduce((total: Array<UploadFile<string>>, item: any) => {
-			const real_item = {
-				uid: item,
-				name: item,
-				response: item
-			} as UploadFile<string>
+		const list = (Array.isArray(value) ? value : [value]).reduce(
+			(total: Array<UploadFile<string>>, item: any) => {
+				const real_item = {
+					uid: item,
+					name: item,
+					response: item
+				} as UploadFile<string>
 
-			if (/(webp|svg|png|gif|jpg|jpeg|jfif|bmp|dpg|ico)$/i.test(item)) {
-				real_item['thumbUrl'] = getFileSrc(item)
-			}
+				if (/(webp|svg|png|gif|jpg|jpeg|jfif|bmp|dpg|ico)$/i.test(item)) {
+					real_item['thumbUrl'] = getFileSrc(item)
+				}
 
-			total.push(real_item)
+				total.push(real_item)
 
-			return total
-		}, [])
+				return total
+			},
+			[]
+		)
 
 		setList(list)
 	}, [value])
