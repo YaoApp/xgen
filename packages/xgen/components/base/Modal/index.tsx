@@ -17,12 +17,10 @@ const Index = (props: IProps) => {
 	const { namespace, id, config } = props
 	const [visible, setVisible] = useState(true)
 
-	const modal_container = document.getElementById(`${namespace}=>__modal_container`)!
-
 	const onBack = () => {
 		setVisible(false)
 
-		modal_container.remove()
+		document.getElementById(`${namespace}=>__modal_container`)!.remove()
 	}
 
 	const props_modal_wrap: Omit<IPropsModalWrap, 'children'> = {

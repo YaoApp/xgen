@@ -2,6 +2,7 @@ import { ConfigProvider, Modal } from 'antd'
 import en_US from 'antd/es/locale/en_US'
 import zh_CN from 'antd/es/locale/zh_CN'
 
+import { GlobalContext, useGlobal } from '@/context/app'
 import { getLocale } from '@umijs/max'
 
 import styles from './index.less'
@@ -11,6 +12,7 @@ import type { IPropsModalWrap } from '../types'
 const Index = (props: IPropsModalWrap) => {
 	const { children, width, visible, onBack } = props
 	const locale = getLocale()
+	const global = useGlobal()
 	const is_cn = locale === 'zh-CN'
 
 	return (
@@ -26,7 +28,7 @@ const Index = (props: IPropsModalWrap) => {
 				maskClosable={false}
 				bodyStyle={{ padding: 0 }}
 			>
-				{children}
+				<GlobalContext.Provider value={global || window.$global}>{children}</GlobalContext.Provider>
 			</Modal>
 		</ConfigProvider>
 	)
