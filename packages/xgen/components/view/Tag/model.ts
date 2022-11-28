@@ -31,7 +31,7 @@ export default class Index {
 	}
 
 	async getOptions() {
-		const remote = this.props.remote
+		const remote = this.props.xProps?.remote
 
 		if (!remote) return
 
@@ -60,6 +60,6 @@ export default class Index {
 
 	init() {
 		if (this.props.options) this.options = this.props.options
-		if (this.props.remote) this.getOptions()
+		if (this.props.xProps?.remote) this.getOptions()
 	}
 }

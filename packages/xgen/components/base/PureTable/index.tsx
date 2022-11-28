@@ -49,8 +49,8 @@ const Index = (props: IPropsPureTable) => {
 
 	const onChange = useMemoizedFn(({ current: page, pageSize: pagesize }) => {
 		window.$app.Event.emit(`${namespace}/search`, { page, pagesize })
-	})
-
+      })
+      
 	return (
 		<Table
 			dataSource={list}

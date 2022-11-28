@@ -9,11 +9,11 @@ import Model from './model'
 
 import type { Component } from '@/types'
 import type { TagProps } from 'antd'
+import type { Remote } from '@/types'
 
-export interface IProps extends TagProps, Component.PropsViewComponent {
+export interface IProps extends Remote.IProps, TagProps, Component.PropsViewComponent {
 	bind?: string
 	options?: Component.Options
-	remote?: Component.Request
 	pure?: boolean
 }
 
@@ -29,7 +29,7 @@ const CommonTag = window.$app.memo(({ pure, margin, item }: IPropsCommonTag) => 
 
 	const style: React.CSSProperties = {}
 
-	if (margin) style['margin'] = 3
+	if (margin) style['marginRight'] = 4
 
 	return (
 		<Tag className={clsx([styles._local, 'edit_text'])} color={item.color} style={style}>
@@ -61,6 +61,7 @@ const Index = (props: IProps) => {
 						<CommonTag
 							pure={props.pure}
 							item={x.find(item.value || item)}
+							margin
 							key={index}
 						></CommonTag>
 					)

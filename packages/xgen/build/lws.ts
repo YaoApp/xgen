@@ -12,19 +12,19 @@ export const base = `/`
 
 export const proxy = {
 	'/api': {
-		target: 'http://local.iqka.com:5099',
+		target: 'http://localhost:5099',
 		changeOrigin: true
 	},
 	'/extend': {
-		target: 'http://local.iqka.com:5099',
+		target: 'http://localhost:5099',
 		changeOrigin: true
 	},
 	'/assets': {
-		target: 'http://local.iqka.com:5099',
+		target: 'http://localhost:5099',
 		changeOrigin: true
 	},
 	'/iframe': {
-		target: 'http://local.iqka.com:5099',
+		target: 'http://localhost:5099',
 		changeOrigin: true
 	}
 }
