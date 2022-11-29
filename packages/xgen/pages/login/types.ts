@@ -28,7 +28,7 @@ export interface ReqLogin {
 
 export interface ResLogin {
 	expires_at: number
-	menus: Array<App.Menu>
+	menus: { items: Array<App.Menu>; setting: Array<App.Menu> }
 	token: string
 	user: App.User
 	type: UserType

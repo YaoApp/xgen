@@ -5,7 +5,7 @@ import store from 'store2'
 import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
-import { getPath, reg_email, reg_mobile } from '@/utils'
+import { getPath, reg_email, reg_mobile, retryUntil } from '@/utils'
 import { history } from '@umijs/max'
 
 import Service from './services'
@@ -25,6 +25,13 @@ export default class Model {
 	}
 
 	async getCaptcha() {
+		if (!window.$app.api_prefix) {
+			return retryUntil(
+				() => this.getCaptcha(),
+				() => window.$app.api_prefix !== undefined
+			)
+		}
+
 		const { res, err } = await this.service.getCaptcha<Captcha>(
 			this.user_type === 'user' ? this.global.app_info?.login?.user?.captcha : ''
 		)
@@ -82,10 +89,11 @@ export default class Model {
 
 		if (!entry) return message.warning(this.global.locale_messages.login.no_entry)
 
-		const current_nav = findIndex(res.menus, (item) => item.path === entry) || 0
+		const current_nav = findIndex(res.menus.items, (item) => item.path === entry) || 0
 
 		this.global.user = res.user
-		this.global.menu = res.menus
+		this.global.menu = res.menus.items
+		this.global.setting_menu = res.menus?.setting || []
 		this.global.current_nav = current_nav
 
 		if (this.global.app_info.token?.storage === 'localStorage') {
@@ -99,7 +107,8 @@ export default class Model {
 		}
 
 		store.set('user', res.user)
-		store.set('menu', res.menus)
+		store.set('menu', this.global.menu)
+		store.set('setting_menu', this.global.setting_menu)
 		store.set('current_nav', current_nav)
 		store.set('login_url', getPath(history.location.pathname))
 

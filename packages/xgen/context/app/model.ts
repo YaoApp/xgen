@@ -20,6 +20,7 @@ export default class GlobalModel {
 	app_info = {} as App.Info
 	user = (store.get('user') || {}) as App.User
 	menu = (store.get('menu') || []) as Array<App.Menu>
+	setting_menu = (store.get('setting_menu') || []) as Array<App.Menu>
 	current_nav: number = store.get('current_nav') || 0
 	current_menu: number = store.get('current_menu') || 0
 	visible_nav: boolean = true
@@ -52,13 +53,17 @@ export default class GlobalModel {
 	}
 
 	async getUserMenu() {
-		const { res, err } = await this.service.getUserMenu<Array<App.Menu>>()
+		const { res, err } = await this.service.getUserMenu<{
+			menus: { items: Array<App.Menu>; setting: Array<App.Menu> }
+		}>()
 
 		if (err) return
 
-		this.menu = res
+		this.menu = res.menus.items
+		this.setting_menu = res.menus?.setting || []
 
-		store.set('menu', res)
+		store.set('menu', this.menu)
+		store.set('setting_menu', this.setting_menu)
 
 		message.success(this.locale_messages.layout.setting.update_menu.feedback)
 	}

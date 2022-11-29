@@ -79,10 +79,11 @@ const Index = (props: IProps) => {
 		<Modal
 			wrapClassName={styles.modal_batch}
 			open={visible_modal}
-			title='批量编辑'
-			centered
-			onCancel={() => setVisibleModal(false)}
+                  title='批量编辑'
+                  onCancel={() => setVisibleModal(false)}
 			footer={Footer}
+                  centered
+                  destroyOnClose
 		>
 			<div className='select_wrap w_100 border_box flex flex_wrap'>
 				{options.map((item, index) => (
