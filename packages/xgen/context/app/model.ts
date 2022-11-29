@@ -34,22 +34,7 @@ export default class GlobalModel {
 		const theme = (store.get('xgen-theme') || 'light') as App.Theme
 		const avatar = store.get('avatar') as AvatarFullConfig
 
-		reaction(
-			() => this.in_setting,
-			(v) => {
-				this.menu = v ? this.menus.setting : this.menus.items
-				this.current_nav = 0
-				this.menu_key_path = []
-
-				store.set('in_setting', v)
-				store.set('menu', this.menu)
-				store.set('current_nav', this.current_nav)
-				store.set('menu_key_path', this.menu_key_path)
-
-				if (v) history.push(this.menu[0].path)
-			}
-		)
-
+		this.reactions()
 		this.getAppInfo()
 		this.setTheme(theme)
 		this.setAvatar(avatar)
@@ -66,6 +51,24 @@ export default class GlobalModel {
 
 		store.set('__mode', res.mode || 'production')
 		store.set('token_storage', res.token?.storage || 'sessionStorage')
+	}
+
+	reactions() {
+		reaction(
+			() => this.in_setting,
+			(v) => {
+				this.menu = v ? this.menus.setting : this.menus.items
+				this.current_nav = 0
+				this.menu_key_path = []
+
+				store.set('in_setting', v)
+				store.set('menu', this.menu)
+				store.set('current_nav', this.current_nav)
+				store.set('menu_key_path', this.menu_key_path)
+
+				if (v) history.push(this.menu[0].path)
+			}
+		)
 	}
 
 	setAvatar(avatar?: AvatarFullConfig) {

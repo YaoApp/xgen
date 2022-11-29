@@ -9,7 +9,7 @@ import styles from './index.less'
 import type { IPropsItems } from '@/layouts/types'
 
 const Index = (props: IPropsItems) => {
-	const { menu, current_nav, in_setting, setInSetting } = props
+	const { menu, current_nav, in_setting, setCurrentNav, setInSetting } = props
 
 	return (
 		<div className={clsx([styles._local])}>
@@ -24,7 +24,10 @@ const Index = (props: IPropsItems) => {
 								current_nav === index && !in_setting ? 'active' : ''
 							])}
 							to={item.path}
-							onClick={() => setInSetting(false)}
+							onClick={() => {
+								setCurrentNav(index)
+								setInSetting(false)
+							}}
 						>
 							<Icon name={item.icon} size={20}></Icon>
 						</Link>

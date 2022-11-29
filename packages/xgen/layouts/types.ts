@@ -29,6 +29,7 @@ export interface IPropsNav {
 	current_nav: GlobalModel['current_nav']
 	in_setting: GlobalModel['in_setting']
 	setAvatar: GlobalModel['setAvatar']
+	setCurrentNav: (v: number) => void
 	setInSetting: (v: boolean) => void
 }
 
@@ -40,6 +41,7 @@ export interface IPropsItems {
 	menu: GlobalModel['menu']
 	current_nav: GlobalModel['current_nav']
 	in_setting: GlobalModel['in_setting']
+	setCurrentNav: IPropsNav['setCurrentNav']
 	setInSetting: IPropsNav['setInSetting']
 }
 

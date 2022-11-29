@@ -6,7 +6,7 @@ import styles from './index.less'
 import type { IPropsNav, IPropsLogo, IPropsItems, IPropsOptions } from '../../types'
 
 const Index = (props: IPropsNav) => {
-	const { avatar, app_info, user, menu, current_nav, in_setting, setAvatar, setInSetting } = props
+	const { avatar, app_info, user, menu, current_nav, in_setting, setAvatar, setCurrentNav, setInSetting } = props
 
 	const props_logo: IPropsLogo = {
 		logo: app_info?.logo
@@ -16,6 +16,7 @@ const Index = (props: IPropsNav) => {
 		menu,
 		current_nav,
 		in_setting,
+		setCurrentNav,
 		setInSetting
 	}
 

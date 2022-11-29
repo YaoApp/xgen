@@ -69,6 +69,7 @@ const Index = () => {
 		current_nav: global.current_nav,
 		in_setting: global.in_setting,
 		setAvatar: useMemoizedFn(global.setAvatar),
+		setCurrentNav: useMemoizedFn((v) => (global.current_nav = v)),
 		setInSetting: useMemoizedFn((v) => (global.in_setting = v))
 	}
 

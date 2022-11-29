@@ -1,5 +1,7 @@
+import { useDeepCompareEffect } from 'ahooks'
 import { Input, Menu } from 'antd'
 import clsx from 'clsx'
+import { useState } from 'react'
 
 import { Icon } from '@/widgets'
 import { history } from '@umijs/max'
@@ -14,17 +16,31 @@ const Index = (props: IPropsMenu) => {
 	const { locale_messages, title, items, menu_key_path, setMenuKeyPath } = props
 	const { visible_input, current_items, toggle, setInput } = useSearch(items)
 	const menu_items = useMenuItems(current_items)
+	const [selectedKeys, setSelectedKeys] = useState<Array<string>>([])
+	const [openKeys, setOpenKeys] = useState<Array<string>>([])
+
+	useDeepCompareEffect(() => {
+		setSelectedKeys([])
+		setOpenKeys([])
+	}, [items])
 
 	const props_menu: MenuProps = {
 		items: menu_items,
 		mode: 'inline',
 		inlineIndent: 20,
+		forceSubMenuRender: true,
 		defaultSelectedKeys: [menu_key_path.at(0) || ''],
 		defaultOpenKeys: menu_key_path,
-		onSelect({ key, keyPath }) {
+		selectedKeys,
+		openKeys,
+		onOpenChange(openKeys) {
+			setOpenKeys(openKeys)
+		},
+		onSelect({ key, keyPath, selectedKeys }) {
 			history.push(key.split('|')[1])
 
 			setMenuKeyPath(keyPath)
+			setSelectedKeys(selectedKeys)
 		}
 	}
 

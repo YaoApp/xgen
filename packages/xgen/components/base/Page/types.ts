@@ -1,12 +1,10 @@
-import type { GlobalModel } from '@/context/app'
-import type { Action, Common, Chart } from '@/types'
+import type { Common, Chart } from '@/types'
 import type { ReactNode } from 'react'
 
 export interface IProps {
 	children: React.ReactNode
 	className?: string
 	style?: React.CSSProperties
-	title?: string
 	actions?: Chart.Setting['operation']['actions']
 	isChart?: boolean
 	customAction?: ReactNode
@@ -14,7 +12,7 @@ export interface IProps {
 }
 
 export interface IPropsLeft {
-	title: string
+	title: string | undefined
 }
 
 export interface IPropsActions {

@@ -1,5 +1,6 @@
 import { useTitle } from 'ahooks'
 import clsx from 'clsx'
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
 import { useGlobal } from '@/context/app'
@@ -13,20 +14,14 @@ import type { CSSProperties } from 'react'
 import type { IProps, IPropsLeft } from './types'
 
 const Index = (props: IProps) => {
-	const { children, className, style, title: props_title, actions = [], isChart, customAction, full } = props
+	const { children, className, style, actions = [], isChart, customAction, full } = props
 	const global = useGlobal()
-	const menu = global.menu.slice()
+	const title = usePageTitle(toJS(global.menu), toJS(global.menu_key_path))
 
-	// const current_menu = menu[global.current_nav] || {}
-	// const menu_title = current_menu?.children
-	// 	? current_menu?.children?.[global.current_menu]?.name
-	// 	: current_menu.name
-	// const title = usePageTitle(menu_title || '', props_title)
-
-	useTitle(`${global.app_info.name} - ${menu[global.current_nav]?.name} - `)
+	useTitle(`${global.app_info.name} - ${global.menu[global.current_nav]?.name} - ${title}`)
 
 	const props_left: IPropsLeft = {
-		title: ''
+		title
 	}
 
 	const wrap_style = full
