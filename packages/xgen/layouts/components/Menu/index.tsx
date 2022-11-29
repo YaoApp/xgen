@@ -45,7 +45,7 @@ const Index = (props: IPropsMenu) => {
 	}
 
 	return (
-		<div className={styles._local}>
+		<div className={clsx([styles._local, !items?.length && styles.hidden])}>
 			<div className='title_wrap w_100 border_box flex justify_between align_center relative'>
 				{visible_input ? (
 					<Input

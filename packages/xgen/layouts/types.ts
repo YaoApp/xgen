@@ -18,7 +18,8 @@ export interface IPropsLoginWrapperLeft {
 }
 
 export interface IPropsLoading {
-	loading: boolean
+      loading: boolean
+	menu: Array<App.Menu>
 }
 
 export interface IPropsNav {
@@ -57,12 +58,14 @@ export interface IPropsOptions {
 export interface IPropsMenu {
 	locale_messages: GlobalModel['locale_messages']
 	title: App.Menu['name']
-	items: Array<any>
+	items: Array<App.Menu>
 	menu_key_path: GlobalModel['menu_key_path']
 	setMenuKeyPath: (v: GlobalModel['menu_key_path']) => void
 }
 
-export interface IPropsContainer {}
+export interface IPropsContainer {
+	menu: Array<App.Menu>
+}
 
 export interface IPropsSettingModalContent {
 	locale_messages: GlobalModel['locale_messages']

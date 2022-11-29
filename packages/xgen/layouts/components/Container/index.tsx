@@ -8,13 +8,14 @@ import styles from './index.less'
 import type { IPropsContainer } from '../../types'
 
 const Index = (props: IPropsContainer & { children: React.ReactNode }) => {
-	const { children } = props
+	const { children, menu } = props
 
 	return (
 		<div
 			id='container'
 			className={clsx([
 				styles._local,
+				!menu?.length && styles.no_menu,
 				history.location.pathname.indexOf('/iframe') !== -1 ? styles.iframe : ''
 			])}
 		>

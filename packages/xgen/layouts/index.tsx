@@ -4,7 +4,7 @@ import { useMemoizedFn } from 'ahooks'
 import { ConfigProvider } from 'antd'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { Fragment, useLayoutEffect, useState } from 'react'
+import { Fragment, useLayoutEffect, useMemo, useState } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
 import store from 'store2'
 import { container } from 'tsyringe'
@@ -46,6 +46,11 @@ const Index = () => {
 		global.stack.reset()
 	}, [pathname])
 
+	const menu_items = useMemo(
+		() => (global.in_setting ? menu : menu[global.current_nav]?.children || []),
+		[global.in_setting, menu, global.current_nav]
+	)
+
 	const props_helmet: IPropsHelmet = {
 		theme: global.theme,
 		app_info: global.app_info
@@ -58,7 +63,8 @@ const Index = () => {
 	}
 
 	const props_loading: IPropsLoading = {
-		loading: global.loading
+            loading: global.loading,
+		menu: menu_items
 	}
 
 	const props_nav: IPropsNav = {
@@ -76,7 +82,7 @@ const Index = () => {
 	const props_menu: IPropsMenu = {
 		locale_messages: messages,
 		title: menu[global.current_nav]?.name,
-		items: global.in_setting ? toJS(global.menu) : menu[global.current_nav]?.children || [],
+		items: menu_items,
 		menu_key_path: toJS(global.menu_key_path),
 		setMenuKeyPath: useMemoizedFn((v: Array<string>) => {
 			global.menu_key_path = v
@@ -85,7 +91,9 @@ const Index = () => {
 		})
 	}
 
-	const props_container: IPropsContainer = {}
+	const props_container: IPropsContainer = {
+		menu: menu_items
+	}
 
 	return (
 		<HelmetProvider>
