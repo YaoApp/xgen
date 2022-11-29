@@ -26,8 +26,6 @@ export default class GlobalModel {
 	in_setting = (store.get('in_setting') || false) as boolean
 	current_nav: number = store.get('current_nav') || 0
 	current_menu: number = store.get('current_menu') || 0
-	visible_nav: boolean = true
-	visible_menu: boolean = true
 	visible_header: boolean = true
 	loading: boolean = false
 
@@ -92,10 +90,6 @@ export default class GlobalModel {
 		})
 	}
 
-	toggleMenu() {
-		this.visible_menu = !this.visible_menu
-	}
-
 	updateMenuStatus(pathname: string) {
 		if (pathname.indexOf('/0/edit') !== -1) {
 			window.$global.loading = true
@@ -103,11 +97,8 @@ export default class GlobalModel {
             
 		const { nav, menu, hit, menu_item } = getCurrentMenuIndex(toJS(this.menu), pathname)
 
-		if (!hit) return (this.visible_menu = false)
-
 		this.current_nav = nav
 		this.current_menu = menu
-		this.visible_menu = menu_item?.visible_menu || false
 	}
 
 	on() {

@@ -16,7 +16,6 @@ const Index = (props: IProps) => {
 	const { children, className, style, title: props_title, actions = [], isChart, customAction, full } = props
 	const global = useGlobal()
 	const menu = global.menu.slice()
-	const visible_menu = global.visible_menu
 	const visible_header = global.visible_header
 	const current_menu = menu[global.current_nav] || {}
 	const menu_title = current_menu?.children
@@ -27,9 +26,7 @@ const Index = (props: IProps) => {
 	useTitle(`${global.app_info.name} - ${menu[global.current_nav]?.name} - ${title}`)
 
 	const props_left: IPropsLeft = {
-		visible_menu,
-		title,
-		toggleMenu: useMemoizedFn(global.toggleMenu)
+		title
 	}
 
 	const wrap_style = full

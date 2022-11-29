@@ -1,44 +1,31 @@
-import { useBoolean, useDebounceEffect } from 'ahooks'
-import { Input } from 'antd'
+import { Input, Menu } from 'antd'
 import clsx from 'clsx'
-import { useEffect, useState } from 'react'
 
-import { fuzzyQuery } from '@/knife'
 import { Icon } from '@/widgets'
-import { history, Link } from '@umijs/max'
+import { history } from '@umijs/max'
 
+import { useMenuItems, useSearch } from './hooks'
 import styles from './index.less'
 
 import type { IPropsMenu } from '../../types'
+import type { MenuProps } from 'antd'
 
 const Index = (props: IPropsMenu) => {
-	const { locale_messages, visible, blocks, title, items } = props
-	const [visible_input, { toggle }] = useBoolean(false)
-	const [current_items, setCurrentItems] = useState<IPropsMenu['items']>([])
-	const [input, setInput] = useState('')
+	const { locale_messages, title, items } = props
+	const { visible_input, current_items, toggle, setInput } = useSearch(items)
+	const menu_items = useMenuItems(current_items)
 
-	useEffect(() => {
-		if (!items) return
-
-		setCurrentItems(items)
-	}, [items, visible_input])
-
-	useDebounceEffect(
-		() => {
-			if (!input) return setCurrentItems(items)
-
-			setCurrentItems(fuzzyQuery(items, input, 'name'))
-		},
-		[input],
-		{ wait: 300 }
-	)
-
-	const getActiveStatus = (path: string) => {
-		return `/${$runtime.BASE}${path}` === history.location.pathname ? 'active' : ''
+	const props_menu: MenuProps = {
+		items: menu_items,
+		mode: 'inline',
+		inlineIndent: 20,
+		onSelect({ key }) {
+			history.push(key.split('|')[1])
+		}
 	}
 
 	return (
-		<div className={clsx([styles._local, visible ? styles.visible : styles.unvisible])}>
+		<div className={styles._local}>
 			<div className='title_wrap w_100 border_box flex justify_between align_center relative'>
 				{visible_input ? (
 					<Input
@@ -64,32 +51,9 @@ const Index = (props: IPropsMenu) => {
 					)}
 				</a>
 			</div>
-			{visible && (
-				<div className='menu_items_wrap w_100'>
-					<div
-						className={clsx([
-							'menu_items w_100 border_box flex flex_column',
-							blocks ? 'blocks' : ''
-						])}
-					>
-						{current_items?.map((item, index) => (
-							<Link
-								className={clsx([
-									'menu_item flex align_center transition_normal',
-									getActiveStatus(item.path)
-								])}
-								to={item.path}
-								key={index}
-							>
-								<div className='icon_wrap flex justify_center align_center'>
-									<Icon name={item.icon}></Icon>
-								</div>
-								<span className='text line_clamp_2'>{item.name}</span>
-							</Link>
-						))}
-					</div>
-				</div>
-			)}
+			<div className='menu_wrap w_100'>
+				<Menu {...props_menu}></Menu>
+			</div>
 		</div>
 	)
 }

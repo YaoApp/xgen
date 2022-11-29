@@ -19,18 +19,15 @@ export interface IPropsLoginWrapperLeft {
 
 export interface IPropsLoading {
 	loading: boolean
-	visible_nav: GlobalModel['visible_nav']
-	visible_menu: GlobalModel['visible_menu']
 }
 
 export interface IPropsNav {
 	avatar: GlobalModel['avatar']
 	app_info: GlobalModel['app_info']
 	user: GlobalModel['user']
-      menu: GlobalModel[ 'menu' ]
-	visible_nav: GlobalModel['visible_nav']
-      current_nav: GlobalModel[ 'current_nav' ]
-      in_setting:GlobalModel['in_setting']
+	menu: GlobalModel['menu']
+	current_nav: GlobalModel['current_nav']
+	in_setting: GlobalModel['in_setting']
 	setAvatar: GlobalModel['setAvatar']
 	setInSetting: (v: boolean) => void
 }
@@ -41,33 +38,28 @@ export interface IPropsLogo {
 
 export interface IPropsItems {
 	menu: GlobalModel['menu']
-      current_nav: GlobalModel[ 'current_nav' ]
-      in_setting:GlobalModel['in_setting']
+	current_nav: GlobalModel['current_nav']
+	in_setting: GlobalModel['in_setting']
 	setInSetting: IPropsNav['setInSetting']
 }
 
 export interface IPropsOptions {
 	avatar: GlobalModel['avatar']
 	app_info: GlobalModel['app_info']
-      user: GlobalModel[ 'user' ]
-      in_setting:GlobalModel['in_setting']
+	user: GlobalModel['user']
+	in_setting: GlobalModel['in_setting']
 	setAvatar: GlobalModel['setAvatar']
 	setInSetting: IPropsNav['setInSetting']
 }
 
 export interface IPropsMenu {
 	locale_messages: GlobalModel['locale_messages']
-	visible: boolean
-	blocks: boolean
 	title: App.Menu['name']
 	items: Array<any>
 	current_menu: GlobalModel['current_menu']
 }
 
-export interface IPropsContainer {
-	visible_nav: GlobalModel['visible_nav']
-	visible_menu: GlobalModel['visible_menu']
-}
+export interface IPropsContainer {}
 
 export interface IPropsSettingModalContent {
 	locale_messages: GlobalModel['locale_messages']

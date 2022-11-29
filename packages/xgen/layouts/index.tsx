@@ -57,9 +57,7 @@ const Index = () => {
 	}
 
 	const props_loading: IPropsLoading = {
-		loading: global.loading,
-		visible_nav: global.visible_nav,
-		visible_menu: global.visible_menu
+		loading: global.loading
 	}
 
 	const props_nav: IPropsNav = {
@@ -67,7 +65,6 @@ const Index = () => {
 		app_info: global.app_info,
 		user: global.user,
 		menu: toJS(global.menu_items),
-		visible_nav: global.visible_nav,
 		current_nav: global.current_nav,
 		in_setting: global.in_setting,
 		setAvatar: useMemoizedFn(global.setAvatar),
@@ -76,17 +73,12 @@ const Index = () => {
 
 	const props_menu: IPropsMenu = {
 		locale_messages: messages,
-		visible: global.visible_menu,
-		blocks: !!menu[global.current_nav]?.blocks,
 		title: menu[global.current_nav]?.name,
 		items: global.in_setting ? toJS(global.menu) : menu[global.current_nav]?.children || [],
 		current_menu: global.current_menu
 	}
 
-	const props_container: IPropsContainer = {
-		visible_nav: global.visible_nav,
-		visible_menu: global.visible_menu
-	}
+	const props_container: IPropsContainer = {}
 
 	return (
 		<HelmetProvider>

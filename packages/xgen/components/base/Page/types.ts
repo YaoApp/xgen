@@ -15,8 +15,6 @@ export interface IProps {
 
 export interface IPropsLeft {
 	title: string
-	visible_menu: GlobalModel['visible_menu']
-	toggleMenu: GlobalModel['toggleMenu']
 }
 
 export interface IPropsActions {

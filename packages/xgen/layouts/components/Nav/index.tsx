@@ -1,5 +1,3 @@
-import clsx from 'clsx'
-
 import Items from './components/Items'
 import Logo from './components/Logo'
 import Options from './components/Options'
@@ -8,7 +6,7 @@ import styles from './index.less'
 import type { IPropsNav, IPropsLogo, IPropsItems, IPropsOptions } from '../../types'
 
 const Index = (props: IPropsNav) => {
-	const { avatar, app_info, user, menu, visible_nav, current_nav, in_setting, setAvatar, setInSetting } = props
+	const { avatar, app_info, user, menu, current_nav, in_setting, setAvatar, setInSetting } = props
 
 	const props_logo: IPropsLogo = {
 		logo: app_info?.logo
@@ -31,7 +29,7 @@ const Index = (props: IPropsNav) => {
 	}
 
 	return (
-		<div className={clsx([styles._local, !visible_nav ? styles.invisible : ''])}>
+		<div className={styles._local}>
 			<div className='flex flex_column'>
 				<Logo {...props_logo}></Logo>
 				<Items {...props_items}></Items>

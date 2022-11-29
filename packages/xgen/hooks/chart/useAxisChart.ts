@@ -108,5 +108,5 @@ export default (ref: RefObject<HTMLDivElement>, props: IProps) => {
 			chart.dispose()
 			observer.disconnect()
 		}
-	}, [ref.current, props, global.theme, global.visible_menu])
+	}, [ref.current, props, global.theme])
 }
