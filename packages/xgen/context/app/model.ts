@@ -1,5 +1,5 @@
-import { ConfigProvider, message } from 'antd'
-import { makeAutoObservable, toJS } from 'mobx'
+import { ConfigProvider } from 'antd'
+import { makeAutoObservable, reaction, toJS } from 'mobx'
 import { genConfig } from 'react-nice-avatar'
 import store from 'store2'
 import { singleton } from 'tsyringe'
@@ -7,6 +7,7 @@ import { singleton } from 'tsyringe'
 import { Stack } from '@/models'
 import Service from '@/services/app'
 import { getCurrentMenuIndex } from '@/utils/filter'
+import { history } from '@umijs/max'
 
 import type { AvatarFullConfig } from 'react-nice-avatar'
 
@@ -19,8 +20,10 @@ export default class GlobalModel {
 	locale_messages = {} as LocaleMessages
 	app_info = {} as App.Info
 	user = (store.get('user') || {}) as App.User
-	menu = (store.get('menu') || []) as Array<App.Menu>
-	setting_menu = (store.get('setting_menu') || []) as Array<App.Menu>
+      menus = (store.get('menus') || []) as { items: Array<App.Menu>; setting: Array<App.Menu> }
+      menu = (store.get('menu') || []) as Array<App.Menu>
+	menu_items = (store.get('menu_items') || []) as Array<App.Menu>
+	in_setting = (store.get('in_setting') || false) as boolean
 	current_nav: number = store.get('current_nav') || 0
 	current_menu: number = store.get('current_menu') || 0
 	visible_nav: boolean = true
@@ -33,6 +36,22 @@ export default class GlobalModel {
 
 		const theme = (store.get('xgen-theme') || 'light') as App.Theme
 		const avatar = store.get('avatar') as AvatarFullConfig
+
+		reaction(
+			() => this.in_setting,
+			(v) => {
+				this.menu = v ? this.menus.setting : this.menus.items
+				this.current_nav = 0
+				this.current_menu = 0
+
+				store.set('in_setting', v)
+				store.set('menu', this.menu)
+				store.set('current_nav', this.current_nav)
+				store.set('current_menu', this.current_menu)
+
+				if (v) history.push(this.menu[0].path)
+			}
+		)
 
 		this.getAppInfo()
 		this.setTheme(theme)
@@ -50,22 +69,6 @@ export default class GlobalModel {
 
 		store.set('__mode', res.mode || 'production')
 		store.set('token_storage', res.token?.storage || 'sessionStorage')
-	}
-
-	async getUserMenu() {
-		const { res, err } = await this.service.getUserMenu<{
-			menus: { items: Array<App.Menu>; setting: Array<App.Menu> }
-		}>()
-
-		if (err) return
-
-		this.menu = res.menus.items
-		this.setting_menu = res.menus?.setting || []
-
-		store.set('menu', this.menu)
-		store.set('setting_menu', this.setting_menu)
-
-		message.success(this.locale_messages.layout.setting.update_menu.feedback)
 	}
 
 	setAvatar(avatar?: AvatarFullConfig) {
@@ -96,8 +99,8 @@ export default class GlobalModel {
 	updateMenuStatus(pathname: string) {
 		if (pathname.indexOf('/0/edit') !== -1) {
 			window.$global.loading = true
-		}
-
+            }
+            
 		const { nav, menu, hit, menu_item } = getCurrentMenuIndex(toJS(this.menu), pathname)
 
 		if (!hit) return (this.visible_menu = false)

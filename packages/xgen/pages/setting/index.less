@@ -1,0 +1,27 @@
+._local {
+	margin: 0 auto;
+	padding: 32px;
+	max-width: var(--setting_width);
+
+	:global {
+            .setting_items{
+                  border-radius: var(--radius);
+                  overflow: hidden;
+
+                  .setting_item {
+                        padding: 16px 20px;
+                        border-top: 1px solid var(--color_border_soft);
+                        color: var(--color_text_contrast);
+                        background-color: var(--color_bg_menu);
+      
+                        &:first-child {
+                              border-top: none;
+                        }
+      
+                        .desc {
+                              opacity: 0.6;
+                        }
+                  }
+            }
+	}
+}

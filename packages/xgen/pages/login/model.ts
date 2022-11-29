@@ -92,9 +92,11 @@ export default class Model {
 		const current_nav = findIndex(res.menus.items, (item) => item.path === entry) || 0
 
 		this.global.user = res.user
+		this.global.menus = res.menus
 		this.global.menu = res.menus.items
-		this.global.setting_menu = res.menus?.setting || []
+		this.global.menu_items = res.menus.items
 		this.global.current_nav = current_nav
+		this.global.in_setting = false
 
 		if (this.global.app_info.token?.storage === 'localStorage') {
 			store.local.set('token', res.token)
@@ -107,8 +109,9 @@ export default class Model {
 		}
 
 		store.set('user', res.user)
+		store.set('menus', this.global.menus)
 		store.set('menu', this.global.menu)
-		store.set('setting_menu', this.global.setting_menu)
+		store.set('menu_items', this.global.menu_items)
 		store.set('current_nav', current_nav)
 		store.set('login_url', getPath(history.location.pathname))
 

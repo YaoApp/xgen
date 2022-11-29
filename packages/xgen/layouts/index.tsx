@@ -2,6 +2,7 @@ import '@/styles/index.less'
 
 import { useMemoizedFn } from 'ahooks'
 import { ConfigProvider } from 'antd'
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { Fragment, useLayoutEffect, useState } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
@@ -23,8 +24,8 @@ import type { IPropsHelmet, IPropsLoginWrapper, IPropsLoading, IPropsNav, IProps
 const Index = () => {
 	const messages = useIntl()
 	const [global] = useState(() => container.resolve(GlobalModel))
-	const menu = global.menu.slice()
 	const { pathname } = useLocation()
+	const menu = toJS(global.menu)
 	const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
 
 	useLayoutEffect(() => {
@@ -62,16 +63,15 @@ const Index = () => {
 	}
 
 	const props_nav: IPropsNav = {
-		theme: global.theme,
 		avatar: global.avatar,
 		app_info: global.app_info,
 		user: global.user,
-		menu: menu,
+		menu: toJS(global.menu_items),
 		visible_nav: global.visible_nav,
 		current_nav: global.current_nav,
-		setTheme: useMemoizedFn(global.setTheme),
+		in_setting: global.in_setting,
 		setAvatar: useMemoizedFn(global.setAvatar),
-		getUserMenu: useMemoizedFn(global.getUserMenu)
+		setInSetting: useMemoizedFn((v) => (global.in_setting = v))
 	}
 
 	const props_menu: IPropsMenu = {
@@ -79,7 +79,7 @@ const Index = () => {
 		visible: global.visible_menu,
 		blocks: !!menu[global.current_nav]?.blocks,
 		title: menu[global.current_nav]?.name,
-		items: menu[global.current_nav]?.children || [],
+		items: global.in_setting ? toJS(global.menu) : menu[global.current_nav]?.children || [],
 		current_menu: global.current_menu
 	}
 

@@ -1,25 +1,18 @@
-import { Badge, Modal, Popover } from 'antd'
+import { Badge, Popover } from 'antd'
 import clsx from 'clsx'
-import { useState } from 'react'
 import NiceAvatar from 'react-nice-avatar'
 
 import { useIntl } from '@/hooks'
 import { Icon } from '@/widgets'
-import { getLocale } from '@umijs/max'
 
-import SettingModalContent from '../SettingModalContent'
 import UserModalContent from '../UserModalContent'
 import styles from './index.less'
 
-import type { ModalProps } from 'antd'
-
-import type { IPropsOptions, IPropsSettingModalContent, IPropsUserModalContent } from '@/layouts/types'
+import type { IPropsOptions, IPropsUserModalContent } from '@/layouts/types'
 
 const Index = (props: IPropsOptions) => {
-	const { theme, avatar, app_info, user, setTheme, setAvatar, getUserMenu } = props
+	const { avatar, app_info, user, in_setting, setAvatar, setInSetting } = props
 	const messages = useIntl()
-	const locale = getLocale()
-	const [visible_setting_modal, setVisibleSettingModal] = useState(false)
 
 	const Avatar = (
 		<NiceAvatar
@@ -28,26 +21,6 @@ const Index = (props: IPropsOptions) => {
 			{...avatar}
 		/>
 	)
-
-	const props_setting_modal: ModalProps = {
-		open: visible_setting_modal,
-		title: messages.layout.setting.title,
-		className: styles.setting_modal,
-		wrapClassName: 'custom_modal',
-		destroyOnClose: true,
-		maskClosable: true,
-		centered: true,
-		footer: null,
-		onCancel: () => setVisibleSettingModal(false)
-	}
-
-	const props_setting_modal_content: IPropsSettingModalContent = {
-		locale_messages: messages,
-		locale,
-		theme,
-		setTheme,
-		getUserMenu
-	}
 
 	const props_user_modal_content: IPropsUserModalContent = {
 		user,
@@ -67,15 +40,15 @@ const Index = (props: IPropsOptions) => {
 			)}
 			{!app_info?.optional?.hideSetting && (
 				<div
-					className='nav_item w_100 flex justify_center align_center clickable'
-					onClick={() => setVisibleSettingModal(true)}
+					className={clsx(
+						'nav_item w_100 flex justify_center align_center clickable',
+						in_setting && 'active'
+					)}
+					onClick={() => setInSetting(true)}
 				>
 					<Icon name='icon-settings' size={20}></Icon>
 				</div>
 			)}
-			<Modal {...props_setting_modal}>
-				<SettingModalContent {...props_setting_modal_content}></SettingModalContent>
-			</Modal>
 			<Popover
 				overlayClassName='popover_user_wrap'
 				trigger='click'

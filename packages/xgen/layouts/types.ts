@@ -1,6 +1,5 @@
 import type { Locale, App } from '@/types'
 import type { GlobalModel } from '@/context/app'
-import type { DeepRequired } from '@/knife'
 
 export interface IPropsHelmet {
 	theme: GlobalModel['theme']
@@ -25,16 +24,15 @@ export interface IPropsLoading {
 }
 
 export interface IPropsNav {
-	theme: GlobalModel['theme']
 	avatar: GlobalModel['avatar']
 	app_info: GlobalModel['app_info']
 	user: GlobalModel['user']
-	menu: Array<App.Menu>
+      menu: GlobalModel[ 'menu' ]
 	visible_nav: GlobalModel['visible_nav']
-	current_nav: GlobalModel['current_nav']
-	setTheme: GlobalModel['setTheme']
+      current_nav: GlobalModel[ 'current_nav' ]
+      in_setting:GlobalModel['in_setting']
 	setAvatar: GlobalModel['setAvatar']
-	getUserMenu: GlobalModel['getUserMenu']
+	setInSetting: (v: boolean) => void
 }
 
 export interface IPropsLogo {
@@ -42,18 +40,19 @@ export interface IPropsLogo {
 }
 
 export interface IPropsItems {
-	menu: Array<App.Menu>
-	current_nav: GlobalModel['current_nav']
+	menu: GlobalModel['menu']
+      current_nav: GlobalModel[ 'current_nav' ]
+      in_setting:GlobalModel['in_setting']
+	setInSetting: IPropsNav['setInSetting']
 }
 
 export interface IPropsOptions {
-	theme: GlobalModel['theme']
 	avatar: GlobalModel['avatar']
 	app_info: GlobalModel['app_info']
-	user: GlobalModel['user']
-	setTheme: GlobalModel['setTheme']
+      user: GlobalModel[ 'user' ]
+      in_setting:GlobalModel['in_setting']
 	setAvatar: GlobalModel['setAvatar']
-	getUserMenu: GlobalModel['getUserMenu']
+	setInSetting: IPropsNav['setInSetting']
 }
 
 export interface IPropsMenu {
@@ -75,7 +74,6 @@ export interface IPropsSettingModalContent {
 	locale: Locale
 	theme: App.Theme
 	setTheme: GlobalModel['setTheme']
-	getUserMenu: GlobalModel['getUserMenu']
 }
 
 export interface IPropsUserModalContent {

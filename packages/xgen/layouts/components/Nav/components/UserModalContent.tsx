@@ -31,16 +31,10 @@ const Index = (props: IPropsUserModalContent) => {
 					className='btn_logout w_100 flex justify_center align_center'
 					type='primary'
 					onClick={() => {
-						store.remove('user')
-						store.remove('menu')
-						store.remove('current_nav')
-						store.remove('current_menu')
-						store.local.remove('token')
-						store.session.remove('token')
-						store.local.remove('studio')
-						store.session.remove('studio')
-
 						history.push(store.get('login_url') || '/')
+
+						store.clearAll()
+						store.session.clearAll()
 					}}
 				>
 					<Icon name='icon-log-out' size={15} color='white'></Icon>

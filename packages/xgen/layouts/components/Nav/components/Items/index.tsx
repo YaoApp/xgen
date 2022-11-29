@@ -8,7 +8,9 @@ import styles from './index.less'
 
 import type { IPropsItems } from '@/layouts/types'
 
-const Index = ({ menu, current_nav }: IPropsItems) => {
+const Index = (props: IPropsItems) => {
+	const { menu, current_nav, in_setting, setInSetting } = props
+
 	return (
 		<div className={clsx([styles._local])}>
 			<div className='top_mask w_100 mask absolute'></div>
@@ -19,9 +21,10 @@ const Index = ({ menu, current_nav }: IPropsItems) => {
 						<Link
 							className={clsx([
 								'nav_item w_100 flex justify_center align_center clickable',
-								current_nav === index ? 'active' : ''
+								current_nav === index && !in_setting ? 'active' : ''
 							])}
 							to={item.path}
+							onClick={() => setInSetting(false)}
 						>
 							<Icon name={item.icon} size={20}></Icon>
 						</Link>
