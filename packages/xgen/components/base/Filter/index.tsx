@@ -4,6 +4,7 @@ import { toJS } from 'mobx'
 import { When } from 'react-if'
 
 import { X } from '@/components'
+import { useMounted } from '@/hooks'
 import { Icon } from '@/widgets'
 import { getLocale } from '@umijs/max'
 
@@ -18,12 +19,14 @@ const { useForm } = Form
 
 const Index = (props: IPropsFilter) => {
 	const { model, columns, actions, namespace, isChart, onFinish, resetSearchParams } = props
+	const mounted = useMounted()
 	const locale = getLocale()
-	const is_cn = locale === 'zh-CN'
 	const [form] = useForm()
+	const is_cn = locale === 'zh-CN'
 	const { getFieldsValue, resetFields } = form
 	const { display_more, opacity_more, visible_more, setVisibleMore } = useVisibleMore()
-	const { base, more, visible_btn_more } = useCalcLayout(columns, actions)
+	const form_name = `form_filter_${model}`
+	const { base, more, visible_btn_more } = useCalcLayout(columns, { mounted, form_name })
 
 	if (!columns.length && !actions?.length) return null
 
@@ -42,11 +45,11 @@ const Index = (props: IPropsFilter) => {
 		<Form
 			className={clsx(styles._local, isChart ? styles.chart : '')}
 			form={form}
-			name={`form_filter_${model}`}
+			name={form_name}
 			onFinish={onFinish}
 			onReset={onReset}
 		>
-			<Row gutter={16} justify='space-between' style={{ marginBottom: 20 }}>
+			<Row gutter={16} justify='space-between' style={{ marginBottom: 16 }}>
 				{base.map((item: any, index: number) => (
 					<Col span={item.width} key={index}>
 						<X
@@ -61,17 +64,20 @@ const Index = (props: IPropsFilter) => {
 					</Col>
 				))}
 				<When condition={columns.length}>
-					<Col span={2}>
+					<Col>
 						<Button
-							className='w_100 flex justify_center align_center'
+							className='btn_filter_action flex justify_center align_center'
 							type='primary'
 							htmlType='submit'
 						>
 							{locales[locale].search}
 						</Button>
 					</Col>
-					<Col span={2}>
-						<Button className='w_100 flex justify_center align_center' htmlType='reset'>
+					<Col>
+						<Button
+							className='btn_filter_action flex justify_center align_center'
+							htmlType='reset'
+						>
 							{locales[locale].reset}
 						</Button>
 					</Col>
@@ -83,7 +89,7 @@ const Index = (props: IPropsFilter) => {
 								<Button
 									className='btn_more no_text w_100 flex justify_center align_center'
 									icon={<Icon name='icon-filter' size={15}></Icon>}
-									onClick={() => setVisibleMore(true)}
+									onClick={() => setVisibleMore(!visible_more)}
 								></Button>
 							</Tooltip>
 						)}

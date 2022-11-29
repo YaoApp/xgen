@@ -4,7 +4,7 @@
 
 cd dist
 ws --spa index.html \
-   --rewrite '/api/(.*) -> http://localhost:5099/api/$1' \
-   --rewrite '/extend/(.*) -> http://localhost:5099/extend/$1' \
-   --rewrite '/assets/(.*) -> http://localhost:5099/assets/$1' \
-   --rewrite '/iframe/(.*) -> http://localhost:5099/iframe/$1' 
+   --rewrite '/api/(.*) -> http://_dev.com:5099/api/$1' \
+   --rewrite '/extend/(.*) -> http://_dev.com:5099/extend/$1' \
+   --rewrite '/assets/(.*) -> http://_dev.com:5099/assets/$1' \
+   --rewrite '/iframe/(.*) -> http://_dev.com:5099/iframe/$1' 

@@ -12,19 +12,19 @@ export const base = `/${process.env.BASE}/`
 
 export const proxy = {
 	'/api': {
-		target: 'http://localhost:5099',
+		target: 'http://_dev.com:5099',
 		changeOrigin: true
 	},
 	'/extend': {
-		target: 'http://localhost:5099',
+		target: 'http://_dev.com:5099',
 		changeOrigin: true
 	},
 	'/assets': {
-		target: 'http://localhost:5099',
+		target: 'http://_dev.com:5099',
 		changeOrigin: true
 	},
 	'/iframe': {
-		target: 'http://localhost:5099',
+		target: 'http://_dev.com:5099',
 		changeOrigin: true
 	}
 }

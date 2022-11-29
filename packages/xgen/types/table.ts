@@ -7,7 +7,6 @@ export declare namespace TableType {
 		actions?: Array<
 			{
 				action: Pick<Action.Props['action'], 'Common.historyPush' | 'Common.openModal'>
-				width: number
 			} & Pick<Action.Props, 'title' | 'icon'>
 		>
 	}
