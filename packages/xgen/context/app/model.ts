@@ -20,13 +20,12 @@ export default class GlobalModel {
 	locale_messages = {} as LocaleMessages
 	app_info = {} as App.Info
 	user = (store.get('user') || {}) as App.User
-      menus = (store.get('menus') || []) as { items: Array<App.Menu>; setting: Array<App.Menu> }
-      menu = (store.get('menu') || []) as Array<App.Menu>
+	menus = (store.get('menus') || []) as { items: Array<App.Menu>; setting: Array<App.Menu> }
+	menu = (store.get('menu') || []) as Array<App.Menu>
 	menu_items = (store.get('menu_items') || []) as Array<App.Menu>
 	in_setting = (store.get('in_setting') || false) as boolean
 	current_nav: number = store.get('current_nav') || 0
-	current_menu: number = store.get('current_menu') || 0
-	visible_header: boolean = true
+	menu_key_path = (store.get('menu_key_path') || []) as Array<string>
 	loading: boolean = false
 
 	constructor(private service: Service, public stack: Stack) {
@@ -40,12 +39,12 @@ export default class GlobalModel {
 			(v) => {
 				this.menu = v ? this.menus.setting : this.menus.items
 				this.current_nav = 0
-				this.current_menu = 0
+				this.menu_key_path = []
 
 				store.set('in_setting', v)
 				store.set('menu', this.menu)
 				store.set('current_nav', this.current_nav)
-				store.set('current_menu', this.current_menu)
+				store.set('menu_key_path', this.menu_key_path)
 
 				if (v) history.push(this.menu[0].path)
 			}
@@ -93,12 +92,7 @@ export default class GlobalModel {
 	updateMenuStatus(pathname: string) {
 		if (pathname.indexOf('/0/edit') !== -1) {
 			window.$global.loading = true
-            }
-            
-		const { nav, menu, hit, menu_item } = getCurrentMenuIndex(toJS(this.menu), pathname)
-
-		this.current_nav = nav
-		this.current_menu = menu
+		}
 	}
 
 	on() {

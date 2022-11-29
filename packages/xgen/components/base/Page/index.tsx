@@ -1,4 +1,4 @@
-import { useMemoizedFn, useTitle } from 'ahooks'
+import { useTitle } from 'ahooks'
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 
@@ -16,17 +16,17 @@ const Index = (props: IProps) => {
 	const { children, className, style, title: props_title, actions = [], isChart, customAction, full } = props
 	const global = useGlobal()
 	const menu = global.menu.slice()
-	const visible_header = global.visible_header
-	const current_menu = menu[global.current_nav] || {}
-	const menu_title = current_menu?.children
-		? current_menu?.children?.[global.current_menu]?.name
-		: current_menu.name
-	const title = usePageTitle(menu_title || '', props_title)
 
-	useTitle(`${global.app_info.name} - ${menu[global.current_nav]?.name} - ${title}`)
+	// const current_menu = menu[global.current_nav] || {}
+	// const menu_title = current_menu?.children
+	// 	? current_menu?.children?.[global.current_menu]?.name
+	// 	: current_menu.name
+	// const title = usePageTitle(menu_title || '', props_title)
+
+	useTitle(`${global.app_info.name} - ${menu[global.current_nav]?.name} - `)
 
 	const props_left: IPropsLeft = {
-		title
+		title: ''
 	}
 
 	const wrap_style = full
@@ -43,12 +43,7 @@ const Index = (props: IProps) => {
 				className='page_content_wrap flex flex_column transition_normal'
 				style={wrap_style}
 			>
-				<header
-					className={clsx(
-						'header w_100 border_box flex justify_between align_center',
-						!visible_header ? 'invisible' : ''
-					)}
-				>
+				<header className='header w_100 border_box flex justify_between align_center'>
 					<Left {...props_left}></Left>
 					<div className='options_wrap flex align_center'>
 						{customAction}

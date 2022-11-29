@@ -6,6 +6,7 @@ import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { Fragment, useLayoutEffect, useState } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
+import store from 'store2'
 import { container } from 'tsyringe'
 
 import { GlobalContext, GlobalModel } from '@/context/app'
@@ -75,7 +76,12 @@ const Index = () => {
 		locale_messages: messages,
 		title: menu[global.current_nav]?.name,
 		items: global.in_setting ? toJS(global.menu) : menu[global.current_nav]?.children || [],
-		current_menu: global.current_menu
+		menu_key_path: toJS(global.menu_key_path),
+		setMenuKeyPath: useMemoizedFn((v: Array<string>) => {
+			global.menu_key_path = v
+
+			store.set('menu_key_path', v)
+		})
 	}
 
 	const props_container: IPropsContainer = {}

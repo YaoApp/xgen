@@ -11,7 +11,7 @@ import type { IPropsMenu } from '../../types'
 import type { MenuProps } from 'antd'
 
 const Index = (props: IPropsMenu) => {
-	const { locale_messages, title, items } = props
+	const { locale_messages, title, items, menu_key_path, setMenuKeyPath } = props
 	const { visible_input, current_items, toggle, setInput } = useSearch(items)
 	const menu_items = useMenuItems(current_items)
 
@@ -19,8 +19,12 @@ const Index = (props: IPropsMenu) => {
 		items: menu_items,
 		mode: 'inline',
 		inlineIndent: 20,
-		onSelect({ key }) {
+		defaultSelectedKeys: [menu_key_path.at(0) || ''],
+		defaultOpenKeys: menu_key_path,
+		onSelect({ key, keyPath }) {
 			history.push(key.split('|')[1])
+
+			setMenuKeyPath(keyPath)
 		}
 	}
 

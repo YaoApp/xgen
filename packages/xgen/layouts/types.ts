@@ -56,7 +56,8 @@ export interface IPropsMenu {
 	locale_messages: GlobalModel['locale_messages']
 	title: App.Menu['name']
 	items: Array<any>
-	current_menu: GlobalModel['current_menu']
+	menu_key_path: GlobalModel['menu_key_path']
+	setMenuKeyPath: (v: GlobalModel['menu_key_path']) => void
 }
 
 export interface IPropsContainer {}
