@@ -16,7 +16,7 @@ import type { IProps, IPropsLeft } from './types'
 const Index = (props: IProps) => {
 	const { children, className, style, actions = [], isChart, customAction, full } = props
 	const global = useGlobal()
-	const title = usePageTitle(toJS(global.menu), toJS(global.menu_key_path))
+	const title = usePageTitle(toJS(global.menu), toJS(global.menu_key_path), global.current_nav)
 
 	useTitle(`${global.app_info.name} - ${global.menu[global.current_nav]?.name} - ${title}`)
 
