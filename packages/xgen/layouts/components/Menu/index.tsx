@@ -17,13 +17,13 @@ const Index = (props: IPropsMenu) => {
 	const { locale_messages, parent, items, menu_key_path, setMenuKeyPath } = props
 	const { visible_input, current_items, toggle, setInput } = useSearch(items)
 	const { menu_items, pure_items } = useMenuItems(current_items)
-	const [selectedKeys, setSelectedKeys] = useState<Array<string>>([])
+	const [selectedKeys, setSelectedKeys] = useState<Array<string>>([menu_key_path?.length ? menu_key_path[0] : ''])
 	const [openKeys, setOpenKeys] = useState<Array<string>>([])
 
 	useDeepCompareEffect(() => {
 		const target = find(pure_items, (item) => item.key.split('|')[1] === parent.path)
 
-		setSelectedKeys([target?.key])
+		setSelectedKeys([menu_key_path?.length ? menu_key_path[0] : target?.key])
 		setOpenKeys([])
 	}, [pure_items, parent])
 
@@ -32,7 +32,7 @@ const Index = (props: IPropsMenu) => {
 		mode: 'inline',
 		inlineIndent: 20,
 		forceSubMenuRender: true,
-		defaultSelectedKeys: [menu_key_path.at(0) || ''],
+		defaultSelectedKeys: [menu_key_path[0]],
 		defaultOpenKeys: menu_key_path,
 		selectedKeys,
 		openKeys,
