@@ -1,0 +1,37 @@
+[data-theme='dark'] {
+	._local {
+		:global {
+			i {
+				color: fade(white, 80%);
+			}
+		}
+	}
+}
+
+._local {
+	height: 60px;
+
+	&.active {
+		:global {
+			i {
+				color: var(--color_main);
+			}
+		}
+	}
+
+	:global {
+		i {
+			color: var(--color_title_grey);
+			transition: color ease 0.3s;
+		}
+
+            .xgen-badge{
+                  &-count{
+                        min-width: 16px;
+                        height: 16px;
+                        line-height: 16px;
+                        padding: 0 4px;
+                  }
+            }
+	}
+}

@@ -1,11 +1,11 @@
-import { Popover, Tooltip } from 'antd'
+import { useMemoizedFn } from 'ahooks'
+import { Popover } from 'antd'
 import clsx from 'clsx'
 import NiceAvatar from 'react-nice-avatar'
 
 import { useIntl } from '@/hooks'
-import { Icon } from '@/widgets'
-import { Link } from '@umijs/max'
 
+import NavItem from '../NavItem'
 import UserModalContent from '../UserModalContent'
 import styles from './index.less'
 
@@ -23,6 +23,11 @@ const Index = (props: IPropsOptions) => {
 		/>
 	)
 
+	const onClick = useMemoizedFn((index) => {
+		setCurrentNav(index)
+		setInSetting(true)
+	})
+
 	const props_user_modal_content: IPropsUserModalContent = {
 		user,
 		locale_messages: messages,
@@ -34,21 +39,13 @@ const Index = (props: IPropsOptions) => {
 		<div id='setting_items_wrap' className={clsx([styles._local, 'w_100 flex flex_column'])}>
 			<div className='nav_items w_100 flex flex_column align_center'>
 				{items.map((item, index) => (
-					<Tooltip title={item.name} placement='right' key={index}>
-						<Link
-							className={clsx([
-								'nav_item w_100 flex justify_center align_center clickable',
-								current_nav === index && in_setting ? 'active' : ''
-							])}
-							to={item.path}
-							onClick={() => {
-								setCurrentNav(index)
-								setInSetting(true)
-							}}
-						>
-							<Icon name={item.icon} size={20}></Icon>
-						</Link>
-					</Tooltip>
+					<NavItem
+						item={item}
+						active={in_setting && current_nav === index}
+						index={index}
+						onClick={onClick}
+						key={index}
+					></NavItem>
 				))}
 			</div>
 			<Popover

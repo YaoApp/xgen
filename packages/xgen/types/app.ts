@@ -68,8 +68,8 @@ export declare namespace App {
 		name: string
 		icon: string
 		path: string
-		blocks?: boolean
+		badge?: number
+		dot?: boolean
 		children?: Array<Menu>
-		parent?: any
 	}
 }

@@ -16,16 +16,16 @@ import type { MenuProps } from 'antd'
 const Index = (props: IPropsMenu) => {
 	const { locale_messages, parent, items, menu_key_path, setMenuKeyPath } = props
 	const { visible_input, current_items, toggle, setInput } = useSearch(items)
-	const menu_items = useMenuItems(current_items)
+	const { menu_items, pure_items } = useMenuItems(current_items)
 	const [selectedKeys, setSelectedKeys] = useState<Array<string>>([])
 	const [openKeys, setOpenKeys] = useState<Array<string>>([])
 
 	useDeepCompareEffect(() => {
-		const target = find(menu_items, (item) => item.key.split('|')[1] === parent.path)
+		const target = find(pure_items, (item) => item.key.split('|')[1] === parent.path)
 
 		setSelectedKeys([target?.key])
 		setOpenKeys([])
-	}, [menu_items, parent])
+	}, [pure_items, parent])
 
 	const props_menu: MenuProps = {
 		items: menu_items,
