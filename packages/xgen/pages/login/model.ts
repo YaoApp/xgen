@@ -94,7 +94,6 @@ export default class Model {
 		this.global.user = res.user
 		this.global.menus = res.menus
 		this.global.menu = res.menus.items
-		this.global.menu_items = res.menus.items
 		this.global.current_nav = current_nav
 		this.global.in_setting = false
 
@@ -111,7 +110,6 @@ export default class Model {
 		store.set('user', res.user)
 		store.set('menus', this.global.menus)
 		store.set('menu', this.global.menu)
-		store.set('menu_items', this.global.menu_items)
 		store.set('current_nav', current_nav)
 		store.set('login_url', getPath(history.location.pathname))
 

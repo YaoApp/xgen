@@ -28,9 +28,16 @@
 
 	:global {
 		.nav_item {
-			height: 64px;
+			margin-bottom: 18px;
+			padding: 0;
+			width: 40px;
+			height: 40px;
+			border-radius: var(--radius);
 
+			&:hover,
 			&.active {
+				background-color: var(--color_bg_menu);
+
 				i {
 					color: var(--color_main);
 				}

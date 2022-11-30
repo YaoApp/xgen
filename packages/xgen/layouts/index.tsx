@@ -46,10 +46,7 @@ const Index = () => {
 		global.stack.reset()
 	}, [pathname])
 
-	const menu_items = useMemo(
-		() => (global.in_setting ? menu : menu[global.current_nav]?.children || []),
-		[global.in_setting, menu, global.current_nav]
-	)
+	const menu_items = useMemo(() => menu[global.current_nav]?.children || [], [menu, global.current_nav])
 
 	const props_helmet: IPropsHelmet = {
 		theme: global.theme,
@@ -71,7 +68,7 @@ const Index = () => {
 		avatar: global.avatar,
 		app_info: global.app_info,
 		user: global.user,
-		menu: toJS(global.menu_items),
+		menus: toJS(global.menus),
 		current_nav: global.current_nav,
 		in_setting: global.in_setting,
 		setAvatar: useMemoizedFn(global.setAvatar),

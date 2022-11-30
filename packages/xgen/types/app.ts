@@ -52,12 +52,7 @@ export declare namespace App {
 			/** way of token storage */
 			storage: 'sessionStorage' | 'localStorage'
 		}
-		optional?: {
-			/** Hide the navigation bar notification */
-			hideNotification?: boolean
-			/** Hide the navigation bar setting */
-			hideSetting?: boolean
-		}
+		optional?: {}
 	}
 
 	interface User {

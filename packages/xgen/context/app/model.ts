@@ -6,7 +6,6 @@ import { singleton } from 'tsyringe'
 
 import { Stack } from '@/models'
 import Service from '@/services/app'
-import { getCurrentMenuIndex } from '@/utils/filter'
 import { history } from '@umijs/max'
 
 import type { AvatarFullConfig } from 'react-nice-avatar'
@@ -22,7 +21,6 @@ export default class GlobalModel {
 	user = (store.get('user') || {}) as App.User
 	menus = (store.get('menus') || []) as { items: Array<App.Menu>; setting: Array<App.Menu> }
 	menu = (store.get('menu') || []) as Array<App.Menu>
-	menu_items = (store.get('menu_items') || []) as Array<App.Menu>
 	in_setting = (store.get('in_setting') || false) as boolean
 	current_nav: number = store.get('current_nav') || 0
 	menu_key_path = (store.get('menu_key_path') || []) as Array<string>

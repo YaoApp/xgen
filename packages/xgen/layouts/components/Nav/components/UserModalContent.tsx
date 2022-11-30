@@ -30,13 +30,23 @@ const Index = (props: IPropsUserModalContent) => {
 				<Button
 					className='btn_logout w_100 flex justify_center align_center'
 					type='primary'
-                              onClick={ () => {
-                                    store.clearAll()
-                                    store.session.clearAll()
-                                    
-                                    history.push(store.get('login_url') || '/')
-                                    
-                                    window.location.reload()
+					onClick={() => {
+						history.push(store.get('login_url') || '/')
+
+						const excludes = [
+							'__mode',
+							'__paths',
+							'avatar',
+							'xgen-theme',
+							'token_storage',
+							'temp_sid'
+						]
+
+						store.each((key) => {
+							if (!excludes.includes(key)) store.remove(key)
+						})
+
+						store.session.clear()
 					}}
 				>
 					<Icon name='icon-log-out' size={15} color='white'></Icon>
