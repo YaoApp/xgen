@@ -14,12 +14,16 @@ const Index = (props: IPropsNav) => {
 
 	const props_items: IPropsItems = {
 		items: menus.items,
+		current_nav,
+		in_setting,
 		setCurrentNav,
 		setInSetting
 	}
 
 	const props_options: IPropsOptions = {
 		items: menus.setting,
+		current_nav,
+		in_setting,
 		avatar,
 		app_info,
 		user,

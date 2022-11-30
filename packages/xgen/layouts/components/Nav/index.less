@@ -27,25 +27,21 @@
 	transition: transform ease 0.3s;
 
 	:global {
-		.nav_item {
-			margin-bottom: 18px;
-			padding: 0;
-			width: 40px;
-			height: 40px;
-			border-radius: var(--radius);
+		.nav_items {
+			.nav_item {
+				height: 60px;
+			
+				&.active {
 
-			&:hover,
-			&.active {
-				background-color: var(--color_bg_menu);
+					i {
+						color: var(--color_main);
+					}
+				}
 
 				i {
-					color: var(--color_main);
+					color: var(--color_title_grey);
+					transition: color ease 0.3s;
 				}
-			}
-
-			i {
-				color: var(--color_title_grey);
-				transition: color ease 0.3s;
 			}
 		}
 	}

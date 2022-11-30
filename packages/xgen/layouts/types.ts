@@ -40,12 +40,16 @@ export interface IPropsLogo {
 
 export interface IPropsItems {
 	items: GlobalModel['menu']
+	current_nav: GlobalModel['current_nav']
+	in_setting: GlobalModel['in_setting']
 	setCurrentNav: IPropsNav['setCurrentNav']
 	setInSetting: IPropsNav['setInSetting']
 }
 
 export interface IPropsOptions {
       items: GlobalModel[ 'menu' ]
+	current_nav: GlobalModel['current_nav']
+	in_setting: GlobalModel['in_setting']
 	avatar: GlobalModel['avatar']
 	app_info: GlobalModel['app_info']
       user: GlobalModel[ 'user' ]
