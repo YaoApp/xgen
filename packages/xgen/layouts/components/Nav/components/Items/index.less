@@ -1,3 +1,19 @@
 ._local {
 	overflow-y: scroll;
+
+	:global {
+		.mask {
+			height: 30px;
+			z-index: 1;
+
+			&.top_mask {
+				top: 60px;
+				background: linear-gradient(var(--color_bg_nav), transparent);
+			}
+
+			&.bottom_mask {
+				background: linear-gradient(transparent, var(--color_bg_nav));
+			}
+		}
+	}
 }

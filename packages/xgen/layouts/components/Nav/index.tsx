@@ -33,7 +33,7 @@ const Index = (props: IPropsNav) => {
 	}
 
 	return (
-		<div className={styles._local}>
+		<div id='nav_wrap' className={styles._local}>
 			<div className='flex flex_column'>
 				<Logo {...props_logo}></Logo>
 				<Items {...props_items}></Items>

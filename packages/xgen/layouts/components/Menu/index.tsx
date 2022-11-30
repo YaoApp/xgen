@@ -17,7 +17,7 @@ const Index = (props: IPropsMenu) => {
 	const { locale_messages, parent, items, menu_key_path, setMenuKeyPath } = props
 	const { visible_input, current_items, toggle, setInput } = useSearch(items)
 	const { menu_items, pure_items } = useMenuItems(current_items)
-	const [selectedKeys, setSelectedKeys] = useState<Array<string>>([menu_key_path?.length ? menu_key_path[0] : ''])
+	const [selectedKeys, setSelectedKeys] = useState<Array<string>>([])
 	const [openKeys, setOpenKeys] = useState<Array<string>>([])
 
 	useDeepCompareEffect(() => {
