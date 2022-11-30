@@ -1,5 +1,4 @@
-import { Badge } from 'antd'
-import { useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 
 import type { IPropsMenu } from '../../../types'
 
@@ -14,9 +13,12 @@ const Index = (items: IPropsMenu['items'], prefix?: string) => {
 
 				if (item.badge) {
 					menu_item['label'] = (
-						<Badge count={item.badge} overflowCount={999} offset={[12, 6]}>
+						<Fragment>
 							{item.name}
-						</Badge>
+							<span className='badge_wrap'>
+								{item.badge}
+							</span>
+						</Fragment>
 					)
 				} else {
 					menu_item['label'] = item.name
