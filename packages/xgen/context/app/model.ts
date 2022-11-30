@@ -56,16 +56,19 @@ export default class GlobalModel {
 			() => this.in_setting,
 			(v) => {
 				this.menu = v ? this.menus.setting : this.menus.items
-				this.current_nav = 0
 				this.menu_key_path = []
 
 				store.set('in_setting', v)
 				store.set('menu', this.menu)
-				store.set('current_nav', this.current_nav)
 				store.set('menu_key_path', this.menu_key_path)
 
 				if (v) history.push(this.menu[0].path)
 			}
+		)
+
+		reaction(
+			() => this.current_nav,
+			(v) => store.set('current_nav', v)
 		)
 	}
 
