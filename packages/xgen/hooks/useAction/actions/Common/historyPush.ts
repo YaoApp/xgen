@@ -12,6 +12,10 @@ export default ({ action }: Args) => {
 	if (action.pathname.startsWith('http')) {
 		return window.open(action.pathname + (search ? `?${search}` : ''))
 	} else {
+		if (action.public) {
+			return window.open(window.location.origin + action.pathname + (search ? `?${search}` : ''))
+		}
+
 		history.push({
 			pathname: action.pathname,
 			search

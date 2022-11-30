@@ -63,7 +63,7 @@ const Index = () => {
 	}
 
 	const props_loading: IPropsLoading = {
-            loading: global.loading,
+		loading: global.loading,
 		menu: menu_items
 	}
 
@@ -81,7 +81,7 @@ const Index = () => {
 
 	const props_menu: IPropsMenu = {
 		locale_messages: messages,
-		title: menu[global.current_nav]?.name,
+		parent: menu[global.current_nav],
 		items: menu_items,
 		menu_key_path: toJS(global.menu_key_path),
 		setMenuKeyPath: useMemoizedFn((v: Array<string>) => {

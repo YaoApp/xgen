@@ -1,6 +1,7 @@
 import { useDeepCompareEffect } from 'ahooks'
 import { Input, Menu } from 'antd'
 import clsx from 'clsx'
+import { find } from 'lodash-es'
 import { useState } from 'react'
 
 import { Icon } from '@/widgets'
@@ -13,16 +14,18 @@ import type { IPropsMenu } from '../../types'
 import type { MenuProps } from 'antd'
 
 const Index = (props: IPropsMenu) => {
-	const { locale_messages, title, items, menu_key_path, setMenuKeyPath } = props
+	const { locale_messages, parent, items, menu_key_path, setMenuKeyPath } = props
 	const { visible_input, current_items, toggle, setInput } = useSearch(items)
 	const menu_items = useMenuItems(current_items)
 	const [selectedKeys, setSelectedKeys] = useState<Array<string>>([])
 	const [openKeys, setOpenKeys] = useState<Array<string>>([])
 
 	useDeepCompareEffect(() => {
-		setSelectedKeys([])
+		const target = find(menu_items, (item) => item.key.split('|')[1] === parent.path)
+
+		setSelectedKeys([target?.key])
 		setOpenKeys([])
-	}, [items])
+	}, [menu_items, parent])
 
 	const props_menu: MenuProps = {
 		items: menu_items,
@@ -55,7 +58,7 @@ const Index = (props: IPropsMenu) => {
 						onChange={({ target: { value } }) => setInput(value)}
 					></Input>
 				) : (
-					<span className='title'>{title}</span>
+					<span className='title'>{parent.name}</span>
 				)}
 				<a
 					className={clsx([

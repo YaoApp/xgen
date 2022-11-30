@@ -16,6 +16,7 @@ export declare namespace Action {
 	interface HistoryPush {
 		pathname: string
 		search?: any
+		public?: boolean
 	}
 
 	interface FormDeleteParams {

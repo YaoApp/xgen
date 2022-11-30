@@ -18,7 +18,7 @@ export interface IPropsLoginWrapperLeft {
 }
 
 export interface IPropsLoading {
-      loading: boolean
+	loading: boolean
 	menu: Array<App.Menu>
 }
 
@@ -57,7 +57,7 @@ export interface IPropsOptions {
 
 export interface IPropsMenu {
 	locale_messages: GlobalModel['locale_messages']
-	title: App.Menu['name']
+	parent: App.Menu
 	items: Array<App.Menu>
 	menu_key_path: GlobalModel['menu_key_path']
 	setMenuKeyPath: (v: GlobalModel['menu_key_path']) => void
