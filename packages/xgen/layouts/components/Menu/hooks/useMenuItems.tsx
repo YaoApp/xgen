@@ -14,15 +14,15 @@ const Index = (items: IPropsMenu['items'], prefix?: string) => {
 
 				if (item.badge) {
 					menu_item['label'] = (
-						<Badge count={item.badge} offset={[12, 6]}>
+						<Badge count={item.badge} overflowCount={999} offset={[12, 6]}>
 							{item.name}
 						</Badge>
 					)
 				} else {
 					menu_item['label'] = item.name
 				}
-                        menu_item[ 'key' ] = key
-                        
+				menu_item['key'] = key
+
 				pure_item['label'] = item.name
 				pure_item['key'] = key
 
