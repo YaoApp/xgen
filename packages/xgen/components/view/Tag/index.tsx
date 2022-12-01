@@ -15,6 +15,7 @@ export interface IProps extends Remote.IProps, TagProps, Component.PropsViewComp
 	bind?: string
 	options?: Component.Options
 	pure?: boolean
+	useValue?: boolean
 }
 
 interface IPropsCommonTag {
@@ -42,21 +43,21 @@ const Index = (props: IProps) => {
 	const [x] = useState(() => container.resolve(Model))
 
 	useLayoutEffect(() => {
-		x.props = props
+		x.remote.raw_props = props
 
-		x.init()
+		x.remote.init()
 	}, [])
 
-	if (!x.options.length) return null
+	if (!x.remote.options.length) return null
 
-	if (typeof x.value === 'string') {
+	if (typeof props.__value === 'string') {
 		return <CommonTag pure={props.pure} item={x.item}></CommonTag>
 	}
 
-	if (Array.isArray(x.value) && x.value.length) {
+	if (Array.isArray(props.__value) && props.__value.length) {
 		return (
 			<div className='edit_text flex'>
-				{x.value.map((item, index) => {
+				{props.__value.map((item, index) => {
 					return (
 						<CommonTag
 							pure={props.pure}
