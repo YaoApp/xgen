@@ -1,7 +1,6 @@
 import { useDeepCompareEffect } from 'ahooks'
 import { Input, Menu } from 'antd'
 import clsx from 'clsx'
-import { find } from 'lodash-es'
 import { useState } from 'react'
 
 import { Icon } from '@/widgets'
@@ -14,36 +13,27 @@ import type { IPropsMenu } from '../../types'
 import type { MenuProps } from 'antd'
 
 const Index = (props: IPropsMenu) => {
-	const { locale_messages, parent, items, menu_key_path, setMenuKeyPath } = props
+	const { locale_messages, parent, items, menu_key_path } = props
 	const { visible_input, current_items, toggle, setInput } = useSearch(items)
-	const { menu_items, pure_items } = useMenuItems(current_items)
-	const [selectedKeys, setSelectedKeys] = useState<Array<string>>([])
-	const [openKeys, setOpenKeys] = useState<Array<string>>([])
-
+	const { menu_items } = useMenuItems(current_items)
+      const [ openKeys, setOpenKeys ] = useState<Array<string>>([])
+      
 	useDeepCompareEffect(() => {
-		const target = find(pure_items, (item) => item.key.split('|')[1] === parent.path)
-
-		setSelectedKeys([menu_key_path?.length ? menu_key_path[0] : target?.key])
-		setOpenKeys([])
-	}, [pure_items, parent])
+		setOpenKeys(menu_key_path)
+	}, [menu_key_path])
 
 	const props_menu: MenuProps = {
 		items: menu_items,
 		mode: 'inline',
 		inlineIndent: 20,
 		forceSubMenuRender: true,
-		defaultSelectedKeys: [menu_key_path[0]],
-		defaultOpenKeys: menu_key_path,
-		selectedKeys,
+		selectedKeys: menu_key_path,
 		openKeys,
 		onOpenChange(openKeys) {
 			setOpenKeys(openKeys)
 		},
-		onSelect({ key, keyPath, selectedKeys }) {
-			history.push(key.split('|')[1])
-
-			setMenuKeyPath(keyPath)
-			setSelectedKeys(selectedKeys)
+		onSelect({ key }) {
+			history.push(key)
 		}
 	}
 

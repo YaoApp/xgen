@@ -27,8 +27,8 @@ const Index = () => {
 	const [global] = useState(() => container.resolve(GlobalModel))
 	const { pathname } = useLocation()
 	const menu = toJS(global.menu)
-	const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
-
+      const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
+      
 	useLayoutEffect(() => {
 		window.$global = global
 
@@ -72,7 +72,6 @@ const Index = () => {
 		current_nav: global.current_nav,
 		in_setting: global.in_setting,
 		setAvatar: useMemoizedFn(global.setAvatar),
-		setCurrentNav: useMemoizedFn((v) => (global.current_nav = v)),
 		setInSetting: useMemoizedFn((v) => (global.in_setting = v))
 	}
 
@@ -80,12 +79,7 @@ const Index = () => {
 		locale_messages: messages,
 		parent: menu[global.current_nav],
 		items: menu_items,
-		menu_key_path: toJS(global.menu_key_path),
-		setMenuKeyPath: useMemoizedFn((v: Array<string>) => {
-			global.menu_key_path = v
-
-			store.set('menu_key_path', v)
-		})
+		menu_key_path: toJS(global.menu_key_path)
 	}
 
 	const props_container: IPropsContainer = {

@@ -12,13 +12,12 @@ import type { App } from '@/types'
 export interface IPropsNavItem {
 	item: App.Menu
 	active: boolean
-	index: number
-	onClick: (index: number) => void
+	onClick: () => void
 }
 
 const Index = (props: IPropsNavItem) => {
-      const { item, active, index, onClick } = props
-      
+	const { item, active, onClick } = props
+
 	return (
 		<Tooltip title={item.name} placement='right'>
 			<Link
@@ -28,7 +27,7 @@ const Index = (props: IPropsNavItem) => {
 					'w_100 flex justify_center align_center clickable'
 				])}
 				to={item.path}
-				onClick={() => onClick(index)}
+				onClick={onClick}
 			>
 				<If condition={item.badge || item.dot}>
 					<Then>

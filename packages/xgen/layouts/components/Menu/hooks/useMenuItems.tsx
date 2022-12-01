@@ -1,14 +1,12 @@
-import { Fragment } from 'react'
+import { Fragment, useMemo } from 'react'
 
 import type { IPropsMenu } from '../../../types'
 
-const Index = (items: IPropsMenu['items'], prefix?: string) => {
+const getMenuItems = (items: IPropsMenu['items']) => {
 	return items.reduce(
 		(total: { menu_items: Array<any>; pure_items: Array<any> }, item) => {
 			const menu_item: any = {}
 			const pure_item: any = {}
-			const _prefix = `${prefix ?? ''}/${item.name}`
-			const key = `${_prefix}|${item.path}`
 
 			if (item.badge) {
 				menu_item['label'] = (
@@ -20,14 +18,14 @@ const Index = (items: IPropsMenu['items'], prefix?: string) => {
 			} else {
 				menu_item['label'] = item.name
 			}
-			menu_item['key'] = key
+			menu_item['key'] = item.path
 
 			pure_item['label'] = item.name
-			pure_item['key'] = key
+			pure_item['key'] = item.path
 
 			if (item?.children && item?.children?.length) {
-				menu_item['children'] = Index(item.children, _prefix).menu_items
-				pure_item['children'] = Index(item.children, _prefix).pure_items
+				menu_item['children'] = getMenuItems(item.children).menu_items
+				pure_item['children'] = getMenuItems(item.children).pure_items
 			}
 
 			total.menu_items.push(menu_item)
@@ -37,6 +35,10 @@ const Index = (items: IPropsMenu['items'], prefix?: string) => {
 		},
 		{ menu_items: [], pure_items: [] }
 	)
+}
+
+const Index = (items: IPropsMenu['items'], prefix?: string) => {
+	return useMemo(() => getMenuItems(items), [items, prefix])
 }
 
 export default Index

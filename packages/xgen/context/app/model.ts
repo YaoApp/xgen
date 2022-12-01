@@ -6,7 +6,7 @@ import { singleton } from 'tsyringe'
 
 import { Stack } from '@/models'
 import Service from '@/services/app'
-import { history } from '@umijs/max'
+import { getCurrentMenuIndexs } from '@/utils'
 
 import type { AvatarFullConfig } from 'react-nice-avatar'
 
@@ -51,27 +51,6 @@ export default class GlobalModel {
 		store.set('token_storage', res.token?.storage || 'sessionStorage')
 	}
 
-	reactions() {
-		reaction(
-			() => this.in_setting,
-			(v) => {
-				this.menu = v ? this.menus.setting : this.menus.items
-				this.menu_key_path = []
-
-				store.set('in_setting', v)
-				store.set('menu', this.menu)
-				store.set('menu_key_path', this.menu_key_path)
-
-				if (v) history.push(this.menu[0].path)
-			}
-		)
-
-		reaction(
-			() => this.current_nav,
-			(v) => store.set('current_nav', v)
-		)
-	}
-
 	setAvatar(avatar?: AvatarFullConfig) {
 		this.avatar = avatar || genConfig()
 
@@ -97,6 +76,37 @@ export default class GlobalModel {
 		if (pathname.indexOf('/0/edit') !== -1) {
 			window.$global.loading = true
 		}
+
+		const { current_nav, paths } = getCurrentMenuIndexs(
+			pathname,
+			toJS(this.in_setting ? this.menus.setting : this.menus.items)
+		)
+
+		this.current_nav = current_nav
+		this.menu_key_path = paths
+	}
+
+	reactions() {
+		reaction(
+			() => this.in_setting,
+			(v) => {
+				this.menu = v ? this.menus.setting : this.menus.items
+
+				store.set('in_setting', v)
+			}
+		)
+		reaction(
+			() => this.menu,
+			(v) => store.set('menu', v)
+		)
+		reaction(
+			() => this.current_nav,
+			(v) => store.set('current_nav', v)
+		)
+		reaction(
+			() => this.menu_key_path,
+			(v) => store.set('menu_key_path', v)
+		)
 	}
 
 	on() {

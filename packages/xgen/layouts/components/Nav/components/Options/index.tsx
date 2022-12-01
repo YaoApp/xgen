@@ -12,7 +12,7 @@ import styles from './index.less'
 import type { IPropsOptions, IPropsUserModalContent } from '@/layouts/types'
 
 const Index = (props: IPropsOptions) => {
-	const { items, current_nav, in_setting, avatar, user, setAvatar, setCurrentNav, setInSetting } = props
+	const { items, current_nav, in_setting, avatar, user, setAvatar, setInSetting } = props
 	const messages = useIntl()
 
 	const Avatar = (
@@ -23,10 +23,7 @@ const Index = (props: IPropsOptions) => {
 		/>
 	)
 
-	const onClick = useMemoizedFn((index) => {
-		setCurrentNav(index)
-		setInSetting(true)
-	})
+	const onClick = useMemoizedFn(() => setInSetting(true))
 
 	const props_user_modal_content: IPropsUserModalContent = {
 		user,
@@ -42,7 +39,6 @@ const Index = (props: IPropsOptions) => {
 					<NavItem
 						item={item}
 						active={in_setting && current_nav === index}
-						index={index}
 						onClick={onClick}
 						key={index}
 					></NavItem>
