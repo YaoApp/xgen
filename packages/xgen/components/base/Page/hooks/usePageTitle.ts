@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { getItemByPath } from '@/utils'
+
 import type { GlobalModel } from '@/context/app'
 
 export default (
@@ -10,12 +12,8 @@ export default (
 	return useMemo(() => {
 		if (!menu_key_path?.length) {
 			return menu[current_nav].name
+		} else {
+			return getItemByPath(menu[current_nav].children || [], menu_key_path, 'path')?.name
 		}
-
-		return menu_key_path[0]
-			.split('|')[0]
-			.split('/')
-			.filter((item) => item)
-			.at(-1)
 	}, [menu, menu_key_path, current_nav])
 }
