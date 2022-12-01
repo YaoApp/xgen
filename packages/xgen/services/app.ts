@@ -4,15 +4,17 @@ import store from 'store2'
 import { injectable } from 'tsyringe'
 
 import { catchError } from '@/knife'
+import { getLocale } from '@umijs/max'
 
 import type { Response } from '@/types'
+
 
 @injectable()
 export default class Index {
 	@catchError()
 	getAppInfo<Res>() {
 		const sid = nanoid() + new Date().valueOf()
-		const lang = window.navigator.language.toLowerCase()
+		const lang = getLocale()
 		const time = new Date().toLocaleString().replaceAll('/', '-')
 
 		store.set('temp_sid', sid)
