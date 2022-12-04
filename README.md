@@ -1,4 +1,6 @@
-# xgen next version
+# XGEN
+
+The next generation low-code dashboard driven by Yao.
 
 ## Tips
 
