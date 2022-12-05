@@ -11,7 +11,8 @@ import styles from './index.less'
 import type { IPropsActions } from '../../types'
 
 const Index = (props: IPropsActions) => {
-	const { locale_messages, namespace, primary, type, id, operation, data, onBack, submit } = props
+	const { locale_messages, namespace, primary, type, id, operation, data, disabledActionsAffix, onBack, submit } =
+		props
 	const [stick, setStick] = useState<boolean | undefined>(false)
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled(data)
@@ -21,7 +22,7 @@ const Index = (props: IPropsActions) => {
 	const _actions = useMemo(() => getTemplateValue(operation?.actions!, data), [operation?.actions, data])
 
 	return (
-		<Affix offsetTop={11} style={{ zIndex: 101 }} onChange={(v) => setStick(v)}>
+		<Affix offsetTop={11} style={{ zIndex: disabledActionsAffix ? 0 : 101 }} onChange={(v) => setStick(v)}>
 			<div
 				className={clsx([
 					styles._local,

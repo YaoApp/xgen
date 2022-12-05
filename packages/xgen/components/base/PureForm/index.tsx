@@ -14,7 +14,8 @@ import type { IPropsPureForm, IPropsActions, IPropsSections } from './types'
 const { useForm } = Form
 
 const Index = (props: IPropsPureForm) => {
-	const { namespace, primary, type, id, data, sections, operation, title, onSave, onBack } = props
+	const { namespace, primary, type, id, data, sections, operation, title, disabledActionsAffix, onSave, onBack } =
+		props
 	const [form] = useForm()
 	const locale = getLocale()
 	const { setFieldsValue, resetFields, submit } = form
@@ -35,6 +36,7 @@ const Index = (props: IPropsPureForm) => {
 		id,
 		operation,
 		data,
+		disabledActionsAffix,
 		onBack,
 		submit
 	}

@@ -30,10 +30,11 @@ export interface IProps extends Component.PropsChartComponent {
 
 const Index = (props: IProps) => {
 	const global = useGlobal()
-	const ref = useRef<HTMLDivElement>(null)
+      const ref = useRef<HTMLDivElement>(null)
+
 	const current = props.data[props.data.length - 1]
 	const is_dark = global.theme === 'dark'
-	const is_line = props.type === 'line'
+      const is_line = props.type === 'line'
 
 	useAxisChart(ref, {
 		name: props.__name,

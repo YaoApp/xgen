@@ -49,7 +49,7 @@ const Index = (props: IPropsFilter) => {
 			onFinish={onFinish}
 			onReset={onReset}
 		>
-			<Row gutter={16} justify='space-between' style={{ marginBottom: 16 }}>
+			<Row gutter={16} style={{ marginBottom: 16 }}>
 				{base.map((item: any, index: number) => (
 					<Col span={item.width} key={index}>
 						<X

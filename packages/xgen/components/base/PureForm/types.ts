@@ -11,6 +11,7 @@ export interface IPropsPureForm {
 	sections: Model['sections']
 	operation: Model['setting']['operation']
 	title: string
+	disabledActionsAffix?: boolean
 	onSave: (v: Global.AnyObject) => void
 	onBack: () => void
 }
@@ -22,7 +23,8 @@ export interface IPropsActions {
 	type: Model['type']
 	id: Model['id']
 	operation: Model['setting']['operation']
-	data: Model['data']
+      data: Model[ 'data' ]
+      disabledActionsAffix:IPropsPureForm['disabledActionsAffix']
 	onBack: IPropsPureForm['onBack']
 	submit: () => void
 }

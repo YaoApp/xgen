@@ -71,6 +71,7 @@ const Index = (props: Component.FormComponent) => {
 		sections: toJS(x.sections),
 		operation: toJS(x.setting.operation),
 		title,
+		disabledActionsAffix: parent === 'Free',
 		onSave,
 		onBack: onFormBack
 	}
@@ -100,4 +101,4 @@ const Index = (props: Component.FormComponent) => {
 	)
 }
 
-export default new window.$app.Handle(Index).by(observer).get()
+export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

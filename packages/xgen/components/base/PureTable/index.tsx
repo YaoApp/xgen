@@ -49,13 +49,13 @@ const Index = (props: IPropsPureTable) => {
 
 	const onChange = useMemoizedFn(({ current: page, pageSize: pagesize }) => {
 		window.$app.Event.emit(`${namespace}/search`, { page, pagesize })
-      })
-      
+	})
+
 	return (
 		<Table
 			dataSource={list}
 			columns={list_columns}
-			sticky={in_form || hidePagination ? false : { offsetHeader: 52 }}
+			sticky={in_form || hidePagination || parent === 'Free' ? false : { offsetHeader: 52 }}
 			rowKey={getRowKey}
 			pagination={hidePagination ? false : table_pagination}
 			rowSelection={batch.active ? row_selection : undefined}

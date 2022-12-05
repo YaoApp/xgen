@@ -37,8 +37,8 @@ const Index = (props: Component.BaseComponent) => {
 	}
 
 	const props_chart: IPropsPureChart = {
-		data: x.data,
-		columns: x.chart_columns
+		data: toJS(x.data),
+		columns: toJS(x.chart_columns)
 	}
 
 	const Content = (
@@ -53,9 +53,9 @@ const Index = (props: Component.BaseComponent) => {
 			<Page
 				title={x.setting.name}
 				className='w_100'
-				isChart
 				actions={toJS(x.setting.operation.actions)}
 				full={x.setting?.config?.full}
+				withRows
 			>
 				{Content}
 			</Page>
@@ -65,4 +65,4 @@ const Index = (props: Component.BaseComponent) => {
 	return <div className='w_100'>{Content}</div>
 }
 
-export default new window.$app.Handle(Index).by(observer).get()
+export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

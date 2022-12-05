@@ -2,7 +2,7 @@ import { useMemoizedFn } from 'ahooks'
 import clsx from 'clsx'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useLayoutEffect, useState } from 'react'
+import { Fragment, useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
 import { Filter, Page, PureTable } from '@/components'
@@ -66,16 +66,16 @@ const Index = (props: IProps) => {
 		setBatchSelected
 	}
 
-	if (parent === 'Page') {
-		const props_filter: IPropsFilter = {
-			model: x.model,
-			namespace: x.namespace.value,
-			columns: toJS(x.filter_columns),
-			actions: toJS(x.setting.filter?.actions),
-			onFinish,
-			resetSearchParams
-		}
+	const props_filter: IPropsFilter = {
+		model: x.model,
+		namespace: x.namespace.value,
+		columns: toJS(x.filter_columns),
+		actions: toJS(x.setting.filter?.actions),
+		onFinish,
+		resetSearchParams
+	}
 
+	if (parent === 'Page') {
 		const props_custom_action: IPropsCustomAction = {
 			setting: toJS(x.setting),
 			namespace: x.namespace.value,
@@ -86,8 +86,8 @@ const Index = (props: IProps) => {
 		}
 
 		return (
-                  <Page
-                        title={x.setting.name}
+			<Page
+				title={x.setting.name}
 				className={clsx([styles._local, 'w_100'])}
 				customAction={<CustomAction {...props_custom_action}></CustomAction>}
 				full={x.setting?.config?.full}
@@ -98,6 +98,15 @@ const Index = (props: IProps) => {
 		)
 	}
 
+	if (parent === 'Free') {
+		return (
+			<div className={clsx([styles._local, 'w_100 flex flex_column'])}>
+				<Filter {...props_filter}></Filter>
+				<PureTable {...props_table}></PureTable>
+			</div>
+		)
+	}
+
 	return (
 		<div className={clsx([styles._local, x.parent === 'Form' ? styles.in_form : 'w_100'])}>
 			<PureTable {...props_table}></PureTable>
@@ -105,4 +114,4 @@ const Index = (props: IProps) => {
 	)
 }
 
-export default new window.$app.Handle(Index).by(observer).get()
+export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

@@ -19,7 +19,7 @@ export default (columns: Array<Common.Column>, { mounted, form_name }: CalcLayou
 		const form = document.getElementById(form_name)!
 		const width_max = getComputedStyleNumber(getComputedStyle(form).getPropertyValue('width'))
 		const width_gutter = 16
-            const width_btn_more = 38 + width_gutter
+		const width_btn_more = 38 + width_gutter
 		const width_filter_actions = 72 * 2 + width_gutter * 2
 		const width_custom_actions = Array.from(document.querySelectorAll(`#${form_name} .btn_action`)).reduce(
 			(total, item) => {
@@ -38,7 +38,10 @@ export default (columns: Array<Common.Column>, { mounted, form_name }: CalcLayou
 
 			total += width_item
 
-			if (total + width_btn_more + width_filter_actions + width_custom_actions > width_max) {
+			if (
+				total + width_btn_more + width_filter_actions + width_custom_actions + width_gutter * 2 >
+				width_max
+			) {
 				more.push(item)
 			} else {
 				base.push(item)

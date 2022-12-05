@@ -9,16 +9,25 @@ interface IProps {
 	className?: string
 	title?: string
 	options?: React.ReactNode
+	ignoreMarginBottom?: boolean
 	width?: string | number
 	height?: string | number
 	style?: CSSProperties
 }
 
 const Index = (props: IProps) => {
-	const { children, className, title, options, width, height, style } = props
+	const { children, className, title, options, ignoreMarginBottom, width, height, style } = props
 
 	return (
-		<div className={clsx([styles._local, className, 'card_wrap'])} style={{ width, height }}>
+		<div
+			className={clsx([
+				styles._local,
+				className,
+				'card_wrap',
+				ignoreMarginBottom && styles.ignoreMarginBottom
+			])}
+			style={{ width, height }}
+		>
 			{title && (
 				<div className='card_title_wrap w_100 border_box flex justify_between align_center'>
 					<span className='card_title'>{title}</span>

@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe'
 
-import type { Common, FormType } from '@/types'
+import type { Common, FormType, Free } from '@/types'
 
 type Item = { name: string }
 type Fields = { [key: string]: any }
@@ -37,7 +37,7 @@ export class ColumnUtils {
 
 			return total
 		}, [])
-      }
+	}
 
 	reduceAny<I, O, F>(columns: Array<I & Item>, fields: F & Fields) {
 		return columns.reduce((total: Array<O>, item) => {
@@ -48,7 +48,7 @@ export class ColumnUtils {
 	}
 
 	reduceSections(sections: Array<FormType.Section>, fields: Common.EditFields) {
-		const getSectionColumns = (total: Array<FormType.ColumnResult>, item: FormType.Column) => {
+		const getColumns = (total: Array<FormType.ColumnResult>, item: FormType.Column) => {
 			if ('tabs' in item) {
 				total.push({
 					width: item?.width || 24,
@@ -65,8 +65,36 @@ export class ColumnUtils {
 			total.push({
 				title: item.title,
 				desc: item.desc,
-				columns: item.columns.reduce(getSectionColumns, [])
+				columns: item.columns.reduce(getColumns, [])
 			})
+
+			return total
+		}, [])
+	}
+
+	reduceFreeColumns(columns: Array<Free.Column>, fields: Free.Fields) {
+		const getColumns = (total: Array<Free.TargetColumn>, item: Free.Column) => {
+			if ('rows' in item) {
+				total.push({
+					width: item.width,
+					rows: this.reduceFreeColumns(item.rows, fields)
+				})
+			} else {
+				total.push(this.handleAnyColumn(item, fields))
+			}
+
+			return total
+		}
+
+		return columns.reduce((total: Array<Free.TargetColumn>, item) => {
+			if ('rows' in item) {
+				total.push({
+					width: item.width,
+					rows: item.rows.reduce(getColumns, [])
+				})
+			} else {
+				total.push(this.handleAnyColumn(item, fields))
+			}
 
 			return total
 		}, [])
