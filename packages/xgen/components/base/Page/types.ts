@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 
 export interface IProps {
 	children: React.ReactNode
+	title?: string
 	className?: string
 	style?: React.CSSProperties
 	actions?: Chart.Setting['operation']['actions']

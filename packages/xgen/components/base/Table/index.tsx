@@ -86,7 +86,8 @@ const Index = (props: IProps) => {
 		}
 
 		return (
-			<Page
+                  <Page
+                        title={x.setting.name}
 				className={clsx([styles._local, 'w_100'])}
 				customAction={<CustomAction {...props_custom_action}></CustomAction>}
 				full={x.setting?.config?.full}

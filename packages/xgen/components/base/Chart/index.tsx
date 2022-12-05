@@ -51,6 +51,7 @@ const Index = (props: Component.BaseComponent) => {
 	if (parent === 'Page') {
 		return (
 			<Page
+				title={x.setting.name}
 				className='w_100'
 				isChart
 				actions={toJS(x.setting.operation.actions)}

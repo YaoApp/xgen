@@ -44,6 +44,7 @@ export declare namespace TableType {
 	}
 
 	interface Setting {
+		name: string
 		primary: string
 		header: Header
 		filter: Filter
