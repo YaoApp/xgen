@@ -1,7 +1,6 @@
 import { Button, Form, Input } from 'antd'
 import clsx from 'clsx'
 
-import logo_feishu from '@/assets/images/feishu.png'
 import { useIntl } from '@/hooks'
 import { Icon } from '@/widgets'
 import { getLocale } from '@umijs/max'
@@ -11,7 +10,7 @@ const { Item, useForm } = Form
 import type { IPropsForm } from '@/pages/login/types'
 
 const Index = (props: IPropsForm) => {
-	const { code, feishu, loading, getCaptcha, onFinish } = props
+	const { code, loading, getCaptcha, onFinish } = props
 	const [form] = useForm()
 	const { getFieldValue } = form
 	const messages = useIntl()
@@ -103,30 +102,6 @@ const Index = (props: IPropsForm) => {
 					</Button>
 				)}
 			</Item>
-			{feishu && (
-				<div className='flex flex_column'>
-					<div className='or_wrap flex justify_between align_center'>
-						<span className='line'></span>
-						<span className='text'>or</span>
-						<span className='line'></span>
-					</div>
-					<div className='third_wrap w_100 flex flex_column'>
-						<Button
-							className='btn_third relative'
-							shape='round'
-							icon={
-								<img
-									className='logo_third absolute'
-									src={logo_feishu}
-									alt='logo_feishu'
-								/>
-							}
-						>
-							使用飞书进行登录
-						</Button>
-					</div>
-				</div>
-			)}
 		</Form>
 	)
 }

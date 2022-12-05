@@ -12,9 +12,17 @@ export declare namespace App {
 			slogan?: string
 			/** default is yaoapps.com */
 			site?: string
-			/** show Social media */
-			showSNS?: boolean
 		}
+            thirdPartyLogin?: Array<{
+			/** button text */
+                  title: string
+			/** third party login href text */
+                  href: string
+			/** button prefix icon */
+                  icon?: string
+			/** set whether the target of the a tag is _blank */
+			blank?: boolean
+		}>
 	}
 
 	interface Info {
@@ -40,11 +48,6 @@ export declare namespace App {
 			entry: {
 				admin: string
 				user: string
-			}
-			/** Display and configure the Feishu login interface */
-			feishu?: {
-				authUrl: string
-				login: string
 			}
 		}
 		/** define token behavior, default is sessionStorage */

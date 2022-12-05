@@ -1,6 +1,5 @@
 import type { FormItemProps } from 'antd'
 import type { CSSProperties } from 'react'
-import type { Common } from '@/types'
 
 export declare namespace Component {
 	type IdType = number

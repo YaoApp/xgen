@@ -55,8 +55,11 @@ export interface IPropsCommon {
 
 export interface IPropsForm {
 	code: Captcha['content']
-	feishu: App.Info['login']['feishu']
 	loading: boolean
 	getCaptcha: () => void
 	onFinish: (data: FormValues) => void
+}
+
+export interface IPropsThirdPartyLogin {
+	items: App.Role['thirdPartyLogin']
 }

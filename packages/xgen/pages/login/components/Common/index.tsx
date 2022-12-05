@@ -1,14 +1,14 @@
 import { Tooltip } from 'antd'
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
+import { When } from 'react-if'
 
 import { useIntl } from '@/hooks'
 import { toFirstUpperCase } from '@/utils/filter'
 import { Icon } from '@/widgets'
 import { Link } from '@umijs/max'
 
-import Form from './components/Form'
-import Sns from './components/Sns'
+import { Form, ThirdPartyLogin } from './components'
 
 import type { IPropsCommon, IPropsForm } from '@/pages/login/types'
 
@@ -18,7 +18,6 @@ const Index = ({ x, type }: IPropsCommon) => {
 
 	const props_form: IPropsForm = {
 		code: x.captcha.content,
-		feishu: x.global.app_info.login?.feishu,
 		loading: x.loading.login,
 		getCaptcha: x.getCaptcha,
 		onFinish: x.onFinish
@@ -53,7 +52,9 @@ const Index = ({ x, type }: IPropsCommon) => {
 				<span className='user_type absolute white'>{toFirstUpperCase(type)}</span>
 			</div>
 			<Form {...props_form}></Form>
-			{x.global.app_info.login?.layout?.showSNS && <Sns></Sns>}
+			<When condition={x.global.app_info.login.admin?.thirdPartyLogin?.length}>
+				<ThirdPartyLogin items={x.global.app_info.login.admin.thirdPartyLogin}></ThirdPartyLogin>
+			</When>
 		</div>
 	)
 }

@@ -1,0 +1,43 @@
+._local {
+	width: 54%;
+
+	:global {
+		.or_wrap {
+			margin: 30px 0;
+
+			.line {
+				width: 42%;
+				height: 1px;
+				background-color: fade(black, 6%);
+			}
+		}
+
+		.third_btn_wrap {
+                  .btn_third_wrap{
+                        margin-bottom: 12px;
+
+                        &:last-child{
+                              margin-bottom: 0;
+                        }
+
+                        .btn_third {
+                              height: 46px;
+                              border: 1px solid var(--color_border);
+                              box-shadow: none !important;
+                              font-weight: bold;
+      
+                              &:hover{
+                                    border-color: var(--color_main);
+                              }
+      
+                              .logo_third {
+                                    width: 18px;
+                                    margin-right: 6px;
+                                    margin-top: 2px;
+                                    border-radius: var(--radius);
+                              }
+                        }
+                  }
+		}
+	}
+}

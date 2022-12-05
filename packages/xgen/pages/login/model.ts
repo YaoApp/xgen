@@ -52,31 +52,6 @@ export default class Model {
 		this.afterLogin(res, err)
 	}
 
-	async authByLark() {
-		const close_loading = message.loading('loading', 0)
-
-		const { res, err } = await this.service.authByLark<ResAuthByLark>(
-			this.global.app_info?.login?.feishu?.authUrl || ''
-		)
-
-		close_loading()
-
-		if (err) return message.error(this.global.locale_messages.login.auth_lark_err)
-
-		window.open(res.url)
-	}
-
-	async loginByLark(params: ReqLoginByLark) {
-		this.loading.login = true
-
-		const { res, err } = await this.service.loginByLark<ReqLoginByLark, ResLogin>(
-			this.global.app_info?.login?.feishu?.login || '',
-			params
-		)
-
-		this.afterLogin(res, err)
-	}
-
 	async afterLogin(res: ResLogin, err: Utils.ResError) {
 		if (err || !res?.token) {
 			this.loading.login = false
