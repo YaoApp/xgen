@@ -26,11 +26,12 @@ export default class Model {
 	async getSetting() {
 		if (this.parent === 'Page') this.global.loading = true
 
-		const { res, err } = await this.common.getSetting<Free.Setting>('free', this.model)
+            const { res, err } = await this.common.getSetting<Free.Setting>('dashboard', this.model)
+            
+		this.global.loading = false
 
 		if (err) return
 
-		this.global.loading = false
 		this.setting = res
 
 		this.columns = this.column_utils.reduceFreeColumns(res.free.columns, res.fields.free)
