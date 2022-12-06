@@ -4,9 +4,8 @@ import { history } from '@umijs/max'
 
 import type { Global } from '@/types'
 
-/** Dynamically forward to the corresponding component */
+/** Dynamically forward to the components */
 const Index = () => {
-	/** Dynamic parameters do not allow underscores */
 	const { type, model, id, formType } = useMatch<Global.Match>(
 		/^\/x\/([^\/]+)\/([^\/]+)(?:\/([^\/]+))?(?:\/([^\/]+))?/,
 		['type', 'model', 'id', 'formType']
