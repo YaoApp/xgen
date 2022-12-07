@@ -6,7 +6,7 @@ export declare namespace Component {
 	type FormType = 'view' | 'edit'
 
 	interface BaseComponent {
-		parent: 'Page' | 'Modal' | 'Form' | 'Free' | 'Custom'
+		parent: 'Page' | 'Modal' | 'Form' | 'Dashboard' | 'Custom'
 		model: string
 	}
 
@@ -25,7 +25,6 @@ export declare namespace Component {
 		__type: FormType
 		__bind: string
 		__name: string
-		__data_item: any
 	}
 
 	interface PropsEditComponent extends Props {

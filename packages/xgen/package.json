@@ -23,7 +23,7 @@
       "dependencies": {
             "@ant-design/icons": "^4.7.0",
             "@matrixage/atom.css": "^2.0.1",
-            "@umijs/max": "^4.0.33",
+            "@umijs/max": "^4.0.34",
             "ahooks": "^3.7.2",
             "antd": "4.24.3",
             "await-to-js": "^3.0.0",

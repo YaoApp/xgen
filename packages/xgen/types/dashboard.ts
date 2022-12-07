@@ -1,7 +1,7 @@
 import type { Common } from '@/types'
 import type { CSSProperties } from 'react'
 
-export declare namespace Free {
+export declare namespace Dashboard {
 	type TableBind = {
 		model: string
 	}

@@ -1,17 +1,17 @@
 import { X } from '@/components'
 
 import type { IPropsFormRender } from '../types'
-import type { Free } from '@/types'
+import type { Dashboard } from '@/types'
 
 const Index = (props: IPropsFormRender) => {
 	const { item } = props
-      const bind = item.bind as Free.FormBind
+      const bind = item.bind as Dashboard.FormBind
       
 	return (
 		<X
 			type='base'
 			name='Form'
-			props={{ parent: 'Free', model: bind.model, id: bind.id, form: { type: bind.formType } }}
+			props={{ parent: 'Dashboard', model: bind.model, id: bind.id, form: { type: bind.formType } }}
 		></X>
 	)
 }

@@ -16,7 +16,10 @@ export default (columns: Array<Common.Column>, { mounted, form_name }: CalcLayou
 		if (!mounted) return initial
 		if (!columns.length) return initial
 
-		const form = document.getElementById(form_name)!
+            const form = document.getElementById(form_name)!
+
+		if (!form) return initial
+
 		const width_max = getComputedStyleNumber(getComputedStyle(form).getPropertyValue('width'))
 		const width_gutter = 16
 		const width_btn_more = 38 + width_gutter

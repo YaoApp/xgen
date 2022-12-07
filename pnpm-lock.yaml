@@ -78,7 +78,7 @@ importers:
       '@types/react-dom': ^18.0.9
       '@types/react-slick': ^0.23.10
       '@types/sortablejs': ^1.15.0
-      '@umijs/max': ^4.0.33
+      '@umijs/max': ^4.0.34
       ahooks: ^3.7.2
       antd: 4.24.3
       await-to-js: ^3.0.0
@@ -126,7 +126,7 @@ importers:
     dependencies:
       '@ant-design/icons': 4.7.0_biqbaboplfbrettd7655fr4n2y
       '@matrixage/atom.css': 2.0.1
-      '@umijs/max': 4.0.33_4c7cljkjspqm6h5yuwuhy7yzz4
+      '@umijs/max': 4.0.34_4c7cljkjspqm6h5yuwuhy7yzz4
       ahooks: 3.7.2_react@18.2.0
       antd: 4.24.3_biqbaboplfbrettd7655fr4n2y
       await-to-js: 3.0.0
@@ -2468,32 +2468,32 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: false
 
-  /@umijs/ast/4.0.33:
-    resolution: {integrity: sha512-cSDxugjCVB2/kZuzSW81bTL6OCf6BNnv6ylm28tOfjcS8IX4hdx2mJKt6SGi+nyN7XgU/ghEcU/e6X/kIqogjw==}
+  /@umijs/ast/4.0.34:
+    resolution: {integrity: sha512-lihOvolTyGr7J6hyhHOgRLEqWGOv1IpKSQJeK20BPGCRtk9Yt+zc+XWnyw9PLPgqDDu55I0+u4MX0FKcCxGo9g==}
     dependencies:
-      '@umijs/bundler-utils': 4.0.33
+      '@umijs/bundler-utils': 4.0.34
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@umijs/babel-preset-umi/4.0.33:
-    resolution: {integrity: sha512-cYoXXnJt7pvTrVKQvZ6aTjU7TvD3usdYXGu4RAUTkmVTmxWWIzg3d3YiTEKPJvnDDTsSNsi9BPsKC9+UGeonJQ==}
+  /@umijs/babel-preset-umi/4.0.34:
+    resolution: {integrity: sha512-u1kh2uzaus44DFsKxORyNQTiqaOvVcYp/8A0Ke8+AUK88QyJitnWx9NH/v/J13yIA02Xw0ctCXW6C1LvjrBy6A==}
     dependencies:
       '@babel/runtime': 7.18.9
       '@bloomberg/record-tuple-polyfill': 0.0.4
-      '@umijs/bundler-utils': 4.0.33
-      '@umijs/utils': 4.0.33
+      '@umijs/bundler-utils': 4.0.34
+      '@umijs/utils': 4.0.34
       core-js: 3.22.4
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@umijs/bundler-esbuild/4.0.33:
-    resolution: {integrity: sha512-8VEcw5xidSh4R2jOQhEHnkaqYxLAskFCqCL8DZrpe2OprUBCfVL3xRGURz48DJNkiESe7dAHJjl8K/ueUOG9dA==}
+  /@umijs/bundler-esbuild/4.0.34:
+    resolution: {integrity: sha512-yNf10+dRrPmUgZa8ucWkE5KBHI8foVdSo0JH0uowGGAeZc6j//fnunLzphMpu02/j0QTFrt21BS4sNgBLF1+XQ==}
     hasBin: true
     dependencies:
-      '@umijs/bundler-utils': 4.0.33
-      '@umijs/utils': 4.0.33
+      '@umijs/bundler-utils': 4.0.34
+      '@umijs/utils': 4.0.34
       enhanced-resolve: 5.9.3
       postcss: 8.4.19
       postcss-flexbugs-fixes: 5.0.2_postcss@8.4.19
@@ -2502,10 +2502,10 @@ packages:
       - supports-color
     dev: false
 
-  /@umijs/bundler-utils/4.0.33:
-    resolution: {integrity: sha512-1hvFwZPWurn1sGttVco4rp4evTNfFpJY3sxUg51wvmYpzr++gYbZvjx1Ja5D4fsi1RAW8KK6x4v2AZlS5t4yhg==}
+  /@umijs/bundler-utils/4.0.34:
+    resolution: {integrity: sha512-w9UbuW+GXu0jGXIJiQPzpap72NbBn/taxFeNpaWFnlRlziEIMQZ4bQ7I3WAud/ej+eT6Zf142WIVv/PjpA8Lmg==}
     dependencies:
-      '@umijs/utils': 4.0.33
+      '@umijs/utils': 4.0.34
       esbuild: 0.15.14
       regenerate: 1.4.2
       regenerate-unicode-properties: 10.0.1
@@ -2514,13 +2514,13 @@ packages:
       - supports-color
     dev: false
 
-  /@umijs/bundler-vite/4.0.33_hlyjgkazvxlku7dptsqphi4q5e:
-    resolution: {integrity: sha512-inD2R2XzMCQXVDu7V6K3FGg4Ze25ArsMiWys+szMGih8pFUeb5j6RCGZZEPrGGbXhDWCpAxVpReetZ9Bmm12Pg==}
+  /@umijs/bundler-vite/4.0.34_hlyjgkazvxlku7dptsqphi4q5e:
+    resolution: {integrity: sha512-U9meWGqqV6xmHs2g8sxQR0jwZ+E1blc8wRJng5UrBKJtJTsgkKh6loMYEcAhzSJcHDm0OgFCsP7+6q5zyNmroQ==}
     hasBin: true
     dependencies:
       '@svgr/core': 6.2.1
-      '@umijs/bundler-utils': 4.0.33
-      '@umijs/utils': 4.0.33
+      '@umijs/bundler-utils': 4.0.34
+      '@umijs/utils': 4.0.34
       '@vitejs/plugin-react': 1.2.0
       postcss-preset-env: 7.5.0_postcss@8.4.19
       rollup-plugin-visualizer: 5.6.0_rollup@2.79.1
@@ -2530,8 +2530,8 @@ packages:
       - supports-color
     dev: false
 
-  /@umijs/bundler-webpack/4.0.33_ioost42n2pkm3q6vbnx4ypyu7a:
-    resolution: {integrity: sha512-Cnm9OamDkd6WhEE77Nicz0UGbv2DDabXbnAix2I6S9j94m2BB5LeLMU0PZ3f0lkbglA28/RFZUiJ7QEGRQyMdw==}
+  /@umijs/bundler-webpack/4.0.34_ioost42n2pkm3q6vbnx4ypyu7a:
+    resolution: {integrity: sha512-gnCbbpz/JSnPlxdVeJJotKaiKWyKCZpsaa8Z91E3fsiAONXt0nyD+KXJS05VzlqRtenG/Nz0q2kSr5Bnqa0N5w==}
     hasBin: true
     dependencies:
       '@parcel/css': 1.9.0
@@ -2540,11 +2540,11 @@ packages:
       '@svgr/plugin-jsx': 6.2.1_@svgr+core@6.2.1
       '@svgr/plugin-svgo': 6.2.0_@svgr+core@6.2.1
       '@types/hapi__joi': 17.1.8
-      '@umijs/babel-preset-umi': 4.0.33
-      '@umijs/bundler-utils': 4.0.33
+      '@umijs/babel-preset-umi': 4.0.34
+      '@umijs/bundler-utils': 4.0.34
       '@umijs/case-sensitive-paths-webpack-plugin': 1.0.1
-      '@umijs/mfsu': 4.0.33
-      '@umijs/utils': 4.0.33
+      '@umijs/mfsu': 4.0.34
+      '@umijs/utils': 4.0.34
       cors: 2.8.5
       css-loader: 6.7.1_webpack@5.74.0
       es5-imcompatible-versions: 0.1.73
@@ -2572,11 +2572,11 @@ packages:
     resolution: {integrity: sha512-kDKJ8yTarxwxGJDInG33hOpaQRZ//XpNuuznQ/1Mscypw6kappzFmrBr2dOYave++K7JHouoANF354UpbEQw0Q==}
     dev: false
 
-  /@umijs/core/4.0.33:
-    resolution: {integrity: sha512-yYA9Fqh0D6GYeAkGBTr8T4ZHDSJKIKGDYomz0aahCZtdxvviAcFevfMCjfHCIMveE7KUcCo66ut13WUAETokfQ==}
+  /@umijs/core/4.0.34:
+    resolution: {integrity: sha512-A6UhyCQFhj7sUn9i8vR8edlCK8jUEhXGrjVEtS5j5L5mGOOJTGY8JdQAOkBqE+zdnLlWmV28pgsGdvMlUXHxig==}
     dependencies:
-      '@umijs/bundler-utils': 4.0.33
-      '@umijs/utils': 4.0.33
+      '@umijs/bundler-utils': 4.0.34
+      '@umijs/utils': 4.0.34
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -2592,15 +2592,15 @@ packages:
       query-string: 6.14.1
     dev: false
 
-  /@umijs/lint/4.0.33_uujrxemjo7lovzijsn2dxwddim:
-    resolution: {integrity: sha512-FNGGWmN+9DGDatItpL60mcyqlYKueKDxGBTR44PToTmPoHyUbTyixmAli/A3Uq9EOwl8lWRk9oymEQQl4yf3SA==}
+  /@umijs/lint/4.0.34_uujrxemjo7lovzijsn2dxwddim:
+    resolution: {integrity: sha512-op2wRfWk1v0OVG1mWTquEGrACNB0GkAzf9KgH7vqlkyh2lOcyARjgOC41e9+5ft6vNNJAdlr7Ln3wuPDWXggKA==}
     dependencies:
       '@babel/core': 7.18.9
       '@babel/eslint-parser': 7.18.9_bpusarfwcbgnjqmbezm4jkv5ie
       '@stylelint/postcss-css-in-js': 0.38.0_2kvscvrvsi2imdv3wm7he2jef4
       '@typescript-eslint/eslint-plugin': 5.36.1_745yffs6vdnrcyyrsokc6duccq
       '@typescript-eslint/parser': 5.36.1_wdqgoy3juh7r2u2b4n4o4ol5rq
-      '@umijs/babel-preset-umi': 4.0.33
+      '@umijs/babel-preset-umi': 4.0.34
       eslint-plugin-jest: 26.1.5_sp3afleufoxxzorzxgscqblb6q
       eslint-plugin-react: 7.29.4_eslint@8.15.0
       eslint-plugin-react-hooks: 4.5.0_eslint@8.15.0
@@ -2620,16 +2620,16 @@ packages:
       - typescript
     dev: false
 
-  /@umijs/max/4.0.33_4c7cljkjspqm6h5yuwuhy7yzz4:
-    resolution: {integrity: sha512-Fasfx7+1C/Ko63ZLb4UxDibcmy8OehV6sQWt4Yu6g8Heq1q/5Zp+njmXtsm/JgOg5wAyfsmVIbgHTEN3Ts8HOQ==}
+  /@umijs/max/4.0.34_4c7cljkjspqm6h5yuwuhy7yzz4:
+    resolution: {integrity: sha512-X1Bt+qtkzqweDXx+wX7jdTCT5laq9OC4muEMJ+DUY6bmWML5y18aiWoEcdMZVtPpDsX+kMnSl467gky+S4R0Ug==}
     hasBin: true
     dependencies:
-      '@umijs/lint': 4.0.33_uujrxemjo7lovzijsn2dxwddim
-      '@umijs/plugins': 4.0.33_b4agrhtfhmd7squobbanpynotm
+      '@umijs/lint': 4.0.34_uujrxemjo7lovzijsn2dxwddim
+      '@umijs/plugins': 4.0.34_b4agrhtfhmd7squobbanpynotm
       antd: 4.24.3_biqbaboplfbrettd7655fr4n2y
       eslint: 8.15.0
       stylelint: 14.8.2
-      umi: 4.0.33_cuvszjnabyeg57t6v2fh26eojq
+      umi: 4.0.34_cuvszjnabyeg57t6v2fh26eojq
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/helper-module-imports'
@@ -2669,32 +2669,32 @@ packages:
       - webpack-plugin-serve
     dev: false
 
-  /@umijs/mfsu/4.0.33:
-    resolution: {integrity: sha512-9JHlawcpY1QexBN+snlWC/BmQ05yC6Slnm111cRGzWjBAawc7bN03hYk8AodbZDi+WFRW9XZFeWAAuFd71Cyxw==}
+  /@umijs/mfsu/4.0.34:
+    resolution: {integrity: sha512-1Qoixy/FtDh1nsoJMUUjhRMLCO/OPv54IHlI5+h7zFhLVvMxQFUj70nnLI2rqPcL361XARwimSH5DXroOqLknQ==}
     dependencies:
-      '@umijs/bundler-esbuild': 4.0.33
-      '@umijs/bundler-utils': 4.0.33
-      '@umijs/utils': 4.0.33
+      '@umijs/bundler-esbuild': 4.0.34
+      '@umijs/bundler-utils': 4.0.34
+      '@umijs/utils': 4.0.34
       enhanced-resolve: 5.9.3
       is-equal: 1.6.4
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@umijs/plugin-run/4.0.33:
-    resolution: {integrity: sha512-/ygdL5IcRdsDFRSBQ5L5Xcn9uZIuq6MZPi0kDvAUkwaSPEqBphSgeQe4d1GRJENrojCfawR8VDkcyR3Zcup6fg==}
+  /@umijs/plugin-run/4.0.34:
+    resolution: {integrity: sha512-BDd3QP4IfQi5Fb6l7w3abgXNUnheFEytBag9kz2nCpRjUJPI1xula0wwfMZApGg+ZOedb6/zWcOrziYkb2k4mA==}
     dependencies:
       tsx: 3.9.0
     dev: false
 
-  /@umijs/plugins/4.0.33_b4agrhtfhmd7squobbanpynotm:
-    resolution: {integrity: sha512-5A4rfLk1n9voyFJm5kt6zwFUZe2Pw0neIsEfZfc0JBWUqTQSTGTaU0MspzgObxtTqCnCY2sfyR9aM1g2oGXx2A==}
+  /@umijs/plugins/4.0.34_b4agrhtfhmd7squobbanpynotm:
+    resolution: {integrity: sha512-6mkqpXUqkaSARUw/P8vveFDKmXtYZXVDzwZsB1QMTxCHWZ3JoqiiN3blIbxvjwRRUGlHRpaHyvqTC1s+y0Va2w==}
     dependencies:
       '@ahooksjs/use-request': 2.8.15_react@18.2.0
       '@ant-design/antd-theme-variable': 1.0.0
       '@ant-design/icons': 4.7.0_biqbaboplfbrettd7655fr4n2y
       '@ant-design/pro-components': 2.3.12_v7ik3qz2soubv74xe64u37q724
-      '@umijs/bundler-utils': 4.0.33
+      '@umijs/bundler-utils': 4.0.34
       '@umijs/valtio': 1.0.0_react@18.2.0
       antd-dayjs-webpack-plugin: 1.0.6_dayjs@1.11.5
       axios: 0.27.2
@@ -2733,22 +2733,22 @@ packages:
       - vite
     dev: false
 
-  /@umijs/preset-umi/4.0.33_5a3x73g7gchinlnrimqfvkjwya:
-    resolution: {integrity: sha512-d84riRZUx5E2YQS6YmgnBanIbHuuS+vLJTEPVcbBrpI3RaEUCRZhFAyp/RrMyDZdCVfWFe45AhECziz5daJd7Q==}
+  /@umijs/preset-umi/4.0.34_5a3x73g7gchinlnrimqfvkjwya:
+    resolution: {integrity: sha512-qz/3CI16jyJv8Ej+Y9QYr8chuHlWRTwZbstaLrgL2qyclOEpV1Zq6negs3cjJSyx3Bpo54w79CncxthAlcZl1A==}
     dependencies:
-      '@umijs/ast': 4.0.33
-      '@umijs/babel-preset-umi': 4.0.33
-      '@umijs/bundler-utils': 4.0.33
-      '@umijs/bundler-vite': 4.0.33_hlyjgkazvxlku7dptsqphi4q5e
-      '@umijs/bundler-webpack': 4.0.33_ioost42n2pkm3q6vbnx4ypyu7a
-      '@umijs/core': 4.0.33
+      '@umijs/ast': 4.0.34
+      '@umijs/babel-preset-umi': 4.0.34
+      '@umijs/bundler-utils': 4.0.34
+      '@umijs/bundler-vite': 4.0.34_hlyjgkazvxlku7dptsqphi4q5e
+      '@umijs/bundler-webpack': 4.0.34_ioost42n2pkm3q6vbnx4ypyu7a
+      '@umijs/core': 4.0.34
       '@umijs/did-you-know': 1.0.1
       '@umijs/history': 5.3.1
-      '@umijs/mfsu': 4.0.33
-      '@umijs/plugin-run': 4.0.33
-      '@umijs/renderer-react': 4.0.33_ef5jwxihqo6n7gxfmzogljlgcm
-      '@umijs/server': 4.0.33
-      '@umijs/utils': 4.0.33
+      '@umijs/mfsu': 4.0.34
+      '@umijs/plugin-run': 4.0.34
+      '@umijs/renderer-react': 4.0.34_ef5jwxihqo6n7gxfmzogljlgcm
+      '@umijs/server': 4.0.34
+      '@umijs/utils': 4.0.34
       babel-plugin-dynamic-import-node: 2.3.3
       click-to-react-component: 1.0.8_633m7c4we3uekpyriichjdp5zu
       core-js: 3.22.4
@@ -2780,8 +2780,8 @@ packages:
       - webpack-plugin-serve
     dev: false
 
-  /@umijs/renderer-react/4.0.33_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-xk9FGc2G7Z8xyTn1050reX10/017sAobQUvQthYp494Op+MsKVkDMBrsPv5AFLpNp/c9nQekQOwv5qepuDCbEQ==}
+  /@umijs/renderer-react/4.0.34_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-8eymRXMCPFY9gHGofkLDiSIQR5rKH048W0OI17bCv5fKw4APQuhV4EpdiuhfxmqpEDM6iHHT7/OBlWPU3+mIAg==}
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
@@ -2795,8 +2795,8 @@ packages:
       react-router-dom: 6.3.0_biqbaboplfbrettd7655fr4n2y
     dev: false
 
-  /@umijs/renderer-react/4.0.33_ef5jwxihqo6n7gxfmzogljlgcm:
-    resolution: {integrity: sha512-xk9FGc2G7Z8xyTn1050reX10/017sAobQUvQthYp494Op+MsKVkDMBrsPv5AFLpNp/c9nQekQOwv5qepuDCbEQ==}
+  /@umijs/renderer-react/4.0.34_ef5jwxihqo6n7gxfmzogljlgcm:
+    resolution: {integrity: sha512-8eymRXMCPFY9gHGofkLDiSIQR5rKH048W0OI17bCv5fKw4APQuhV4EpdiuhfxmqpEDM6iHHT7/OBlWPU3+mIAg==}
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
@@ -2819,10 +2819,10 @@ packages:
       memoize-one: 5.2.1
     dev: false
 
-  /@umijs/server/4.0.33:
-    resolution: {integrity: sha512-XdQmGCv73m7ClrX01rcqE0pkF1lAXz9k89VklrtEKgNxxXeS5JZyQ7kBvXYBYGmi86Wv1Pk6nBrCwwX2timteA==}
+  /@umijs/server/4.0.34:
+    resolution: {integrity: sha512-JXCT6aD7nM4uODG+h61+m/XyR5mfciygGsgJcwzXRf2hU7fHAtq4OoUvUUbceodvMcSUPiKiQ+w5mhl6i1cyBg==}
     dependencies:
-      '@umijs/bundler-utils': 4.0.33
+      '@umijs/bundler-utils': 4.0.34
       history: 5.3.0
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
@@ -2835,12 +2835,12 @@ packages:
     resolution: {integrity: sha512-XlcwzSYQ/SRZpHdwIyMDS4FOGX5kP4U/2g2mykyn/iPQTK4xTiQAyBu6UnnDnn7d5P8s7Atzh1C7H0ETNOypJg==}
     dev: false
 
-  /@umijs/test/4.0.33_@babel+core@7.18.9:
-    resolution: {integrity: sha512-v5fgqz47lKNNoS2gt7Ih/YSwE+axO5V7OgnhgYuCbckDB9avmt1wVyTP4fk9CmegLDE7B8u5GQA5FDXsNtNaAw==}
+  /@umijs/test/4.0.34_@babel+core@7.18.9:
+    resolution: {integrity: sha512-c0dfJQvsK5StSJrr4fv8loi8+XTk8+ZoYMgfGILseqJiCd6ZlC+GrUO/tHBsdOzfFWrFfq1IRaqWLLS7caTR7A==}
     dependencies:
       '@babel/plugin-transform-modules-commonjs': 7.18.6_@babel+core@7.18.9
       '@jest/types': 27.5.1
-      '@umijs/bundler-utils': 4.0.33
+      '@umijs/bundler-utils': 4.0.34
       babel-jest: 28.1.3_@babel+core@7.18.9
       esbuild: 0.15.14
       identity-obj-proxy: 3.0.0
@@ -2859,8 +2859,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@umijs/utils/4.0.33:
-    resolution: {integrity: sha512-J71vygg1KPlI3rri93Dq5rJy0+wjs2ytxACjSeGwMsiuDYBqyC1EmTAWirqM7H58jWA8h6BItZLUzpPZjoot6Q==}
+  /@umijs/utils/4.0.34:
+    resolution: {integrity: sha512-QYDsKkWET7YvecGrJ4La9CAqkEQin1KQsdmEldzbnbIsUZQy/I/XuGVMMnTYpiwW92klkkAc8K8AYwI4DQlHCQ==}
     dependencies:
       chokidar: 3.5.3
       pino: 7.11.0
@@ -10332,6 +10332,7 @@ packages:
 
   /sourcemap-codec/1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
+    deprecated: Please use @jridgewell/sourcemap-codec instead
 
   /spdx-correct/3.1.1:
     resolution: {integrity: sha512-cOYcUWwhCuHCXi49RhFRCyJEK3iPj1Ziz9DpViV3tbZOwXD49QzIN3MpOLJNxh2qwq2lJJZaKMVw9qNi4jTC0w==}
@@ -11262,21 +11263,21 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
 
-  /umi/4.0.33_cuvszjnabyeg57t6v2fh26eojq:
-    resolution: {integrity: sha512-ePVmgEDKlqPY0agYFtJOqPBAujgIJXaa6yD9oFy7Ru1LugGLCe8kpDGaaUe4PQorLJ6Q+ngRqK6nLlx4bl18mQ==}
+  /umi/4.0.34_cuvszjnabyeg57t6v2fh26eojq:
+    resolution: {integrity: sha512-ncfsExGU4KuAb4BRxKvxfCG+4yaMpgGLo6XDLysPtkTXA2znEE8qBFohvxS63ij6OF/6y0u2nAd4WU76Irwj4A==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
       '@babel/runtime': 7.18.9
-      '@umijs/bundler-utils': 4.0.33
-      '@umijs/bundler-webpack': 4.0.33_ioost42n2pkm3q6vbnx4ypyu7a
-      '@umijs/core': 4.0.33
-      '@umijs/lint': 4.0.33_uujrxemjo7lovzijsn2dxwddim
-      '@umijs/preset-umi': 4.0.33_5a3x73g7gchinlnrimqfvkjwya
-      '@umijs/renderer-react': 4.0.33_biqbaboplfbrettd7655fr4n2y
-      '@umijs/server': 4.0.33
-      '@umijs/test': 4.0.33_@babel+core@7.18.9
-      '@umijs/utils': 4.0.33
+      '@umijs/bundler-utils': 4.0.34
+      '@umijs/bundler-webpack': 4.0.34_ioost42n2pkm3q6vbnx4ypyu7a
+      '@umijs/core': 4.0.34
+      '@umijs/lint': 4.0.34_uujrxemjo7lovzijsn2dxwddim
+      '@umijs/preset-umi': 4.0.34_5a3x73g7gchinlnrimqfvkjwya
+      '@umijs/renderer-react': 4.0.34_biqbaboplfbrettd7655fr4n2y
+      '@umijs/server': 4.0.34
+      '@umijs/test': 4.0.34_@babel+core@7.18.9
+      '@umijs/utils': 4.0.34
       prettier-plugin-organize-imports: 2.3.4_wbcyan4knibwiqrg7345gyo3qi
       prettier-plugin-packagejson: 2.2.17_prettier@2.7.1
     transitivePeerDependencies:

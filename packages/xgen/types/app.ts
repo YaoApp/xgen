@@ -13,13 +13,13 @@ export declare namespace App {
 			/** default is yaoapps.com */
 			site?: string
 		}
-            thirdPartyLogin?: Array<{
+		thirdPartyLogin?: Array<{
 			/** button text */
-                  title: string
+			title: string
 			/** third party login href text */
-                  href: string
+			href: string
 			/** button prefix icon */
-                  icon?: string
+			icon?: string
 			/** set whether the target of the a tag is _blank */
 			blank?: boolean
 		}>
@@ -74,5 +74,10 @@ export declare namespace App {
 		badge?: number
 		dot?: boolean
 		children?: Array<Menu>
+	}
+
+	interface Menus {
+		items: Array<App.Menu>
+		setting: Array<App.Menu>
 	}
 }

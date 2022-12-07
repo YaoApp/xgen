@@ -6,7 +6,7 @@ import { X } from '@/components'
 import type { IPropsFormItem } from '../types'
 
 const Index = (props: IPropsFormItem) => {
-	const { namespace, primary, type, data, item } = props
+	const { namespace, primary, type, item } = props
 
 	return (
 		<Col span={item.width}>
@@ -19,8 +19,7 @@ const Index = (props: IPropsFormItem) => {
 					__primary: primary,
 					__type: type,
 					__bind: item.bind,
-					__name: item.name,
-					__data_item: toJS(data)
+					__name: item.name
 				}}
 			></X>
 		</Col>

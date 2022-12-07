@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 
 import Table from '@/components/base/Table'
-import { getDeepValue } from '@/knife'
 
 import styles from './index.less'
 
@@ -15,14 +14,12 @@ interface IProps extends Component.PropsEditComponent {
 }
 
 const Index = (props: IProps) => {
-	const { __data_item, __name, itemProps, model, query } = props
-
-	if (!Object.keys(__data_item).length) return null
+	const { __name, itemProps, model, query } = props
 
 	const props_table: IPropsTable = {
 		parent: 'Form',
 		model,
-		query: query ? getDeepValue(query, __data_item) : {},
+		query: query ? query : {},
 		hidePagination: true
 	}
 

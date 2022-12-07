@@ -6,6 +6,7 @@ import { getLocale } from '@umijs/max'
 
 import Actions from './components/Actions'
 import Sections from './components/Sections'
+import { useOnValuesChange } from './hooks'
 import styles from './index.less'
 import locales from './locales'
 
@@ -14,11 +15,25 @@ import type { IPropsPureForm, IPropsActions, IPropsSections } from './types'
 const { useForm } = Form
 
 const Index = (props: IPropsPureForm) => {
-	const { namespace, primary, type, id, data, sections, operation, title, disabledActionsAffix, onSave, onBack } =
-		props
+	const {
+		namespace,
+		primary,
+		type,
+		id,
+		data,
+		sections,
+		operation,
+		action,
+		title,
+		disabledActionsAffix,
+		setSetting,
+		onSave,
+		onBack
+	} = props
 	const [form] = useForm()
 	const locale = getLocale()
 	const { setFieldsValue, resetFields, submit } = form
+	const onValuesChange = useOnValuesChange(action, setFieldsValue, setSetting)
 	const locale_messages = locales[locale]
 	const disabled = type === 'view'
 
@@ -55,7 +70,14 @@ const Index = (props: IPropsPureForm) => {
 				<span className='title no_wrap'>{title}</span>
 				<Actions {...props_actions}></Actions>
 			</div>
-			<Form form={form} name={namespace} onFinish={onSave} disabled={disabled} layout='vertical'>
+			<Form
+				form={form}
+				name={namespace}
+				onFinish={onSave}
+				disabled={disabled}
+				layout='vertical'
+				onValuesChange={onValuesChange}
+			>
 				<div className='form_wrap w_100 border_box'>
 					<Sections {...props_sections}></Sections>
 				</div>

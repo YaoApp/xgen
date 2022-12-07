@@ -10,8 +10,10 @@ export interface IPropsPureForm {
 	data: Model['data']
 	sections: Model['sections']
 	operation: Model['setting']['operation']
+	action: Model['setting']['action']
 	title: string
 	disabledActionsAffix?: boolean
+	setSetting: (v: FormType.Setting) => void
 	onSave: (v: Global.AnyObject) => void
 	onBack: () => void
 }
@@ -23,8 +25,8 @@ export interface IPropsActions {
 	type: Model['type']
 	id: Model['id']
 	operation: Model['setting']['operation']
-      data: Model[ 'data' ]
-      disabledActionsAffix:IPropsPureForm['disabledActionsAffix']
+	data: Model['data']
+	disabledActionsAffix: IPropsPureForm['disabledActionsAffix']
 	onBack: IPropsPureForm['onBack']
 	submit: () => void
 }
@@ -41,7 +43,6 @@ export interface IPropsSection {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
 	type: Model['type']
-	data: Model['data']
 	item: FormType.SectionResult
 }
 
@@ -49,7 +50,6 @@ export interface IPropsRowItem {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
 	type: Model['type']
-	data: Model['data']
 	columns: Array<FormType.ColumnResult>
 }
 
@@ -57,7 +57,6 @@ export interface IPropsFormItem {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
 	type: Model['type']
-	data: Model['data']
 	item: Common.EditColumn
 }
 
@@ -65,7 +64,6 @@ export interface IPropsTabsItem {
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
 	type: Model['type']
-	data: Model['data']
 	item: FormType.TargetTab
 }
 

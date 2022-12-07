@@ -49,6 +49,8 @@ const Index = (props: Component.FormComponent) => {
 		window.$app.Event.emit(`${x.namespace.value}/save`, data)
 	})
 
+	const setSetting = useMemoizedFn((v) => (x.setting = v))
+
 	if (!x.setting.form) return null
 
 	const props_breadcrumb: IPropsBreadcrumb = {
@@ -70,8 +72,10 @@ const Index = (props: Component.FormComponent) => {
 		data: toJS(x.data),
 		sections: toJS(x.sections),
 		operation: toJS(x.setting.operation),
+		action: toJS(x.setting.action),
 		title,
-		disabledActionsAffix: parent === 'Free',
+		disabledActionsAffix: parent === 'Dashboard',
+		setSetting,
 		onSave,
 		onBack: onFormBack
 	}

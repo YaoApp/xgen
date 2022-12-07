@@ -16,8 +16,7 @@ const Index = (props: IPropsSections) => {
 	const props_section: Omit<IPropsSection, 'item'> = {
 		namespace,
 		primary,
-		type,
-		data
+		type
 	}
 
 	return (

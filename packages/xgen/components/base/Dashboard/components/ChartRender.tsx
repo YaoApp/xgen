@@ -4,11 +4,11 @@ import { Card } from '@/widgets'
 import { useChartData } from '../hooks'
 
 import type { IPropsChartRender } from '../types'
-import type { Free } from '@/types'
+import type { Dashboard } from '@/types'
 
 const Index = (props: IPropsChartRender) => {
 	const { item } = props
-	const bind = item.bind as Free.ChartBind
+	const bind = item.bind as Dashboard.ChartBind
 	const data = useChartData(bind.dataSource)
 
 	if (!data) return null

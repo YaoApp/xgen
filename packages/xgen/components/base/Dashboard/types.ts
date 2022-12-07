@@ -1,18 +1,18 @@
-import type { Free } from '@/types'
+import type { Dashboard } from '@/types'
 
 export interface IPropsItem {
-	item: Free.TargetColumn
+	item: Dashboard.TargetColumn
 }
 
 export interface IPropsChartRender{
-	item: Free.TargetColumnNormal
+	item: Dashboard.TargetColumnNormal
 }
 
 export interface IPropsTableRender{
-	item: Free.TargetColumnNormal
+	item: Dashboard.TargetColumnNormal
 }
 
 export interface IPropsFormRender{
-	item: Free.TargetColumnNormal
+	item: Dashboard.TargetColumnNormal
 }
 

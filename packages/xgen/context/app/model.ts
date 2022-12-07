@@ -19,7 +19,7 @@ export default class GlobalModel {
 	locale_messages = {} as LocaleMessages
 	app_info = {} as App.Info
 	user = (store.get('user') || {}) as App.User
-	menus = (store.get('menus') || []) as { items: Array<App.Menu>; setting: Array<App.Menu> }
+	menus = (store.get('menus') || { items: [], setting: {} }) as App.Menus
 	menu = (store.get('menu') || []) as Array<App.Menu>
 	in_setting = (store.get('in_setting') || false) as boolean
 	current_nav: number = store.get('current_nav') || 0

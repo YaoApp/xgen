@@ -98,7 +98,7 @@ const Index = (props: IProps) => {
 		)
 	}
 
-	if (parent === 'Free') {
+	if (parent === 'Dashboard') {
 		return (
 			<div className={clsx([styles._local, 'w_100 flex flex_column'])}>
 				<Filter {...props_filter}></Filter>

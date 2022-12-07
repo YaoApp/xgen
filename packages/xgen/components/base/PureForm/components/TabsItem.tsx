@@ -5,13 +5,12 @@ import RowItem from './RowItem'
 import type { IPropsTabsItem, IPropsRowItem } from '../types'
 
 const Index = (props: IPropsTabsItem) => {
-	const { namespace, primary, type, data, item } = props
+	const { namespace, primary, type, item } = props
 
 	const props_row_item: Omit<IPropsRowItem, 'columns'> = {
 		namespace,
 		primary,
-		type,
-		data
+		type
 	}
 
 	return (

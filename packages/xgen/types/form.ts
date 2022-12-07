@@ -1,4 +1,4 @@
-import type { Action, Common } from '@/types'
+import type { Action, Common, Global } from '@/types'
 
 export declare namespace FormType {
 	interface Section {
@@ -27,9 +27,17 @@ export declare namespace FormType {
 
 	type ColumnResult = Common.EditColumn | TargetTab
 
+	interface OnChangeHook {
+		api: string
+		params: Global.AnyObject
+	}
+
 	interface Setting {
 		name: string
 		primary: string
+		action?: {
+			hooks?: { [key: string]: OnChangeHook }
+		}
 		operation: {
 			preset: {
 				save?: { back?: boolean }
