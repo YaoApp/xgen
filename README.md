@@ -1,6 +1,10 @@
-# XGEN
-
-The next generation low-code dashboard driven by Yao.
+<p align="center">
+      <img src="packages/xgen/public/logo_xgen.png" width="300">
+      <h2 align="center">XGEN</h2>
+      <p align="center">
+        The next generation low-code dashboard driven by Yao.
+      </p>
+</p>
 
 ## Tips
 

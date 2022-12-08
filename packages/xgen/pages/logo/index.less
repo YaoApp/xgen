@@ -1,0 +1,30 @@
+._local {
+	:global{
+            .xgen_logo_wrap{
+                  // transform: scale(0.2);
+
+                  .box{
+                        width: 240px;
+                        height: 240px;
+                        border: 60px solid var(--color_main);
+                        border-radius: 50%;
+      
+                        &_left{
+                              border-top-right-radius: 0;
+                              transform: rotate(45deg);
+                        }
+      
+                        &_right{
+                              border-bottom-left-radius: 0;
+                              transform: rotate(45deg);
+                        }
+                  }
+      
+                  .cross_line{
+                        width: 480px;
+                        height: 24px;
+                        background-color: var(--color_bg);
+                  }
+            }
+      }
+}
