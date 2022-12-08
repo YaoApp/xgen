@@ -10,7 +10,7 @@ import { getLocale } from '@umijs/max'
 
 import Anchor from './components/Anchor'
 import Breadcrumb from './components/Breadcrumb'
-import { usePageTitle } from './hooks'
+import { useHooks, usePageTitle } from './hooks'
 import styles from './index.less'
 import locales from './locales'
 import Model from './model'
@@ -23,8 +23,8 @@ const Index = (props: Component.FormComponent) => {
 	const { parent, model, id, form, onBack } = props
 	const [x] = useState(() => container.resolve(Model))
 	const locale = getLocale()
-	const locale_messages = locales[locale]
-	const page_title_prefix = usePageTitle(locale_messages, id!, form!.type)
+	const page_title_prefix = usePageTitle(locales[locale], id!, form!.type)
+	const hooks = useHooks(toJS(x.setting.hooks!), toJS(x.setting.fields), toJS(x.data))
 	const title = page_title_prefix + x.setting.name
 
 	const onFormBack = useMemoizedFn(() => {
@@ -72,7 +72,7 @@ const Index = (props: Component.FormComponent) => {
 		data: toJS(x.data),
 		sections: toJS(x.sections),
 		operation: toJS(x.setting.operation),
-		action: toJS(x.setting.action),
+		hooks,
 		title,
 		disabledActionsAffix: parent === 'Dashboard',
 		setSetting,

@@ -23,7 +23,7 @@ const Index = (props: IPropsPureForm) => {
 		data,
 		sections,
 		operation,
-		action,
+		hooks,
 		title,
 		disabledActionsAffix,
 		setSetting,
@@ -33,7 +33,7 @@ const Index = (props: IPropsPureForm) => {
 	const [form] = useForm()
 	const locale = getLocale()
 	const { setFieldsValue, resetFields, submit } = form
-	const onValuesChange = useOnValuesChange(action, setFieldsValue, setSetting)
+	const onValuesChange = useOnValuesChange(hooks?.onChange!, setFieldsValue, setSetting)
 	const locale_messages = locales[locale]
 	const disabled = type === 'view'
 

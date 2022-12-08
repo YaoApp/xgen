@@ -3,7 +3,7 @@ import { defineConfig } from '@umijs/max'
 import { base, chainWebpack, conventionRoutes, extraBabelPlugins, links, metas, proxy } from './build/config'
 
 export default defineConfig({
-	mfsu: { esbuild: false, strategy: 'normal' },
+	mfsu: { esbuild: false, strategy: 'eager' },
 	monorepoRedirect: { srcDir: ['./'] },
 	npmClient: 'pnpm',
 	base,
@@ -11,11 +11,11 @@ export default defineConfig({
 	proxy,
 	links,
 	metas,
+	test: false,
 	valtio: false,
 	antd: { import: false, style: undefined },
 	codeSplitting: { jsStrategy: 'granularChunks' },
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
-	polyfill: { imports: ['core-js/features/promise/try'] },
 	extraBabelPlugins,
 	conventionRoutes,
 	define: { $runtime: { BASE: process.env.BASE } },

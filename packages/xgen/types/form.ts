@@ -27,16 +27,16 @@ export declare namespace FormType {
 
 	type ColumnResult = Common.EditColumn | TargetTab
 
-	interface OnChangeHook {
-		api: string
-		params: Global.AnyObject
-	}
+	type HookArgs = { api: string; params: Global.AnyObject }
+	type HookType = { [key: string]: HookArgs }
+
+	type HookKeys = 'onChange'
 
 	interface Setting {
 		name: string
 		primary: string
-		action?: {
-			hooks?: { [key: string]: OnChangeHook }
+		hooks?: {
+			[key in HookKeys]: HookType
 		}
 		operation: {
 			preset: {

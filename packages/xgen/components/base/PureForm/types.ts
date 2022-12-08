@@ -10,7 +10,7 @@ export interface IPropsPureForm {
 	data: Model['data']
 	sections: Model['sections']
 	operation: Model['setting']['operation']
-	action: Model['setting']['action']
+	hooks: Model['setting']['hooks']
 	title: string
 	disabledActionsAffix?: boolean
 	setSetting: (v: FormType.Setting) => void
