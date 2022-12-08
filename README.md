@@ -1,9 +1,9 @@
 <p align="center">
       <img src="packages/xgen/public/logo_xgen.png" width="300">
-      <p align="center" style="font-size:24px;font-weight:bold;margin-bottom:6px;">XGEN</p>
-      <p align="center" style="font-size:18px;font-weight:400;margin-bottom:30px;">
+      <h3 align="center">XGEN</h3>
+      <h4 align="center">
         The next generation low-code dashboard driven by Yao.
-      </p>
+      </h4>
 </p>
 
 ## Tips
