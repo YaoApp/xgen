@@ -2,7 +2,7 @@
       <img src="packages/xgen/public/logo_xgen.png" width="300">
       <h4 align="center">XGEN</h4>
       <p align="center">
-        The next generation low-code dashboard driven by Yao.
+        The next generation low-code dashboard of Yao.
       </p>
 </p>
 
