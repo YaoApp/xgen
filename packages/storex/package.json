@@ -4,7 +4,7 @@
       "description": "Keep the type of storage value unchanged and change array and object directly. Supports listening to changes and setting expires.",
       "author": "Wendao",
       "license": "MIT",
-      "homepage": "https://github.com/YaoApp/storex",
+      "homepage": "https://github.com/YaoApp/xgen/packages/storex",
       "keywords": [
             "localStorage",
             "sessionStorage",
@@ -18,7 +18,7 @@
       ],
       "repository": {
             "type": "git",
-            "url": "git+https://github.com/YaoApp/storex.git"
+            "url": "git+https://github.com/YaoApp/xgen.git"
       },
       "type": "module",
       "source": "src/index.ts",
@@ -27,6 +27,7 @@
       "scripts": {
             "dev": "rollup --c rollup.config.ts --configPlugin swc3 -w",
             "build": "rollup --c rollup.config.ts --configPlugin swc3",
+            "dts": "rollup --c rollup.dts.ts --configPlugin swc3",
             "test": "jest --runInBand"
       },
       "devDependencies": {
@@ -35,6 +36,7 @@
             "jest": "^29.2.2",
             "jest-environment-jsdom": "^29.2.2",
             "rollup": "^3.2.5",
+            "rollup-plugin-dts": "^5.0.0",
             "rollup-plugin-swc3": "^0.8.0",
             "ts-jest": "^29.0.3"
       }

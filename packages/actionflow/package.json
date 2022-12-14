@@ -1,24 +1,19 @@
 {
-      "name": "@yaoapp/storex",
-      "version": "1.1.2",
-      "description": "Keep the type of storage value unchanged and change array and object directly. Supports listening to changes and setting expires.",
+      "name": "@yaoapp/actionflow",
+      "version": "0.1.0",
+      "description": "An action-driven event stream management library based on rxjs.",
       "author": "Wendao",
       "license": "MIT",
-      "homepage": "https://github.com/YaoApp/storex",
+      "homepage": "https://github.com/YaoApp/xgen/packages/actionflow",
       "keywords": [
-            "localStorage",
-            "sessionStorage",
-            "store",
-            "store",
-            "storage",
-            "browser",
-            "proxy",
-            "subscribe",
-            "expires"
+            "flow",
+            "action",
+            "rxjs",
+            "pipeline"
       ],
       "repository": {
             "type": "git",
-            "url": "git+https://github.com/YaoApp/storex.git"
+            "url": "git+https://github.com/YaoApp/xgen.git"
       },
       "type": "module",
       "source": "src/index.ts",
@@ -27,10 +22,15 @@
       "scripts": {
             "dev": "rollup --c rollup.config.ts --configPlugin swc3 -w",
             "build": "rollup --c rollup.config.ts --configPlugin swc3",
-            "test": "jest --runInBand"
+            "dts": "rollup --c rollup.dts.ts --configPlugin swc3"
+      },
+      "dependencies": {
+            "rxjs": "^7.6.0",
+            "tsyringe": "^4.7.0"
       },
       "devDependencies": {
-            "rollup": "^3.2.5",
+            "rollup": "^3.7.4",
+            "rollup-plugin-dts": "^5.0.0",
             "rollup-plugin-swc3": "^0.8.0"
       }
 }
