@@ -4,11 +4,7 @@ import type { Action, Common } from '@/types'
 export declare namespace TableType {
 	interface Filter {
 		columns: Array<Common.WideColumn>
-		actions?: Array<
-			{
-				action: Pick<Action.Props['action'], 'Common.historyPush' | 'Common.openModal'>
-			} & Pick<Action.Props, 'title' | 'icon'>
-		>
+		actions?: Array<{ action: Array<Action.ActionParams> } & Pick<Action.Props, 'title' | 'icon'>>
 	}
 
 	interface Header {
@@ -26,11 +22,7 @@ export declare namespace TableType {
 					mapping_setting_model: string
 					preview_setting_model: string
 				}
-				actions?: Array<
-					{
-						action: Pick<Action.Props['action'], 'Common.historyPush'>
-					} & Pick<Action.Props, 'title' | 'icon'>
-				>
+				actions?: Array<{ action: Array<Action.ActionParams> } & Pick<Action.Props, 'title' | 'icon'>>
 			}
 		}
 		actions?: Array<{

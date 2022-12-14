@@ -9,7 +9,7 @@ export interface IPropsPureForm {
 	type: Model['type']
 	data: Model['data']
 	sections: Model['sections']
-	operation: Model['setting']['operation']
+	actions: Model['setting']['actions']
 	hooks: Model['setting']['hooks']
 	title: string
 	disabledActionsAffix?: boolean
@@ -19,16 +19,13 @@ export interface IPropsPureForm {
 }
 
 export interface IPropsActions {
-	locale_messages: Locale[keyof Locale]['actions']
 	namespace: Model['namespace']['value']
 	primary: Model['setting']['primary']
 	type: Model['type']
 	id: Model['id']
-	operation: Model['setting']['operation']
+	actions: Model['setting']['actions']
 	data: Model['data']
 	disabledActionsAffix: IPropsPureForm['disabledActionsAffix']
-	onBack: IPropsPureForm['onBack']
-	submit: () => void
 }
 
 export interface IPropsSections {

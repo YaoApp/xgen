@@ -38,13 +38,7 @@ export declare namespace FormType {
 		hooks?: {
 			[key in HookKeys]: HookType
 		}
-		operation: {
-			preset: {
-				save?: { back?: boolean }
-				back?: {}
-			}
-			actions?: Array<Action.Props>
-		}
+		actions?: Array<Action.Props>
 		form: {
 			sections: Array<Section>
 		}

@@ -69,10 +69,6 @@ export default class Model {
 		if (this.parent === 'Modal') {
 			window.$app.Event.emit(`${this.namespace.parent}/search`)
 		}
-
-		if (this.setting.operation.preset?.save?.back) {
-			window.$app.Event.emit(`${this.namespace.value}/back`)
-		}
 	}
 
 	async delete(primary_value: number, params: Action.FormDeleteParams) {

@@ -10,59 +10,50 @@
 			margin-left: 12px;
 			min-width: 80px;
 
-			&.btn_preset {
-				i {
-					transform: translateY(1.5px);
+			&.success {
+				background-color: var(--color_success);
+				color: white;
+				border: none;
+
+				&:hover {
+					filter: brightness(1.1);
 				}
 			}
 
-                  &.success {
-                        background-color: var(--color_success);
-                        color: white;
-                        border: none;
+			&.warning {
+				background-color: var(--color_warning);
+				color: white;
+				border: none;
 
-                        &:hover {
-                              filter: brightness(1.1);
-                        }
-                  }
+				&:hover {
+					filter: brightness(1.1);
+				}
+			}
 
-                  &.warning {
-                        background-color: var(--color_warning);
-                        color: white;
-                        border: none;
+			&.danger {
+				background-color: var(--color_danger);
+				color: white;
+				border: none;
 
-                        &:hover {
-                              filter: brightness(1.1);
-                        }
-                  }
+				&:hover {
+					filter: brightness(1.1);
+				}
+			}
 
-                  &.danger {
-                        background-color: var(--color_danger);
-                        color: white;
-                        border: none;
-                        
-                        &:hover {
-                              filter: brightness(1.1);
-                        }
-                  }
+			&.disabled {
+				opacity: 0.4;
+			}
 
-                  &.disabled {
-                        opacity: 0.4;
-                  }
-
-                  i {
+			i {
 				margin-right: 3px;
 			}
 		}
 
-            .custom_actions{
-                  &::after {
-                        margin-left: 12px;
-                        width: 1px;
-                        height: 21px;
-                        background-color: var(--color_border);
-                        content: '';
-                  }
-            }
+		.divide_line {
+			width: 1px;
+			height: 21px;
+			margin-left: 12px;
+			background-color: var(--color_border);
+		}
 	}
 }

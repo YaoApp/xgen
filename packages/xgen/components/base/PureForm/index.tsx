@@ -2,13 +2,10 @@ import { Form } from 'antd'
 import clsx from 'clsx'
 import { useLayoutEffect } from 'react'
 
-import { getLocale } from '@umijs/max'
-
 import Actions from './components/Actions'
 import Sections from './components/Sections'
 import { useOnValuesChange } from './hooks'
 import styles from './index.less'
-import locales from './locales'
 
 import type { IPropsPureForm, IPropsActions, IPropsSections } from './types'
 
@@ -22,7 +19,7 @@ const Index = (props: IPropsPureForm) => {
 		id,
 		data,
 		sections,
-		operation,
+		actions,
 		hooks,
 		title,
 		disabledActionsAffix,
@@ -31,10 +28,8 @@ const Index = (props: IPropsPureForm) => {
 		onBack
 	} = props
 	const [form] = useForm()
-	const locale = getLocale()
 	const { setFieldsValue, resetFields, submit } = form
 	const onValuesChange = useOnValuesChange(hooks?.onChange!, setFieldsValue, setSetting)
-	const locale_messages = locales[locale]
 	const disabled = type === 'view'
 
 	useLayoutEffect(() => {
@@ -44,16 +39,13 @@ const Index = (props: IPropsPureForm) => {
 	}, [id, data])
 
 	const props_actions: IPropsActions = {
-		locale_messages: locale_messages.actions,
 		namespace,
 		primary,
 		type,
 		id,
-		operation,
+		actions,
 		data,
-		disabledActionsAffix,
-		onBack,
-		submit
+		disabledActionsAffix
 	}
 
 	const props_sections: IPropsSections = {

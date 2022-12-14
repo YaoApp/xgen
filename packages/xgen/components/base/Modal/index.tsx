@@ -1,3 +1,4 @@
+import { useMemoizedFn } from 'ahooks'
 import { useState } from 'react'
 
 import { X } from '@/components'
@@ -17,11 +18,11 @@ const Index = (props: IProps) => {
 	const { namespace, id, config } = props
 	const [visible, setVisible] = useState(true)
 
-	const onBack = () => {
+	const onBack = useMemoizedFn(() => {
 		setVisible(false)
 
 		document.getElementById(`${namespace}=>__modal_container`)!.remove()
-	}
+	})
 
 	const props_modal_wrap: Omit<IPropsModalWrap, 'children'> = {
 		width: config.width,

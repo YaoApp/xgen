@@ -1,15 +1,8 @@
-import { showConfirm } from '../../utils'
-
 import type { OnAction } from '../../index'
+import type { Action } from '@/types'
 
-export default async ({ namespace, primary, data_item, it }: OnAction) => {
-	if (it.confirm) {
-		const ok = await showConfirm(it.confirm)
+type Args = Omit<OnAction, 'it'> & { payload: Action.ActionMap['Form.delete'] }
 
-		if (!ok) return
-	}
-
-	const params = it.action['Form.delete']!
-
-	window.$app.Event.emit(`${namespace}/delete`, data_item[primary], params)
+export default async ({ namespace, primary, data_item, payload }: Args) => {
+	window.$app.Event.emit(`${namespace}/delete`, data_item[primary], payload)
 }

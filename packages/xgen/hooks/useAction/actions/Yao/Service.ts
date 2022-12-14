@@ -1,14 +1,15 @@
 import { message } from 'antd'
 import axios from 'axios'
 
-import type { OnAction } from '../../index'
+import type { Action } from '@/types'
 
-export default async ({ it }: Pick<OnAction, 'it'>) => {
-	const name = Object.keys(it.action)[0].replace('Service.', '')
-	const params = it.action[Object.keys(it.action)[0] as 'Service.*']
+type Args = { action: Action.ActionParams }
+
+export default async ({ action }: Args) => {
+	const name = action.type.replace('Service.', '')
 
 	try {
-		const res = await axios.post<{}, { message: string }>(`/api/__yao/app/service/${name}`, params)
+		const res = await axios.post<{}, { message: string }>(`/api/__yao/app/service/${name}`, action.payload)
 
 		message.success(res?.message || 'The service executes success.')
 	} catch (_) {}

@@ -71,7 +71,7 @@ const Index = (props: Component.FormComponent) => {
 		id: x.id,
 		data: toJS(x.data),
 		sections: toJS(x.sections),
-		operation: toJS(x.setting.operation),
+		actions: toJS(x.setting.actions),
 		hooks,
 		title,
 		disabledActionsAffix: parent === 'Dashboard',

@@ -1,13 +1,7 @@
-import { showConfirm } from '../../utils'
-
 import type { OnAction } from '../../index'
 
-export default async ({ namespace, primary, data_item, it }: OnAction) => {
-	if (it.confirm) {
-		const ok = await showConfirm(it.confirm)
+type Args = Omit<OnAction, 'it'>
 
-		if (!ok) return
-	}
-
+export default async ({ namespace, primary, data_item }: Args) => {
 	window.$app.Event.emit(`${namespace}/delete`, data_item[primary])
 }

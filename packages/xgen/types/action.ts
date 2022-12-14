@@ -29,28 +29,36 @@ export declare namespace Action {
 		args: Array<any>
 	}
 
+	interface ActionMap {
+		'Common.openModal': OpenModal
+		'Common.closeModal': {}
+		'Common.historyPush': HistoryPush
+		'Common.historyBack': {}
+		'Table.save': Global.StringObject
+		'Table.delete': {}
+		'Form.save': Global.StringObject
+		'Form.delete': FormDeleteParams
+		'Service.*': YaoParams
+		'Studio.*': YaoParams
+	}
+
+	type ActionParams = {
+		[T in keyof ActionMap]: {
+			name: string
+			type: T
+			payload: ActionMap[T]
+		}
+	}[keyof ActionMap]
+
 	interface Props {
 		title: string
 		icon: string
-		action: {
-			'Common.openModal'?: OpenModal
-			'Common.historyPush'?: HistoryPush
-			'Common.historyBack'?: {}
-			'Table.save'?: Global.StringObject
-			'Table.delete'?: {}
-			'Form.save'?: Global.StringObject
-			'Form.delete'?: FormDeleteParams
-			'Service.*'?: YaoParams
-			'Studio.*'?: YaoParams
-		}
+		action: Array<ActionParams>
 		style?: 'danger' | 'success'
+		divideLine?: boolean
 		disabled?: {
 			bind: string
 			value: string | Array<string>
-		}
-		confirm?: {
-			title: string
-			desc: string
 		}
 	}
 }

@@ -3,21 +3,21 @@ import { history } from '@umijs/max'
 import type { Action } from '@/types'
 
 interface Args {
-	action: Action.HistoryPush
+	payload: Action.ActionMap['Common.historyPush']
 }
 
-export default ({ action }: Args) => {
-	const search = action.search ? new URLSearchParams(action.search).toString() : undefined
+export default ({ payload }: Args) => {
+	const search = payload.search ? new URLSearchParams(payload.search).toString() : undefined
 
-	if (action.pathname.startsWith('http')) {
-		return window.open(action.pathname + (search ? `?${search}` : ''))
+	if (payload.pathname.startsWith('http')) {
+		return window.open(payload.pathname + (search ? `?${search}` : ''))
 	} else {
-		if (action.public) {
-			return window.open(window.location.origin + action.pathname + (search ? `?${search}` : ''))
+		if (payload.public) {
+			return window.open(window.location.origin + payload.pathname + (search ? `?${search}` : ''))
 		}
 
 		history.push({
-			pathname: action.pathname,
+			pathname: payload.pathname,
 			search
 		})
 	}
