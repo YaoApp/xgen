@@ -1,5 +1,6 @@
-import { TargetObject } from '../shared'
-import { isObject, getRawType, transformEval, transformJSON } from '../utils'
+import { TargetObject } from '@/shared'
+import { getRawType, isObject, transformEval, transformJSON } from '@/utils'
+
 import { createProxyObject } from './object'
 
 interface Serializer<T> {

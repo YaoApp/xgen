@@ -1,14 +1,8 @@
-import { getExpires, removeExpires, setExpires } from '../extends/expires'
-import {
-	activeEffect,
-	createExpiredFunc,
-	prefix,
-	proxyMap,
-	shouldTrack,
-	StorageLike
-} from '../shared'
-import { hasChanged, hasOwn, propertyIsInPrototype } from '../utils'
-import { emit, off, on, once } from '../extends/watch'
+import { getExpires, removeExpires, setExpires } from '@/extends/expires'
+import { emit, off, on, once } from '@/extends/watch'
+import { activeEffect, createExpiredFunc, prefix, proxyMap, shouldTrack, StorageLike } from '@/shared'
+import { hasChanged, hasOwn, propertyIsInPrototype } from '@/utils'
+
 import { decode, encode } from './transform'
 
 function createInstrumentations(target: object, receiver: any) {
@@ -89,9 +83,7 @@ function set(target: object, property: string, value: any, receiver: any) {
 
 // only prefixed properties are accepted in the instance
 function has(target: object, property: string): boolean {
-	return (
-		target.hasOwnProperty(`${prefix}${property}`) || propertyIsInPrototype(target, property)
-	)
+	return target.hasOwnProperty(`${prefix}${property}`) || propertyIsInPrototype(target, property)
 }
 
 function deleteProperty(target: object, property: string) {

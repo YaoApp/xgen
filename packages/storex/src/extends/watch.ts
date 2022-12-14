@@ -1,4 +1,4 @@
-import { Effect, EffectFn, EffectMap } from '../shared'
+import { Effect, EffectFn, EffectMap } from '@/shared'
 
 let targetMap = new WeakMap<Object, EffectMap>()
 
