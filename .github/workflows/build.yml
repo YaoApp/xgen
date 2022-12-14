@@ -45,5 +45,5 @@ jobs:
                     run: pnpm install
 
                   - name: Test Build
-                    run: pnpm run build:xgen
+                    run: pnpm run build
                  
