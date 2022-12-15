@@ -5,11 +5,10 @@ import { injectable } from 'tsyringe'
 import { GlobalModel } from '@/context/app'
 import { Namespace } from '@/models'
 import { ColumnUtils, Common, Form } from '@/services'
-import { history } from '@umijs/max'
 
 import Service from './services'
 
-import type { FormType, TableType, Component, Global, Action } from '@/types'
+import type { FormType, TableType, Component, Global } from '@/types'
 
 @injectable()
 export default class Model {

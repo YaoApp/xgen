@@ -1,4 +1,4 @@
-import { closeModal, historyBack, historyPush, openModal } from '../../actions/Common'
+import { closeModal, confirm, historyBack, historyPush, openModal } from '../../actions/Common'
 import { delete as formDelete, find as formFind, save as formSave } from '../../actions/Form'
 import { delete as TableDelete, save as TableSave, search as tableSearch } from '../../actions/Table'
 import { Service, Studio } from '../../actions/Yao'
@@ -24,6 +24,9 @@ export default ({ namespace, primary, data_item, it }: OnAction) => {
 				break
 			case 'Common.historyBack':
 				total.push({ task: historyBack(), ...flow_info })
+				break
+			case 'Common.confirm':
+				total.push({ task: confirm(), ...flow_info })
 				break
 			case 'Table.search':
 				total.push({ task: tableSearch({ namespace }), ...flow_info })

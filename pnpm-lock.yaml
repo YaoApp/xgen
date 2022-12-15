@@ -107,7 +107,6 @@ importers:
       dotenv: ^16.0.3
       echarts: ^5.4.1
       emittery: ^1.0.1
-      eventemitter3: ^5.0.0
       fast-equals: ^3.0.3
       framer-motion: ^7.9.1
       less: ^4.1.3
@@ -156,7 +155,6 @@ importers:
       clsx: 1.2.1
       echarts: 5.4.1
       emittery: 1.0.1
-      eventemitter3: 5.0.0
       fast-equals: 3.0.3
       framer-motion: 7.9.1_biqbaboplfbrettd7655fr4n2y
       lodash-es: 4.17.21
@@ -6579,10 +6577,6 @@ packages:
     dependencies:
       d: 1.0.1
       es5-ext: 0.10.62
-    dev: false
-
-  /eventemitter3/5.0.0:
-    resolution: {integrity: sha512-riuVbElZZNXLeLEoprfNYoDSwTBRR44X3mnhdI1YcnENpWTCsTTVZ2zFuqQcpoyqPQIUXdiPEU0ECAq0KQRaHg==}
     dev: false
 
   /events/3.3.0:

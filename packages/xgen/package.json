@@ -32,7 +32,6 @@
             "clsx": "^1.2.1",
             "echarts": "^5.4.1",
             "emittery": "^1.0.1",
-            "eventemitter3": "^5.0.0",
             "fast-equals": "^3.0.3",
             "framer-motion": "^7.9.1",
             "lodash-es": "^4.17.21",

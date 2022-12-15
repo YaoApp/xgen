@@ -1,29 +1,29 @@
 import to from 'await-to-js'
+import { isNull } from 'lodash-es'
 
 import { getTemplateValue } from './utils'
 
 import type { Queue, QueueItem } from './types'
-
 export default class Flow {
 	raw_queue: Queue = []
 	run_queue: Queue = []
 	run_index = 0
 	results = {} as any
+	orders = [] as Array<string>
 
 	init(queue: Queue) {
 		this.raw_queue = queue
-		this.run_queue.push(queue[0])
-		this.setRunQueue(this.run_queue)
+
+		this.pushRunQueue(queue[0])
 	}
 
-	setRunQueue(v: Queue) {
-		this.run_queue = v
+	pushRunQueue(item: QueueItem) {
+		this.run_queue.push(item)
+
 		this.run()
 	}
 
 	run() {
-		console.log(123)
-
 		if (!this.run_queue.length) return
 
 		for (const item of this.run_queue) {
@@ -35,17 +35,19 @@ export default class Flow {
 		const { task, name, payload, next, error } = item
 		const [err, res] = await to(task(getTemplateValue(payload, this.results)))
 
-		this.run_queue.shift()
+		const task_index = this.run_queue.findIndex((it) => it.name === name)
 
-		if (err) {
-			if (!error) return
+		this.run_queue.splice(task_index, 1)
+		this.orders.push(name)
+
+		if (!isNull(err)) {
+			if (!error) return console.log(123)
 
 			const error_task = this.raw_queue.find((it) => it.name === error)
 
 			if (!error_task) return
 
-			this.run_queue.push(error_task)
-			this.setRunQueue(this.run_queue)
+			this.pushRunQueue(error_task)
 
 			return
 		}
@@ -57,8 +59,7 @@ export default class Flow {
 
 			if (!next_task) return
 
-			this.run_queue.push(next_task)
-			this.setRunQueue(this.run_queue)
+			this.pushRunQueue(next_task)
 
 			return
 		}
@@ -69,9 +70,6 @@ export default class Flow {
 
 		if (!next_task) return
 
-		this.run_queue.push(next_task)
-		this.setRunQueue(this.run_queue)
+		this.pushRunQueue(next_task)
 	}
 }
-
-// 将所有Action处理成Promise异步方法，在init时push第一个/多个（支持多个并行执行）Promise进入queue，通过监听queue的变化执行 task 方法，开始执行指定任务前把该任务从queue中移除，task执行完成之后，如果执行成功，把res保存到results对象中，然后根据该任务的next & error参数来决定接下来把哪个Promise送入queue，没有next & error，执行完成，不再继续

@@ -19,6 +19,11 @@ export declare namespace Action {
 		public?: boolean
 	}
 
+	interface Confirm {
+		title: string
+		content: string
+	}
+
 	interface YaoParams {
 		method: string
 		args: Array<any>
@@ -29,6 +34,7 @@ export declare namespace Action {
 		'Common.closeModal': {}
 		'Common.historyPush': HistoryPush
 		'Common.historyBack': {}
+		'Common.confirm': Confirm
 		'Table.search': {}
 		'Table.save': Global.StringObject
 		'Table.delete': {}

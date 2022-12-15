@@ -2,17 +2,12 @@ import { history } from '@umijs/max'
 
 import type { Action } from '@/types'
 
-interface Args {
-	payload: Action.ActionMap['Common.historyPush']
-}
+type Args = { payload: Action.ActionMap['Common.historyPush'] }
 
 export default ({ payload }: Args) => {
 	return () =>
 		new Promise<void>((resolve) => {
-			window.addEventListener('popstate', () => {
-				console.log('push')
-				resolve()
-			})
+			window.addEventListener('popstate', () => resolve(), { once: true })
 
 			const search = payload.search ? new URLSearchParams(payload.search).toString() : undefined
 
