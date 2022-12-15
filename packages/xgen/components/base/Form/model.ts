@@ -50,9 +50,11 @@ export default class Model {
 
 		this.global.loading = false
 
-		if (err) return
+		if (err) return Promise.reject()
 
 		this.data = res
+
+		return Promise.resolve()
 	}
 
 	async save(data: TableType.SaveRequest) {
@@ -62,39 +64,29 @@ export default class Model {
 
 		hideLoading()
 
-		if (err) return
+		if (err) return Promise.reject()
 
 		message.success(this.global.locale_messages.messages.table.save.success)
 
-		if (this.parent === 'Modal') {
-			window.$app.Event.emit(`${this.namespace.parent}/search`)
-		}
+		if (this.parent === 'Modal') window.$app.Event.emit(`${this.namespace.parent}/search`)
+
+		return Promise.resolve()
 	}
 
-	async delete(primary_value: number, params: Action.FormDeleteParams) {
+	async delete(primary_value: number) {
 		const hideLoading = message.loading(this.global.locale_messages.messages.table.delete.loading)
 
 		const { err } = await this.form.delete<TableType.DeleteResponse>(this.model, primary_value)
 
 		hideLoading()
 
-		if (err) return
+		if (err) return Promise.reject()
 
 		message.success(this.global.locale_messages.messages.table.delete.success)
 
-		if (this.parent === 'Modal') {
-			window.$app.Event.emit(`${this.namespace.parent}/search`)
-		}
+		if (this.parent === 'Modal') window.$app.Event.emit(`${this.namespace.parent}/search`)
 
-		if (params?.back) {
-			window.$app.Event.emit(`${this.namespace.value}/back`)
-		}
-
-		if (params?.pathname) {
-			window.$app.Event.emit(`${this.namespace.value}/back`)
-
-			history.push(params.pathname)
-		}
+		return Promise.resolve()
 	}
 
 	init(

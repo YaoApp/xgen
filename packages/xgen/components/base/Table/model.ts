@@ -75,12 +75,14 @@ export default class Model {
 
 		hideLoading()
 
-		if (err) return
+		if (err) return Promise.reject()
 
 		const { data, page, pagesize, total } = res
 
 		this.list = data
 		this.pagination = { page, pagesize, total }
+
+		return Promise.resolve()
 	}
 
 	async save(data: TableType.SaveRequest) {
@@ -90,11 +92,13 @@ export default class Model {
 
 		hideLoading()
 
-		if (err) return
+		if (err) return Promise.reject()
 
 		message.success(this.global.locale_messages.messages.table.save.success)
 
 		this.search()
+
+		return Promise.resolve()
 	}
 
 	async delete(primary_value: number) {
@@ -104,11 +108,13 @@ export default class Model {
 
 		hideLoading()
 
-		if (err) return
+		if (err) return Promise.reject()
 
 		message.success(this.global.locale_messages.messages.table.delete.success)
 
 		this.search()
+
+		return Promise.resolve()
 	}
 
 	async batchDelete() {

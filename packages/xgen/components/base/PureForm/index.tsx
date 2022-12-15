@@ -24,8 +24,7 @@ const Index = (props: IPropsPureForm) => {
 		title,
 		disabledActionsAffix,
 		setSetting,
-		onSave,
-		onBack
+		onSave
 	} = props
 	const [form] = useForm()
 	const { setFieldsValue, resetFields, submit } = form

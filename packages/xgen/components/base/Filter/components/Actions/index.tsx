@@ -2,7 +2,7 @@ import { Button } from 'antd'
 import clsx from 'clsx'
 import { Fragment } from 'react'
 
-import { useAction } from '@/hooks'
+import { useAction } from '@/actions'
 import { Icon } from '@/widgets'
 
 import type { IPropsActions } from '../../types'

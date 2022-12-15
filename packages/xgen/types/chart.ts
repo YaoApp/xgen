@@ -26,13 +26,7 @@ export declare namespace Chart {
 
 	interface Setting {
 		name: string
-		operation: {
-			actions?: Array<
-				{
-					action: Pick<Action.Props['action'], 'Common.historyPush' | 'Common.historyBack'>
-				} & Pick<Action.Props, 'title' | 'icon'>
-			>
-		}
+		actions?: Array<Action.Props>
 		filter?: Filter
 		chart: {
 			columns: Array<Common.WideColumn>

@@ -6,7 +6,7 @@ export interface IProps {
 	title?: string
 	className?: string
 	style?: React.CSSProperties
-	actions?: Chart.Setting['operation']['actions']
+	actions?: Chart.Setting['actions']
 	withRows?: boolean
 	customAction?: ReactNode
 	full?: Common.Config['full']

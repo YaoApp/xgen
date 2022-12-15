@@ -1,3 +1,5 @@
-const test = 123
+import Flow from './flow'
 
-export { test }
+export * from './types'
+
+export default Flow

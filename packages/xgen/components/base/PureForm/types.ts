@@ -15,7 +15,6 @@ export interface IPropsPureForm {
 	disabledActionsAffix?: boolean
 	setSetting: (v: FormType.Setting) => void
 	onSave: (v: Global.AnyObject) => void
-	onBack: () => void
 }
 
 export interface IPropsActions {

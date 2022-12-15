@@ -2,7 +2,8 @@ import { Tooltip } from 'antd'
 import clsx from 'clsx'
 import { useMemo } from 'react'
 
-import { useAction, useActionDisabled, useActionStyle } from '@/hooks'
+import { useAction } from '@/actions'
+import { useActionDisabled, useActionStyle } from '@/hooks'
 import { getTemplateValue } from '@/utils'
 import { Icon } from '@/widgets'
 

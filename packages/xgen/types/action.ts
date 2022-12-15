@@ -19,11 +19,6 @@ export declare namespace Action {
 		public?: boolean
 	}
 
-	interface FormDeleteParams {
-		back?: boolean
-		pathname?: string
-	}
-
 	interface YaoParams {
 		method: string
 		args: Array<any>
@@ -34,10 +29,12 @@ export declare namespace Action {
 		'Common.closeModal': {}
 		'Common.historyPush': HistoryPush
 		'Common.historyBack': {}
+		'Table.search': {}
 		'Table.save': Global.StringObject
 		'Table.delete': {}
+		'Form.find': {}
 		'Form.save': Global.StringObject
-		'Form.delete': FormDeleteParams
+		'Form.delete': {}
 		'Service.*': YaoParams
 		'Studio.*': YaoParams
 	}
@@ -47,6 +44,8 @@ export declare namespace Action {
 			name: string
 			type: T
 			payload: ActionMap[T]
+			next?: string
+			error?: string
 		}
 	}[keyof ActionMap]
 
@@ -56,6 +55,7 @@ export declare namespace Action {
 		action: Array<ActionParams>
 		style?: 'danger' | 'success'
 		divideLine?: boolean
+		showWhenAddAndView?: boolean
 		disabled?: {
 			bind: string
 			value: string | Array<string>

@@ -3,7 +3,7 @@ import axios from 'axios'
 import clsx from 'clsx'
 import { Fragment, useEffect, useState } from 'react'
 
-import { useAction } from '@/hooks'
+import { useAction } from '@/actions'
 import { Icon } from '@/widgets'
 import { UploadOutlined } from '@ant-design/icons'
 

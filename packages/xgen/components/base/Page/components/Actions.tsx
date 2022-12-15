@@ -1,7 +1,7 @@
 import { Tooltip } from 'antd'
 import { Fragment } from 'react'
 
-import { useAction } from '@/hooks'
+import { useAction } from '@/actions'
 import { Icon } from '@/widgets'
 
 import type { IPropsActions } from '../types'

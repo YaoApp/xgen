@@ -1,4 +1,4 @@
-import EventEmitter from 'eventemitter3'
+import EventEmitter from 'emittery'
 
 import { Handle, memo, sleep } from '@/knife'
 

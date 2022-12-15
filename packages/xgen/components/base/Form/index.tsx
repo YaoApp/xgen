@@ -31,6 +31,8 @@ const Index = (props: Component.FormComponent) => {
 		if (onBack) return onBack()
 
 		history.back()
+
+		return Promise.resolve()
 	})
 
 	useLayoutEffect(() => {
@@ -76,8 +78,7 @@ const Index = (props: Component.FormComponent) => {
 		title,
 		disabledActionsAffix: parent === 'Dashboard',
 		setSetting,
-		onSave,
-		onBack: onFormBack
+		onSave
 	}
 
 	if (parent === 'Page') {

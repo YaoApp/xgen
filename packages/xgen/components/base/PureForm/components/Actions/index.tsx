@@ -3,7 +3,8 @@ import clsx from 'clsx'
 import { Fragment, useMemo, useState } from 'react'
 import { When } from 'react-if'
 
-import { useAction, useActionDisabled, useActionStyle } from '@/hooks'
+import { useAction } from '@/actions'
+import { useActionDisabled, useActionStyle } from '@/hooks'
 import { getTemplateValue } from '@/utils'
 import { Icon } from '@/widgets'
 
@@ -17,8 +18,15 @@ const Index = (props: IPropsActions) => {
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled(data)
 	const onAction = useAction()
+	const when_add_and_view = id === 0 || type === 'view'
 
-	const _actions = useMemo(() => getTemplateValue(actions!, data), [actions, data])
+	const _actions = useMemo(() => {
+		if (when_add_and_view) {
+			return getTemplateValue(actions!, data).filter((item) => item.showWhenAddAndView)
+		}
+
+		return getTemplateValue(actions!, data)
+	}, [actions, data, when_add_and_view])
 
 	return (
 		<Affix offsetTop={11} style={{ zIndex: disabledActionsAffix ? 0 : 101 }} onChange={(v) => setStick(v)}>
