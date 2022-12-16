@@ -36,10 +36,9 @@ export declare namespace Action {
 		'Common.historyBack': {}
 		'Common.confirm': Confirm
 		'Table.search': {}
-		'Table.save': Global.StringObject
 		'Table.delete': {}
 		'Form.find': {}
-		'Form.save': Global.StringObject
+		'Form.submit': Global.StringObject
 		'Form.delete': {}
 		'Service.*': YaoParams
 		'Studio.*': YaoParams
@@ -59,7 +58,7 @@ export declare namespace Action {
 		title: string
 		icon: string
 		action: Array<ActionParams>
-		style?: 'danger' | 'success'
+		style?: 'danger' | 'success' | 'primary'
 		divideLine?: boolean
 		showWhenAddAndView?: boolean
 		disabled?: {

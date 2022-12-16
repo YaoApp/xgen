@@ -4,26 +4,28 @@ import { isNull } from 'lodash-es'
 import { getTemplateValue } from './utils'
 
 import type { Queue, QueueItem } from './types'
-export default class Flow {
-	raw_queue: Queue = []
-	run_queue: Queue = []
-	run_index = 0
-	results = {} as any
-	orders = [] as Array<string>
 
-	init(queue: Queue) {
+export default class Flow {
+	private raw_queue: Queue = []
+	private run_queue: Queue = []
+	private run_index = 0
+	private results = {} as any
+
+	__ORDER_LOGS__ = [] as Array<string>
+
+	public init(queue: Queue) {
 		this.raw_queue = queue
 
 		this.pushRunQueue(queue[0])
 	}
 
-	pushRunQueue(item: QueueItem) {
+	private pushRunQueue(item: QueueItem) {
 		this.run_queue.push(item)
 
 		this.run()
 	}
 
-	run() {
+	private run() {
 		if (!this.run_queue.length) return
 
 		for (const item of this.run_queue) {
@@ -31,23 +33,27 @@ export default class Flow {
 		}
 	}
 
-	async handleTask(item: QueueItem) {
+	private async handleTask(item: QueueItem) {
 		const { task, name, payload, next, error } = item
 		const [err, res] = await to(task(getTemplateValue(payload, this.results)))
 
 		const task_index = this.run_queue.findIndex((it) => it.name === name)
 
 		this.run_queue.splice(task_index, 1)
-		this.orders.push(name)
+
+		this.__PUSH_ORDER_LOGS__(name)
 
 		if (!isNull(err)) {
 			if (!error) return console.log(123)
 
-			const error_task = this.raw_queue.find((it) => it.name === error)
+			const error_task_index = this.raw_queue.findIndex((it) => it.name === error)
+			const error_task = this.raw_queue.at(error_task_index)
 
 			if (!error_task) return
 
 			this.pushRunQueue(error_task)
+
+			this.run_index = error_task_index
 
 			return
 		}
@@ -55,11 +61,14 @@ export default class Flow {
 		this.results[name] = res
 
 		if (next) {
-			const next_task = this.raw_queue.find((it) => it.name === error)
+			const next_task_index = this.raw_queue.findIndex((it) => it.name === next)
+			const next_task = this.raw_queue.at(next_task_index)
 
 			if (!next_task) return
 
 			this.pushRunQueue(next_task)
+
+			this.run_index = next_task_index
 
 			return
 		}
@@ -71,5 +80,11 @@ export default class Flow {
 		if (!next_task) return
 
 		this.pushRunQueue(next_task)
+	}
+
+	private __PUSH_ORDER_LOGS__(name: string) {
+		this.__ORDER_LOGS__.push(name)
+
+		console.log(`task running order is: ${this.__ORDER_LOGS__}`)
 	}
 }

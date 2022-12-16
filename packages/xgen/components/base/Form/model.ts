@@ -3,6 +3,7 @@ import { makeAutoObservable, toJS } from 'mobx'
 import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
+import { sleep } from '@/knife'
 import { Namespace } from '@/models'
 import { ColumnUtils, Common, Form } from '@/services'
 

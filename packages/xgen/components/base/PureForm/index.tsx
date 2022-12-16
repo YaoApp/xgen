@@ -1,4 +1,6 @@
+import { useMemoizedFn } from 'ahooks'
 import { Form } from 'antd'
+import to from 'await-to-js'
 import clsx from 'clsx'
 import { useLayoutEffect } from 'react'
 
@@ -27,15 +29,29 @@ const Index = (props: IPropsPureForm) => {
 		onSave
 	} = props
 	const [form] = useForm()
-	const { setFieldsValue, resetFields, submit } = form
+	const { getFieldsValue, setFieldsValue, resetFields, validateFields } = form
 	const onValuesChange = useOnValuesChange(hooks?.onChange!, setFieldsValue, setSetting)
 	const disabled = type === 'view'
+
+	const submit = useMemoizedFn(async () => {
+		const [err] = await to(validateFields())
+
+		if (err) return Promise.reject()
+
+		return onSave(getFieldsValue(true))
+	})
 
 	useLayoutEffect(() => {
 		if (id === 0) return resetFields()
 
 		setFieldsValue(data)
 	}, [id, data])
+
+	useLayoutEffect(() => {
+		window.$app.Event.on(`${namespace}/submit`, submit)
+
+		return () => window.$app.Event.off(`${namespace}/submit`, submit)
+	}, [])
 
 	const props_actions: IPropsActions = {
 		namespace,
@@ -64,7 +80,6 @@ const Index = (props: IPropsPureForm) => {
 			<Form
 				form={form}
 				name={namespace}
-				onFinish={onSave}
 				disabled={disabled}
 				layout='vertical'
 				onValuesChange={onValuesChange}

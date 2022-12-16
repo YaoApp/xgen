@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 
+import { createModalContainer } from '@/actions/utils'
 import Modal from '@/components/base/Modal'
-import { createModalContainer } from '@/utils/actions'
 
 import type { IProps as IPropsModal } from '@/components/base/Modal'
 import type { OnAction } from '../useAction'

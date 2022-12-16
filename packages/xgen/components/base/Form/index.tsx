@@ -28,7 +28,11 @@ const Index = (props: Component.FormComponent) => {
 	const title = page_title_prefix + x.setting.name
 
 	const onFormBack = useMemoizedFn(() => {
-		if (onBack) return onBack()
+		if (onBack) {
+			onBack()
+
+			return Promise.resolve()
+		}
 
 		history.back()
 
@@ -48,7 +52,7 @@ const Index = (props: Component.FormComponent) => {
 
 		if (x.id !== 0) data[x.setting.primary] = x.id
 
-		window.$app.Event.emit(`${x.namespace.value}/save`, data)
+		return window.$app.Event.emit(`${x.namespace.value}/save`, data)
 	})
 
 	const setSetting = useMemoizedFn((v) => (x.setting = v))

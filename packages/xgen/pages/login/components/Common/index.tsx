@@ -52,8 +52,8 @@ const Index = ({ x, type }: IPropsCommon) => {
 				<span className='user_type absolute white'>{toFirstUpperCase(type)}</span>
 			</div>
 			<Form {...props_form}></Form>
-			<When condition={x.global.app_info.login?.admin?.thirdPartyLogin?.length}>
-				<ThirdPartyLogin items={x.global.app_info.login.admin.thirdPartyLogin}></ThirdPartyLogin>
+			<When condition={x.global.app_info?.login?.admin?.thirdPartyLogin?.length}>
+				<ThirdPartyLogin items={x.global.app_info?.login?.admin?.thirdPartyLogin}></ThirdPartyLogin>
 			</When>
 		</div>
 	)

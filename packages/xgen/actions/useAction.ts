@@ -1,4 +1,4 @@
-import { handleActions } from '@/utils/actions'
+import { handleActions } from '@/actions/utils'
 import Flow from '@yaoapp/actionflow'
 
 import type { Component, Action } from '@/types'
