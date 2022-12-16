@@ -1,5 +1,6 @@
 import type { FormItemProps } from 'antd'
 import type { CSSProperties } from 'react'
+import type { Global } from '@/types'
 
 export declare namespace Component {
 	type IdType = number
@@ -8,6 +9,7 @@ export declare namespace Component {
 	interface BaseComponent {
 		parent: 'Page' | 'Modal' | 'Form' | 'Dashboard' | 'Custom'
 		model: string
+		search_params?: Global.StringObject
 	}
 
 	interface StackComponent extends BaseComponent {

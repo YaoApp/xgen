@@ -4,7 +4,6 @@ import store from 'store2'
 import { injectable } from 'tsyringe'
 
 import { Remote } from '@/services'
-import { getDeepValue } from '@/knife'
 
 import type { Component, Global } from '@/types'
 
@@ -22,7 +21,7 @@ export default class Index {
 
 		if (!remote) return
 
-		const params = getDeepValue(remote.params!, this.raw_props.__data_item)
+		const params = remote.params!
 		const is_prod = store.get('__mode') === 'production'
 		const session_key = `${remote.api}|${qs.stringify(params)}`
 
@@ -47,7 +46,7 @@ export default class Index {
 		if (!search) return
 
 		const params = {
-			...getDeepValue(search.params!, this.raw_props.__data_item),
+			...search.params,
 			[search.key]: v
 		}
 

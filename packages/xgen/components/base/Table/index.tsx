@@ -6,7 +6,6 @@ import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
 import { Filter, Page, PureTable } from '@/components'
-import { useSearchParams } from '@umijs/max'
 
 import { CustomAction } from './components'
 import styles from './index.less'
@@ -27,17 +26,16 @@ export interface IProps extends Component.StackComponent {
 }
 
 const Index = (props: IProps) => {
-	const { parent, model, query, data, namespace, hidePagination } = props
+	const { parent, model, search_params, query, data, namespace, hidePagination } = props
 	const [x] = useState(() => container.resolve(Model))
-	const [params] = useSearchParams()
 
 	useLayoutEffect(() => {
-		x.init(parent, model, query, data, namespace, Object.fromEntries(params))
+		x.init(parent, model, query, data, namespace, search_params!)
 
 		return () => {
 			x.off()
 		}
-	}, [parent, model, query, data, namespace, params])
+	}, [parent, model, query, data, namespace, search_params])
 
 	const setBatchSelected = useMemoizedFn((v: Array<number>) => (x.batch.selected = v))
 	const onFinish = useMemoizedFn((v: any) => {

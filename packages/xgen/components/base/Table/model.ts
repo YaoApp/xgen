@@ -179,6 +179,8 @@ export default class Model {
 			this.namespace.paths = [namespace]
 		}
 
+		this.search_params = {}
+
 		if (query) this.search_params = { ...query }
 		if (parent === 'Page') this.search_params = { ...this.search_params, ...params }
 

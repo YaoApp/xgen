@@ -31,13 +31,14 @@ const Index = (props: IPropsFilter) => {
 	const { base, more, visible_btn_more } = useCalcLayout(columns, { mounted, form_name })
 
 	useLayoutEffect(() => {
+		resetFields()
+
 		if (parent !== 'Page') return
 
 		const search_params = Object.fromEntries(params)
 
 		if (!Object.keys(search_params).length) return
 
-		resetFields()
 		setFieldsValue(search_params)
 	}, [parent, params])
 
