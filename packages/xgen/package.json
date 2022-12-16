@@ -24,7 +24,7 @@
             "@ant-design/icons": "^4.8.0",
             "@matrixage/atom.css": "^2.0.1",
             "@umijs/max": "^4.0.36",
-            "@yaoapp/actionflow": "workspace:^0.1.0",
+            "@yaoapp/actionflow": "workspace:*",
             "ahooks": "^3.7.2",
             "antd": "4.24.3",
             "await-to-js": "^3.0.0",

@@ -2,10 +2,11 @@ import { useMemoizedFn } from 'ahooks'
 import clsx from 'clsx'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { Fragment, useLayoutEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { container } from 'tsyringe'
 
 import { Filter, Page, PureTable } from '@/components'
+import { useSearchParams } from '@umijs/max'
 
 import { CustomAction } from './components'
 import styles from './index.less'
@@ -28,14 +29,15 @@ export interface IProps extends Component.StackComponent {
 const Index = (props: IProps) => {
 	const { parent, model, query, data, namespace, hidePagination } = props
 	const [x] = useState(() => container.resolve(Model))
+	const [params] = useSearchParams()
 
 	useLayoutEffect(() => {
-		x.init(parent, model, query, data, namespace)
+		x.init(parent, model, query, data, namespace, Object.fromEntries(params))
 
 		return () => {
 			x.off()
 		}
-	}, [parent, model, query, data])
+	}, [parent, model, query, data, namespace, params])
 
 	const setBatchSelected = useMemoizedFn((v: Array<number>) => (x.batch.selected = v))
 	const onFinish = useMemoizedFn((v: any) => {
@@ -67,6 +69,7 @@ const Index = (props: IProps) => {
 	}
 
 	const props_filter: IPropsFilter = {
+		parent,
 		model: x.model,
 		namespace: x.namespace.value,
 		columns: toJS(x.filter_columns),

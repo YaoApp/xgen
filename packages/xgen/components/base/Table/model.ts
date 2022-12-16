@@ -159,7 +159,8 @@ export default class Model {
 		model: Component.StackComponent['model'],
 		query: IProps['query'],
 		data: IProps['data'],
-		namespace: IProps['namespace']
+		namespace: IProps['namespace'],
+		params: TableType.SearchParams
 	) {
 		if (!namespace) {
 			if (parent === 'Page' || parent === 'Modal') {
@@ -179,6 +180,7 @@ export default class Model {
 		}
 
 		if (query) this.search_params = { ...query }
+		if (parent === 'Page') this.search_params = { ...this.search_params, ...params }
 
 		this.rendered = false
 		this.parent = parent

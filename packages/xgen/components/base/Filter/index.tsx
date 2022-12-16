@@ -1,12 +1,13 @@
 import { Button, Col, Form, Row, Tooltip } from 'antd'
 import clsx from 'clsx'
 import { toJS } from 'mobx'
+import { useLayoutEffect } from 'react'
 import { When } from 'react-if'
 
 import { X } from '@/components'
 import { useMounted } from '@/hooks'
 import { Icon } from '@/widgets'
-import { getLocale } from '@umijs/max'
+import { getLocale, useSearchParams } from '@umijs/max'
 
 import Actions from './components/Actions'
 import { useCalcLayout, useVisibleMore } from './hooks'
@@ -18,15 +19,27 @@ import type { IPropsFilter, IPropsActions } from './types'
 const { useForm } = Form
 
 const Index = (props: IPropsFilter) => {
-	const { model, columns, actions, namespace, isChart, onFinish, resetSearchParams } = props
+	const { parent, model, columns, actions, namespace, isChart, onFinish, resetSearchParams } = props
 	const mounted = useMounted()
 	const locale = getLocale()
 	const [form] = useForm()
+	const [params] = useSearchParams()
 	const is_cn = locale === 'zh-CN'
-	const { getFieldsValue, resetFields } = form
+	const { getFieldsValue, resetFields, setFieldsValue, submit } = form
 	const { display_more, opacity_more, visible_more, setVisibleMore } = useVisibleMore()
 	const form_name = `form_filter_${model}`
 	const { base, more, visible_btn_more } = useCalcLayout(columns, { mounted, form_name })
+
+	useLayoutEffect(() => {
+		if (parent !== 'Page') return
+
+		const search_params = Object.fromEntries(params)
+
+		if (!Object.keys(search_params).length) return
+
+		resetFields()
+		setFieldsValue(search_params)
+	}, [parent, params])
 
 	if (!columns.length && !actions?.length) return null
 

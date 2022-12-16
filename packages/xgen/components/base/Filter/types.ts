@@ -1,8 +1,10 @@
+import type { Namespace } from '@/models'
+
 import type { TableType, Common } from '@/types'
 import type Model from '@/components/base/Table/model'
-import { Namespace } from '@/models'
 
 export interface IPropsFilter {
+	parent: Model['parent']
 	model: string
 	columns: Array<Common.Column>
 	actions?: TableType.Setting['filter']['actions']
