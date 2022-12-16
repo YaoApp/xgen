@@ -1,6 +1,6 @@
 {
       "name": "@yaoapp/actionflow",
-      "version": "0.1.0",
+      "version": "1.0.0",
       "description": "An action-driven event stream management library.",
       "author": "Wendao",
       "license": "Apache-2.0",
@@ -9,7 +9,10 @@
             "flow",
             "action",
             "event",
-            "pipeline"
+            "pipeline",
+            "promise",
+            "queue",
+            "task"
       ],
       "repository": {
             "type": "git",

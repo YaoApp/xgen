@@ -20,7 +20,7 @@ const Index = (props: IPropsMenu) => {
       
 	useDeepCompareEffect(() => {
 		setOpenKeys(menu_key_path)
-	}, [menu_key_path])
+      }, [ menu_key_path ])
 
 	const props_menu: MenuProps = {
 		items: menu_items,
@@ -32,7 +32,7 @@ const Index = (props: IPropsMenu) => {
 		onOpenChange(openKeys) {
 			setOpenKeys(openKeys)
 		},
-		onSelect({ key }) {
+            onSelect({ key }) {
 			history.push(key)
 		}
 	}

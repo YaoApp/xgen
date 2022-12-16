@@ -5,4 +5,5 @@ export type QueueItem = {
 	next?: string
 	error?: string
 }
+
 export type Queue = Array<QueueItem>
