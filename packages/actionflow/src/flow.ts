@@ -44,7 +44,7 @@ export default class Flow {
 		this.__PUSH_ORDER_LOGS__(name)
 
 		if (!isNull(err)) {
-			if (!error) return console.log(123)
+			if (!error) return
 
 			const error_task_index = this.raw_queue.findIndex((it) => it.name === error)
 			const error_task = this.raw_queue.at(error_task_index)
