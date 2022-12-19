@@ -19,15 +19,15 @@ const Index = (props: IProps) => {
 
 	useLayoutEffect(() => {
 		x.init(parent, model)
-	}, [parent, model])
-
-	if (!x.setting.name) return null
+      }, [ parent, model ])
+      
+      if (!x.setting.name) return null
 
 	return (
 		<Page title={x.setting.name} className='w_100' full={x.setting?.config?.full} withRows>
 			<Row gutter={16} wrap style={{ margin: 0 }}>
 				{toJS(x.columns).map((item, index: number) => (
-					<Item {...{ item }} key={index}></Item>
+					<Item {...{ item }} data={toJS(x.data)} key={index}></Item>
 				))}
 			</Row>
 		</Page>

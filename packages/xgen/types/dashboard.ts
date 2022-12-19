@@ -1,31 +1,12 @@
 import type { Common } from '@/types'
-import type { CSSProperties } from 'react'
 
 export declare namespace Dashboard {
 	type TableBind = {
 		model: string
 	}
 
-	type FormBind = {
-		model: string
-		id: number
-		formType: 'view' | 'edit'
-	}
-
 	type ChartBind = {
 		dataSource: string
-	}
-
-	interface FieldDetail {
-		type: string
-		bind: TableBind | FormBind | ChartBind
-		props: any
-		link?: string
-		cardStyle?: CSSProperties
-	}
-
-	interface Fields {
-		[key: string]: FieldDetail
 	}
 
 	interface Rows {
@@ -37,11 +18,11 @@ export declare namespace Dashboard {
 
 	interface Setting {
 		name: string
-		free: {
+		dashboard: {
 			columns: Array<Column>
 		}
 		fields: {
-			free: Fields
+			dashboard: Common.ViewFields
 		}
 		config?: Common.Config
 	}
@@ -51,6 +32,6 @@ export declare namespace Dashboard {
 		rows: Array<TargetColumn>
 	}
 
-	type TargetColumnNormal = Common.WideColumn & FieldDetail
+	type TargetColumnNormal = Common.WideColumn & Common.ViewFieldDetail & { link?: string }
 	type TargetColumn = TargetColumnNormal | TargetRows
 }

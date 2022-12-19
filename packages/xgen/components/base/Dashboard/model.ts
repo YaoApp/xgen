@@ -5,16 +5,21 @@ import { GlobalModel } from '@/context/app'
 import { Namespace } from '@/models'
 import { ColumnUtils, Common } from '@/services'
 
-import type { Dashboard, Component } from '@/types'
+import Service from './services'
+
+import type { Dashboard, Component, Global } from '@/types'
 
 @injectable()
 export default class Model {
 	parent = 'Page' as Component.StackComponent['parent']
 	model = '' as Component.StackComponent['model']
 	setting = {} as Dashboard.Setting
+	data = {} as Global.AnyObject
 	columns = [] as Array<Dashboard.TargetColumn>
+	rendered = false
 
 	constructor(
+		private service: Service,
 		private common: Common,
 		private column_utils: ColumnUtils,
 		public global: GlobalModel,
@@ -24,17 +29,27 @@ export default class Model {
 	}
 
 	async getSetting() {
-		if (this.parent === 'Page') this.global.loading = true
-
-            const { res, err } = await this.common.getSetting<Dashboard.Setting>('dashboard', this.model)
-            
-		this.global.loading = false
+		const { res, err } = await this.common.getSetting<Dashboard.Setting>('dashboard', this.model)
 
 		if (err) return
 
 		this.setting = res
 
-		this.columns = this.column_utils.reduceFreeColumns(res.free.columns, res.fields.free)
+		this.columns = this.column_utils.reduceDashboardColumns(res.dashboard.columns, res.fields.dashboard)
+	}
+
+	async search() {
+		if (this.parent === 'Page' && this.rendered === false) this.global.loading = true
+
+		const { res, err } = await this.service.search<any>(this.model)
+
+		this.global.loading = false
+
+		if (err) return Promise.reject()
+
+		this.data = res
+
+		return Promise.resolve()
 	}
 
 	init(parent: Component.StackComponent['parent'], model: Component.StackComponent['model']) {
@@ -42,5 +57,6 @@ export default class Model {
 		this.model = model
 
 		this.getSetting()
+		this.search()
 	}
 }

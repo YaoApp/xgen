@@ -1,6 +1,6 @@
 import { closeModal, confirm, historyBack, historyPush, openModal } from '../Common'
 import { delete as formDelete, find as formFind, submit as formSubmit } from '../Form'
-import { delete as TableDelete, search as tableSearch } from '../Table'
+import { delete as TableDelete, save as tableSave, search as tableSearch } from '../Table'
 import { Service, Studio } from '../Yao'
 
 import type { Queue } from '@yaoapp/actionflow'
@@ -30,6 +30,9 @@ export default ({ namespace, primary, data_item, it }: OnAction) => {
 				break
 			case 'Table.search':
 				total.push({ task: tableSearch({ namespace }), ...flow_info })
+				break
+			case 'Table.save':
+				total.push({ task: tableSave({ namespace, data_item, primary, payload }), ...flow_info })
 				break
 			case 'Table.delete':
 				total.push({ task: TableDelete({ namespace, primary, data_item }), ...flow_info })

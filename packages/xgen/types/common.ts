@@ -32,10 +32,15 @@ export declare namespace Common {
 		}
 	}
 
+	type ViewFieldDetail = Omit<FieldDetail, 'edit'>
 	type EditFieldDetail = Omit<FieldDetail, 'view'>
 
 	interface Fields {
 		[key: string]: FieldDetail
+      }
+      
+      interface ViewFields {
+		[key: string]: ViewFieldDetail
 	}
 
 	interface EditFields {

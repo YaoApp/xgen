@@ -36,6 +36,7 @@ export declare namespace Action {
 		'Common.historyBack': {}
 		'Common.confirm': Confirm
 		'Table.search': {}
+		'Table.save': Global.StringObject
 		'Table.delete': {}
 		'Form.find': {}
 		'Form.submit': Global.StringObject

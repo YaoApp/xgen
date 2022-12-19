@@ -1,18 +1,19 @@
-import type { Dashboard } from '@/types'
+import type { Dashboard, Global } from '@/types'
 
 export interface IPropsItem {
-	item: Dashboard.TargetColumn
+      item: Dashboard.TargetColumn
+	data: Global.AnyObject
 }
 
-export interface IPropsChartRender{
+export interface IPropsChartRender {
+	item: Dashboard.TargetColumnNormal
+	data: Global.AnyObject
+}
+
+export interface IPropsTableRender {
 	item: Dashboard.TargetColumnNormal
 }
 
-export interface IPropsTableRender{
+export interface IPropsFormRender {
 	item: Dashboard.TargetColumnNormal
 }
-
-export interface IPropsFormRender{
-	item: Dashboard.TargetColumnNormal
-}
-

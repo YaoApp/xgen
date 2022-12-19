@@ -7,8 +7,6 @@ type Args = { payload: Action.ActionMap['Common.historyPush'] }
 export default ({ payload }: Args) => {
 	return () =>
 		new Promise<void>((resolve) => {
-			window.addEventListener('popstate', () => resolve(), { once: true })
-
 			const search = payload.search ? new URLSearchParams(payload.search).toString() : undefined
 
 			if (payload.pathname.startsWith('http')) {
@@ -19,6 +17,8 @@ export default ({ payload }: Args) => {
 						window.location.origin + payload.pathname + (search ? `?${search}` : '')
 					)
 				}
+
+				window.addEventListener('popstate', () => resolve(), { once: true })
 
 				history.push({
 					pathname: payload.pathname,

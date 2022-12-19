@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe'
 
-import type { Common, FormType, Free } from '@/types'
+import type { Common, FormType, Dashboard } from '@/types'
 
 type Item = { name: string }
 type Fields = { [key: string]: any }
@@ -72,12 +72,12 @@ export class ColumnUtils {
 		}, [])
 	}
 
-	reduceFreeColumns(columns: Array<Free.Column>, fields: Free.Fields) {
-		const getColumns = (total: Array<Free.TargetColumn>, item: Free.Column) => {
+	reduceDashboardColumns(columns: Array<Dashboard.Column>, fields: Common.ViewFields) {
+		const getColumns = (total: Array<Dashboard.TargetColumn>, item: Dashboard.Column) => {
 			if ('rows' in item) {
 				total.push({
 					width: item.width,
-					rows: this.reduceFreeColumns(item.rows, fields)
+					rows: this.reduceDashboardColumns(item.rows, fields)
 				})
 			} else {
 				total.push(this.handleAnyColumn(item, fields))
@@ -86,13 +86,13 @@ export class ColumnUtils {
 			return total
 		}
 
-		return columns.reduce((total: Array<Free.TargetColumn>, item) => {
-			if ('rows' in item) {
+		return columns.reduce((total: Array<Dashboard.TargetColumn>, item) => {
+                  if ('rows' in item) {
 				total.push({
 					width: item.width,
 					rows: item.rows.reduce(getColumns, [])
 				})
-			} else {
+                  } else {
 				total.push(this.handleAnyColumn(item, fields))
 			}
 
