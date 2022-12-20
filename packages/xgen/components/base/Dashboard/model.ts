@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, toJS } from 'mobx'
 import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
@@ -33,15 +33,16 @@ export default class Model {
 
 		if (err) return
 
+            this.rendered = true
 		this.setting = res
 
 		this.columns = this.column_utils.reduceDashboardColumns(res.dashboard.columns, res.fields.dashboard)
 	}
 
-	async search() {
+      async search() {
 		if (this.parent === 'Page' && this.rendered === false) this.global.loading = true
 
-		const { res, err } = await this.service.search<any>(this.model)
+		const { res, err } = await this.service.search<Global.AnyObject>(this.model)
 
 		this.global.loading = false
 
@@ -53,10 +54,22 @@ export default class Model {
 	}
 
 	init(parent: Component.StackComponent['parent'], model: Component.StackComponent['model']) {
+		this.global.stack.push(`Dashboard-${parent}-${model}`)
+
+		this.namespace.paths = toJS(this.global.stack.paths)
 		this.parent = parent
 		this.model = model
 
 		this.getSetting()
 		this.search()
+		this.on()
+	}
+
+	on() {
+		window.$app.Event.on(`${this.namespace.value}/search`, this.search)
+	}
+
+	off() {
+		window.$app.Event.off(`${this.namespace.value}/search`, this.search)
 	}
 }

@@ -10,6 +10,7 @@ import { Item } from './components'
 import Model from './model'
 
 import type { Component } from '@/types'
+import type { IPropsItem } from './types'
 
 export interface IProps extends Component.StackComponent {}
 
@@ -19,15 +20,24 @@ const Index = (props: IProps) => {
 
 	useLayoutEffect(() => {
 		x.init(parent, model)
-      }, [ parent, model ])
-      
-      if (!x.setting.name) return null
+
+		return () => {
+			x.off()
+		}
+	}, [parent, model])
+
+	if (!x.setting.name) return null
+
+	const props_item: Omit<IPropsItem, 'item'> = {
+		data: toJS(x.data),
+		namespace: x.namespace.value
+	}
 
 	return (
 		<Page title={x.setting.name} className='w_100' full={x.setting?.config?.full} withRows>
 			<Row gutter={16} wrap style={{ margin: 0 }}>
 				{toJS(x.columns).map((item, index: number) => (
-					<Item {...{ item }} data={toJS(x.data)} key={index}></Item>
+					<Item {...{ item }} {...props_item} key={index}></Item>
 				))}
 			</Row>
 		</Page>

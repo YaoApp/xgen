@@ -1,8 +1,10 @@
 import type { Dashboard, Global } from '@/types'
+import type Model from './model'
 
 export interface IPropsItem {
-      item: Dashboard.TargetColumn
+	item: Dashboard.TargetColumn
 	data: Global.AnyObject
+	namespace: Model['namespace']['value']
 }
 
 export interface IPropsChartRender {
@@ -12,6 +14,7 @@ export interface IPropsChartRender {
 
 export interface IPropsTableRender {
 	item: Dashboard.TargetColumnNormal
+	namespace: IPropsItem['namespace']
 }
 
 export interface IPropsFormRender {

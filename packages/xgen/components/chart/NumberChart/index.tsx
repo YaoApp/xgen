@@ -24,17 +24,17 @@ export interface IProps extends Component.PropsChartComponent {
 	prefix?: string
 	unit?: string
 	decimals?: number
-	chartHeight?: number
+	height?: number
 	color?: string
 }
 
 const Index = (props: IProps) => {
 	const global = useGlobal()
-      const ref = useRef<HTMLDivElement>(null)
+	const ref = useRef<HTMLDivElement>(null)
 
 	const current = props.data[props.data.length - 1]
 	const is_dark = global.theme === 'dark'
-      const is_line = props.type === 'line'
+	const is_line = props.type === 'line'
 
 	useAxisChart(ref, {
 		name: props.__name,
@@ -75,7 +75,7 @@ const Index = (props: IProps) => {
 	})
 
 	return (
-		<div className={clsx([styles._local, 'w_100 flex flex_column'])}>
+		<div className={clsx([styles._local, 'w_100 flex flex_column'])} style={{ height: props.height || 300 }}>
 			<div
 				className={clsx([
 					'base_number_wrap w_100 border_box flex justify_between align_end',
@@ -87,7 +87,7 @@ const Index = (props: IProps) => {
 			<div
 				className='chart_wrap w_100 flex justify_between align_center'
 				ref={ref}
-				style={{ height: props.chartHeight || 120 }}
+				style={{ height: `calc(100% - 24px)` }}
 			></div>
 		</div>
 	)

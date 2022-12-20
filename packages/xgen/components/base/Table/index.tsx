@@ -23,14 +23,15 @@ export interface IProps extends Component.StackComponent {
 	data?: Array<any>
 	namespace?: string
 	hidePagination?: IPropsPureTable['hidePagination']
+	onChangeEventName?: string
 }
 
 const Index = (props: IProps) => {
-	const { parent, model, search_params, query, data, namespace, hidePagination } = props
-	const [x] = useState(() => container.resolve(Model))
-
+	const { parent, model, search_params, query, data, namespace, hidePagination, onChangeEventName } = props
+      const [ x ] = useState(() => container.resolve(Model))
+      
 	useLayoutEffect(() => {
-		x.init(parent, model, query, data, namespace, search_params!)
+		x.init(parent, model, query, data, namespace, search_params!,onChangeEventName)
 
 		return () => {
 			x.off()

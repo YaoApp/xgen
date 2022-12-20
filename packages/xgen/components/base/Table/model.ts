@@ -26,6 +26,7 @@ export default class Model {
 	search_params = {} as TableType.SearchParams
 	batch = { active: false, selected: [] } as TableType.Batch
 	rendered = false
+	onChangeEventName = '' as string | undefined
 
 	constructor(
 		private service: Service,
@@ -98,6 +99,8 @@ export default class Model {
 
 		this.search()
 
+		if (this.onChangeEventName) window.$app.Event.emit(this.onChangeEventName)
+
 		return Promise.resolve()
 	}
 
@@ -160,7 +163,8 @@ export default class Model {
 		query: IProps['query'],
 		data: IProps['data'],
 		namespace: IProps['namespace'],
-		params: TableType.SearchParams
+		params: TableType.SearchParams,
+		onChangeEventName: IProps['onChangeEventName']
 	) {
 		if (!namespace) {
 			if (parent === 'Page' || parent === 'Modal') {
@@ -187,6 +191,7 @@ export default class Model {
 		this.rendered = false
 		this.parent = parent
 		this.model = model
+		this.onChangeEventName = onChangeEventName
 
 		this.getSetting()
 

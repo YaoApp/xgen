@@ -7,14 +7,14 @@ import TableRender from './TableRender'
 import type { IPropsItem } from '../types'
 
 const Index = (props: IPropsItem) => {
-	const { item, data } = props
+	const { item, data, namespace } = props
 
 	if ('rows' in item) {
 		return (
 			<Col span={item.width} style={{ marginBottom: 16 }}>
 				<div className='flex flex_column'>
 					{item.rows.map((it, index) => (
-						<Index item={it} data={data} key={index}></Index>
+						<Index item={it} data={data} namespace={namespace} key={index}></Index>
 					))}
 				</div>
 			</Col>
@@ -37,12 +37,12 @@ const Index = (props: IPropsItem) => {
 		if (item.width) {
 			return (
 				<Col span={item.width}>
-					<TableRender item={item}></TableRender>
+					<TableRender item={item} namespace={namespace}></TableRender>
 				</Col>
 			)
 		}
 
-		return <TableRender item={item}></TableRender>
+		return <TableRender item={item} namespace={namespace}></TableRender>
 	}
 
 	if (item.view.type === 'base/Form') {
