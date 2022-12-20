@@ -1,6 +1,6 @@
 import { defineConfig } from '@umijs/max'
 
-import { base, chainWebpack, conventionRoutes, extraBabelPlugins, links, metas, proxy } from './build/lws'
+import { base, chainWebpack, conventionRoutes, extraBabelPlugins, links, metas, proxy } from './build/config'
 
 export default defineConfig({
 	mfsu: { esbuild: false, strategy: 'eager' },
