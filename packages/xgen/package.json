@@ -58,6 +58,7 @@
             "reflect-metadata": "^0.1.13",
             "sortablejs": "^1.15.0",
             "store2": "^2.14.2",
+            "systemjs": "^6.13.0",
             "tslib": "^2.4.1",
             "tsyringe": "^4.7.0",
             "url-pattern": "^1.0.3"
@@ -72,6 +73,7 @@
             "@types/react-dom": "^18.0.9",
             "@types/react-slick": "^0.23.10",
             "@types/sortablejs": "^1.15.0",
+            "@types/systemjs": "^6.13.0",
             "babel-plugin-transform-typescript-metadata": "^0.3.2",
             "dotenv": "^16.0.3",
             "less": "^4.1.3",

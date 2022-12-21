@@ -15,7 +15,7 @@ export const proxy = {
 		target: 'http://_dev.com:5099',
 		changeOrigin: true
 	},
-	'/extend': {
+	'/components': {
 		target: 'http://_dev.com:5099',
 		changeOrigin: true
 	},

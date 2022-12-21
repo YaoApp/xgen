@@ -15,6 +15,7 @@ export default defineConfig({
 			lodash: ['lodash-es'],
 			mustache: ['mustache']
 		},
-	},
+      },
+      // When using tsyringe, this item needs to be set
 	context: 'false'
 })
