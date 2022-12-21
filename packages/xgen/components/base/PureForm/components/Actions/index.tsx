@@ -40,9 +40,6 @@ const Index = (props: IPropsActions) => {
 				<div className='flex align_center'>
 					{_actions?.map((it, index) => (
 						<Fragment key={index}>
-							<When condition={it.divideLine}>
-								<div className='divide_line'></div>
-							</When>
 							<Button
 								className={clsx([
 									'btn_action border_box flex justify_center align_center clickable',
@@ -60,7 +57,10 @@ const Index = (props: IPropsActions) => {
 								}
 							>
 								{it.title}
-							</Button>
+                                          </Button>
+                                          <When condition={it.divideLine}>
+								<div className='divide_line'></div>
+							</When>
 						</Fragment>
 					))}
 				</div>
