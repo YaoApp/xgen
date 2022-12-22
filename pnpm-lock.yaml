@@ -91,6 +91,7 @@ importers:
 
   packages/xgen:
     specifiers:
+      '@abraham/reflection': ^0.11.0
       '@ant-design/icons': ^4.8.0
       '@matrixage/atom.css': ^2.0.1
       '@swc/core': ^1.3.23
@@ -140,7 +141,6 @@ importers:
       react-shadow: ^19.0.3
       react-slick: ^0.29.0
       react-sortablejs: ^6.1.4
-      reflect-metadata: ^0.1.13
       sortablejs: ^1.15.0
       store2: ^2.14.2
       systemjs: ^6.13.0
@@ -152,6 +152,7 @@ importers:
       utility-types: ^3.10.0
       webpack-chain: ^6.5.1
     dependencies:
+      '@abraham/reflection': 0.11.0
       '@ant-design/icons': 4.8.0_biqbaboplfbrettd7655fr4n2y
       '@matrixage/atom.css': 2.0.1
       '@umijs/max': 4.0.38_5vxlzh347h3myowtf26oayiz3m
@@ -185,7 +186,6 @@ importers:
       react-shadow: 19.0.3_v2m5e27vhdewzwhryxwfaorcca
       react-slick: 0.29.0_biqbaboplfbrettd7655fr4n2y
       react-sortablejs: 6.1.4_pkvhgat2fktt3g4eqjjiisgkie
-      reflect-metadata: 0.1.13
       sortablejs: 1.15.0
       store2: 2.14.2
       systemjs: 6.13.0
@@ -215,6 +215,10 @@ importers:
       webpack-chain: 6.5.1
 
 packages:
+
+  /@abraham/reflection/0.11.0:
+    resolution: {integrity: sha512-lCPIgtjeiZ7ZWLPP5RiAmGAyw5I0dHMt0GzzKZVZiZ48lNC0sGnmTzKITEtOlZevylf0sf5vjhbEmByuQMQE9Q==}
+    dev: false
 
   /@ahooksjs/use-request/2.8.15_react@18.2.0:
     resolution: {integrity: sha512-xhVaM4fyIiAMdVFuuU5i3CFUdFa/IblF+fvITVMFaUEO3w/V5tVCAF6WIA3T03n1/RPuzRkA7Ao1PFtSGtGelw==}
@@ -11231,10 +11235,6 @@ packages:
     resolution: {integrity: sha512-oSBmcKKIuIR4ME29/AeNUnl5L+hvBq7OaJWzaptTQJAntaPvxIJqfnjbaEiCzzaIz+XmVILfqAM3Ob0aXLPfjA==}
     dependencies:
       '@babel/runtime': 7.20.6
-    dev: false
-
-  /reflect-metadata/0.1.13:
-    resolution: {integrity: sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==}
     dev: false
 
   /reflect.getprototypeof/1.0.3:

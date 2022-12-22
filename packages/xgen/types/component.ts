@@ -35,6 +35,7 @@ export declare namespace Component {
 	}
 
 	interface PropsViewComponent extends Props {
+		__data_item: any
 		__value: any
 	}
 

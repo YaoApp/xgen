@@ -22,6 +22,7 @@
             "build:after": "tsx ./build/after.ts"
       },
       "dependencies": {
+            "@abraham/reflection": "^0.11.0",
             "@ant-design/icons": "^4.8.0",
             "@matrixage/atom.css": "^2.0.1",
             "@umijs/max": "^4.0.38",
@@ -55,7 +56,6 @@
             "react-shadow": "^19.0.3",
             "react-slick": "^0.29.0",
             "react-sortablejs": "^6.1.4",
-            "reflect-metadata": "^0.1.13",
             "sortablejs": "^1.15.0",
             "store2": "^2.14.2",
             "systemjs": "^6.13.0",
