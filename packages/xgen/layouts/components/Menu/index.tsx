@@ -48,7 +48,7 @@ const Index = (props: IPropsMenu) => {
 						onChange={({ target: { value } }) => setInput(value)}
 					></Input>
 				) : (
-					<span className='title'>{parent.name}</span>
+					<span className='title'>{parent?.name}</span>
 				)}
 				<a
 					className={clsx([
