@@ -64,6 +64,9 @@ export default class Model {
 	}
 
 	init(parent: Component.StackComponent['parent'], model: Component.StackComponent['model']) {
+		this.setting = {} as Chart.Setting
+		this.data = {} as Global.AnyObject
+
 		this.rendered = false
 		this.parent = parent
 		this.model = model

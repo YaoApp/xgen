@@ -166,6 +166,9 @@ export default class Model {
 		params: TableType.SearchParams,
 		onChangeEventName: IProps['onChangeEventName']
 	) {
+		this.setting = {} as TableType.Setting
+		this.list = [] as TableType.Data['data']
+
 		if (!namespace) {
 			if (parent === 'Page' || parent === 'Modal') {
 				this.global.stack.push(`Table-${parent}-${model}`)

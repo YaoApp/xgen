@@ -33,13 +33,13 @@ export default class Model {
 
 		if (err) return
 
-            this.rendered = true
+		this.rendered = true
 		this.setting = res
 
 		this.columns = this.column_utils.reduceDashboardColumns(res.dashboard.columns, res.fields.dashboard)
 	}
 
-      async search() {
+	async search() {
 		if (this.parent === 'Page' && this.rendered === false) this.global.loading = true
 
 		const { res, err } = await this.service.search<Global.AnyObject>(this.model)
@@ -54,6 +54,9 @@ export default class Model {
 	}
 
 	init(parent: Component.StackComponent['parent'], model: Component.StackComponent['model']) {
+		this.setting = {} as Dashboard.Setting
+		this.data = {} as Global.AnyObject
+
 		this.global.stack.push(`Dashboard-${parent}-${model}`)
 
 		this.namespace.paths = toJS(this.global.stack.paths)

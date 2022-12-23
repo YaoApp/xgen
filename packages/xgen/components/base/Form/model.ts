@@ -95,6 +95,9 @@ export default class Model {
 		form: Component.StackComponent['form'],
 		onBack: Component.FormComponent['onBack']
 	) {
+		this.setting = {} as FormType.Setting
+            this.data = {} as Global.AnyObject
+            
 		this.global.stack.push(`Form-${parent}-${model}`)
 
 		this.namespace.paths = toJS(this.global.stack.paths)

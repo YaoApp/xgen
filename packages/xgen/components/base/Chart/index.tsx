@@ -30,6 +30,7 @@ const Index = (props: Component.BaseComponent) => {
 	if (!Object.keys(x.data).length) return null
 
 	const props_filter: IPropsFilter = {
+		parent,
 		model: x.model,
 		columns: toJS(x.filter_columns),
 		onFinish,
@@ -53,7 +54,7 @@ const Index = (props: Component.BaseComponent) => {
 			<Page
 				title={x.setting.name}
 				className='w_100'
-				actions={toJS(x.setting.operation.actions)}
+				actions={toJS(x.setting.actions)}
 				full={x.setting?.config?.full}
 				withRows
 			>
