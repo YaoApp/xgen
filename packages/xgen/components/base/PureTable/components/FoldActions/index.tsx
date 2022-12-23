@@ -14,7 +14,7 @@ import type { IPropsActions } from '../../types'
 const Index = (props: IPropsActions) => {
 	const { namespace, primary, actions, data_item } = props
 	const getStyle = useActionStyle()
-	const getDisabled = useActionDisabled(data_item)
+	const getDisabled = useActionDisabled()
 	const onAction = useAction()
 
 	const _actions = useMemo(() => getTemplateValue(actions, data_item), [actions, data_item])

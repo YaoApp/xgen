@@ -16,7 +16,7 @@ const Index = (props: IPropsActions) => {
 	const { namespace, primary, type, id, actions, data, disabledActionsAffix } = props
 	const [stick, setStick] = useState<boolean | undefined>(false)
 	const getStyle = useActionStyle()
-	const getDisabled = useActionDisabled(data)
+	const getDisabled = useActionDisabled()
 	const onAction = useAction()
 	const when_add_and_view = id === 0 || type === 'view'
 

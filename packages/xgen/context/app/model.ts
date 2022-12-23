@@ -75,13 +75,15 @@ export default class GlobalModel {
 	updateMenuStatus(pathname: string) {
 		if (pathname.indexOf('/0/edit') !== -1) {
 			window.$global.loading = true
-            }
-            
+		}
+
 		const { current_nav, paths } = getCurrentMenuIndexs(
 			pathname,
 			toJS(this.in_setting ? this.menus.setting : this.menus.items)
-            )
-            
+		)
+
+		if (!paths.length) return
+
 		this.current_nav = current_nav
 		this.menu_key_path = paths
 	}
