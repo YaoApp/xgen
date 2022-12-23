@@ -5,9 +5,7 @@
       "author": "Wendao",
       "license": "Apache-2.0",
       "homepage": "https://github.com/YaoApp/xgen/packages/yaocli",
-      "keywords": [
-          
-      ],
+      "keywords": [],
       "repository": {
             "type": "git",
             "url": "git+https://github.com/YaoApp/xgen.git"
@@ -16,11 +14,7 @@
       "source": "src/index.ts",
       "module": "dist/index.js",
       "types": "dist/index.d.ts",
-      "scripts": {
-            "dev": "rollup --c rollup.dev.ts --configPlugin swc3 -w",
-            "build": "rollup --c rollup.build.ts --configPlugin swc3 && tsc",
-            "exec": "rollup --c rollup.build.ts --configPlugin swc3 && node dist"
-      },
+      "scripts": {},
       "dependencies": {
             "await-to-js": "^3.0.0"
       },
