@@ -11,7 +11,7 @@ import type { IPropsSections, IPropsSection } from '../../types'
 const Index = (props: IPropsSections) => {
 	const { namespace, primary, type, data, sections } = props
 
-	const _sections = useMemo(() => getTemplateValue(sections, data), [sections, data])
+      const _sections = useMemo(() => getTemplateValue(sections, data), [ sections, data ])
 
 	const props_section: Omit<IPropsSection, 'item'> = {
 		namespace,

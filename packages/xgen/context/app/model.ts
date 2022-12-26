@@ -77,12 +77,12 @@ export default class GlobalModel {
 			window.$global.loading = true
 		}
 
-		const { current_nav, paths } = getCurrentMenuIndexs(
+		const { hit, current_nav, paths } = getCurrentMenuIndexs(
 			pathname,
 			toJS(this.in_setting ? this.menus.setting : this.menus.items)
 		)
 
-		if (!paths.length) return
+		if (!hit) return
 
 		this.current_nav = current_nav
 		this.menu_key_path = paths
