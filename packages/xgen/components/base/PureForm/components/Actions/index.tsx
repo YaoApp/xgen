@@ -18,15 +18,17 @@ const Index = (props: IPropsActions) => {
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled()
 	const onAction = useAction()
-	const when_add_and_view = id === 0 || type === 'view'
+	const when_add = id === 0
+	const when_view = type === 'view'
 
 	const _actions = useMemo(() => {
-		if (when_add_and_view) {
-			return getTemplateValue(actions!, data).filter((item) => item.showWhenAddAndView)
-		}
+		const handle_actions = getTemplateValue(actions!, data)
 
-		return getTemplateValue(actions!, data)
-	}, [actions, data, when_add_and_view])
+		if (when_add) return handle_actions.filter((item) => item.showWhenAdd)
+		if (when_view) return handle_actions.filter((item) => item.showWhenView)
+
+		return handle_actions
+	}, [actions, data, when_add, when_view])
 
 	return (
 		<Affix offsetTop={11} style={{ zIndex: disabledActionsAffix ? 0 : 101 }} onChange={(v) => setStick(v)}>
@@ -57,8 +59,8 @@ const Index = (props: IPropsActions) => {
 								}
 							>
 								{it.title}
-                                          </Button>
-                                          <When condition={it.divideLine}>
+							</Button>
+							<When condition={it.divideLine}>
 								<div className='divide_line'></div>
 							</When>
 						</Fragment>

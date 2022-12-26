@@ -61,7 +61,8 @@ export declare namespace Action {
 		action: Array<ActionParams>
 		style?: 'danger' | 'success' | 'primary'
 		divideLine?: boolean
-		showWhenAddAndView?: boolean
+		showWhenAdd?: boolean
+		showWhenView?: boolean
 		disabled?: {
 			bind: string
 			value: string | Array<string>
