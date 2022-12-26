@@ -18,17 +18,17 @@ const Index = (props: IPropsActions) => {
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled()
 	const onAction = useAction()
-	const when_add = id === 0
-	const when_view = type === 'view'
 
 	const _actions = useMemo(() => {
+		const when_add = id === 0
+		const when_view = type === 'view'
 		const handle_actions = getTemplateValue(actions!, data)
 
 		if (when_add) return handle_actions.filter((item) => item.showWhenAdd)
 		if (when_view) return handle_actions.filter((item) => item.showWhenView)
 
 		return handle_actions
-	}, [actions, data, when_add, when_view])
+	}, [actions, data, id, type])
 
 	return (
 		<Affix offsetTop={11} style={{ zIndex: disabledActionsAffix ? 0 : 101 }} onChange={(v) => setStick(v)}>
