@@ -80,8 +80,8 @@ export default class GlobalModel {
 		const { hit, current_nav, paths } = getCurrentMenuIndexs(
 			pathname,
 			toJS(this.in_setting ? this.menus.setting : this.menus.items)
-		)
-
+            )
+            
 		if (!hit) return
 
 		this.current_nav = current_nav

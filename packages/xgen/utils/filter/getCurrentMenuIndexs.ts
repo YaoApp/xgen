@@ -16,8 +16,9 @@ const Index = (pathname: string, items: Array<App.Menu>) => {
 		}
 
 		const target = findPath(item.children || [], 'path', pathname)
-
-		if (target.length) {
+            
+            if (target.length) {
+			hit = true
 			current_nav = Number(index)
 			paths = target.map((item) => item.path)
 
