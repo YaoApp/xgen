@@ -56,10 +56,12 @@ const Index = (props: IPropsPureTable) => {
 			dataSource={list}
 			columns={list_columns}
 			sticky={in_form || hidePagination || parent === 'Dashboard' ? false : { offsetHeader: 52 }}
-			rowKey={getRowKey}
 			pagination={hidePagination ? false : table_pagination}
 			rowSelection={batch.active ? row_selection : undefined}
-			onChange={onChange}
+			rowKey={getRowKey}
+                  onChange={ onChange }
+                  //@ts-ignore
+			components={{ body: { cell: ({ onMouseEnter, onMouseLeave, ...rest }) => <td {...rest} /> } }}
 			{...table_props}
 		/>
 	)
