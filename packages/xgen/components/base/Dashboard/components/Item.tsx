@@ -11,7 +11,7 @@ const Index = (props: IPropsItem) => {
 
 	if ('rows' in item) {
 		return (
-			<Col span={item.width} style={{ marginBottom: 16 }}>
+			<Col span={item.width}>
 				<div className='flex flex_column'>
 					{item.rows.map((it, index) => (
 						<Index item={it} data={data} namespace={namespace} key={index}></Index>
@@ -24,7 +24,7 @@ const Index = (props: IPropsItem) => {
 	if (item.view.type.startsWith('chart/')) {
 		if (item.width) {
 			return (
-				<Col span={item.width}>
+				<Col span={item.width} style={{ marginBottom: 16 }}>
 					<ChartRender item={item} data={data[item.bind]}></ChartRender>
 				</Col>
 			)
