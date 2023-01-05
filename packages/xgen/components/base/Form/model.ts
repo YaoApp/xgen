@@ -59,7 +59,7 @@ export default class Model {
 	async save(data: TableType.SaveRequest) {
 		const hideLoading = message.loading(this.global.locale_messages.messages.table.save.loading)
 
-		const { err } = await this.form.save<TableType.SaveRequest, TableType.SaveResponse>(this.model, data)
+		const { res, err } = await this.form.save<TableType.SaveRequest, TableType.SaveResponse>(this.model, data)
 
 		hideLoading()
 
@@ -69,13 +69,13 @@ export default class Model {
 
 		if (this.parent === 'Modal') window.$app.Event.emit(`${this.namespace.parent}/search`)
 
-		return Promise.resolve()
+		return Promise.resolve(res)
 	}
 
 	async delete(primary_value: number) {
 		const hideLoading = message.loading(this.global.locale_messages.messages.table.delete.loading)
 
-		const { err } = await this.form.delete<TableType.DeleteResponse>(this.model, primary_value)
+		const { res, err } = await this.form.delete<TableType.DeleteResponse>(this.model, primary_value)
 
 		hideLoading()
 
@@ -85,7 +85,7 @@ export default class Model {
 
 		if (this.parent === 'Modal') window.$app.Event.emit(`${this.namespace.parent}/search`)
 
-		return Promise.resolve()
+		return Promise.resolve(res)
 	}
 
 	init(
@@ -96,8 +96,8 @@ export default class Model {
 		onBack: Component.FormComponent['onBack']
 	) {
 		this.setting = {} as FormType.Setting
-            this.data = {} as Global.AnyObject
-            
+		this.data = {} as Global.AnyObject
+
 		this.global.stack.push(`Form-${parent}-${model}`)
 
 		this.namespace.paths = toJS(this.global.stack.paths)

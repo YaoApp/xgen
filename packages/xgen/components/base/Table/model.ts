@@ -83,13 +83,13 @@ export default class Model {
 		this.list = data
 		this.pagination = { page, pagesize, total }
 
-		return Promise.resolve()
+		return Promise.resolve(res)
 	}
 
 	async save(data: TableType.SaveRequest) {
 		const hideLoading = message.loading(this.global.locale_messages.messages.table.save.loading)
 
-		const { err } = await this.table.save<TableType.SaveRequest, TableType.SaveResponse>(this.model, data)
+		const { res, err } = await this.table.save<TableType.SaveRequest, TableType.SaveResponse>(this.model, data)
 
 		hideLoading()
 
@@ -101,13 +101,13 @@ export default class Model {
 
 		if (this.onChangeEventName) window.$app.Event.emit(this.onChangeEventName)
 
-		return Promise.resolve()
+		return Promise.resolve(res)
 	}
 
 	async delete(primary_value: number) {
 		const hideLoading = message.loading(this.global.locale_messages.messages.table.delete.loading)
 
-		const { err } = await this.table.delete<TableType.DeleteResponse>(this.model, primary_value)
+		const { res, err } = await this.table.delete<TableType.DeleteResponse>(this.model, primary_value)
 
 		hideLoading()
 
@@ -117,7 +117,7 @@ export default class Model {
 
 		this.search()
 
-		return Promise.resolve()
+		return Promise.resolve(res)
 	}
 
 	async batchDelete() {

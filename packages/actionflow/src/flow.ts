@@ -14,7 +14,7 @@ export default class Flow {
 	__ORDER_LOGS__ = [] as Array<string>
 
 	public init(queue: Queue) {
-		this.raw_queue = queue
+            this.raw_queue = queue
 
 		this.pushRunQueue(queue[0])
 	}
@@ -59,7 +59,7 @@ export default class Flow {
 			return
 		}
 
-		this.results[name] = res
+		this.results[`$${name}`] = res
 
 		if (next) {
 			const next_task_index = this.raw_queue.findIndex((it) => it.name === next)
