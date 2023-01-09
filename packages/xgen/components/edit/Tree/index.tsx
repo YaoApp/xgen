@@ -39,7 +39,7 @@ const Custom = window.$app.memo((props: CustomProps) => {
 })
 
 const Index = (props: IProps) => {
-	const { __bind, __name, __data_item, itemProps, ...rest_props } = props
+	const { __bind, __name, itemProps, ...rest_props } = props
 	const [x] = useState(() => container.resolve(Model))
 
 	useLayoutEffect(() => {

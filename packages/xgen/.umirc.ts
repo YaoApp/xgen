@@ -1,10 +1,13 @@
 import { defineConfig } from '@umijs/max'
 
-import { base, chainWebpack, conventionRoutes, extraBabelPlugins, links, metas, proxy } from './build/config'
+import { base, chainWebpack, conventionRoutes, links, metas, proxy, srcTranspilerOptions } from './build/config'
 
 export default defineConfig({
 	mfsu: { esbuild: false, strategy: 'eager' },
 	monorepoRedirect: { srcDir: ['./'] },
+	// @ts-ignore
+	srcTranspiler: 'swc',
+	srcTranspilerOptions,
 	jsMinifier: 'swc',
 	npmClient: 'pnpm',
 	base,
@@ -17,7 +20,7 @@ export default defineConfig({
 	antd: { import: false, style: undefined },
 	codeSplitting: { jsStrategy: 'granularChunks' },
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
-	extraBabelPlugins,
+	// extraBabelPlugins,
 	conventionRoutes,
 	define: { $runtime: { BASE: process.env.BASE } },
 	// @ts-ignore

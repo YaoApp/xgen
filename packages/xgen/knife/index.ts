@@ -16,5 +16,3 @@ export { default as getToken } from './yao/getToken'
 export { default as getStudio } from './yao/getStudio'
 
 export { default as hidePopover } from './dom/hidePopover'
-
-export * from './type'

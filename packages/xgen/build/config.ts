@@ -2,6 +2,7 @@ import fs from 'fs'
 import moment from 'moment'
 
 import type Config from 'webpack-chain'
+import type { JscConfig } from '@swc/core'
 
 const packagejson = JSON.parse(fs.readFileSync(`${process.cwd()}/package.json`).toString())
 const version = packagejson.version
@@ -77,6 +78,15 @@ export const chainWebpack = (config: Config) => {
 		.use('less-loader')
 		.loader('less-loader')
 		.end()
+}
+
+export const srcTranspilerOptions = {
+	swc: {
+		jsc: {
+			parser: { syntax: 'typescript', decorators: true },
+			transform: { legacyDecorator: true, decoratorMetadata: true }
+		} as JscConfig
+	}
 }
 
 export const extraBabelPlugins = ['babel-plugin-transform-typescript-metadata']

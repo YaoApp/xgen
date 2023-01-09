@@ -1,0 +1,28 @@
+._local {
+	padding: 42px 60px;
+      overflow-y: scroll;
+
+	:global {
+		.codex-editor {
+			.ce-block__content,
+			.ce-toolbar__content {
+				max-width: unset;
+			}
+
+                  .ce-toolbar__actions{
+                        right: 100%;
+                  }
+
+                  .video-tool{
+                        .cdx-button{
+                              svg{
+                                    width: 16px;
+                                    height: 16px;
+                                    opacity: 0.75;
+                                    margin-bottom: -3px;
+                              }
+                        }
+                  }
+		}
+	}
+}

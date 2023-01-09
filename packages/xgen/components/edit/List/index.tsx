@@ -57,7 +57,7 @@ const List = window.$app.memo(
 const Custom = (props: ICustom) => <List {...props}></List>
 
 const Index = (props: IProps) => {
-	const { __bind, __name, __data_item, itemProps, ...rest_props } = props
+	const { __bind, __name, itemProps, ...rest_props } = props
 
 	return (
 		<Item className={styles._local} {...itemProps} {...{ __bind, __name }}>

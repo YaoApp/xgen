@@ -16,7 +16,7 @@ import type { SelectProps } from 'antd'
 interface IProps extends Remote.IProps, SelectProps {}
 
 const Index = (props: IProps) => {
-	const { __bind, __name, __data_item, itemProps, xProps, ...rest_props } = props
+	const { __bind, __name, itemProps, xProps, ...rest_props } = props
 	const [x] = useState(() => container.resolve(Model))
 	const is_cn = getLocale() === 'zh-CN'
 
