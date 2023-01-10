@@ -9,6 +9,7 @@ import type { FormInstance } from 'antd'
 export default (
 	onChangeHook: Required<FormType.Setting>['hooks']['onChange'],
 	setFieldsValue: FormInstance['setFieldsValue'],
+	setData: IPropsPureForm['setData'],
 	setSetting: IPropsPureForm['setSetting']
 ) => {
 	return useMemoizedFn(async (v) => {
@@ -27,5 +28,7 @@ export default (
 
 		if (res.data && Object.keys(res.data).length) setFieldsValue(res.data)
 		if (res.setting) setSetting(res.setting)
+
+		setData(v)
 	})
 }

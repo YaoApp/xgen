@@ -13,6 +13,7 @@ export interface IPropsPureForm {
 	hooks: Model['setting']['hooks']
 	title: string
 	disabledActionsAffix?: boolean
+	setData: (v: Global.AnyObject) => void
 	setSetting: (v: FormType.Setting) => void
 	onSave: (v: Global.AnyObject) => Promise<void>
 }

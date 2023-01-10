@@ -25,14 +25,15 @@ const Index = (props: IPropsPureForm) => {
 		hooks,
 		title,
 		disabledActionsAffix,
+		setData,
 		setSetting,
 		onSave
 	} = props
 	const [form] = useForm()
 	const { getFieldsValue, setFieldsValue, resetFields, validateFields } = form
-	const onValuesChange = useOnValuesChange(hooks?.onChange!, setFieldsValue, setSetting)
-      const disabled = type === 'view'
-      
+	const onValuesChange = useOnValuesChange(hooks?.onChange!, setFieldsValue, setData, setSetting)
+	const disabled = type === 'view'
+
 	const submit = useMemoizedFn(async () => {
 		const [err] = await to(validateFields())
 

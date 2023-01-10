@@ -32,14 +32,22 @@ export default class Model {
 		makeAutoObservable(this, {}, { autoBind: true })
 	}
 
-	async getSetting() {
-		const { res, err } = await this.common.getSetting<FormType.Setting>('form', this.model)
+	async getSetting(setting?: FormType.Setting) {
+		let target = {} as FormType.Setting
 
-		if (err) return
+		if (setting) {
+			target = setting
+		} else {
+			const { res, err } = await this.common.getSetting<FormType.Setting>('form', this.model)
+
+			if (err) return
+
+			target = res
+		}
 
 		this.rendered = true
-		this.setting = res
-		this.sections = this.column_utils.reduceSections(res.form.sections || [], res.fields.form)
+		this.setting = target
+		this.sections = this.column_utils.reduceSections(target.form.sections || [], target.fields.form)
 	}
 
 	async find() {

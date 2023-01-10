@@ -55,7 +55,8 @@ const Index = (props: Component.FormComponent) => {
 		return window.$app.Event.emit(`${x.namespace.value}/save`, data)
 	})
 
-	const setSetting = useMemoizedFn((v) => (x.setting = v))
+	const setData = useMemoizedFn((v) => (x.data = { ...x.data, ...v }))
+	const setSetting = useMemoizedFn((v) => x.getSetting(v))
 
 	if (!x.setting.form) return null
 
@@ -81,6 +82,7 @@ const Index = (props: Component.FormComponent) => {
 		hooks,
 		title,
 		disabledActionsAffix: parent === 'Dashboard',
+		setData,
 		setSetting,
 		onSave
 	}
