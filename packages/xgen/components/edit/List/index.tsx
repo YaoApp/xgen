@@ -37,7 +37,7 @@ const List = window.$app.memo(
 
 		const onChange = useMemoizedFn((v: any) => {
 			if (!props.onChange) return
-
+                  
 			props.onChange(v)
 
 			setValue(v)

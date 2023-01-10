@@ -56,9 +56,12 @@ export default class Model {
 				this.list = handleChildren(this.list, 'fold', parentIds)
 				break
 			case 'add':
-				if (!parentIds.length) return this.list.push({ id: createId() })
+				if (!parentIds.length) {
+					this.list.push({ id: createId() })
+				} else {
+					this.list = handleChildren(this.list, 'add', parentIds)
+				}
 
-				this.list = handleChildren(this.list, 'add', parentIds)
 				break
 			case 'addChild':
 				this.list = handleChildren(this.list, 'addChild', parentIds)
@@ -68,7 +71,7 @@ export default class Model {
 
 				const id = parentIds[parentIds.length - 1]
 
-				if (typeof id === 'string' && id.startsWith('_')) return
+				if (typeof id === 'string' && id.startsWith('_')) break
 
 				this.delete_ids.push(id)
 
