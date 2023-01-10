@@ -6,7 +6,6 @@ import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { Fragment, useLayoutEffect, useMemo, useState } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
-import store from 'store2'
 import { container } from 'tsyringe'
 
 import { GlobalContext, GlobalModel } from '@/context/app'
