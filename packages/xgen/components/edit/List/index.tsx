@@ -15,6 +15,7 @@ import type { Component } from '@/types'
 interface ICustom {
 	name: string
 	showLabel?: boolean
+	hasChildren?: boolean
 	value?: any
 	onChange?: (v: any) => void
 }
@@ -23,7 +24,7 @@ interface IProps extends Component.PropsEditComponent, ICustom {}
 
 const List = window.$app.memo(
 	observer((props: ICustom) => {
-		const { name, showLabel } = props
+		const { name, showLabel, hasChildren } = props
 		const [x] = useState(() => container.resolve(Model))
 		const [value, setValue] = useState([])
 
@@ -37,7 +38,7 @@ const List = window.$app.memo(
 
 		const onChange = useMemoizedFn((v: any) => {
 			if (!props.onChange) return
-                  
+
 			props.onChange(v)
 
 			setValue(v)
@@ -48,6 +49,7 @@ const List = window.$app.memo(
 				setting={toJS(x.columns)}
 				list={value}
 				showLabel={showLabel}
+				hasChildren={hasChildren}
 				onChangeForm={onChange}
 			></PureList>
 		)

@@ -8,18 +8,18 @@ import type { IPropsFields } from '../../types'
 const { useForm } = Form
 
 const Index = (props: IPropsFields) => {
-	const { setting, showLabel, dataItem, parentIds, onChange } = props
+	const { setting, showLabel, hasChildren, dataItem, parentIds, onChange } = props
 	const [form] = useForm()
 
 	return (
-		<div style={{ width: 'calc(100% - (38px * 4 + 12px * 5))' }}>
+		<div style={{ width: `calc(100% - (38px + 12px) * ${hasChildren ? 5 : 3})` }}>
 			<Form
 				form={form}
 				layout='vertical'
 				onValuesChange={debounce((_, values) => onChange(values, parentIds), 600)}
 				initialValues={dataItem}
 			>
-                        <Row gutter={ 12 }>
+				<Row gutter={12}>
 					{setting.map((item) => (
 						<FormItem showLabel={showLabel} item={item} key={item.name}></FormItem>
 					))}

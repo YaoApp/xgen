@@ -1,6 +1,10 @@
 .actions_wrap {
-	width: calc(38px * 5 + 12px * 5);
+	width: calc(38px * 3 + 12px * 3);
 	padding-left: 12px;
+
+	&.hasChildren {
+		width: calc(38px * 5 + 12px * 5);
+	}
 
 	.btn_action {
 		width: 38px;

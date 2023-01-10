@@ -15,7 +15,7 @@ import Model from './model'
 import type { IProps, IPropsList, IPropsEmpty } from './types'
 
 const Index = (props: IProps) => {
-	const { setting, list, showLabel, onChangeForm } = props
+	const { setting, list, showLabel, hasChildren, onChangeForm } = props
 	const [x] = useState(() => container.resolve(Model))
 
 	useLayoutEffect(() => x.init(list, setting, onChangeForm), [list])
@@ -29,6 +29,7 @@ const Index = (props: IProps) => {
 		setting,
 		list: toJS(x.list),
 		showLabel,
+		hasChildren,
 		onSort,
 		onAction,
 		onChange
@@ -36,7 +37,7 @@ const Index = (props: IProps) => {
 
 	const props_empty: IPropsEmpty = {
 		onAdd
-      }
+	}
 
 	return (
 		<root.div>
