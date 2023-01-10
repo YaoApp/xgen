@@ -3,7 +3,7 @@
 	top: 0;
 	left: 0;
 	z-index: 99;
-	overflow-y: scroll;
+	overflow: hidden;
 	width: 240px;
 	height: 100vh;
 	background-color: var(--color_bg_menu);
@@ -64,7 +64,9 @@
 
 			.xgen-menu {
 				background-color: transparent;
-                        border-right: none;
+				border-right: none;
+				width: 100%;
+				overflow-x: hidden;
 			}
 
 			.xgen-menu-item,
@@ -74,17 +76,17 @@
 				font-size: 13px;
 			}
 
-                  .badge_wrap{
-                        min-width: 16px;
-                        height: 16px;
-                        line-height: 16px;
-                        padding: 0 4px;
-                        margin-left: 4px;
-                        background-color: var(--color_border);
-                        color: var(--color_text);
-                        border-radius: 8px;
-                        font-size: 12px;
-                  }
+			.badge_wrap {
+				min-width: 16px;
+				height: 16px;
+				line-height: 16px;
+				padding: 0 4px;
+				margin-left: 4px;
+				background-color: var(--color_border);
+				color: var(--color_text);
+				border-radius: 8px;
+				font-size: 12px;
+			}
 		}
 	}
 }

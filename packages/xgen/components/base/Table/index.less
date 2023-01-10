@@ -26,6 +26,16 @@
 ._local {
 	:global {
 		.xgen-table {
+                  ::-webkit-scrollbar-thumb {
+                        background-color: var(--color_border_light);
+                        border-radius: 12px;
+                  }
+      
+                  ::-webkit-scrollbar {
+                        width: unset;
+                        height: 9px;
+                  }
+
 			.xgen-table-container {
 				table {
 					border-spacing: 0 6px;

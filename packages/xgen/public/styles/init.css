@@ -17,14 +17,14 @@ body {
 	text-size-adjust: 100%;
 }
 
-/* ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
 	background-color: transparent;
-} */
+}
 
-/* ::-webkit-scrollbar {
+::-webkit-scrollbar {
 	width: 0px;
 	height: 0px;
-} */
+}
 
 ::-webkit-input-placeholder,
 .xgen-select-selection-placeholder {
