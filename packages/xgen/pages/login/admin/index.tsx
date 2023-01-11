@@ -10,7 +10,10 @@ const Index = () => {
 
 	useLayoutEffect(() => {
 		x.user_type = 'admin'
-		x.getCaptcha()
+
+		x.on()
+
+		return () => x.off()
 	}, [])
 
 	return <Common type='admin' x={x}></Common>

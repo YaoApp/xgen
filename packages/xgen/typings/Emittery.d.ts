@@ -21,7 +21,12 @@ To enable this feature set the `DEBUG` environment variable to `emittery` or `*`
 
 See API for more information on how debugging works.
 */
-export type DebugLogger<EventData, Name extends keyof EventData> = (type: string, debugName: string, eventName?: Name, eventData?: EventData[Name]) => void;
+type DebugLogger<EventData, Name extends keyof EventData> = (
+	type: string,
+	debugName: string,
+	eventName?: Name,
+	eventData?: EventData[Name]
+) => void
 
 /**
 Configure debug options of an instance.

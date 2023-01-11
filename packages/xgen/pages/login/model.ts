@@ -5,13 +5,13 @@ import store from 'store2'
 import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
-import { getPath, reg_email, reg_mobile, retryUntil } from '@/utils'
+import { getPath, reg_email, reg_mobile } from '@/utils'
 import { history } from '@umijs/max'
 
 import Service from './services'
 
 import type { Global, Utils } from '@/types'
-import type { UserType, Captcha, ReqLogin, ResLogin, FormValues, ResAuthByLark, ReqLoginByLark } from './types'
+import type { UserType, Captcha, ReqLogin, ResLogin, FormValues } from './types'
 
 @injectable()
 export default class Model {
@@ -25,13 +25,6 @@ export default class Model {
 	}
 
 	async getCaptcha() {
-		if (!window.$app.api_prefix) {
-			return retryUntil(
-				() => this.getCaptcha(),
-				() => window.$app.api_prefix !== undefined
-			)
-		}
-
 		const { res, err } = await this.service.getCaptcha<Captcha>(
 			this.user_type === 'user' ? this.global.app_info?.login?.user?.captcha : ''
 		)
@@ -119,5 +112,13 @@ export default class Model {
 			sid: store.get('temp_sid'),
 			...(this.is ? { is: this.is } : {})
 		})
+	}
+
+	on() {
+		window.$app.Event.on('login/getCaptcha', this.getCaptcha)
+	}
+
+	off() {
+		window.$app.Event.off('login/getCaptcha', this.getCaptcha)
 	}
 }

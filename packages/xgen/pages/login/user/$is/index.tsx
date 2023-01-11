@@ -9,24 +9,17 @@ import { history, useParams } from '@umijs/max'
 const Index = () => {
 	const [x] = useState(() => container.resolve(Model))
 	const { is } = useParams<{ is: string }>()
-	const query = new URLSearchParams(history.location.search)
 
 	useLayoutEffect(() => {
 		if (!x.global.app_info.login?.user) return history.push('/login/admin')
 
 		x.user_type = 'user'
 		x.is = is
-		x.getCaptcha()
+
+		x.on()
+
+		return () => x.off()
 	}, [])
-
-	useLayoutEffect(() => {
-		if (!query.get('from')) return
-
-		x.loginByLark({
-			code: query.get('code') as string,
-			state: query.get('state') as string
-		})
-	}, [query])
 
 	return <Common type='user' x={x}></Common>
 }

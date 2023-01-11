@@ -39,15 +39,6 @@ export interface ResLogin {
 	}
 }
 
-export interface ResAuthByLark {
-	url: string
-}
-
-export interface ReqLoginByLark {
-	code: string
-	state: string
-}
-
 export interface IPropsCommon {
 	type: UserType
 	x: Model

@@ -6,7 +6,8 @@ import { singleton } from 'tsyringe'
 
 import { Stack } from '@/models'
 import Service from '@/services/app'
-import { getCurrentMenuIndexs } from '@/utils'
+import { getCurrentMenuIndexs, getPath } from '@/utils'
+import { history } from '@umijs/max'
 
 import type { AvatarFullConfig } from 'react-nice-avatar'
 
@@ -48,7 +49,15 @@ export default class GlobalModel {
 		window.$app.api_prefix = res.apiPrefix || '__yao'
 
 		store.set('__mode', res.mode || 'production')
-		store.set('token_storage', res.token?.storage || 'sessionStorage')
+            store.set('token_storage', res.token?.storage || 'sessionStorage')
+
+		if (
+			getPath(history.location.pathname) === '' ||
+			getPath(history.location.pathname) === '/' ||
+			getPath(history.location.pathname).indexOf('login') !== -1
+		) {
+			window.$app.Event.emit('login/getCaptcha')
+		}
 	}
 
 	setAvatar(avatar?: AvatarFullConfig) {
@@ -80,8 +89,8 @@ export default class GlobalModel {
 		const { hit, current_nav, paths } = getCurrentMenuIndexs(
 			pathname,
 			toJS(this.in_setting ? this.menus.setting : this.menus.items)
-            )
-            
+		)
+
 		if (!hit) return
 
 		this.current_nav = current_nav

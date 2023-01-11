@@ -80,11 +80,16 @@ export const chainWebpack = (config: Config) => {
 		.end()
 }
 
+const sp_jsc_config = process.platform === 'win32' && process.env.NODE_ENV === 'development' ? { target: 'es2022' } : {}
+
 export const srcTranspilerOptions = {
 	swc: {
-		jsc: {
-			parser: { syntax: 'typescript', tsx: true, decorators: true },
-			transform: { legacyDecorator: true, decoratorMetadata: true }
-		} as JscConfig
+		jsc: Object.assign(
+			{
+				parser: { syntax: 'typescript', tsx: true, decorators: true, topLevelAwait: true },
+				transform: { legacyDecorator: true, decoratorMetadata: true }
+			} as JscConfig,
+			sp_jsc_config
+		)
 	}
 }
