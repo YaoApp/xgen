@@ -113,12 +113,4 @@ export default class Model {
 			...(this.is ? { is: this.is } : {})
 		})
 	}
-
-	on() {
-		window.$app.Event.on('login/getCaptcha', this.getCaptcha)
-	}
-
-	off() {
-		window.$app.Event.off('login/getCaptcha', this.getCaptcha)
-	}
 }

@@ -1,5 +1,6 @@
+import { useAsyncEffect } from 'ahooks'
 import { observer } from 'mobx-react-lite'
-import { useLayoutEffect, useState } from 'react'
+import { useState } from 'react'
 import { container } from 'tsyringe'
 
 import Common from '@/pages/login/components/Common'
@@ -10,15 +11,15 @@ const Index = () => {
 	const [x] = useState(() => container.resolve(Model))
 	const { is } = useParams<{ is: string }>()
 
-	useLayoutEffect(() => {
+	useAsyncEffect(async () => {
+		await window.$app.Event.emit('app/getAppInfo')
+
 		if (!x.global.app_info.login?.user) return history.push('/login/admin')
 
 		x.user_type = 'user'
 		x.is = is
 
-		x.on()
-
-		return () => x.off()
+		x.getCaptcha()
 	}, [])
 
 	return <Common type='user' x={x}></Common>

@@ -6,8 +6,7 @@ import { singleton } from 'tsyringe'
 
 import { Stack } from '@/models'
 import Service from '@/services/app'
-import { getCurrentMenuIndexs, getPath } from '@/utils'
-import { history } from '@umijs/max'
+import { getCurrentMenuIndexs } from '@/utils'
 
 import type { AvatarFullConfig } from 'react-nice-avatar'
 
@@ -42,22 +41,16 @@ export default class GlobalModel {
 	async getAppInfo() {
 		const { res, err } = await this.service.getAppInfo<App.Info>()
 
-		if (err) return
+		if (err) return Promise.reject()
 
 		this.app_info = res
 
 		window.$app.api_prefix = res.apiPrefix || '__yao'
 
 		store.set('__mode', res.mode || 'production')
-            store.set('token_storage', res.token?.storage || 'sessionStorage')
+		store.set('token_storage', res.token?.storage || 'sessionStorage')
 
-		if (
-			getPath(history.location.pathname) === '' ||
-			getPath(history.location.pathname) === '/' ||
-			getPath(history.location.pathname).indexOf('login') !== -1
-		) {
-			window.$app.Event.emit('login/getCaptcha')
-		}
+		return Promise.resolve()
 	}
 
 	setAvatar(avatar?: AvatarFullConfig) {
@@ -121,10 +114,12 @@ export default class GlobalModel {
 	}
 
 	on() {
+		window.$app.Event.on('app/getAppInfo', this.getAppInfo)
 		window.$app.Event.on('app/updateMenuStatus', this.updateMenuStatus)
 	}
 
 	off() {
+		window.$app.Event.off('app/getAppInfo', this.getAppInfo)
 		window.$app.Event.off('app/updateMenuStatus', this.updateMenuStatus)
 	}
 }
