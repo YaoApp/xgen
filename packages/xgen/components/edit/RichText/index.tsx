@@ -48,7 +48,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 			}
 		})
 
-		return () => editor.current?.destroy()
+		return () => editor.current?.destroy?.()
 	}, [])
 
 	return (

@@ -83,10 +83,8 @@ export const chainWebpack = (config: Config) => {
 export const srcTranspilerOptions = {
 	swc: {
 		jsc: {
-			parser: { syntax: 'typescript', decorators: true },
+			parser: { syntax: 'typescript', tsx: true, decorators: true },
 			transform: { legacyDecorator: true, decoratorMetadata: true }
 		} as JscConfig
 	}
 }
-
-export const extraBabelPlugins = ['babel-plugin-transform-typescript-metadata']

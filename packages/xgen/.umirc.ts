@@ -20,7 +20,6 @@ export default defineConfig({
 	antd: { import: false, style: undefined },
 	codeSplitting: { jsStrategy: 'granularChunks' },
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
-	// extraBabelPlugins,
 	conventionRoutes,
 	define: { $runtime: { BASE: process.env.BASE } },
 	// @ts-ignore
