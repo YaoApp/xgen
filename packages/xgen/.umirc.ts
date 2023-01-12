@@ -22,7 +22,7 @@ export default defineConfig({
 	codeSplitting: { jsStrategy: 'granularChunks' },
 	locale: { default: 'zh-CN', antd: true, baseNavigator: true },
 	conventionRoutes,
-	define: { $runtime: { BASE: process.env.BASE } },
+	// define: { $runtime: { BASE: process.env.BASE } },
 	// @ts-ignore
 	chainWebpack
 })
