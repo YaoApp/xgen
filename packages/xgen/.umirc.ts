@@ -9,7 +9,6 @@ export default defineConfig({
 	srcTranspiler: 'swc',
 	srcTranspilerOptions,
 	jsMinifier: 'swc',
-	jsMinifierOptions: { compress: { drop_console: false } },
 	npmClient: 'pnpm',
 	base,
 	publicPath: base,
