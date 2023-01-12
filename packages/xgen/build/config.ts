@@ -87,7 +87,14 @@ export const srcTranspilerOptions = {
 		jsc: Object.assign(
 			{
 				parser: { syntax: 'typescript', tsx: true, decorators: true, topLevelAwait: true },
-				transform: { legacyDecorator: true, decoratorMetadata: true }
+				transform: {
+					legacyDecorator: true,
+					decoratorMetadata: true,
+					optimizer: {
+						simplify: false,
+						globals: { vars: { DEB: '123' } }
+					}
+				}
 			} as JscConfig,
 			sp_jsc_config
 		)
