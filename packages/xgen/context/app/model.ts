@@ -79,6 +79,9 @@ export default class GlobalModel {
 			window.$global.loading = true
 		}
 
+		console.log('--------------')
+		console.log('updateMenuStatus_pathname: ', pathname)
+
 		const { hit, current_nav, paths } = getCurrentMenuIndexs(
 			pathname,
 			toJS(this.in_setting ? this.menus.setting : this.menus.items)

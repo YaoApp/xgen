@@ -81,6 +81,8 @@ export default class Model {
 		store.set('current_nav', current_nav)
 		store.set('login_url', getPath(history.location.pathname))
 
+		console.log('login_url: ', getPath(history.location.pathname))
+
 		await window.$app.sleep(600)
 
 		this.loading.login = false
