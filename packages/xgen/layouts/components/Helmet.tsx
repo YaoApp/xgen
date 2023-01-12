@@ -7,7 +7,7 @@ import type { IPropsHelmet } from '../types'
 
 const Index = (props: IPropsHelmet) => {
 	const { theme, app_info } = props
-      
+
 	return (
 		<Fragment>
 			<Helmet>
@@ -16,7 +16,7 @@ const Index = (props: IPropsHelmet) => {
 					type='image/x-icon'
 					href={app_info.favicon ?? require('@/public/favicon.ico')}
 				/>
-				<link rel='stylesheet' href={`/${__BASE__}/theme/${theme}.css`} />
+				<link rel='stylesheet' href={`/${$runtime.BASE}/theme/${theme}.css`} />
 				<title>{app_info.name ? `${app_info.name} - ${app_info.description}` : config.name}</title>
 			</Helmet>
 		</Fragment>
