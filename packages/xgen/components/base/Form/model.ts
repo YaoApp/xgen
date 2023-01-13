@@ -33,6 +33,8 @@ export default class Model {
 	}
 
 	async getSetting(setting?: FormType.Setting) {
+		if (this.id === 0) this.global.loading = true
+
 		let target = {} as FormType.Setting
 
 		if (setting) {
@@ -44,6 +46,8 @@ export default class Model {
 
 			target = res
 		}
+
+		if (this.id === 0) this.global.loading = false
 
 		this.rendered = true
 		this.setting = target
@@ -117,11 +121,7 @@ export default class Model {
 
 		this.getSetting()
 
-		if (Number(id) === 0) {
-			this.global.loading = false
-		} else {
-			this.find()
-		}
+		if (Number(id) !== 0) this.find()
 
 		this.on(onBack)
 	}

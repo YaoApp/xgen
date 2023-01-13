@@ -43,10 +43,12 @@ const Index = (props: IPropsPureForm) => {
 	})
 
 	useLayoutEffect(() => {
-		if (id === 0) return resetFields()
+		if (id === 0) resetFields()
+	}, [id])
 
+	useLayoutEffect(() => {
 		setFieldsValue(data)
-	}, [id, data])
+	}, [data])
 
 	useLayoutEffect(() => {
 		window.$app.Event.on(`${namespace}/submit`, submit)
