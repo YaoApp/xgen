@@ -1,6 +1,6 @@
 ._local {
 	padding: 42px 60px;
-      overflow-y: scroll;
+	overflow-y: scroll;
 
 	:global {
 		.codex-editor {
@@ -9,20 +9,31 @@
 				max-width: unset;
 			}
 
-                  .ce-toolbar__actions{
-                        right: 100%;
-                  }
+			.ce-toolbar__actions {
+				right: 100%;
+			}
 
-                  .video-tool{
-                        .cdx-button{
-                              svg{
-                                    width: 16px;
-                                    height: 16px;
-                                    opacity: 0.75;
-                                    margin-bottom: -3px;
-                              }
-                        }
-                  }
+			.codex-editor__redactor {
+				margin: 0;
+			}
+
+			&.codex-editor--narrow {
+				.ce-toolbox .ce-popover {
+					right: unset;
+					left: -30px;
+				}
+			}
+
+			.video-tool {
+				.cdx-button {
+					svg {
+						width: 16px;
+						height: 16px;
+						opacity: 0.75;
+						margin-bottom: -3px;
+					}
+				}
+			}
 		}
 	}
 }

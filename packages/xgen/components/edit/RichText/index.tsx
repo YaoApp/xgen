@@ -22,7 +22,7 @@ interface IProps extends Component.PropsEditComponent, ICustom {}
 
 const Custom = window.$app.memo((props: ICustom) => {
 	const container = useRef<HTMLDivElement>(null)
-	const editor = useRef<EditorJS>()
+      const editor = useRef<EditorJS>()
 
 	useEffect(() => {
 		if (!container.current) return

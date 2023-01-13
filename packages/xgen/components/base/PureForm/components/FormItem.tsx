@@ -9,7 +9,7 @@ const Index = (props: IPropsFormItem) => {
 	const { namespace, primary, type, item } = props
 
 	const disabled_props = useMemo(() => {
-		if (type === 'view') return {}
+		if (type === 'view') return { disabled: true }
 
 		const disabled = item.edit.props?.disabled
 
