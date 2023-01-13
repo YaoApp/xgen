@@ -8,6 +8,7 @@ import { getI18N, getTools } from './editor_config'
 import styles from './index.less'
 
 import type { Component } from '@/types'
+import type { LogLevels } from '@editorjs/editorjs'
 
 export interface ICustom {
 	value: any
@@ -22,12 +23,13 @@ interface IProps extends Component.PropsEditComponent, ICustom {}
 
 const Custom = window.$app.memo((props: ICustom) => {
 	const container = useRef<HTMLDivElement>(null)
-      const editor = useRef<EditorJS>()
+	const editor = useRef<EditorJS>()
 
 	useEffect(() => {
 		if (!container.current) return
 
 		editor.current = new EditorJS({
+			logLevel: 'ERROR' as LogLevels,
 			holder: container.current,
 			data: { blocks: props.value },
 			readOnly: props.disabled,
