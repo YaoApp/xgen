@@ -2,10 +2,8 @@ import { history } from '@umijs/max'
 
 import type { Action } from '@/types'
 
-type Args = { payload: Action.ActionMap['Common.historyPush'] }
-
-export default ({ payload }: Args) => {
-	return () =>
+export default () => {
+	return (payload: Action.ActionMap['Common.historyPush']) =>
 		new Promise<void>((resolve) => {
 			const search = payload.search ? new URLSearchParams(payload.search).toString() : undefined
 
