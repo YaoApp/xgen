@@ -26,8 +26,8 @@ const Index = () => {
 	const [global] = useState(() => container.resolve(GlobalModel))
 	const { pathname } = useLocation()
 	const menu = toJS(global.menu)
-      const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
-      
+	const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
+
 	useLayoutEffect(() => {
 		window.$global = global
 
@@ -42,6 +42,8 @@ const Index = () => {
 	}, [])
 
 	useLayoutEffect(() => {
+		global.visible_menu = true
+
 		global.stack.reset()
 	}, [pathname])
 
@@ -60,7 +62,8 @@ const Index = () => {
 
 	const props_loading: IPropsLoading = {
 		loading: global.loading,
-		menu: menu_items
+		menu: menu_items,
+		visible_menu: global.visible_menu
 	}
 
 	const props_nav: IPropsNav = {
@@ -78,11 +81,13 @@ const Index = () => {
 		locale_messages: messages,
 		parent: menu[global.current_nav],
 		items: menu_items,
-		menu_key_path: toJS(global.menu_key_path)
+		menu_key_path: toJS(global.menu_key_path),
+		visible: global.visible_menu
 	}
 
 	const props_container: IPropsContainer = {
-		menu: menu_items
+		menu: menu_items,
+		visible_menu: global.visible_menu
 	}
 
 	return (

@@ -1,4 +1,4 @@
-import { useTitle } from 'ahooks'
+import { useMemoizedFn, useTitle } from 'ahooks'
 import clsx from 'clsx'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -20,8 +20,12 @@ const Index = (props: IProps) => {
 
 	useTitle(`${global.app_info.name} - ${global.menu[global.current_nav]?.name} - ${title}`)
 
+	const toggleVisibleMenu = useMemoizedFn(() => (global.visible_menu = !global.visible_menu))
+
 	const props_left: IPropsLeft = {
-		title
+		title,
+		visible_menu: global.visible_menu,
+		toggleVisibleMenu
 	}
 
 	const wrap_style = full

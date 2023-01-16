@@ -20,6 +20,7 @@ export interface IPropsLoginWrapperLeft {
 export interface IPropsLoading {
 	loading: boolean
 	menu: Array<App.Menu>
+	visible_menu: GlobalModel['visible_menu']
 }
 
 export interface IPropsNav {
@@ -45,12 +46,12 @@ export interface IPropsItems {
 }
 
 export interface IPropsOptions {
-      items: GlobalModel[ 'menu' ]
+	items: GlobalModel['menu']
 	current_nav: GlobalModel['current_nav']
 	in_setting: GlobalModel['in_setting']
 	avatar: GlobalModel['avatar']
 	app_info: GlobalModel['app_info']
-      user: GlobalModel[ 'user' ]
+	user: GlobalModel['user']
 	setAvatar: GlobalModel['setAvatar']
 	setInSetting: IPropsNav['setInSetting']
 }
@@ -60,10 +61,12 @@ export interface IPropsMenu {
 	parent: App.Menu
 	items: Array<App.Menu>
 	menu_key_path: GlobalModel['menu_key_path']
+	visible: GlobalModel['visible_menu']
 }
 
 export interface IPropsContainer {
 	menu: Array<App.Menu>
+	visible_menu: GlobalModel['visible_menu']
 }
 
 export interface IPropsSettingModalContent {

@@ -25,6 +25,7 @@ export default class GlobalModel {
 	current_nav: number = store.get('current_nav') || 0
 	menu_key_path = (store.get('menu_key_path') || []) as Array<string>
 	loading: boolean = false
+	visible_menu: boolean = true
 
 	constructor(private service: Service, public stack: Stack) {
 		makeAutoObservable(this, {}, { autoBind: true })

@@ -13,14 +13,14 @@ import type { IPropsMenu } from '../../types'
 import type { MenuProps } from 'antd'
 
 const Index = (props: IPropsMenu) => {
-	const { locale_messages, parent, items, menu_key_path } = props
+	const { locale_messages, parent, items, menu_key_path, visible } = props
 	const { visible_input, current_items, toggle, setInput } = useSearch(items)
 	const { menu_items } = useMenuItems(current_items)
-      const [ openKeys, setOpenKeys ] = useState<Array<string>>([])
-      
+	const [openKeys, setOpenKeys] = useState<Array<string>>([])
+
 	useDeepCompareEffect(() => {
 		setOpenKeys(menu_key_path)
-      }, [ menu_key_path ])
+	}, [menu_key_path])
 
 	const props_menu: MenuProps = {
 		items: menu_items,
@@ -32,13 +32,13 @@ const Index = (props: IPropsMenu) => {
 		onOpenChange(openKeys) {
 			setOpenKeys(openKeys)
 		},
-            onSelect({ key }) {
+		onSelect({ key }) {
 			history.push(key)
 		}
 	}
 
 	return (
-		<div className={clsx([styles._local, !items?.length && styles.hidden])}>
+		<div className={clsx([styles._local, (!items?.length || !visible) && styles.hidden])}>
 			<div className='title_wrap w_100 border_box flex justify_between align_center relative'>
 				{visible_input ? (
 					<Input
