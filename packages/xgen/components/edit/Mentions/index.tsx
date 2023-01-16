@@ -1,6 +1,6 @@
 import { Mentions } from 'antd'
 import { observer } from 'mobx-react-lite'
-import { useLayoutEffect, useState } from 'react'
+import { Fragment, useLayoutEffect, useRef, useState } from 'react'
 import { container } from 'tsyringe'
 
 import { Item } from '@/components'
@@ -19,6 +19,7 @@ interface IProps extends Remote.IProps, MentionProps {}
 const Index = (props: IProps) => {
 	const { __bind, __name, itemProps, xProps, ...rest_props } = props
 	const [x] = useState(() => container.resolve(Model))
+	const ref = useRef<HTMLDivElement>(null)
 	const is_cn = getLocale() === 'zh-CN'
 
 	useLayoutEffect(() => {
@@ -28,21 +29,25 @@ const Index = (props: IProps) => {
 	}, [])
 
 	return (
-		<Item {...itemProps} {...{ __bind, __name }}>
-			<Mentions
-				className={styles._local}
-				dropdownClassName={styles._dropdown}
-				placeholder={`${is_cn ? '请输入@选择' : 'Please input @ to mention someone'}${__name}`}
-				{...rest_props}
-				{...x.target_props}
-			>
-				{x.options.map((item, index) => (
-					<Option value={item.value} key={String(index)}>
-						{item.label}
-					</Option>
-				))}
-			</Mentions>
-		</Item>
+		<Fragment>
+			<Item {...itemProps} {...{ __bind, __name }}>
+				<Mentions
+					className={styles._local}
+					dropdownClassName={styles._dropdown}
+					placeholder={`${is_cn ? '请输入@选择' : 'Please input @ to mention someone'}${__name}`}
+					getPopupContainer={() => ref.current as HTMLDivElement}
+					{...rest_props}
+					{...x.target_props}
+				>
+					{x.options.map((item, index) => (
+						<Option value={item.value} key={String(index)}>
+							{item.label}
+						</Option>
+					))}
+				</Mentions>
+			</Item>
+			<div ref={ref}></div>
+		</Fragment>
 	)
 }
 

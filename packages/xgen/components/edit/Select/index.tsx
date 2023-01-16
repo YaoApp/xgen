@@ -33,6 +33,7 @@ const Index = (props: IProps) => {
 				popupClassName={styles._dropdown}
 				placeholder={`${is_cn ? '请输入' : 'Please input '}${__name}`}
 				options={x.options}
+				getPopupContainer={(node) => node.parentNode}
 				{...rest_props}
 				{...x.target_props}
 			></Select>

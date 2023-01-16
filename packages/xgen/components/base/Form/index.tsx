@@ -1,8 +1,8 @@
-import { useMemoizedFn } from 'ahooks'
+import { useFullscreen, useMemoizedFn } from 'ahooks'
 import clsx from 'clsx'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useLayoutEffect, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { container } from 'tsyringe'
 
 import { Page, PureForm } from '@/components'
@@ -26,6 +26,8 @@ const Index = (props: Component.FormComponent) => {
 	const page_title_prefix = usePageTitle(locales[locale], id!, form!.type)
 	const hooks = useHooks(toJS(x.setting.hooks!), toJS(x.setting.fields), toJS(x.data))
 	const title = page_title_prefix + x.setting.name
+	const ref_container = useRef<HTMLDivElement>(null)
+	const [is_fullscreen, { toggleFullscreen }] = useFullscreen(ref_container)
 
 	const onFormBack = useMemoizedFn(() => {
 		if (onBack) {
@@ -42,8 +44,12 @@ const Index = (props: Component.FormComponent) => {
 	useLayoutEffect(() => {
 		x.init(parent, model, id, form, onFormBack)
 
+		window.$app.Event.on(`${x.namespace.value}/fullscreen`, toggleFullscreen)
+
 		return () => {
 			x.off(onFormBack)
+
+			window.$app.Event.off(`${x.namespace.value}/fullscreen`, toggleFullscreen)
 		}
 	}, [parent, model, id, form, onFormBack])
 
@@ -93,7 +99,9 @@ const Index = (props: Component.FormComponent) => {
 				<div className='flex relative'>
 					<div className='w_100 flex flex_column'>
 						<Breadcrumb {...props_breadcrumb}></Breadcrumb>
-						<PureForm {...props_form}></PureForm>
+						<div className={clsx([is_fullscreen && styles.fullscreen])} ref={ref_container}>
+							<PureForm {...props_form}></PureForm>
+						</div>
 					</div>
 					{x.setting?.config?.showAnchor && (
 						<div className='anchor_wrap absolute top_0'>
@@ -106,7 +114,7 @@ const Index = (props: Component.FormComponent) => {
 	}
 
 	return (
-		<div className={styles._local}>
+		<div className={clsx([styles._local, is_fullscreen && styles.fullscreen])} ref={ref_container}>
 			<PureForm {...props_form}></PureForm>
 		</div>
 	)

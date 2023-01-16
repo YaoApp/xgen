@@ -42,6 +42,7 @@ export declare namespace Action {
 		'Form.find': {}
 		'Form.submit': Global.StringObject
 		'Form.delete': {}
+		'Form.fullscreen': {}
 		'Service.*': YaoParams
 		'Studio.*': YaoParams
 	}

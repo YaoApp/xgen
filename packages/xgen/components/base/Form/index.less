@@ -6,3 +6,21 @@
 		}
 	}
 }
+
+.fullscreen {
+	:global {
+		.xgen-form {
+			& > .form_wrap {
+				max-height: 100vh;
+				overflow: scroll;
+
+				&::after {
+					content: '';
+					display: flex;
+					width: 100%;
+					height: 60px;
+				}
+			}
+		}
+	}
+}

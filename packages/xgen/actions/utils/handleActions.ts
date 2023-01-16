@@ -1,5 +1,5 @@
 import { closeModal, confirm, historyBack, historyPush, openModal } from '../Common'
-import { delete as formDelete, find as formFind, submit as formSubmit } from '../Form'
+import { delete as formDelete, find as formFind, fullscreen as formFullscreen, submit as formSubmit } from '../Form'
 import { delete as TableDelete, save as tableSave, search as tableSearch } from '../Table'
 import { Service, Studio } from '../Yao'
 
@@ -45,6 +45,9 @@ export default ({ namespace, primary, data_item, it }: OnAction) => {
 				break
 			case 'Form.delete':
 				total.push({ task: formDelete({ namespace, primary, data_item }), ...flow_info })
+				break
+			case 'Form.fullscreen':
+				total.push({ task: formFullscreen({ namespace }), ...flow_info })
 				break
 			default:
 				if (type.startsWith('Service.')) total.push({ task: Service({ action: item }), ...flow_info })

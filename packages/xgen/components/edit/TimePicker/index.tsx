@@ -40,7 +40,14 @@ const CustomRangePicker = window.$app.memo((props: TimeRangePickerProps) => {
 		setValue(v)
 	}
 
-	return <RangePicker {...props} value={value} onChange={onChange}></RangePicker>
+	return (
+		<RangePicker
+			{...props}
+			value={value}
+			getPopupContainer={(node) => node.parentNode as HTMLElement}
+			onChange={onChange}
+		></RangePicker>
+	)
 })
 
 const CustomTimePicker = window.$app.memo((props: TimePickerProps) => {

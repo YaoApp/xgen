@@ -43,6 +43,7 @@ const Custom = window.$app.memo((props: ColorPickerProps & ICustom) => {
 			className={clsx(['relative', props.disabled ? 'disabled' : ''])}
 			overlayClassName={styles._local}
 			trigger='click'
+			getPopupContainer={(node) => node.parentNode as HTMLElement}
 			content={
 				<ColorPicker
 					width={240}
