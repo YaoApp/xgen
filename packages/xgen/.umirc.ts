@@ -5,7 +5,6 @@ import { base, chainWebpack, conventionRoutes, links, metas, proxy, srcTranspile
 export default defineConfig({
 	mfsu: { esbuild: false, strategy: 'eager' },
 	monorepoRedirect: { srcDir: ['./'] },
-	// @ts-ignore
 	srcTranspiler: 'swc',
 	srcTranspilerOptions,
 	jsMinifier: 'swc',

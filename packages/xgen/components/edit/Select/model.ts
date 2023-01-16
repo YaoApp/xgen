@@ -17,7 +17,9 @@ export default class Index {
 
 		if (this.remote.raw_props.showSearch) {
 			target['filterOption'] = (input, option) =>
-				String(option?.children).toLowerCase().indexOf(input.toLowerCase()) >= 0
+				String(option?.label || option?.value)
+					.toLowerCase()
+					.indexOf(input.toLowerCase()) >= 0
 		}
 
 		if (this.remote.raw_props.xProps?.search) {
