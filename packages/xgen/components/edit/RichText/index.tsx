@@ -1,7 +1,10 @@
+import { useFullscreen } from 'ahooks'
+import { Button, Tooltip } from 'antd'
 import clsx from 'clsx'
 import { useEffect, useRef } from 'react'
 
 import { Item } from '@/components'
+import { Icon } from '@/widgets'
 import EditorJS from '@editorjs/editorjs'
 
 import { getI18N, getTools } from './editor_config'
@@ -24,6 +27,7 @@ interface IProps extends Component.PropsEditComponent, ICustom {}
 const Custom = window.$app.memo((props: ICustom) => {
 	const container = useRef<HTMLDivElement>(null)
 	const editor = useRef<EditorJS>()
+	const [is_fullscreen, { toggleFullscreen }] = useFullscreen(container)
 
 	useEffect(() => {
 		if (!container.current) return
@@ -55,10 +59,25 @@ const Custom = window.$app.memo((props: ICustom) => {
 
 	return (
 		<div
-			className={clsx([styles._local, 'w_100 border_box'])}
+			className={clsx([styles._local, is_fullscreen && styles.fullscreen, 'w_100 border_box relative'])}
 			ref={container}
 			style={{ maxHeight: props?.maxHeight || 600 }}
-		></div>
+		>
+			<Tooltip
+				title={`${is_fullscreen ? '退出' : '进入'}全屏`}
+				placement='left'
+				getPopupContainer={(node) => node.parentNode as HTMLElement}
+			>
+				<Button
+					className='btn_fullsceen none justify_center align_center absolute'
+					shape='circle'
+					size='small'
+					onClick={toggleFullscreen}
+				>
+					<Icon name={`icon-${is_fullscreen ? 'minimize' : 'maximize'}-2`} size={12}></Icon>
+				</Button>
+			</Tooltip>
+		</div>
 	)
 })
 

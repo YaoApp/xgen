@@ -2,7 +2,32 @@
 	padding: 42px 60px;
 	overflow-y: scroll;
 
+	&:hover {
+		:global {
+			.btn_fullsceen {
+				display: flex;
+			}
+		}
+	}
+
+	&.fullscreen {
+		max-height: 100vh !important;
+		overflow: scroll;
+		background-color: var(--color_bg_nav);
+	}
+
 	:global {
+		.btn_fullsceen {
+			z-index: 10;
+			top: 18px;
+			right: 18px;
+			border: 1px solid var(--color_border);
+
+			i {
+				margin-right: 0;
+			}
+		}
+
 		.codex-editor {
 			.ce-block__content,
 			.ce-toolbar__content {
