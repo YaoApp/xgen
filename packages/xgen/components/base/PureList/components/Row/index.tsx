@@ -7,7 +7,7 @@ const Index = (props: IPropsRow) => {
 	const { setting, showLabel, hasChildren, dataItem, parentIds, fold, onAction, onChange } = props
 
 	return (
-		<div className='w_100 flex align_start' style={{ marginBottom: 12 }}>
+		<div className='w_100 flex align_start'>
 			<Fields {...{ setting, showLabel, hasChildren, dataItem, parentIds, onChange }}></Fields>
 			<Actions
 				{...{ hasChildren, parentIds, fold, onAction }}

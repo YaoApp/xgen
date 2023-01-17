@@ -2,6 +2,7 @@
 	background-color: var(--color_bg_nav);
 	padding: 30px 0;
 	border-radius: var(--radius);
+      margin-bottom: 12px;
 
 	.empty {
 		margin-bottom: 15px;

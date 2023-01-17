@@ -62,7 +62,7 @@ const Index = (props: IProps) => {
 	const { __bind, __name, itemProps, ...rest_props } = props
 
 	return (
-		<Item className={styles._local} {...itemProps} {...{ __bind, __name }}>
+		<Item className={styles._local} {...itemProps} {...{ __bind, __name }} style={{ marginBottom: 4 }}>
 			<Custom {...rest_props}></Custom>
 		</Item>
 	)
