@@ -65,6 +65,7 @@ export declare namespace Action {
 		divideLine?: boolean
 		showWhenAdd?: boolean
 		showWhenView?: boolean
+		hideWhenEdit?: boolean
 		disabled?: {
 			bind: string
 			value: string | Array<string>
