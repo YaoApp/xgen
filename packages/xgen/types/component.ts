@@ -53,8 +53,14 @@ export declare namespace Component {
 	interface Option {
 		label: string
 		value: string
+      }
+      
+      interface TagOption{
+            label: string
+		value: string
 		color?: string
-	}
+		textColor?: string
+      }
 
 	type Options = Array<Option>
 }

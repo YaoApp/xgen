@@ -16,24 +16,27 @@ export interface IProps extends Remote.IProps, TagProps, Component.PropsViewComp
 	options?: Component.Options
 	pure?: boolean
 	useValue?: boolean
+	color?: string
+	textColor?: string
 }
 
 interface IPropsCommonTag {
 	pure: IProps['pure']
 	margin?: boolean
-	item: Component.Option | undefined
+	item: Component.TagOption | undefined
 }
 
 const CommonTag = window.$app.memo(({ pure, margin, item }: IPropsCommonTag) => {
-	if (!item) return <span className='edit_text'>-</span>
-	if (pure) return <span className='edit_text'>{item.label}</span>
+	if (!item) return <span>-</span>
+	if (pure) return <span>{item.label}</span>
 
 	const style: React.CSSProperties = {}
 
 	if (margin) style['marginRight'] = 4
+	if (item.textColor) style['color'] = item.textColor
 
 	return (
-		<Tag className={clsx([styles._local, 'edit_text'])} color={item.color} style={style}>
+		<Tag className={styles._local} color={item.color} style={style}>
 			{item.label}
 		</Tag>
 	)
@@ -48,15 +51,18 @@ const Index = (props: IProps) => {
 		x.remote.init()
 	}, [])
 
-	if (!x.remote.options.length) return null
-
 	if (typeof props.__value === 'string') {
-		return <CommonTag pure={props.pure} item={x.item}></CommonTag>
+		return (
+			<CommonTag
+				pure={props.pure}
+				item={x.item || { label: props.__value, color: props.color, textColor: props.textColor }}
+			></CommonTag>
+		)
 	}
 
 	if (Array.isArray(props.__value) && props.__value.length) {
 		return (
-			<div className='edit_text flex'>
+			<div className='flex'>
 				{props.__value.map((item, index) => {
 					return (
 						<CommonTag
@@ -71,7 +77,7 @@ const Index = (props: IProps) => {
 		)
 	}
 
-	return <span className='edit_text'>-</span>
+	return <span>-</span>
 }
 
 export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

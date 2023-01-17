@@ -30,7 +30,7 @@ const Index = (props: IPropsComponentCommon) => {
 						form_value: getDeepValue(field_detail.bind, data_item)
 				  },
 		[field_detail, data_item]
-      )
+	)
 
 	const props_edit_component: Component.PropsEditComponent = {
 		...field_detail.edit.props,
@@ -59,7 +59,7 @@ const Index = (props: IPropsComponentCommon) => {
 			initialValues={{ [form_bind!]: form_value }}
 			onFinish={onFinish}
 		>
-                  <X type='edit' name={ field_detail.edit.type } props={ props_edit_component }></X>
+			<X type='edit' name={field_detail.edit.type} props={props_edit_component}></X>
 			<Button
 				className='ml_12'
 				type='primary'
@@ -70,7 +70,7 @@ const Index = (props: IPropsComponentCommon) => {
 	)
 
 	const view_content = (
-		<div className='edit_text line_clamp_2'>
+		<div className={clsx(['line_clamp_2', field_detail?.edit?.type && 'edit_text'])}>
 			<ViewContent {...{ namespace, primary, field_detail, data_item }}></ViewContent>
 		</div>
 	)
