@@ -30,8 +30,6 @@ export declare namespace App {
 		name: string
 		/** Application description */
 		description?: string
-		/** runtime mode, note: may affect user experience! */
-		mode?: 'development' | 'production'
 		/** api prefix, default is __yao */
 		apiPrefix?: string
 		/** brand logo, default is YAO */
@@ -55,7 +53,10 @@ export declare namespace App {
 			/** way of token storage */
 			storage: 'sessionStorage' | 'localStorage'
 		}
-		optional?: {}
+		optional?: {
+			/** remote api cache, default is true */
+			remoteCache?: boolean
+		}
 	}
 
 	interface User {

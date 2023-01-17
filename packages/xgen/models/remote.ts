@@ -22,7 +22,7 @@ export default class Index {
 		if (!remote) return
 
 		const params = remote.params!
-		const is_prod = store.get('__mode') === 'production'
+		const is_prod = store.get('remote_cache') === 'production'
 		const session_key = `${remote.api}|${qs.stringify(params)}`
 
 		if (is_prod) {

@@ -34,10 +34,10 @@ const Index = (props: IPropsUserModalContent) => {
 						history.push(store.get('login_url') || '/')
 
 						const excludes = [
-							'__mode',
 							'__paths',
 							'avatar',
 							'xgen-theme',
+							'remote_cache',
 							'token_storage',
 							'temp_sid'
 						]

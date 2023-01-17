@@ -48,7 +48,7 @@ export default class GlobalModel {
 
 		window.$app.api_prefix = res.apiPrefix || '__yao'
 
-		store.set('__mode', res.mode || 'production')
+		store.set('remote_cache', res.optional?.remoteCache ?? true)
 		store.set('token_storage', res.token?.storage || 'sessionStorage')
 
 		return Promise.resolve()
