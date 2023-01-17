@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { nanoid } from 'nanoid/non-secure'
-import store from 'store2'
 import { injectable } from 'tsyringe'
 
 import { catchError } from '@/knife'
+import { local } from '@yaoapp/storex'
 
 import type { Response } from '@/types'
 
@@ -15,7 +15,7 @@ export default class Index {
 		const lang = window.navigator.language.toLowerCase()
 		const time = new Date().toLocaleString().replaceAll('/', '-')
 
-		store.set('temp_sid', sid)
+		local.temp_sid = sid
 
 		return axios.post<{}, Response<Res>>(`/api/__yao/app/setting`, { sid, lang, time })
 	}

@@ -1,9 +1,9 @@
 import { makeAutoObservable } from 'mobx'
 import qs from 'query-string'
-import store from 'store2'
 import { injectable } from 'tsyringe'
 
 import { Remote } from '@/services'
+import { local, session } from '@yaoapp/storex'
 
 import type { Component, Global } from '@/types'
 
@@ -22,11 +22,10 @@ export default class Index {
 		if (!remote) return
 
 		const params = remote.params!
-		const is_prod = store.get('remote_cache') === 'production'
 		const session_key = `${remote.api}|${qs.stringify(params)}`
 
-		if (is_prod) {
-			const session_cache = store.session.get(session_key)
+		if (local.remote_cache) {
+			const session_cache = session.getItem(session_key)
 
 			if (session_cache) return (this.options = session_cache)
 		}
@@ -35,7 +34,7 @@ export default class Index {
 
 		if (err) return
 
-		if (is_prod) store.session.set(session_key, res)
+		if (local.remote_cache) session.setItem(session_key, res)
 
 		this.options = res
 	}

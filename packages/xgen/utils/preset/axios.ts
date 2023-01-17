@@ -1,10 +1,10 @@
 import { message } from 'antd'
 import axios from 'axios'
-import store from 'store2'
 
 import { getToken } from '@/knife'
 import { getPath } from '@/utils'
 import { history } from '@umijs/max'
+import { local } from '@yaoapp/storex'
 
 axios.interceptors.request.use((config) => {
 	return {
@@ -37,7 +37,7 @@ axios.interceptors.response.use(
 				return Promise.reject(error)
 			}
 
-			history.push(store.get('login_url') || '/')
+			history.push(local.login_url || '/')
 		}
 
 		return Promise.reject(error)

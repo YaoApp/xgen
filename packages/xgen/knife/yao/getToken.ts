@@ -1,8 +1,8 @@
-import store from 'store2'
+import { local, session } from '@yaoapp/storex'
 
 const Index = () => {
-	const is_session_token = store.get('token_storage') === 'sessionStorage'
-	const token = is_session_token ? store.session.get('token') : store.local.get('token')
+	const is_session_token = local.token_storage === 'sessionStorage'
+	const token = is_session_token ? session.token : local.token
 
 	return `Bearer ${token}` || ''
 }

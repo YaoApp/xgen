@@ -1,13 +1,30 @@
+import { useMemoizedFn } from 'ahooks'
 import { Button, Tooltip } from 'antd'
-import store from 'store2'
+import { difference } from 'lodash-es'
 
 import { Icon } from '@/widgets'
 import { history } from '@umijs/max'
+import { local } from '@yaoapp/storex'
 
 import type { IPropsUserModalContent } from '@/layouts/types'
 
 const Index = (props: IPropsUserModalContent) => {
 	const { user, locale_messages, Avatar, setAvatar } = props
+
+	const clearStorage = useMemoizedFn(() => {
+		history.push(local.login_url || '/')
+
+		const excludes = ['paths', 'avatar', 'xgen_theme', 'remote_cache', 'token_storage', 'temp_sid']
+		const all = []
+
+		for (let index = 0; index < localStorage.length; index++) {
+			all.push(localStorage.key(index)!)
+		}
+
+		difference(all, excludes).map((item) => local.removeItem(item))
+
+		sessionStorage.clear()
+	})
 
 	return (
 		<div className='user_wrap flex flex_column relative'>
@@ -30,24 +47,7 @@ const Index = (props: IPropsUserModalContent) => {
 				<Button
 					className='btn_logout w_100 flex justify_center align_center'
 					type='primary'
-					onClick={() => {
-						history.push(store.get('login_url') || '/')
-
-						const excludes = [
-							'__paths',
-							'avatar',
-							'xgen-theme',
-							'remote_cache',
-							'token_storage',
-							'temp_sid'
-						]
-
-						store.each((key) => {
-							if (!excludes.includes(key)) store.remove(key)
-						})
-
-						store.session.clear()
-					}}
+					onClick={clearStorage}
 				>
 					<Icon name='icon-log-out' size={15} color='white'></Icon>
 					<span className='text'>{locale_messages.layout.logout}</span>

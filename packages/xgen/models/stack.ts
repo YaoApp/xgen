@@ -1,7 +1,8 @@
 import { findLastIndex } from 'lodash-es'
 import { makeAutoObservable } from 'mobx'
-import store from 'store2'
 import { singleton } from 'tsyringe'
+
+import { local } from '@yaoapp/storex'
 
 @singleton()
 export default class Index {
@@ -34,7 +35,7 @@ export default class Index {
 	}
 
 	sync() {
-		store.set('__paths', this.paths)
+		local.paths = this.paths
 	}
 
 	on() {

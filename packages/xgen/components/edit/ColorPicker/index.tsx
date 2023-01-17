@@ -53,7 +53,7 @@ const Custom = window.$app.memo((props: ColorPickerProps & ICustom) => {
 					hideHSV
 					alpha
 					onChange={(v) => onChange(v)}
-					dark={localStorage.getItem('xgen-theme') === `"dark"`}
+					dark={localStorage.getItem('xgen_theme') === `"dark"`}
 				></ColorPicker>
 			}
 		>

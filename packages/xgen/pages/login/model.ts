@@ -1,12 +1,12 @@
 import { message } from 'antd'
 import { findIndex } from 'lodash-es'
 import { makeAutoObservable } from 'mobx'
-import store from 'store2'
 import { injectable } from 'tsyringe'
 
 import { GlobalModel } from '@/context/app'
 import { getPath, reg_email, reg_mobile } from '@/utils'
 import { history } from '@umijs/max'
+import { local, session } from '@yaoapp/storex'
 
 import Service from './services'
 
@@ -66,20 +66,20 @@ export default class Model {
 		this.global.in_setting = false
 
 		if (this.global.app_info.token?.storage === 'localStorage') {
-			store.local.set('token', res.token)
+			local.token = res.token
 
-			if (res.studio) store.local.set('studio', res.studio)
+			if (res.studio) local.studio = res.studio
 		} else {
-			store.session.set('token', res.token)
+			session.token = res.token
 
-			if (res.studio) store.session.set('studio', res.studio)
+			if (res.studio) session.studio = res.studio
 		}
 
-		store.set('user', res.user)
-		store.set('menus', this.global.menus)
-		store.set('menu', this.global.menu)
-		store.set('current_nav', current_nav)
-		store.set('login_url', getPath(history.location.pathname))
+		local.user = res.user
+		local.menus = this.global.menus
+		local.menu = this.global.menu
+		local.current_nav = current_nav
+		local.login_url = getPath(history.location.pathname)
 
 		await window.$app.sleep(600)
 
@@ -109,7 +109,7 @@ export default class Model {
 				id: this.captcha.id,
 				code
 			},
-			sid: store.get('temp_sid'),
+			sid: local.temp_sid,
 			...(this.is ? { is: this.is } : {})
 		})
 	}

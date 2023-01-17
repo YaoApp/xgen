@@ -1,12 +1,12 @@
 import { ConfigProvider } from 'antd'
 import { makeAutoObservable, reaction, toJS } from 'mobx'
 import { genConfig } from 'react-nice-avatar'
-import store from 'store2'
 import { singleton } from 'tsyringe'
 
 import { Stack } from '@/models'
 import Service from '@/services/app'
 import { getCurrentMenuIndexs } from '@/utils'
+import { local } from '@yaoapp/storex'
 
 import type { AvatarFullConfig } from 'react-nice-avatar'
 
@@ -18,20 +18,20 @@ export default class GlobalModel {
 	avatar = {} as AvatarFullConfig
 	locale_messages = {} as LocaleMessages
 	app_info = {} as App.Info
-	user = (store.get('user') || {}) as App.User
-	menus = (store.get('menus') || { items: [], setting: {} }) as App.Menus
-	menu = (store.get('menu') || []) as Array<App.Menu>
-	in_setting = (store.get('in_setting') || false) as boolean
-	current_nav: number = store.get('current_nav') || 0
-	menu_key_path = (store.get('menu_key_path') || []) as Array<string>
+	user = (local.user || {}) as App.User
+	menus = (local.menus || { items: [], setting: {} }) as App.Menus
+	menu = (local.menu || []) as Array<App.Menu>
+	in_setting = (local.in_setting || false) as boolean
+	current_nav: number = local.current_nav || 0
+	menu_key_path = (local.menu_key_path || []) as Array<string>
 	loading: boolean = false
 	visible_menu: boolean = true
 
 	constructor(private service: Service, public stack: Stack) {
 		makeAutoObservable(this, {}, { autoBind: true })
 
-		const theme = (store.get('xgen-theme') || 'light') as App.Theme
-		const avatar = store.get('avatar') as AvatarFullConfig
+		const theme = (local.xgen_theme || 'light') as App.Theme
+		const avatar = local.avatar as AvatarFullConfig
 
 		this.reactions()
 		this.getAppInfo()
@@ -48,8 +48,8 @@ export default class GlobalModel {
 
 		window.$app.api_prefix = res.apiPrefix || '__yao'
 
-		store.set('remote_cache', res.optional?.remoteCache ?? true)
-		store.set('token_storage', res.token?.storage || 'sessionStorage')
+		local.remote_cache = res.optional?.remoteCache ?? true
+		local.token_storage = res.token?.storage || 'sessionStorage'
 
 		return Promise.resolve()
 	}
@@ -57,13 +57,13 @@ export default class GlobalModel {
 	setAvatar(avatar?: AvatarFullConfig) {
 		this.avatar = avatar || genConfig()
 
-		store.set('avatar', this.avatar)
+		local.avatar = this.avatar
 	}
 
 	setTheme(theme: App.Theme) {
 		this.theme = theme
 
-		store.set('xgen-theme', theme)
+		local.xgen_theme = theme
 		document.documentElement.setAttribute('data-theme', theme)
 		document.documentElement.style.colorScheme = theme
 
@@ -93,20 +93,20 @@ export default class GlobalModel {
 			(v) => {
 				this.menu = v ? this.menus.setting : this.menus.items
 
-				store.set('in_setting', v)
+				local.in_setting = v
 			}
 		)
 		reaction(
 			() => this.menu,
-			(v) => store.set('menu', v)
+			(v) => (local.menu = v)
 		)
 		reaction(
 			() => this.current_nav,
-			(v) => store.set('current_nav', v)
+			(v) => (local.current_nav = v)
 		)
 		reaction(
 			() => this.menu_key_path,
-			(v) => store.set('menu_key_path', v)
+			(v) => (local.menu_key_path = v)
 		)
 	}
 
