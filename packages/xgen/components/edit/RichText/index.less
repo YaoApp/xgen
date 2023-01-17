@@ -13,7 +13,18 @@
 	&.fullscreen {
 		max-height: 100vh !important;
 		overflow: scroll;
-		background-color: var(--color_bg_nav);
+		background-color: var(--color_bg);
+
+		:global {
+			.codex-editor {
+				max-width: 900px;
+				min-height: calc(100vh - 42px * 2 - 40px);
+				margin: 0 auto;
+                        padding:40px 48px;
+                        border-radius: var(--radius);
+				background-color: var(--color_bg_nav);
+			}
+		}
 	}
 
 	:global {
@@ -27,6 +38,25 @@
 				margin-right: 0;
 			}
 		}
+
+            .tips{
+                  height: 20px;
+                  margin-bottom: 20px;
+                  color: var(--color_text_grey);
+
+                  .key{
+                        font-size: 12px;
+                        font-weight: bold;
+                        line-height: 1;
+                        padding: 1px 4px;
+                        margin: 0 4px;
+                        border: 1px solid var(--color_border);
+                        border-bottom: 2px solid var(--color_border);
+                        border-radius: var(--radius);
+                        background-color: var(--color_bg_menu);
+                        box-shadow: var(--shadow);
+                  }
+            }
 
 		.codex-editor {
 			.ce-block__content,

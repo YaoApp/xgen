@@ -63,6 +63,9 @@ const Custom = window.$app.memo((props: ICustom) => {
 			ref={container}
 			style={{ maxHeight: props?.maxHeight || 600 }}
 		>
+			<div className='tips w_100 text_center'>
+				使用<span className='key'>Tab</span>快捷键可唤出选项列表
+			</div>
 			<Tooltip
 				title={`${is_fullscreen ? '退出' : '进入'}全屏`}
 				placement='left'
