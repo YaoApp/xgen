@@ -17,7 +17,7 @@ const Index = (props: IPropsActions) => {
 	const getDisabled = useActionDisabled()
 	const onAction = useAction()
 
-	const _actions = useMemo(() => getTemplateValue(actions, data_item), [actions, data_item])
+      const _actions = useMemo(() => getTemplateValue(actions, data_item), [ actions, data_item ])
 
 	return (
 		<div className={clsx([styles._local, 'flex justify_end'])}>
