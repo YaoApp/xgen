@@ -64,9 +64,6 @@ local.test = function() {
 local.test() === 'Hello @yaoapp/storex!'; // true
 ```
 
-`test` is the key in localStorage. The value is also saved to localStorage.
-The `local`, `session` also have the same methods and properties: `key()`, `getItem()`, `setItem()`, `removeItem()`, `clear()` and `length`.
-
 ### Subscribe
 
 listen to the changes.
