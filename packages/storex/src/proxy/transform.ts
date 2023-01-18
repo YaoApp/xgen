@@ -77,7 +77,9 @@ const StorageSerializers: Record<
 	}
 }
 
-export function decode(data: string, expiredFunc: Function): any {
+export function decode(data: string | null, expiredFunc?: Function): any {
+	if (!data) return
+
 	let originalData: string | TargetObject = data
 	try {
 		originalData = transformJSON(data)
@@ -88,7 +90,7 @@ export function decode(data: string, expiredFunc: Function): any {
 	}
 
 	if (originalData.expires && new Date(+originalData.expires).getTime() <= Date.now()) {
-		expiredFunc()
+		expiredFunc?.()
 		return undefined
 	}
 

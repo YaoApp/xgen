@@ -18,6 +18,7 @@ function createInstrumentations(target: object, receiver: any) {
 		setExpires,
 		removeExpires
 	}
+
 	Object.keys(needReceiverFuncMap).forEach((key) => {
 		instrumentations[key] = function (...args: unknown[]) {
 			return needReceiverFuncMap[key](target, ...args, receiver)
@@ -52,6 +53,7 @@ function get(target: object, property: string, receiver: any) {
 	if (!instrumentations) {
 		instrumentations = createInstrumentations(target, receiver)
 	}
+
 	if (hasOwn(instrumentations, property)) {
 		return Reflect.get(instrumentations, property, receiver)
 	}
@@ -62,9 +64,8 @@ function get(target: object, property: string, receiver: any) {
 
 	const key = `${prefix}${property}`
 	const value = target[key] || target[property]
-	if (!value) {
-		return value
-	}
+
+	if (!value) return value
 
 	return decode(value, createExpiredFunc(target, key))
 }
@@ -99,16 +100,12 @@ function deleteProperty(target: object, property: string) {
 }
 
 export function createProxyStorage(storage: StorageLike) {
-	if (!storage) {
-		return null
-	}
+	if (!storage) return null
 
-	const proxy = new Proxy(storage, {
+	return new Proxy(storage, {
 		get,
 		set,
 		has,
 		deleteProperty
 	})
-
-	return proxy
 }

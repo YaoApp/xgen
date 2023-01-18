@@ -1,10 +1,12 @@
 import { emit } from './extends/watch'
 import { createProxyStorage } from './proxy/storage'
-import { decode } from './proxy/transform'
+import { decode, encode } from './proxy/transform'
 import { createExpiredFunc, prefix, proxyMap, StorageValue } from './shared'
 import { isObject } from './utils'
 
 export { setPrefix } from './shared'
+export { encode, decode }
+
 export const local: any = createProxyStorage(localStorage)
 export const session: any = createProxyStorage(sessionStorage)
 

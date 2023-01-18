@@ -1,9 +1,8 @@
 import { makeAutoObservable } from 'mobx'
-import qs from 'query-string'
 import { injectable } from 'tsyringe'
 
 import { Remote } from '@/services'
-import { local, session } from '@yaoapp/storex'
+import { decode, encode, local } from '@yaoapp/storex'
 
 import type { Component, Global } from '@/types'
 
@@ -22,10 +21,10 @@ export default class Index {
 		if (!remote) return
 
 		const params = remote.params!
-		const session_key = `${remote.api}|${qs.stringify(params)}`
+		const session_key = `${remote.api}|${new URLSearchParams(params).toString()}`
 
 		if (local.remote_cache) {
-			const session_cache = session.getItem(session_key)
+			const session_cache: any = decode(sessionStorage.getItem(session_key))
 
 			if (session_cache) return (this.options = session_cache)
 		}
@@ -34,7 +33,7 @@ export default class Index {
 
 		if (err) return
 
-		if (local.remote_cache) session.setItem(session_key, res)
+		if (local.remote_cache) sessionStorage.setItem(session_key, encode(res))
 
 		this.options = res
 	}

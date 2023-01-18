@@ -40,6 +40,9 @@ export declare namespace FormType {
 		}
 		actions?: Array<Action.Props>
 		form: {
+			props: {
+				onLoadSync?: boolean
+			}
 			sections: Array<Section>
 		}
 		fields: {

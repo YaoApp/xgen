@@ -14,7 +14,7 @@ const Index = (props: IPropsFormItem) => {
 		const disabled = item.edit.props?.disabled
 
 		if (typeof disabled === 'undefined') return {}
-		if (typeof disabled === 'string') return { disabled: disabled === 'true' }
+		if (typeof disabled === 'string') return { disabled: disabled === 'true' || disabled === '1' }
 
 		return { disabled }
 	}, [type, item.edit.props?.disabled])

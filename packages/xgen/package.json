@@ -61,7 +61,6 @@
             "mustache": "^4.2.0",
             "nanoid": "^4.0.0",
             "phosphor-react": "^1.4.1",
-            "query-string": "^7.1.3",
             "react": "^18.2.0",
             "react-activation": "^0.12.2",
             "react-color-palette": "^6.2.0",

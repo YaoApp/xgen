@@ -2,9 +2,8 @@ import { useMemoizedFn } from 'ahooks'
 import { message, Select } from 'antd'
 import clsx from 'clsx'
 import { find } from 'lodash-es'
-import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { Fragment, useLayoutEffect, useMemo, useState } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { container } from 'tsyringe'
 
 import { Item } from '@/components'
@@ -14,13 +13,45 @@ import { Extend } from './components'
 import styles from './index.less'
 import Model from './model'
 
-import type { IProps } from './types'
+import type { IProps, ICustom } from './types'
 import type { SelectProps } from 'antd'
 
-const Index = (props: IProps) => {
-	const { __bind, __name, itemProps, xProps, extend, ...rest_props } = props
-	const [x] = useState(() => container.resolve(Model))
+const Custom = window.$app.memo((props: ICustom) => {
+	const { __name, value: __value, xProps, ...rest_props } = props
+	const [value, setValue] = useState<SelectProps['value']>()
 	const is_cn = getLocale() === 'zh-CN'
+
+	useEffect(() => {
+		if (!__value) return
+
+		setValue(__value)
+	}, [props.mode, __value])
+
+	const onChange: SelectProps['onChange'] = (v) => {
+		if (!props.onChange) return
+
+		// @ts-ignore
+		props.onChange(v)
+
+		setValue(v)
+	}
+
+	return (
+		<Select
+			className={clsx([styles._local, props.mode === 'multiple' && styles.multiple])}
+			popupClassName={styles._dropdown}
+			placeholder={`${is_cn ? '请选择' : 'Please select '}${__name}`}
+			getPopupContainer={(node) => node.parentNode}
+			value={value}
+			onChange={onChange}
+			{...rest_props}
+		></Select>
+	)
+})
+
+const Index = (props: IProps) => {
+	const { __bind, __name, itemProps, extend, ...rest_props } = props
+	const [x] = useState(() => container.resolve(Model))
 
 	useLayoutEffect(() => {
 		x.remote.raw_props = props
@@ -50,16 +81,13 @@ const Index = (props: IProps) => {
 
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
-			<Select
-				className={clsx([styles._local, rest_props.mode === 'multiple' && styles.multiple])}
-				popupClassName={styles._dropdown}
-				placeholder={`${is_cn ? '请输入' : 'Please input '}${__name}`}
-				options={toJS(x.options)}
-				getPopupContainer={(node) => node.parentNode}
-				{...extra_props}
+			<Custom
 				{...rest_props}
+				{...extra_props}
 				{...x.target_props}
-			></Select>
+				__name={__name}
+				options={x.options}
+			></Custom>
 		</Item>
 	)
 }
