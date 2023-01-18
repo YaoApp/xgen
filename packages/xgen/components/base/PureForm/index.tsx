@@ -25,6 +25,7 @@ const Index = (props: IPropsPureForm) => {
 		hooks,
 		title,
 		disabledActionsAffix,
+		onLoadSync,
 		setData,
 		setSetting,
 		onSave
@@ -48,7 +49,12 @@ const Index = (props: IPropsPureForm) => {
 
 	useLayoutEffect(() => {
 		setFieldsValue(data)
-	}, [data])
+
+		if (!Object.keys(data).length) return
+		if (!onLoadSync) return
+
+		Object.keys(data).map((key) => onValuesChange({ [key]: data[key] }))
+	}, [data, onLoadSync])
 
 	useLayoutEffect(() => {
 		window.$app.Event.on(`${namespace}/submit`, submit)

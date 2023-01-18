@@ -88,6 +88,7 @@ const Index = (props: Component.FormComponent) => {
 		hooks,
 		title,
 		disabledActionsAffix: parent === 'Dashboard',
+		onLoadSync: x.setting.form?.props?.onLoadSync,
 		setData,
 		setSetting,
 		onSave
