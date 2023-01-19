@@ -1,11 +1,15 @@
 export declare namespace Common {
 	interface Config {
 		full?: boolean
-      }
+	}
 
 	interface BaseColumn {
 		name: string
 		width?: number
+	}
+
+	interface TableBaseColumn extends BaseColumn {
+		fixed?: boolean
 	}
 
 	interface WideColumn {
@@ -37,9 +41,9 @@ export declare namespace Common {
 
 	interface Fields {
 		[key: string]: FieldDetail
-      }
-      
-      interface ViewFields {
+	}
+
+	interface ViewFields {
 		[key: string]: ViewFieldDetail
 	}
 
@@ -48,6 +52,6 @@ export declare namespace Common {
 	}
 
 	interface Column extends BaseColumn, FieldDetail {}
-
+	interface TableColumn extends TableBaseColumn, FieldDetail {}
 	interface EditColumn extends BaseColumn, EditFieldDetail {}
 }

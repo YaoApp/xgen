@@ -9,10 +9,11 @@ export default (
 	primary: IPropsPureTable['primary'],
 	columns: IPropsPureTable['columns']
 ) => {
-	const handleColumn = (total: Array<TableColumn>, raw_col_item: Common.Column) => {
+	const handleColumn = (total: Array<TableColumn>, raw_col_item: Common.TableColumn) => {
 		const target_col_item: TableColumn = {}
 
 		if (raw_col_item?.width) target_col_item['width'] = raw_col_item.width
+		if (raw_col_item?.fixed) target_col_item['fixed'] = raw_col_item.fixed
 
 		target_col_item['dataIndex'] = raw_col_item.bind
 		target_col_item['title'] = raw_col_item.name

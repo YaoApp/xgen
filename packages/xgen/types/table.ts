@@ -42,7 +42,7 @@ export declare namespace TableType {
 		filter: Filter
 		table: {
 			props?: TableProps<any>
-			columns: Array<Common.BaseColumn>
+			columns: Array<Common.TableBaseColumn>
 			operation: {
 				width?: number
 				hide?: boolean

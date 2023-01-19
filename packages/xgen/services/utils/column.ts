@@ -14,7 +14,7 @@ export class ColumnUtils {
 		return target_item
 	}
 
-	private handleTableColumn(item: Common.BaseColumn, fields: Common.Fields) {
+	private handleTableColumn(item: Common.TableColumn, fields: Common.Fields) {
 		const target_item = this.handleAnyColumn(item, fields)
 
 		if (target_item.view?.components) {
@@ -87,12 +87,12 @@ export class ColumnUtils {
 		}
 
 		return columns.reduce((total: Array<Dashboard.TargetColumn>, item) => {
-                  if ('rows' in item) {
+			if ('rows' in item) {
 				total.push({
 					width: item.width,
 					rows: item.rows.reduce(getColumns, [])
 				})
-                  } else {
+			} else {
 				total.push(this.handleAnyColumn(item, fields))
 			}
 
