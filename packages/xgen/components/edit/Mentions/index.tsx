@@ -26,7 +26,7 @@ const Index = (props: IProps) => {
 		x.remote.raw_props = props
 
 		x.remote.init()
-	}, [])
+	}, [props])
 
 	return (
 		<Fragment>

@@ -57,7 +57,7 @@ const Index = (props: IProps) => {
 		x.remote.raw_props = props
 
 		x.remote.init()
-	}, [])
+	}, [props])
 
 	const addOptionItem = useMemoizedFn((label, value) => {
 		if (find(x.options, (item) => item.label === label || item.value === value))

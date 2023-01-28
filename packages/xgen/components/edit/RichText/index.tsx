@@ -1,7 +1,7 @@
 import { useFullscreen } from 'ahooks'
 import { Button, Tooltip } from 'antd'
 import clsx from 'clsx'
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 
 import { Item } from '@/components'
 import { Icon } from '@/widgets'
@@ -29,7 +29,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 	const editor = useRef<EditorJS>()
 	const [is_fullscreen, { toggleFullscreen }] = useFullscreen(container)
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!container.current) return
 
 		editor.current = new EditorJS({
@@ -55,7 +55,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 		})
 
 		return () => editor.current?.destroy?.()
-	}, [])
+	}, [props])
 
 	return (
 		<div

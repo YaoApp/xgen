@@ -22,7 +22,7 @@ const Index = (props: IProps) => {
 		x.remote.raw_props = props
 
 		x.remote.init()
-	}, [])
+	}, [props])
 
 	return (
 		<Item className={styles._local} {...itemProps} {...{ __bind, __name }}>
