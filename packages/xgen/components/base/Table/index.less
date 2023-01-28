@@ -26,15 +26,15 @@
 ._local {
 	:global {
 		.xgen-table {
-                  ::-webkit-scrollbar-thumb {
-                        background-color: var(--color_border_light);
-                        border-radius: 12px;
-                  }
-      
-                  ::-webkit-scrollbar {
-                        width: unset;
-                        height: 9px;
-                  }
+			::-webkit-scrollbar-thumb {
+				background-color: var(--color_border_light);
+				border-radius: 12px;
+			}
+
+			::-webkit-scrollbar {
+				width: unset;
+				height: 9px;
+			}
 
 			.xgen-table-container {
 				table {
@@ -53,8 +53,8 @@
 						padding: 0 10px;
 						border: none;
 						font-size: 12px;
-                                    white-space: nowrap;
-                                    transition: none !important;
+						white-space: nowrap;
+						transition: none !important;
 
 						&:first-child {
 							padding-left: 20px;
@@ -100,7 +100,7 @@
 						height: 68px;
 						border: 1px solid transparent;
 						background-color: var(--color_bg_menu) !important;
-                                    transition: none !important;
+						transition: none !important;
 
 						&:first-child {
 							padding-left: 20px;
@@ -136,6 +136,106 @@
 		}
 	}
 
+	&.compact {
+		:global {
+			.xgen-table-container {
+				table {
+					border-spacing: 0;
+					border-collapse: initial;
+				}
+
+				.xgen-table-header {
+					transform: unset;
+				}
+
+				.xgen-table-thead {
+					background: rgba(var(--r), var(--g), var(--b), 6%);
+
+					tr {
+						th {
+							padding-top: 6px;
+							padding-bottom: 6px;
+							background-color: transparent;
+							color: var(--color_text);
+							border-top: 1px solid var(--color_main);
+
+							&:first-child {
+								padding-left: 12px;
+							}
+
+							&:last-child {
+								padding-right: 12px;
+							}
+						}
+					}
+				}
+
+				.xgen-table-tbody {
+					tr {
+						&:nth-of-type(2n + 1) {
+							td {
+								background-color: var(--color_bg_nav) !important;
+							}
+						}
+
+						&:last-child {
+							td {
+								border-bottom: none;
+
+								&:first-child {
+									border-bottom-left-radius: 6px;
+								}
+
+								&:last-child {
+									border-bottom-right-radius: 6px;
+								}
+							}
+						}
+
+						td {
+							padding: 6px;
+							height: unset;
+							border-bottom: 1px solid var(--color_border_light);
+
+							&:first-child,
+							&:last-child {
+								border-radius: 0;
+							}
+
+							&:first-child {
+								padding-left: 12px;
+							}
+
+							&:last-child {
+								padding-right: 8px;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	&.withTotalRow {
+		:global {
+			.xgen-table-container {
+				.xgen-table-tbody {
+					tr {
+						&:last-child {
+							td {
+								background: linear-gradient(
+									to bottom,
+									rgba(var(--r), var(--g), var(--b), 12%),
+									var(--color_bg_menu)
+								);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	&.in_form {
 		margin-bottom: 24px;
 		border-radius: 6px;
@@ -150,8 +250,8 @@
 							padding-bottom: 12px;
 							background-color: transparent !important;
 
-                                          &:last-child {
-                                                background-color: var(--color_bg_nav) !important;
+							&:last-child {
+								background-color: var(--color_bg_nav) !important;
 							}
 						}
 					}
@@ -171,7 +271,7 @@
 
 							&:last-child {
 								padding-right: 20px;
-                                                background-color: var(--color_bg_nav) !important;
+								background-color: var(--color_bg_nav) !important;
 							}
 						}
 					}

@@ -35,13 +35,18 @@ export declare namespace TableType {
 		}>
 	}
 
+	interface CustomTableProps {
+		customStyle?: 'compact'
+		withTotalRow?: boolean
+	}
+
 	interface Setting {
 		name: string
 		primary: string
 		header: Header
 		filter: Filter
 		table: {
-			props?: TableProps<any>
+			props?: TableProps<any> & CustomTableProps
 			columns: Array<Common.TableBaseColumn>
 			operation: {
 				width?: number

@@ -1,5 +1,6 @@
 import { useMemoizedFn } from 'ahooks'
 import { Table } from 'antd'
+import { useMemo } from 'react'
 
 import { getLocale } from '@umijs/max'
 
@@ -26,7 +27,7 @@ const Index = (props: IPropsPureTable) => {
 	} = props
 	const locale = getLocale()
 	const in_form = parent === 'Form'
-
+	const { customStyle, ...rest_table_props } = table_props || {}
 	const list_columns = useColumns(namespace, primary, columns, table_props?.scroll, operation)
 
 	const table_pagination: TablePaginationConfig = {
@@ -51,18 +52,24 @@ const Index = (props: IPropsPureTable) => {
 		window.$app.Event.emit(`${namespace}/search`, { page, pagesize })
 	})
 
+	const sticky = useMemo(() => {
+		if (in_form || hidePagination || parent === 'Dashboard') return false
+
+		return { offsetHeader: customStyle === 'compact' ? 60 : 52 }
+	}, [in_form, hidePagination, parent, customStyle])
+
 	return (
 		<Table
 			dataSource={list}
 			columns={list_columns}
-			sticky={in_form || hidePagination || parent === 'Dashboard' ? false : { offsetHeader: 52 }}
+			sticky={sticky}
 			pagination={hidePagination ? false : table_pagination}
 			rowSelection={batch.active ? row_selection : undefined}
 			rowKey={getRowKey}
-                  onChange={ onChange }
-                  //@ts-ignore
+			onChange={onChange}
+			//@ts-ignore
 			components={{ body: { cell: ({ onMouseEnter, onMouseLeave, ...rest }) => <td {...rest} /> } }}
-			{...table_props}
+			{...rest_table_props}
 		/>
 	)
 }

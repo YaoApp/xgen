@@ -28,10 +28,10 @@ export interface IProps extends Component.StackComponent {
 
 const Index = (props: IProps) => {
 	const { parent, model, search_params, query, data, namespace, hidePagination, onChangeEventName } = props
-      const [ x ] = useState(() => container.resolve(Model))
-      
+	const [x] = useState(() => container.resolve(Model))
+
 	useLayoutEffect(() => {
-		x.init(parent, model, query, data, namespace, search_params!,onChangeEventName)
+		x.init(parent, model, query, data, namespace, search_params!, onChangeEventName)
 
 		return () => {
 			x.off()
@@ -77,6 +77,10 @@ const Index = (props: IProps) => {
 		resetSearchParams
 	}
 
+	const custom_style = x.setting.table?.props?.customStyle
+	const compact_style = custom_style === 'compact' && styles.compact
+	const with_total_row = x.setting.table?.props?.withTotalRow && styles.withTotalRow
+
 	if (parent === 'Page') {
 		const props_custom_action: IPropsCustomAction = {
 			setting: toJS(x.setting),
@@ -90,7 +94,7 @@ const Index = (props: IProps) => {
 		return (
 			<Page
 				title={x.setting.name}
-				className={clsx([styles._local, 'w_100'])}
+				className={clsx([styles._local, compact_style, with_total_row, 'w_100'])}
 				customAction={<CustomAction {...props_custom_action}></CustomAction>}
 				full={x.setting?.config?.full}
 			>
@@ -102,7 +106,7 @@ const Index = (props: IProps) => {
 
 	if (parent === 'Dashboard') {
 		return (
-			<div className={clsx([styles._local, 'w_100 flex flex_column'])}>
+			<div className={clsx([styles._local, compact_style, with_total_row, 'w_100 flex flex_column'])}>
 				<Filter {...props_filter}></Filter>
 				<PureTable {...props_table}></PureTable>
 			</div>
@@ -110,7 +114,14 @@ const Index = (props: IProps) => {
 	}
 
 	return (
-		<div className={clsx([styles._local, x.parent === 'Form' ? styles.in_form : 'w_100'])}>
+		<div
+			className={clsx([
+				styles._local,
+				compact_style,
+				with_total_row,
+				x.parent === 'Form' ? styles.in_form : 'w_100'
+			])}
+		>
 			<PureTable {...props_table}></PureTable>
 		</div>
 	)
