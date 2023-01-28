@@ -1,12 +1,45 @@
-import { local } from '../src/index'
+import { decode, local, session } from '../src/index'
 
 describe('@yaoapp/storex', () => {
-	it('Can set, read and remove', () => {
+	it('Can local set, read and remove', () => {
 		expect(local.test).toBe(undefined)
+
 		local.test = 'Hello @yaoapp/storex'
+
 		expect(local.test).toBe('Hello @yaoapp/storex')
+		expect(local.test).toBe(decode(localStorage.getItem('test')))
+
 		delete local.test
+
 		expect(local.test).toBe(undefined)
+	})
+
+	it('Can session set, read and remove', () => {
+		expect(session.test).toBe(undefined)
+
+		session.test = 'Hello @yaoapp/storex'
+
+		expect(session.test).toBe('Hello @yaoapp/storex')
+		expect(session.test).toBe(decode(sessionStorage.getItem('test')))
+
+		delete session.test
+
+		expect(session.test).toBe(undefined)
+	})
+
+	it('Can session setItem', () => {
+		expect(session.test).toBe(undefined)
+
+		session.setItem('test', 'Hello @yaoapp/storex')
+
+		console.log('?????????: ', local.test)
+
+		// expect(session.test).toBe('Hello @yaoapp/storex')
+		expect(session.test).toBe(decode(sessionStorage.getItem('test')))
+
+		delete session.test
+
+		expect(session.test).toBe(undefined)
 	})
 
 	it('Number', () => {
