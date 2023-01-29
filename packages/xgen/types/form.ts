@@ -32,6 +32,18 @@ export declare namespace FormType {
 
 	type HookKeys = 'onChange'
 
+	interface Reference {
+		flatContent?: {
+			name: string
+			defaultOpen?: boolean
+			payload: Action.OpenModal
+		}
+		floatContents?: Array<{
+			name: string
+			payload: Omit<Action.OpenModal, 'width'>
+		}>
+	}
+
 	interface Setting {
 		name: string
 		primary: string
@@ -42,6 +54,7 @@ export declare namespace FormType {
 		form: {
 			props: {
 				onLoadSync?: boolean
+				reference?: Reference
 			}
 			sections: Array<Section>
 		}

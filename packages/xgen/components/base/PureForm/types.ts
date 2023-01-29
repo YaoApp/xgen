@@ -11,9 +11,9 @@ export interface IPropsPureForm {
 	sections: Model['sections']
 	actions: Model['setting']['actions']
 	hooks: Model['setting']['hooks']
-	title: string
+      title: string
+	props: Model['setting']['form']['props']
 	disabledActionsAffix?: boolean
-	onLoadSync?: Model['setting']['form']['props']['onLoadSync']
 	setData: (v: Global.AnyObject) => void
 	setSetting: (v: FormType.Setting) => void
 	onSave: (v: Global.AnyObject) => Promise<void>

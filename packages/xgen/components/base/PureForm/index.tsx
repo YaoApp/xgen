@@ -25,7 +25,7 @@ const Index = (props: IPropsPureForm) => {
 		hooks,
 		title,
 		disabledActionsAffix,
-		onLoadSync,
+		props: form_props,
 		setData,
 		setSetting,
 		onSave
@@ -33,6 +33,7 @@ const Index = (props: IPropsPureForm) => {
 	const [form] = useForm()
 	const { getFieldsValue, setFieldsValue, resetFields, validateFields } = form
 	const onValuesChange = useOnValuesChange(hooks?.onChange!, setFieldsValue, setData, setSetting)
+	const { onLoadSync, reference } = form_props
 	const disabled = type === 'view'
 
 	const submit = useMemoizedFn(async () => {
@@ -86,17 +87,19 @@ const Index = (props: IPropsPureForm) => {
 				<span className='title no_wrap'>{title}</span>
 				<Actions {...props_actions}></Actions>
 			</div>
-			<Form
-				form={form}
-				name={namespace}
-				disabled={disabled}
-				layout='vertical'
-				onValuesChange={onValuesChange}
-			>
-				<div className='form_wrap w_100 border_box'>
-					<Sections {...props_sections}></Sections>
-				</div>
-			</Form>
+			<div className='form_content_container w_100 relative'>
+				<Form
+					form={form}
+					name={namespace}
+					disabled={disabled}
+					layout='vertical'
+					onValuesChange={onValuesChange}
+				>
+					<div className='form_wrap w_100 border_box'>
+						<Sections {...props_sections}></Sections>
+					</div>
+				</Form>
+			</div>
 		</div>
 	)
 }

@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { Else, If, Then } from 'react-if'
 
 import { useGlobal } from '@/context/app'
@@ -19,4 +20,4 @@ const Index = () => {
 	)
 }
 
-export default window.$app.memo(Index)
+export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
