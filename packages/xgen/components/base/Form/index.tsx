@@ -86,7 +86,7 @@ const Index = (props: Component.FormComponent) => {
 		sections: toJS(x.sections),
 		actions: toJS(x.setting.actions),
 		hooks,
-            title,
+		title,
 		props: toJS(x.setting.form?.props),
 		disabledActionsAffix: parent === 'Dashboard',
 		setData,
@@ -100,7 +100,10 @@ const Index = (props: Component.FormComponent) => {
 				<div className='flex relative'>
 					<div className='w_100 flex flex_column'>
 						<Breadcrumb {...props_breadcrumb}></Breadcrumb>
-						<div className={clsx([is_fullscreen && styles.fullscreen])} ref={ref_container}>
+						<div
+							className={clsx([is_fullscreen && styles.fullscreen, 'w_100'])}
+							ref={ref_container}
+						>
 							<PureForm {...props_form}></PureForm>
 						</div>
 					</div>
@@ -115,7 +118,7 @@ const Index = (props: Component.FormComponent) => {
 	}
 
 	return (
-		<div className={clsx([styles._local, is_fullscreen && styles.fullscreen])} ref={ref_container}>
+		<div className={clsx([styles._local, is_fullscreen && styles.fullscreen, 'w_100'])} ref={ref_container}>
 			<PureForm {...props_form}></PureForm>
 		</div>
 	)

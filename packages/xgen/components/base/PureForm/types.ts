@@ -1,5 +1,6 @@
 import type Model from '@/components/base/Form/model'
 import type { Common, FormType, Global } from '@/types'
+import type { RefObject } from 'react'
 
 export interface IPropsPureForm {
 	parent: Model['parent']
@@ -11,7 +12,7 @@ export interface IPropsPureForm {
 	sections: Model['sections']
 	actions: Model['setting']['actions']
 	hooks: Model['setting']['hooks']
-      title: string
+	title: string
 	props: Model['setting']['form']['props']
 	disabledActionsAffix?: boolean
 	setData: (v: Global.AnyObject) => void
@@ -63,6 +64,27 @@ export interface IPropsTabsItem {
 	primary: Model['setting']['primary']
 	type: Model['type']
 	item: FormType.TargetTab
+}
+
+export interface IPropsReference {
+	parent: Model['parent']
+	namespace: Model['namespace']['value']
+	id: Model['id']
+	reference: Model['setting']['form']['props']['reference']
+	container: RefObject<HTMLDivElement>
+}
+
+export interface IPropsReferenceFlatContent {
+	parent: Model['parent']
+	namespace: Model['namespace']['value']
+	id: Model['id']
+	flatContent: FormType.Reference['flatContent']
+}
+
+export interface IPropsReferenceFloatContentItem {
+	id: Model['id']
+	item: FormType.FloatContentItem
+	container: RefObject<HTMLDivElement>
 }
 
 export interface Locale {

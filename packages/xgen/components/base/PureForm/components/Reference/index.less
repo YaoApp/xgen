@@ -1,3 +1,60 @@
-._local {
-	width: 100%;
+.button {
+	right: 0;
+	width: 24px;
+	word-break: break-all;
+	border: none;
+	outline: none;
+	box-shadow: none;
+	line-height: 1.2;
+	padding: 6px 0;
+	border-top-left-radius: var(--radius);
+	border-bottom-left-radius: var(--radius);
+	background-color: rgba(var(--r), var(--g), var(--b), 15%);
+	z-index: 1;
+	border-left: 2px solid transparent;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	&.flat {
+		top: 12px;
+	}
+
+	&.float {
+		margin-bottom: 6px;
+		border-radius: 0;
+		border-top-right-radius: var(--radius);
+		border-bottom-right-radius: var(--radius);
+	}
+
+	.icon_close {
+		margin-bottom: 2px;
+	}
+}
+
+.flat_content_wrap {
+	flex-grow: 1;
+	overflow-y: scroll;
+	border-left: 1px solid var(--color_border_light);
+
+	:global {
+		.form_title_wrap {
+			display: none;
+		}
+	}
+}
+
+.float_contents_wrap {
+	top: 12px;
+}
+
+.drawer {
+	position: absolute;
+
+	:global {
+		.xgen-drawer-content {
+			background-color: var(--color_bg_menu);
+		}
+	}
 }

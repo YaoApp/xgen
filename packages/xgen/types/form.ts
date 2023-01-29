@@ -32,16 +32,18 @@ export declare namespace FormType {
 
 	type HookKeys = 'onChange'
 
+	interface FloatContentItem {
+		name: string
+		payload: Omit<Action.OpenModal, 'width'>
+	}
+
 	interface Reference {
 		flatContent?: {
 			name: string
 			defaultOpen?: boolean
 			payload: Action.OpenModal
 		}
-		floatContents?: Array<{
-			name: string
-			payload: Omit<Action.OpenModal, 'width'>
-		}>
+		floatContents?: Array<FloatContentItem>
 	}
 
 	interface Setting {

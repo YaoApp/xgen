@@ -17,8 +17,8 @@ const Index = (props: IPropsSections) => {
 		namespace,
 		primary,
 		type
-	}
-
+      }
+      
 	return (
 		<div className={clsx([styles._local, 'w_100 border_box flex flex_column'])}>
 			{_sections.map((item, index) => (

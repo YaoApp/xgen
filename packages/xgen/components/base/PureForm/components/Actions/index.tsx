@@ -28,8 +28,8 @@ const Index = (props: IPropsActions) => {
 		if (when_view) return handle_actions.filter((item) => item.showWhenView)
 
 		return handle_actions.filter((item) => !item.hideWhenEdit)
-	}, [actions, data, id, type])
-
+      }, [ actions, data, id, type ])
+      
 	return (
 		<Affix offsetTop={11} style={{ zIndex: disabledActionsAffix ? 0 : 101 }} onChange={(v) => setStick(v)}>
 			<div

@@ -1,12 +1,14 @@
 import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
 import { Else, If, Then } from 'react-if'
+import { container } from 'tsyringe'
 
-import { useGlobal } from '@/context/app'
+import { GlobalModel } from '@/context/app'
 import dark_theme from '@/public/theme/dark.sss'
 import light_theme from '@/public/theme/light.sss'
 
 const Index = () => {
-	const global = useGlobal()
+	const [global] = useState(() => container.resolve(GlobalModel))
 
 	return (
 		<If condition={(global?.theme || window.$global?.theme) === 'dark'}>

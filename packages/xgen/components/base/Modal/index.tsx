@@ -1,5 +1,5 @@
 import { useMemoizedFn } from 'ahooks'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import { X } from '@/components'
 
@@ -22,7 +22,7 @@ const Index = (props: IProps) => {
 	const onBack = useMemoizedFn(() => {
 		setVisible(false)
 
-		setTimeout(() => {
+            setTimeout(() => {
 			document.getElementById(`${namespace}=>__modal_container`)!.remove()
 		}, 300)
 	})

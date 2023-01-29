@@ -139,6 +139,6 @@ export default class Model {
 		window.$app.Event.off(`${this.namespace.value}/delete`, this.delete)
 		window.$app.Event.off(`${this.namespace.value}/back`, onBack!)
 
-		this.global.stack.remove(this.namespace.paths.slice(-1)[0])
+		if (this.parent !== 'Form') this.global.stack.remove(this.namespace.paths.slice(-1)[0])
 	}
 }

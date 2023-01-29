@@ -25,7 +25,8 @@ export default class Index {
 	remove(path: string) {
 		const index = findLastIndex(this.paths, (item: string) => item === path)
 
-		this.paths.splice(index)
+            this.paths.splice(index)
+            
 		this.sync()
 	}
 
