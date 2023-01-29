@@ -41,7 +41,8 @@ function createInstrumentations(target: object, receiver: any) {
 	return instrumentations
 }
 
-let instrumentations: Record<string, Function>
+const storageInstrumentations: Map<object, Record<string, Function>> = new Map()
+
 function get(target: object, property: string, receiver: any) {
 	// records the parent of array and object
 	if (shouldTrack) {
@@ -50,8 +51,12 @@ function get(target: object, property: string, receiver: any) {
 		activeEffect.proxy = receiver
 	}
 
+	let instrumentations = storageInstrumentations.get(target)
+
 	if (!instrumentations) {
 		instrumentations = createInstrumentations(target, receiver)
+
+		storageInstrumentations.set(target, instrumentations)
 	}
 
 	if (hasOwn(instrumentations, property)) {

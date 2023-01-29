@@ -32,9 +32,7 @@ describe('@yaoapp/storex', () => {
 
 		session.setItem('test', 'Hello @yaoapp/storex')
 
-		console.log('?????????: ', local.test)
-
-		// expect(session.test).toBe('Hello @yaoapp/storex')
+		expect(session.test).toBe('Hello @yaoapp/storex')
 		expect(session.test).toBe(decode(sessionStorage.getItem('test')))
 
 		delete session.test
