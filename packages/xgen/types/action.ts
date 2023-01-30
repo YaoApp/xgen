@@ -11,7 +11,7 @@ export declare namespace Action {
 			type: 'chart'
 			model: string
 		}
-	}
+      }
 
 	interface HistoryPush {
 		pathname: string

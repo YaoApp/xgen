@@ -68,8 +68,8 @@ export interface IPropsTabsItem {
 
 export interface IPropsReference {
 	parent: Model['parent']
-	namespace: Model['namespace']['value']
-	id: Model['id']
+      namespace: Model[ 'namespace' ][ 'value' ]
+	data: Model['data']
 	reference: Model['setting']['form']['props']['reference']
 	container: RefObject<HTMLDivElement>
 }
@@ -77,12 +77,10 @@ export interface IPropsReference {
 export interface IPropsReferenceFlatContent {
 	parent: Model['parent']
 	namespace: Model['namespace']['value']
-	id: Model['id']
 	flatContent: FormType.Reference['flatContent']
 }
 
 export interface IPropsReferenceFloatContentItem {
-	id: Model['id']
 	item: FormType.FloatContentItem
 	container: RefObject<HTMLDivElement>
 }

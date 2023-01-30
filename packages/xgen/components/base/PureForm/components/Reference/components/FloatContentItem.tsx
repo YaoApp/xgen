@@ -1,9 +1,8 @@
 import { useToggle } from 'ahooks'
 import { Drawer } from 'antd'
 import clsx from 'clsx'
-import { ArrowLineRight } from 'phosphor-react'
 import { Fragment } from 'react'
-import { Case, Switch, When } from 'react-if'
+import { Case, Switch } from 'react-if'
 
 import { X } from '@/components'
 
@@ -12,7 +11,7 @@ import styles from '../index.less'
 import type { IPropsReferenceFloatContentItem } from '../../../types'
 
 const Index = (props: IPropsReferenceFloatContentItem) => {
-	const { id, item, container } = props
+	const { item, container } = props
 	const [visible_flat_content, { toggle }] = useToggle(false)
 
 	return (
@@ -25,9 +24,6 @@ const Index = (props: IPropsReferenceFloatContentItem) => {
 				])}
 				onClick={toggle}
 			>
-				<When condition={visible_flat_content}>
-					<ArrowLineRight className='icon_close' size={16}></ArrowLineRight>
-				</When>
 				{item.name}
 			</button>
 			<Drawer
@@ -51,7 +47,7 @@ const Index = (props: IPropsReferenceFloatContentItem) => {
 							props={{
 								parent: 'Form',
 								model: item?.payload?.Form?.model,
-								id,
+								id: item?.payload?.Form?.id,
 								form: { type: item?.payload?.Form?.type },
 								onBack: toggle
 							}}

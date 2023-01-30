@@ -88,7 +88,7 @@ const Index = (props: IPropsPureForm) => {
 	const props_reference: IPropsReference = {
 		parent,
 		namespace,
-		id,
+		data,
 		reference,
 		container: form_container
 	}

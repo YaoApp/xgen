@@ -11,7 +11,7 @@ import styles from '../index.less'
 import type { IPropsReferenceFlatContent } from '../../../types'
 
 const Index = (props: IPropsReferenceFlatContent) => {
-	const { parent, namespace, id, flatContent } = props
+	const { parent, namespace, flatContent } = props
 	const [visible_flat_content, { toggle }] = useToggle(flatContent?.defaultOpen)
 
 	const { parent_container, parent_width, flat_content_width } = useMemo(() => {
@@ -71,7 +71,7 @@ const Index = (props: IPropsReferenceFlatContent) => {
 								props={{
 									parent: 'Form',
 									model: flatContent?.payload?.Form?.model,
-									id,
+									id: flatContent?.payload?.Form?.id,
 									form: { type: flatContent?.payload?.Form?.type },
 									onBack: toggle
 								}}
