@@ -14,13 +14,21 @@ export class ColumnUtils {
 		return target_item
 	}
 
-	private handleTableColumn(item: Common.TableColumn, fields: Common.Fields) {
+	private handleTableColumn(item: Common.BaseColumn, fields: Common.Fields) {
 		const target_item = this.handleAnyColumn(item, fields)
 
-		if (target_item.view?.components) {
-			target_item.view.components = Object.keys(target_item.view?.components).reduce(
-				(components: { [key: string]: Common.FieldDetail }, key) => {
-					components[key] = fields[key]
+		if (target_item.view?.props?.components) {
+			const raw_components = target_item.view.props.components
+
+			target_item.view.props.components = Object.keys(raw_components).reduce(
+				(components: { [key: string]: string | Common.FieldDetail }, key) => {
+					const field_key = raw_components[key]
+
+					if (typeof field_key === 'string') {
+						components[key] = fields[field_key]
+					} else {
+						components[key] = field_key
+					}
 
 					return components
 				},

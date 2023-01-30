@@ -18,7 +18,7 @@ export default (
 		target_col_item['dataIndex'] = raw_col_item.bind
 		target_col_item['title'] = raw_col_item.name
 
-		if (raw_col_item.view?.components) {
+		if (raw_col_item.view?.props?.components) {
 			target_col_item['shouldCellUpdate'] = (new_val, old_val) => {
 				return shouldGroupUpdate(new_val, old_val, raw_col_item)
 			}
@@ -28,7 +28,7 @@ export default (
 					namespace={namespace}
 					primary={primary}
 					type={raw_col_item.view.type as string}
-					components={raw_col_item.view.components as Common.ViewComponents}
+					components={raw_col_item.view.props.components as Common.ViewComponents}
 					data_item={data_item}
 				></Block>
 			)

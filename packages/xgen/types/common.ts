@@ -26,8 +26,7 @@ export declare namespace Common {
 		view: {
 			bind?: string
 			type: string
-			props: any
-			components?: ViewComponents
+			props: any & { components?: ViewComponents }
 		}
 		edit: {
 			bind?: string

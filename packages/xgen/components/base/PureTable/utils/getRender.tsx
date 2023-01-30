@@ -19,7 +19,7 @@ export default (
 		data_item: data_item
 	}
 
-	if (field_detail.edit?.type) {
+	if (field_detail?.edit?.type) {
 		return <EditPopover {...props_common}></EditPopover>
 	} else {
 		return <ViewContent {...props_common}></ViewContent>

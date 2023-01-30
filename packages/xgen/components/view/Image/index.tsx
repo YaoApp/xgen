@@ -11,8 +11,8 @@ import type { ImageProps } from 'antd'
 interface IProps extends Component.PropsViewComponent, ImageProps {}
 
 const Index = (props: IProps) => {
-	const { __value } = props
-
+      const { __value } = props
+      
 	if (!__value) return <span>-</span>
 
 	const props_image: ImageProps = {
