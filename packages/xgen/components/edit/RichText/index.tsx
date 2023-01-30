@@ -32,20 +32,22 @@ const Custom = window.$app.memo((props: ICustom) => {
 	useLayoutEffect(() => {
 		if (!container.current) return
 
+		const tools = getTools({
+			UploadByFileApi: props.UploadByFileApi?.startsWith('http')
+				? props.UploadByFileApi
+				: window.location.origin + props.UploadByFileApi,
+			UploadByUrlApi: props.UploadByUrlApi?.startsWith('http')
+				? props.UploadByUrlApi
+				: window.location.origin + props.UploadByUrlApi
+		})
+
 		editor.current = new EditorJS({
 			logLevel: 'ERROR' as LogLevels,
 			holder: container.current,
 			data: { blocks: props.value },
 			readOnly: props.disabled,
 			inlineToolbar: true,
-			tools: getTools({
-				UploadByFileApi: props.UploadByFileApi?.startsWith('http')
-					? props.UploadByFileApi
-					: window.location.origin + props.UploadByFileApi,
-				UploadByUrlApi: props.UploadByUrlApi?.startsWith('http')
-					? props.UploadByUrlApi
-					: window.location.origin + props.UploadByUrlApi
-			}),
+			tools,
 			i18n: getI18N(),
 			onChange: async () => {
 				const res = await editor.current?.save()
@@ -55,7 +57,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 		})
 
 		return () => editor.current?.destroy?.()
-	}, [props])
+	}, [])
 
 	return (
 		<div

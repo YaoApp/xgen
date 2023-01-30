@@ -41,6 +41,61 @@ importers:
       rollup-plugin-swc3: 0.8.0_k5eoe6hzkfq4lbztuncjh3hlt4
       typescript: 4.9.4
 
+  packages/editorjs_plugins:
+    specifiers:
+      '@editorjs/checklist': ^1.4.0
+      '@editorjs/code': ^2.8.0
+      '@editorjs/delimiter': ^1.3.0
+      '@editorjs/header': ^2.7.0
+      '@editorjs/image': ^2.8.1
+      '@editorjs/inline-code': ^1.4.0
+      '@editorjs/marker': ^1.3.0
+      '@editorjs/nested-list': ^1.2.0
+      '@editorjs/paragraph': ^2.9.0
+      '@editorjs/quote': ^2.5.0
+      '@editorjs/raw': ^2.4.0
+      '@editorjs/table': ^2.2.0
+      '@editorjs/underline': ^1.1.0
+      '@editorjs/warning': ^1.3.0
+      '@rollup/plugin-commonjs': ^24.0.1
+      '@rollup/plugin-node-resolve': ^15.0.1
+      '@swc/core': ^1.3.23
+      '@types/lodash-es': ^4.17.6
+      '@types/mustache': ^4.2.2
+      '@weekwood/editorjs-video': ^1.0.2
+      editorjs-button: ^1.0.4
+      rollup: ^3.7.4
+      rollup-plugin-delete: ^2.0.0
+      rollup-plugin-swc3: ^0.8.0
+      typescript: ^4.9.4
+    dependencies:
+      '@editorjs/checklist': 1.4.0
+      '@editorjs/code': 2.8.0
+      '@editorjs/delimiter': 1.3.0
+      '@editorjs/header': 2.7.0
+      '@editorjs/image': 2.8.1
+      '@editorjs/inline-code': 1.4.0
+      '@editorjs/marker': 1.3.0
+      '@editorjs/nested-list': 1.2.0
+      '@editorjs/paragraph': 2.9.0
+      '@editorjs/quote': 2.5.0
+      '@editorjs/raw': 2.4.0
+      '@editorjs/table': 2.2.0
+      '@editorjs/underline': 1.1.0
+      '@editorjs/warning': 1.3.0
+      '@weekwood/editorjs-video': 1.0.2_react@18.2.0
+      editorjs-button: 1.0.4
+    devDependencies:
+      '@rollup/plugin-commonjs': 24.0.1_rollup@3.7.4
+      '@rollup/plugin-node-resolve': 15.0.1_rollup@3.7.4
+      '@swc/core': 1.3.25
+      '@types/lodash-es': 4.17.6
+      '@types/mustache': 4.2.2
+      rollup: 3.7.4
+      rollup-plugin-delete: 2.0.0
+      rollup-plugin-swc3: 0.8.0_owuyaqnuc6zxxgq4q4u5afpdb4
+      typescript: 4.9.4
+
   packages/emittery:
     specifiers:
       '@types/node': ^18.7.15
@@ -111,21 +166,7 @@ importers:
     specifiers:
       '@abraham/reflection': ^0.11.0
       '@ant-design/icons': ^4.8.0
-      '@editorjs/checklist': ^1.4.0
-      '@editorjs/code': ^2.8.0
-      '@editorjs/delimiter': ^1.3.0
       '@editorjs/editorjs': ^2.26.4
-      '@editorjs/header': ^2.7.0
-      '@editorjs/image': ^2.8.1
-      '@editorjs/inline-code': ^1.4.0
-      '@editorjs/marker': ^1.3.0
-      '@editorjs/nested-list': ^1.2.0
-      '@editorjs/paragraph': ^2.9.0
-      '@editorjs/quote': ^2.5.0
-      '@editorjs/raw': ^2.4.0
-      '@editorjs/table': ^2.2.0
-      '@editorjs/underline': ^1.1.0
-      '@editorjs/warning': ^1.3.0
       '@matrixage/atom.css': ^2.0.1
       '@swc/core': ^1.3.25
       '@types/less': ^3.0.3
@@ -138,8 +179,8 @@ importers:
       '@types/sortablejs': ^1.15.0
       '@types/systemjs': ^6.13.0
       '@umijs/max': ^4.0.44
-      '@weekwood/editorjs-video': ^1.0.2
       '@yaoapp/actionflow': workspace:*
+      '@yaoapp/editorjs_plugins': workspace:*
       '@yaoapp/emittery': workspace:*
       '@yaoapp/storex': workspace:*
       ahooks: ^3.7.3
@@ -149,7 +190,6 @@ importers:
       clsx: ^1.2.1
       dotenv: ^16.0.3
       echarts: ^5.4.1
-      editorjs-button: ^1.0.4
       fast-equals: ^3.0.3
       framer-motion: ^7.10.2
       less: ^4.1.3
@@ -188,25 +228,11 @@ importers:
     dependencies:
       '@abraham/reflection': 0.11.0
       '@ant-design/icons': 4.8.0_biqbaboplfbrettd7655fr4n2y
-      '@editorjs/checklist': 1.4.0
-      '@editorjs/code': 2.8.0
-      '@editorjs/delimiter': 1.3.0
       '@editorjs/editorjs': 2.26.4
-      '@editorjs/header': 2.7.0
-      '@editorjs/image': 2.8.1
-      '@editorjs/inline-code': 1.4.0
-      '@editorjs/marker': 1.3.0
-      '@editorjs/nested-list': 1.2.0
-      '@editorjs/paragraph': 2.9.0
-      '@editorjs/quote': 2.5.0
-      '@editorjs/raw': 2.4.0
-      '@editorjs/table': 2.2.0
-      '@editorjs/underline': 1.1.0
-      '@editorjs/warning': 1.3.0
       '@matrixage/atom.css': 2.0.1
       '@umijs/max': 4.0.44_kfvdigjlxmm3eormjmqpzypyza
-      '@weekwood/editorjs-video': 1.0.2_react@18.2.0
       '@yaoapp/actionflow': link:../actionflow
+      '@yaoapp/editorjs_plugins': link:../editorjs_plugins
       '@yaoapp/emittery': link:../emittery
       '@yaoapp/storex': link:../storex
       ahooks: 3.7.3_react@18.2.0
@@ -215,7 +241,6 @@ importers:
       axios: 0.27.2
       clsx: 1.2.1
       echarts: 5.4.1
-      editorjs-button: 1.0.4
       fast-equals: 3.0.3
       framer-motion: 7.10.2_biqbaboplfbrettd7655fr4n2y
       lodash-es: 4.17.21
@@ -3627,6 +3652,24 @@ packages:
       '@rollup/pluginutils': 5.0.2
     dev: false
 
+  /@rollup/plugin-commonjs/24.0.1_rollup@3.7.4:
+    resolution: {integrity: sha512-15LsiWRZk4eOGqvrJyu3z3DaBu5BhXIMeWnijSRvd8irrrg9SHpQ1pH+BUK4H6Z9wL9yOxZJMTLU+Au86XHxow==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^2.68.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      '@rollup/pluginutils': 5.0.2_rollup@3.7.4
+      commondir: 1.0.1
+      estree-walker: 2.0.2
+      glob: 8.1.0
+      is-reference: 1.2.1
+      magic-string: 0.27.0
+      rollup: 3.7.4
+    dev: true
+
   /@rollup/plugin-node-resolve/15.0.1_rollup@3.7.4:
     resolution: {integrity: sha512-ReY88T7JhJjeRVbfCyNj+NXAG3IIsVMsX9b5/9jC98dRP8/yxlZdz7mHZbHk5zHr24wZZICS5AcXsFZAXYUQEg==}
     engines: {node: '>=14.0.0'}
@@ -6011,6 +6054,12 @@ packages:
     dependencies:
       balanced-match: 1.0.2
       concat-map: 0.0.1
+
+  /brace-expansion/2.0.1:
+    resolution: {integrity: sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==}
+    dependencies:
+      balanced-match: 1.0.2
+    dev: true
 
   /braces/3.0.2:
     resolution: {integrity: sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==}
@@ -8594,6 +8643,17 @@ packages:
       once: 1.4.0
       path-is-absolute: 1.0.1
 
+  /glob/8.1.0:
+    resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      fs.realpath: 1.0.0
+      inflight: 1.0.6
+      inherits: 2.0.4
+      minimatch: 5.1.6
+      once: 1.4.0
+    dev: true
+
   /global-modules/2.0.0:
     resolution: {integrity: sha512-NGbfmJBp9x8IxyJSd1P+otYK8vonoJactOogrVfFRIAEY1ukil8RSKDz2Yo7wh1oihl51l/r6W4epkeKJHqL8A==}
     engines: {node: '>=6'}
@@ -9367,6 +9427,12 @@ packages:
     dependencies:
       lowercase-keys: 1.0.1
       proto-props: 2.0.0
+    dev: true
+
+  /is-reference/1.2.1:
+    resolution: {integrity: sha512-U82MsXXiFIrjCK4otLT+o2NA2Cd2g5MLoOVXUZjIOhLurrRxpEXzI8O0KZHr3IjLvlAH1kTPYSuqer5T9ZVBKQ==}
+    dependencies:
+      '@types/estree': 1.0.0
     dev: true
 
   /is-regex/1.1.4:
@@ -10725,6 +10791,13 @@ packages:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
     dependencies:
       brace-expansion: 1.1.11
+
+  /minimatch/5.1.6:
+    resolution: {integrity: sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==}
+    engines: {node: '>=10'}
+    dependencies:
+      brace-expansion: 2.0.1
+    dev: true
 
   /minimist-options/4.1.0:
     resolution: {integrity: sha512-Q4r8ghd80yhO/0j1O3B2BjweX3fiHg9cdOwjJd2J76Q135c+NDxGCqdYKQ1SKBuFfgWbAUzBfvYjPUEeNgqN1A==}
@@ -13470,6 +13543,20 @@ packages:
       '@fastify/deepmerge': 1.3.0
       '@rollup/pluginutils': 4.2.1
       '@swc/core': 1.3.23
+      get-tsconfig: 4.2.0
+      rollup: 3.7.4
+    dev: true
+
+  /rollup-plugin-swc3/0.8.0_owuyaqnuc6zxxgq4q4u5afpdb4:
+    resolution: {integrity: sha512-IJapqORpU4NgSJHaFvbTcUe4WQPzgE6v8Suu95ZO4Qw1VwGRcuurvSCuYX1fIzR+DLVlZH4zq/T6uqbmw3Bzxw==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      '@swc/core': '>=1.2.165'
+      rollup: ^2.0.0 || ^3.0.0
+    dependencies:
+      '@fastify/deepmerge': 1.3.0
+      '@rollup/pluginutils': 4.2.1
+      '@swc/core': 1.3.25
       get-tsconfig: 4.2.0
       rollup: 3.7.4
     dev: true
