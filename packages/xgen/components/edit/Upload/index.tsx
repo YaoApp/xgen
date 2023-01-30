@@ -1,6 +1,7 @@
 import { useMemoizedFn } from 'ahooks'
 import { Upload } from 'antd'
 import clsx from 'clsx'
+import { useMemo } from 'react'
 
 import { Item } from '@/components'
 import { getToken } from '@/knife'
@@ -32,12 +33,18 @@ const Custom = window.$app.memo((props: CustomProps) => {
 		setList(fileList)
 	})
 
+	const action = useMemo(() => {
+		if (typeof api === 'string') return api
+
+		return `${api.api}?${new URLSearchParams(api.params).toString()}`
+	}, [api])
+
 	const props_upload: UploadProps = {
 		...props,
 		name: 'file',
 		listType: filemap[filetype].listType,
 		className: clsx(['form_item_upload_wrap', filemap[filetype].className]),
-		action: api,
+		action,
 		headers: { authorization: getToken() },
 		fileList: list,
 		isImageUrl: () => filetype === 'image',
