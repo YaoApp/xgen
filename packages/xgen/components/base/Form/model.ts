@@ -33,7 +33,7 @@ export default class Model {
 	}
 
 	async getSetting(setting?: FormType.Setting) {
-		if (this.id === 0) this.global.loading = true
+		if (this.id === 0 && this.parent === 'Page') this.global.loading = true
 
 		let target = {} as FormType.Setting
 
@@ -113,6 +113,7 @@ export default class Model {
 		this.global.stack.push(`Form-${parent}-${model}`)
 
 		this.namespace.paths = toJS(this.global.stack.paths)
+
 		this.rendered = false
 		this.parent = parent
 		this.model = model

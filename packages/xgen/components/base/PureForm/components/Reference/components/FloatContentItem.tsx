@@ -34,7 +34,7 @@ const Index = (props: IPropsReferenceFloatContentItem) => {
 				title={null}
 				headerStyle={{ display: 'none' }}
 				bodyStyle={{ padding: 0 }}
-				placement='left'
+				placement='right'
 				destroyOnClose
 				maskClosable
 				onClose={toggle}
