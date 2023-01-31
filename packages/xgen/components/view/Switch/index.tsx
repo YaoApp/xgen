@@ -10,14 +10,10 @@ interface IProps extends SwitchProps, Component.PropsViewComponent {
 }
 
 const Index = (props: IProps) => {
-	const { __namespace, __primary, __bind, __data_item, __value, checkedValue, unCheckedValue, ...rest_props } =
-		props
+	const { __namespace, __primary, __bind, onSave, __value, checkedValue, unCheckedValue, ...rest_props } = props
 
 	const onChange = useMemoizedFn((v: boolean) => {
-		window.$app.Event.emit(`${__namespace}/save`, {
-			[__primary]: __data_item[__primary],
-			[__bind]: v ? checkedValue : unCheckedValue
-		})
+		onSave({ [__bind]: v ? checkedValue : unCheckedValue })
 	})
 
 	return <Switch {...rest_props} checked={__value === checkedValue} onChange={onChange}></Switch>

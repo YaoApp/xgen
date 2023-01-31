@@ -41,6 +41,7 @@ export declare namespace Component {
 
 	interface PropsViewComponent extends Props {
 		__value: any
+		onSave: (v: any) => void
 	}
 
 	interface PropsChartComponent extends Omit<Props, '__namespace' | '__primary' | '__data_item'> {}

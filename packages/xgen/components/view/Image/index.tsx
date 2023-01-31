@@ -11,15 +11,15 @@ import type { ImageProps } from 'antd'
 interface IProps extends Component.PropsViewComponent, ImageProps {}
 
 const Index = (props: IProps) => {
-      const { __value } = props
-      
+	const { __value, onSave, ...rest_props } = props
+
 	if (!__value) return <span>-</span>
 
 	const props_image: ImageProps = {
 		width: 48,
 		height: 48,
 		preview: false,
-		...props
+		...rest_props
 	}
 
 	if (Array.isArray(__value)) {

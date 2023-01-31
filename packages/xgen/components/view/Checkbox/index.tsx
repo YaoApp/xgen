@@ -10,13 +10,10 @@ interface IProps extends CheckboxProps, Component.PropsViewComponent {
 }
 
 const Index = (props: IProps) => {
-	const { __namespace, __primary, __bind, __value, text, ...rest_props } = props
+	const { __namespace, __primary, __bind, __value, onSave, text, ...rest_props } = props
 
 	const onChange = useMemoizedFn((e: CheckboxChangeEvent) => {
-		window.$app.Event.emit(`${__namespace}/save`, {
-			[__primary]: __data_item[__primary],
-			[__bind]: e.target.checked
-		})
+		onSave({ [__bind]: e.target.checked })
 	})
 
 	return (

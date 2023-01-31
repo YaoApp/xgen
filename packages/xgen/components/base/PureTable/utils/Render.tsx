@@ -1,3 +1,4 @@
+import { useMemoizedFn } from 'ahooks'
 import { useMemo } from 'react'
 
 import { getDeepValue } from '@/knife'
@@ -19,11 +20,19 @@ interface IProps {
 const Index = (props: IProps) => {
 	const { namespace, primary, field_detail, data_item } = props
 
+	const onSave = useMemoizedFn((v: any) => {
+		window.$app.Event.emit(`${namespace}/save`, {
+			[primary]: data_item[primary],
+			...v
+		})
+	})
+
 	const props_common: IPropsComponentCommon = {
 		namespace,
 		primary,
 		field_detail: getTemplateValue(field_detail, data_item),
-		data_item: data_item
+		data_item: data_item,
+		onSave
 	}
 
 	const { view_bind_value, edit_bind_value } = useMemo(() => {

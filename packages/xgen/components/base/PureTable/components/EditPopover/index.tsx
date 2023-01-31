@@ -1,3 +1,4 @@
+import { useMemoizedFn } from 'ahooks'
 import { Button, Form, Popover } from 'antd'
 import clsx from 'clsx'
 
@@ -19,7 +20,7 @@ interface IProps extends IPropsComponentCommon {
 }
 
 const Index = (props: IProps) => {
-	const { namespace, primary, field_detail, data_item, view_bind_value, edit_bind_value } = props
+	const { namespace, primary, field_detail, data_item, view_bind_value, edit_bind_value, onSave } = props
 	const edit_type = field_detail.edit.type
 	const { form_bind, form_value } = edit_bind_value
 
@@ -34,14 +35,11 @@ const Index = (props: IProps) => {
 		style: { width: getWidth(field_detail.edit.type) }
 	}
 
-	const onFinish = (v: any) => {
-		window.$app.Event.emit(`${namespace}/save`, {
-			[primary]: data_item[primary],
-			...v
-		})
+	const onFinish = useMemoizedFn((v: any) => {
+		onSave(v)
 
 		hidePopover()
-	}
+	})
 
 	const edit_content = (
 		<Form
@@ -62,7 +60,7 @@ const Index = (props: IProps) => {
 
 	const view_content = (
 		<div className={clsx(['line_clamp_2', field_detail?.edit?.type && 'edit_text'])}>
-			<ViewContent {...{ namespace, primary, field_detail, ...view_bind_value }}></ViewContent>
+			<ViewContent {...{ namespace, primary, field_detail, onSave, ...view_bind_value }}></ViewContent>
 		</div>
 	)
 

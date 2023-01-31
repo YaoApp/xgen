@@ -2,7 +2,7 @@ import { Tooltip } from 'antd'
 
 import styles from './index.less'
 
-import type { Component, Common } from '@/types'
+import type { Component } from '@/types'
 
 interface IProps extends Component.PropsViewComponent {
 	href: string

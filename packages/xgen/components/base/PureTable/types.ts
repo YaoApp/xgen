@@ -31,6 +31,7 @@ export interface IPropsComponentCommon {
 	primary: Model['setting']['primary']
 	field_detail: Common.Column
 	data_item: any
+	onSave: (v: any) => void
 }
 
 export interface IPropsActions {
