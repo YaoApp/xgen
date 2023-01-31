@@ -1,8 +1,10 @@
 import Block from '../components/Block'
-import { getRender, shouldGroupUpdate, shouldViewUpdate } from '../utils'
+import { Render, shouldGroupUpdate, shouldViewUpdate } from '../utils'
 
 import type { Common } from '@/types'
 import type { IPropsPureTable, TableColumn } from '../types'
+
+type Elements = { [key: string]: JSX.Element }
 
 export default (
 	namespace: IPropsPureTable['namespace'],
@@ -42,7 +44,7 @@ export default (
 			}
 
 			target_col_item['render'] = (_, data_item) => {
-				return getRender(namespace, primary, raw_col_item, data_item)
+				return <Render {...{ namespace, primary, data_item }} field_detail={raw_col_item} />
 			}
 		}
 

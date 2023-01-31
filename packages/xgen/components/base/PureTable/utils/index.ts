@@ -1,6 +1,5 @@
 export { default as shouldGroupUpdate } from './shouldGroupUpdate'
 export { default as shouldViewUpdate } from './shouldViewUpdate'
 export { default as getColumns } from './getColumns'
-export { default as getText } from './getText'
-export { default as getRender } from './getRender'
+export { default as Render } from './Render'
 export { default as getOperation } from './getOperation'

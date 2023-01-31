@@ -1,7 +1,6 @@
 import { Tooltip } from 'antd'
 
 import { Icon } from '@/widgets'
-import { getDeepValue } from '@/knife'
 
 import type { Component } from '@/types'
 import type { TooltipProps } from 'antd'
@@ -9,9 +8,7 @@ import type { TooltipProps } from 'antd'
 type IProps = Component.PropsViewComponent & TooltipProps & {}
 
 const Index = (props: IProps) => {
-	const { __value, __data_item } = props
-
-	const title = getDeepValue(props.title as string, __data_item)
+	const { __value, title } = props
 
 	return (
 		<Tooltip {...props} title={title}>

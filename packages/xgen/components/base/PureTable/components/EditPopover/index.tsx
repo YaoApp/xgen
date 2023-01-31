@@ -1,9 +1,8 @@
 import { Button, Form, Popover } from 'antd'
 import clsx from 'clsx'
-import { useMemo } from 'react'
 
 import { X } from '@/components'
-import { getDeepValue, hidePopover } from '@/knife'
+import { hidePopover } from '@/knife'
 import { CheckOutlined } from '@ant-design/icons'
 
 import ViewContent from '../ViewContent'
@@ -14,23 +13,15 @@ import styles from './index.less'
 import type { IPropsComponentCommon } from '../../types'
 import type { Component } from '@/types'
 
-const Index = (props: IPropsComponentCommon) => {
-	const { namespace, primary, field_detail, data_item } = props
-	const edit_type = field_detail.edit.type
+interface IProps extends IPropsComponentCommon {
+	view_bind_value: Component.BindValue
+	edit_bind_value: Component.BindValue
+}
 
-	const { form_bind, form_value } = useMemo(
-		() =>
-			field_detail?.edit?.bind
-				? {
-						form_bind: field_detail.edit.bind,
-						form_value: getDeepValue(field_detail.edit.bind, data_item)
-				  }
-				: {
-						form_bind: field_detail.bind,
-						form_value: getDeepValue(field_detail.bind, data_item)
-				  },
-		[field_detail, data_item]
-	)
+const Index = (props: IProps) => {
+	const { namespace, primary, field_detail, data_item, view_bind_value, edit_bind_value } = props
+	const edit_type = field_detail.edit.type
+	const { form_bind, form_value } = edit_bind_value
 
 	const props_edit_component: Component.PropsEditComponent = {
 		...field_detail.edit.props,
@@ -71,7 +62,7 @@ const Index = (props: IPropsComponentCommon) => {
 
 	const view_content = (
 		<div className={clsx(['line_clamp_2', field_detail?.edit?.type && 'edit_text'])}>
-			<ViewContent {...{ namespace, primary, field_detail, data_item }}></ViewContent>
+			<ViewContent {...{ namespace, primary, field_detail, ...view_bind_value }}></ViewContent>
 		</div>
 	)
 

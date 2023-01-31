@@ -6,6 +6,11 @@ export declare namespace Component {
 	type IdType = number
 	type FormType = 'view' | 'edit'
 
+	interface BindValue {
+		form_bind: string
+		form_value: any
+	}
+
 	interface BaseComponent {
 		parent: 'Page' | 'Modal' | 'Form' | 'Dashboard' | 'Custom'
 		model: string
@@ -35,7 +40,6 @@ export declare namespace Component {
 	}
 
 	interface PropsViewComponent extends Props {
-		__data_item: any
 		__value: any
 	}
 
@@ -53,14 +57,14 @@ export declare namespace Component {
 	interface Option {
 		label: string
 		value: string
-      }
-      
-      interface TagOption{
-            label: string
+	}
+
+	interface TagOption {
+		label: string
 		value: string
 		color?: string
 		textColor?: string
-      }
+	}
 
 	type Options = Array<Option>
 }

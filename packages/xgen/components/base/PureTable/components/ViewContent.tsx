@@ -1,31 +1,14 @@
-import { useMemo } from 'react'
-
 import { X } from '@/components'
-import { getDeepValue } from '@/knife'
-
-import { getText } from '../utils'
 
 import type { IPropsComponentCommon } from '../types'
+import type { Component } from '@/types'
 
-const Index = (props: IPropsComponentCommon) => {
-	const { namespace, primary, field_detail, data_item } = props
-	const view_text = getText(field_detail, data_item)
+interface IProps extends Omit<IPropsComponentCommon, 'data_item'>, Component.BindValue {}
 
-	const { form_bind, form_value } = useMemo(
-		() =>
-			field_detail?.view?.bind
-				? {
-						form_bind: field_detail.view.bind,
-						form_value: getDeepValue(field_detail.view.bind, data_item)
-				  }
-				: {
-						form_bind: field_detail.bind,
-						form_value: getDeepValue(field_detail.bind, data_item)
-				  },
-		[field_detail, data_item]
-	)
+const Index = (props: IProps) => {
+	const { namespace, primary, field_detail, form_bind, form_value } = props
 
-	if (!field_detail.view?.type) return <div className='line_clamp_2'>{view_text || '-'}</div>
+	if (!field_detail.view?.type) return <div className='line_clamp_2'>请设置字段的view属性</div>
 
 	const props_view_component = {
 		...field_detail.view.props,
@@ -33,8 +16,7 @@ const Index = (props: IPropsComponentCommon) => {
 		__primary: primary,
 		__bind: form_bind,
 		__name: field_detail.name,
-		__value: form_value,
-		__data_item: data_item
+		__value: form_value
 	}
 
 	return <X type='view' name={field_detail.view.type} props={props_view_component}></X>
