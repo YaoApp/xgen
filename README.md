@@ -17,14 +17,6 @@ _<p align="center">A **official** lowcode resolution based yao app engine.</p>_
 
 <img src="asserts/xgen.png" width="100%">
 
-## Overview
-
-<img src="asserts/1.png" width="100%">
-<img src="asserts/2.png" width="100%">
-<img src="asserts/3.png" width="100%">
-<img src="asserts/4.png" width="100%">
-<img src="asserts/5.png" width="100%">
-
 ## What`s XGen
 
 As it`s name, XGen is a **official** lowcode resolution based yao app engine. It provides multiple lowcode components, just like Table, Form, Chart, Dashboard, List, and kinds of embedded lowcode components for extend above base components.
