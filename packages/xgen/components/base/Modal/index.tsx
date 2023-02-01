@@ -1,8 +1,11 @@
 import { useMemoizedFn } from 'ahooks'
 import { useState } from 'react'
+import { Else, If, Then } from 'react-if'
 
 import { X } from '@/components'
+import { AntdProvider, GlobalProvider } from '@/widgets'
 
+import DrawerWrap from './DrawerWrap'
 import ModalWrap from './ModalWrap'
 
 import type { Component, Action } from '@/types'
@@ -22,7 +25,7 @@ const Index = (props: IProps) => {
 	const onBack = useMemoizedFn(() => {
 		setVisible(false)
 
-            setTimeout(() => {
+		setTimeout(() => {
 			document.getElementById(`${namespace}=>__modal_container`)!.remove()
 		}, 300)
 	})
@@ -30,12 +33,13 @@ const Index = (props: IProps) => {
 	const props_modal_wrap: Omit<IPropsModalWrap, 'children'> = {
 		width: typeof width === 'string' ? width : `${width}px`,
 		visible,
+		config,
 		onBack
 	}
 
 	if (config.Form) {
-		return (
-			<ModalWrap {...props_modal_wrap}>
+		const content = (
+			<GlobalProvider>
 				<X
 					type='base'
 					name='Form'
@@ -47,11 +51,24 @@ const Index = (props: IProps) => {
 						onBack
 					}}
 				></X>
-			</ModalWrap>
+			</GlobalProvider>
+		)
+
+		return (
+			<AntdProvider>
+				<If condition={!!config.byDrawer}>
+					<Then>
+						<DrawerWrap {...props_modal_wrap}>{content}</DrawerWrap>
+					</Then>
+					<Else>
+						<ModalWrap {...props_modal_wrap}>{content}</ModalWrap>
+					</Else>
+				</If>
+			</AntdProvider>
 		)
 	}
 
 	return null
 }
 
-export default Index
+export default window.$app.memo(Index)

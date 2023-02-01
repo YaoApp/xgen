@@ -3,6 +3,7 @@ import { Global } from '@/types'
 export declare namespace Action {
 	interface OpenModal {
 		width?: number | string
+		byDrawer?: { mask?: boolean }
 		Form?: {
 			type: 'view' | 'edit'
 			model: string
@@ -11,7 +12,7 @@ export declare namespace Action {
 			type: 'chart'
 			model: string
 		}
-      }
+	}
 
 	interface HistoryPush {
 		pathname: string

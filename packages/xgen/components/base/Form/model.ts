@@ -20,6 +20,7 @@ export default class Model {
 	data = {} as Global.AnyObject
 	sections = [] as Array<FormType.SectionResult>
 	rendered = false
+	form_name = ''
 
 	constructor(
 		private service: Service,
@@ -110,7 +111,8 @@ export default class Model {
 		this.setting = {} as FormType.Setting
 		this.data = {} as Global.AnyObject
 
-		this.global.stack.push(`Form-${parent}-${model}`)
+		this.form_name = `Form-${parent}-${model}`
+		this.global.stack.push(this.form_name)
 
 		this.namespace.paths = toJS(this.global.stack.paths)
 
@@ -140,6 +142,10 @@ export default class Model {
 		window.$app.Event.off(`${this.namespace.value}/delete`, this.delete)
 		window.$app.Event.off(`${this.namespace.value}/back`, onBack!)
 
-		if (this.parent !== 'Form') this.global.stack.remove(this.namespace.paths.slice(-1)[0])
+		if (this.parent === 'Form') {
+			this.global.stack.remove(this.form_name)
+		} else {
+			this.global.stack.remove(this.namespace.paths.slice(-1)[0])
+		}
 	}
 }

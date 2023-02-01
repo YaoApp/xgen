@@ -25,7 +25,9 @@ const Index = (props: IPropsReferenceFlatContent) => {
 		paths.pop()
 
 		const parent_id = `${paths.join('/')}=>__modal_container`
-		const parent_container = document.querySelector(`[id='${parent_id}'] .xgen-modal`)! as HTMLDivElement
+		const parent_container = document.querySelector(
+			`[id='${parent_id}'] .__open_modal_content_wrap`
+		)! as HTMLDivElement
 
 		if (!parent_container) return {}
 
