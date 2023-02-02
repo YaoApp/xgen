@@ -1,7 +1,6 @@
 import { useMemoizedFn, useTitle } from 'ahooks'
 import clsx from 'clsx'
 import { toJS } from 'mobx'
-import { observer } from 'mobx-react-lite'
 
 import { useGlobal } from '@/context/app'
 
@@ -16,7 +15,7 @@ import type { IProps, IPropsLeft } from './types'
 const Index = (props: IProps) => {
 	const { children, title: page_title, className, style, actions = [], withRows, customAction, full } = props
 	const global = useGlobal()
-	const title = page_title ?? usePageTitle(toJS(global.menu), toJS(global.menu_key_path), global.current_nav)
+      const title = page_title ?? usePageTitle(toJS(global.menu), toJS(global.menu_key_path), global.current_nav)
 
 	useTitle(`${global.app_info.name} - ${global.menu[global.current_nav]?.name} - ${title}`)
 
@@ -58,4 +57,4 @@ const Index = (props: IProps) => {
 	)
 }
 
-export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
+export default window.$app.memo(Index)

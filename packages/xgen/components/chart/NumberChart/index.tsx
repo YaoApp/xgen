@@ -3,7 +3,6 @@ import { BarChart, LineChart } from 'echarts/charts'
 import { AriaComponent, GridComponent, TitleComponent, TooltipComponent } from 'echarts/components'
 import * as echarts from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
-import { observer } from 'mobx-react-lite'
 import { useRef } from 'react'
 
 import { useGlobal } from '@/context/app'
@@ -93,4 +92,4 @@ const Index = (props: IProps) => {
 	)
 }
 
-export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
+export default window.$app.memo(Index)

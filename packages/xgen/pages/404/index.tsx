@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import { observer } from 'mobx-react-lite'
 
 import not_found from '@/assets/images/404.svg'
 import { useGlobal } from '@/context/app'
@@ -17,4 +16,4 @@ const Index = () => {
 	)
 }
 
-export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
+export default window.$app.memo(Index)

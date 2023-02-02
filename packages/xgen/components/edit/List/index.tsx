@@ -14,9 +14,10 @@ import type { Component } from '@/types'
 
 interface ICustom {
 	name: string
+	value?: any
+	disabled?: boolean
 	showLabel?: boolean
 	hasChildren?: boolean
-	value?: any
 	onChange?: (v: any) => void
 }
 
@@ -62,7 +63,12 @@ const Index = (props: IProps) => {
 	const { __bind, __name, itemProps, ...rest_props } = props
 
 	return (
-		<Item className={styles._local} {...itemProps} {...{ __bind, __name }} style={{ marginBottom: 4 }}>
+		<Item
+			className={styles._local}
+			{...itemProps}
+			{...{ __bind, __name }}
+			style={{ marginBottom: rest_props?.disabled ? 16 : 4 }}
+		>
 			<Custom {...rest_props}></Custom>
 		</Item>
 	)

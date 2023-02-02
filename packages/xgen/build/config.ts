@@ -1,5 +1,6 @@
 import fs from 'fs'
 import moment from 'moment'
+import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin'
 
 import type Config from 'webpack-chain'
 import type { JscConfig } from '@swc/core'
@@ -52,7 +53,7 @@ export const links = [
 	{ rel: 'stylesheet', href: `/${process.env.BASE}/theme/light.css` }
 ]
 
-export const chainWebpack = (config: Config) => {
+export const chainWebpack = (config: Config, _: any) => {
 	const reg_shadowcss = /\.sss$/
 	const reg_shadowless = /\.lsss$/
 
@@ -78,6 +79,8 @@ export const chainWebpack = (config: Config) => {
 		.use('less-loader')
 		.loader('less-loader')
 		.end()
+
+	config.plugin('monaco-editor-webpack-plugin').use(MonacoWebpackPlugin, [{ languages: ['json', 'javascript'] }])
 }
 
 const sp_jsc_config = process.platform === 'win32' && process.env.NODE_ENV === 'development' ? { target: 'es2022' } : {}

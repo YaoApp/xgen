@@ -26,7 +26,7 @@ const Index = (props: IProps) => {
 		setVisible(false)
 
 		setTimeout(() => {
-			document.getElementById(`${namespace}=>__modal_container`)!.remove()
+			document.getElementById(`${namespace}=>__modal_container`)?.remove()
 		}, 300)
 	})
 
