@@ -2,6 +2,8 @@ import { defineConfig } from '@umijs/max'
 
 import { base, chainWebpack, conventionRoutes, links, metas, proxy, srcTranspilerOptions } from './build/config'
 
+console.log(process.env.NODE_ENV);
+
 export default defineConfig({
 	mfsu: { esbuild: false, strategy: 'eager', exclude: ['monaco-editor-webpack-plugin'] },
 	monorepoRedirect: { srcDir: ['./'] },

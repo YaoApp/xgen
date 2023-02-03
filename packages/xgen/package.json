@@ -14,10 +14,12 @@
             "packages/*"
       ],
       "scripts": {
-            "postinstall": "max setup",
+            "postinstall": "pnpm run setup:before && max setup && pnpm run setup:after",
             "dev": "max dev",
             "local": "max preview --port 8000",
             "build": "pnpm run build:theme && max build && pnpm run build:after",
+            "setup:before": "tsx ./build/setup/before.ts",
+            "setup:after": "tsx ./build/setup/after.ts",
             "build:theme": "tsx ./build/theme.ts",
             "build:after": "tsx ./build/after.ts"
       },
@@ -26,7 +28,7 @@
             "@ant-design/icons": "^4.8.0",
             "@editorjs/editorjs": "^2.26.4",
             "@matrixage/atom.css": "^2.0.1",
-            "@umijs/max": "^4.0.47",
+            "@umijs/max": "^4.0.48",
             "@yaoapp/actionflow": "workspace:*",
             "@yaoapp/editorjs_plugins": "workspace:*",
             "@yaoapp/emittery": "workspace:*",

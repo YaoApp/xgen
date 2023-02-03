@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import { Else, If, Then } from 'react-if'
 import { container } from 'tsyringe'
@@ -22,4 +21,4 @@ const Index = () => {
 	)
 }
 
-export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
+export default window.$app.memo(Index)
