@@ -37,7 +37,7 @@ const Index = (props: IPropsPureForm) => {
 	const { getFieldsValue, setFieldsValue, resetFields, validateFields } = form
 	const onValuesChange = useOnValuesChange(hooks?.onChange!, setFieldsValue, setData, setSetting)
 	const form_container = useRef<HTMLDivElement>(null)
-	const { onLoadSync, reference } = form_props
+	const { onLoadSync, reference, showSectionDivideLine } = form_props
 	const disabled = type === 'view'
 
 	const submit = useMemoizedFn(async () => {
@@ -82,7 +82,8 @@ const Index = (props: IPropsPureForm) => {
 		primary,
 		type,
 		data,
-		sections
+		sections,
+		showSectionDivideLine
 	}
 
 	const props_reference: IPropsReference = {

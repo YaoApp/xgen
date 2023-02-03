@@ -12,11 +12,25 @@
 			.section_title {
 				color: var(--color_title);
 				font-weight: 600;
+
+				&.with_line {
+					padding: 0 6px;
+					border-radius: 30px;
+					background-color: var(--color_main);
+                              color: white;
+				}
 			}
 
 			.desc {
 				font-weight: 300;
 				font-size: 12px;
+			}
+
+			.divide_line {
+				flex-grow: 1;
+				width: auto;
+				height: 1px;
+				background-color: var(--color_border);
 			}
 		}
 	}

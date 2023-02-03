@@ -36,6 +36,7 @@ export interface IPropsSections {
 	type: Model['type']
 	data: Model['data']
 	sections: Model['sections']
+	showSectionDivideLine: Model['setting']['form']['props']['showSectionDivideLine']
 }
 
 export interface IPropsSection {
@@ -43,6 +44,7 @@ export interface IPropsSection {
 	primary: Model['setting']['primary']
 	type: Model['type']
 	item: FormType.SectionResult
+	showSectionDivideLine: IPropsSections['showSectionDivideLine']
 }
 
 export interface IPropsRowItem {
@@ -68,7 +70,7 @@ export interface IPropsTabsItem {
 
 export interface IPropsReference {
 	parent: Model['parent']
-      namespace: Model[ 'namespace' ][ 'value' ]
+	namespace: Model['namespace']['value']
 	data: Model['data']
 	reference: Model['setting']['form']['props']['reference']
 	container: RefObject<HTMLDivElement>

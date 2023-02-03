@@ -70,6 +70,7 @@ export declare namespace FormType {
 			props: {
 				onLoadSync?: boolean
 				reference?: Reference
+				showSectionDivideLine?: boolean
 			}
 			sections: Array<Section>
 		}
