@@ -14,7 +14,7 @@
             "packages/*"
       ],
       "scripts": {
-            "postinstall": "pnpm run setup:before && max setup && pnpm run setup:after",
+            "postinstall": "max setup",
             "dev": "max dev",
             "local": "max preview --port 8000",
             "build": "pnpm run build:theme && max build && pnpm run build:after",
@@ -28,7 +28,7 @@
             "@ant-design/icons": "^4.8.0",
             "@editorjs/editorjs": "^2.26.4",
             "@matrixage/atom.css": "^2.0.1",
-            "@umijs/max": "^4.0.48",
+            "@umijs/max": "4.0.42",
             "@yaoapp/actionflow": "workspace:*",
             "@yaoapp/editorjs_plugins": "workspace:*",
             "@yaoapp/emittery": "workspace:*",
