@@ -35,7 +35,7 @@ const Index = (props: IPropsPureForm) => {
 	} = props
 	const [form] = useForm()
 	const { getFieldsValue, setFieldsValue, resetFields, validateFields } = form
-	const onValuesChange = useOnValuesChange(hooks?.onChange!, setFieldsValue, setData, setSetting)
+	const onValuesChange = useOnValuesChange(hooks?.onChange!, setData, setSetting)
 	const form_container = useRef<HTMLDivElement>(null)
 	const { onLoadSync, reference, showSectionDivideLine } = form_props
 	const disabled = type === 'view'

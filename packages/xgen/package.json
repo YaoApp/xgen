@@ -18,8 +18,6 @@
             "dev": "max dev",
             "local": "max preview --port 8000",
             "build": "pnpm run build:theme && max build && pnpm run build:after",
-            "setup:before": "tsx --tsconfig ./build/tsconfig.json ./build/setup/before.ts",
-            "setup:after": "tsx --tsconfig ./build/tsconfig.json ./build/setup/after.ts",
             "build:theme": "tsx ./build/theme.ts",
             "build:after": "tsx ./build/after.ts"
       },
