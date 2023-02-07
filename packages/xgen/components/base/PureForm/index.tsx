@@ -2,7 +2,7 @@ import { useMemoizedFn } from 'ahooks'
 import { Form } from 'antd'
 import to from 'await-to-js'
 import clsx from 'clsx'
-import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { When } from 'react-if'
 
 import Actions from './components/Actions'
@@ -39,6 +39,9 @@ const Index = (props: IPropsPureForm) => {
 	const form_container = useRef<HTMLDivElement>(null)
 	const { onLoadSync, reference, showSectionDivideLine } = form_props
 	const disabled = type === 'view'
+	const [visible_flat_content, setVisibleFlatContent] = useState(!!reference?.flatContent?.defaultOpen)
+
+	const toggleFlatContent = useMemoizedFn(() => setVisibleFlatContent(!visible_flat_content))
 
 	const submit = useMemoizedFn(async () => {
 		const [err] = await to(validateFields())
@@ -91,8 +94,19 @@ const Index = (props: IPropsPureForm) => {
 		namespace,
 		data,
 		reference,
-		container: form_container
+		container: form_container,
+		visible_flat_content,
+		toggleFlatContent
 	}
+
+	const form_styles = useMemo(() => {
+		if (parent !== 'Page') return { maxWidth: '100%', flexGrow: 1, flexShrink: 1000 }
+
+		const raw_width = reference?.flatContent?.payload?.width || 600
+		const flat_content_width = typeof raw_width === 'number' ? `${raw_width}px` : raw_width
+
+		return { maxWidth: visible_flat_content ? `calc(100% - ${flat_content_width})` : '100%' }
+	}, [parent, visible_flat_content, reference?.flatContent])
 
 	return (
 		<div
@@ -114,7 +128,7 @@ const Index = (props: IPropsPureForm) => {
 					disabled={disabled}
 					layout='vertical'
 					onValuesChange={onValuesChange}
-					style={{ flexGrow: 1, flexShrink: 1000 }}
+					style={form_styles}
 				>
 					<div className='form_wrap w_100 border_box'>
 						<Sections {...props_sections}></Sections>

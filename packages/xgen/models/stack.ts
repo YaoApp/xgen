@@ -1,5 +1,5 @@
-import { findLastIndex } from 'lodash-es'
-import { makeAutoObservable } from 'mobx'
+import { remove } from 'lodash-es'
+import { makeAutoObservable, toJS } from 'mobx'
 import { singleton } from 'tsyringe'
 
 import { local } from '@yaoapp/storex'
@@ -23,10 +23,8 @@ export default class Index {
 	}
 
 	remove(path: string) {
-		const index = findLastIndex(this.paths, (item: string) => item === path)
+		remove(this.paths, (item: string) => item === path)
 
-            this.paths.splice(index)
-            
 		this.sync()
 	}
 

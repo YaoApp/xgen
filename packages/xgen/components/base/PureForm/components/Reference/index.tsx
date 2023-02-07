@@ -11,14 +11,16 @@ import styles from './index.less'
 import type { IPropsReference, IPropsReferenceFlatContent } from '../../types'
 
 const Index = (props: IPropsReference) => {
-	const { parent, namespace, data, reference, container } = props
+	const { parent, namespace, data, reference, container,visible_flat_content,toggleFlatContent } = props
 
 	const _reference = useMemo(() => getTemplateValue(reference || {}, data), [reference, data])
 
 	const props_flat_content: IPropsReferenceFlatContent = {
 		parent,
 		namespace,
-		flatContent: _reference?.flatContent
+            flatContent: _reference?.flatContent,
+            visible_flat_content,
+            toggleFlatContent
 	}
 
 	return (

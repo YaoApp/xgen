@@ -11,8 +11,7 @@ import styles from '../index.less'
 import type { IPropsReferenceFlatContent } from '../../../types'
 
 const Index = (props: IPropsReferenceFlatContent) => {
-	const { parent, namespace, flatContent } = props
-	const [visible_flat_content, { toggle }] = useToggle(flatContent?.defaultOpen)
+	const { parent, namespace, flatContent, visible_flat_content, toggleFlatContent } = props
 
 	const { parent_container, parent_width, flat_content_width } = useMemo(() => {
 		if (parent !== 'Modal') return {}
@@ -27,7 +26,7 @@ const Index = (props: IPropsReferenceFlatContent) => {
 		const parent_id = `${paths.join('/')}=>__modal_container`
 		const parent_container = document.querySelector(
 			`[id='${parent_id}'] .__open_modal_content_wrap`
-		)! as HTMLDivElement
+	      )! as HTMLDivElement
 
 		if (!parent_container) return {}
 
@@ -53,7 +52,7 @@ const Index = (props: IPropsReferenceFlatContent) => {
 					'border_box flex flex_column justify_center align_center cursor_point absolute'
 				])}
 				style={{ top: 12 }}
-				onClick={toggle}
+				onClick={toggleFlatContent}
 			>
 				<When condition={visible_flat_content}>
 					<ArrowLineRight className='icon_close' size={16}></ArrowLineRight>
@@ -75,7 +74,7 @@ const Index = (props: IPropsReferenceFlatContent) => {
 									model: flatContent?.payload?.Form?.model,
 									id: flatContent?.payload?.Form?.id,
 									form: { type: flatContent?.payload?.Form?.type },
-									onBack: toggle
+									onBack: toggleFlatContent
 								}}
 							></X>
 						</Case>

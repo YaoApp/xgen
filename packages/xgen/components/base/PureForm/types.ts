@@ -74,12 +74,16 @@ export interface IPropsReference {
 	data: Model['data']
 	reference: Model['setting']['form']['props']['reference']
 	container: RefObject<HTMLDivElement>
+	visible_flat_content: boolean
+	toggleFlatContent: () => void
 }
 
 export interface IPropsReferenceFlatContent {
 	parent: Model['parent']
 	namespace: Model['namespace']['value']
 	flatContent: FormType.Reference['flatContent']
+	visible_flat_content: IPropsReference['visible_flat_content']
+	toggleFlatContent: IPropsReference['toggleFlatContent']
 }
 
 export interface IPropsReferenceFloatContentItem {

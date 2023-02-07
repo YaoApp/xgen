@@ -14,8 +14,8 @@ export default ({ namespace, primary, data_item, payload }: Args) => {
 		namespace,
 		id: data_item ? data_item[primary] : 0,
 		config: payload
-	}
-
+      }
+      
 	return () =>
 		new Promise<void>((resolve) => {
 			createRoot(createModalContainer(namespace)).render(<Modal {...props_modal}></Modal>)

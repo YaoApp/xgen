@@ -17,7 +17,7 @@ const Index = (props: IPropsActions) => {
 	const [stick, setStick] = useState<boolean | undefined>(false)
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled()
-	const onAction = useAction()
+      const onAction = useAction()
 
 	const _actions = useMemo(() => {
 		const when_add = id === 0
