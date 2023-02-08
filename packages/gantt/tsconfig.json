@@ -3,18 +3,19 @@
 		"target": "ES2022",
 		"module": "ESNext",
 		"skipLibCheck": true,
-		"lib": ["ESNEXT","DOM"],
+		"lib": ["ESNEXT", "DOM"],
 		"moduleResolution": "Node",
 		"declaration": true,
-            "emitDeclarationOnly": true,
+		"emitDeclarationOnly": true,
 		"strict": true,
 		"outDir": "dist",
 		"suppressImplicitAnyIndexErrors": true,
 		"baseUrl": ".",
-            "esModuleInterop": true,
+		"jsx": "react-jsx",
+		"esModuleInterop": true,
 		"paths": { "@/*": ["./src/*"] },
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true
 	},
-	"include": ["src"]
+	"include": ["src", "./typings.d.ts"]
 }

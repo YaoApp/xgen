@@ -1,0 +1,14 @@
+._local {
+	:global {
+		.top_tick {
+			stroke: #e6e4e4;
+		}
+
+		.top_text {
+			text-anchor: middle;
+			fill: #555;
+			user-select: none;
+			pointer-events: none;
+		}
+	}
+}
