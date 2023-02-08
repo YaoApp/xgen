@@ -1,0 +1,20 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "ESNext",
+		"skipLibCheck": true,
+		"lib": ["ESNEXT","DOM"],
+		"moduleResolution": "Node",
+		"declaration": true,
+            "emitDeclarationOnly": true,
+		"strict": true,
+		"outDir": "dist",
+		"suppressImplicitAnyIndexErrors": true,
+		"baseUrl": ".",
+            "esModuleInterop": true,
+		"paths": { "@/*": ["./src/*"] },
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true
+	},
+	"include": ["src"]
+}
