@@ -1,15 +1,10 @@
-import 'gantt-task-react/dist/index.css'
-
 import clsx from 'clsx'
-import { Gantt } from 'gantt-task-react'
 
 import styles from './index.less'
 
-import type { Task } from 'gantt-task-react'
-
 const Index = () => {
 	const currentDate = new Date()
-	const tasks: Task[] = [
+	const tasks = [
 		{
 			start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
 			end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
@@ -54,11 +49,7 @@ const Index = () => {
 		}
 	]
 
-	return (
-		<div className={clsx([styles._local, 'w_100'])}>
-			<Gantt tasks={tasks} />
-		</div>
-	)
+	return <div className={clsx([styles._local, 'w_100'])}></div>
 }
 
 export default window.$app.memo(Index)
