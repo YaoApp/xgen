@@ -61,7 +61,7 @@ const Index = (props: IPropsPureForm) => {
 		if (!Object.keys(data).length) return
 		if (!onLoadSync) return
 
-		Object.keys(data).map((key) => onValuesChange({ [key]: data[key] }))
+		Object.keys(data).map((key) => onValuesChange({ [key]: data[key] }), true)
 	}, [data, onLoadSync])
 
 	useLayoutEffect(() => {

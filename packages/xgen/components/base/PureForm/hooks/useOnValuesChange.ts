@@ -10,8 +10,10 @@ export default (
 	setData: IPropsPureForm['setData'],
 	setSetting: IPropsPureForm['setSetting']
 ) => {
-	return useMemoizedFn(async (v) => {
-		if (!onChangeHook) return
+      return useMemoizedFn(async (v, isOnLoad?: boolean) => {
+            if (!onChangeHook) return
+            
+            setData(v)
 
 		const key = Object.keys(v)[0]
 		const value = v[key]
@@ -19,16 +21,12 @@ export default (
 		if (!(key in onChangeHook)) return
 
 		const [err, res] = await to<{ data: Global.AnyObject; setting: FormType.Setting }>(
-			axios.post(onChangeHook[key].api, { key, value, params: onChangeHook[key]?.params })
+			axios.post(onChangeHook[key].api, { key, value, params: onChangeHook[key]?.params, isOnLoad })
 		)
 
 		if (err) return
 
 		if (res.setting) setSetting(res.setting)
-		if (res.data && Object.keys(res.data).length) {
-			setData({ ...res.data, ...v })
-		} else {
-			setData(v)
-		}
+		if (res.data && Object.keys(res.data).length) setData(res.data)
 	})
 }
