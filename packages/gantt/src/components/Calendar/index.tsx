@@ -18,13 +18,13 @@ export const Calendar = (props: IPropsCalendar) => {
 	})
 
 	return (
-		<g className='calendar' fontSize={fontSize} fontFamily={fontFamily}>
+		<g className={styles._local} fontSize={fontSize} fontFamily={fontFamily}>
 			<rect
+				className='calendarHeader'
 				x={0}
 				y={0}
 				width={columnWidth * dateSetup.dates.length}
 				height={headerHeight}
-				className={styles.calendarHeader}
 			/>
 			{bottomValues} {topValues}
 		</g>
