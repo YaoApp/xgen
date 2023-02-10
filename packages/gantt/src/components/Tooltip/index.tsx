@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 
+import { Content } from './components'
 import { useRelated } from './hooks'
 import styles from './index.css'
 
@@ -18,11 +19,10 @@ const Index = (props: IPropsTooltip) => {
 		fontSize,
 		fontFamily,
 		headerHeight,
-		taskListWidth,
-		TooltipContent
+		taskListWidth
 	} = props
 
-	const tooltipRef = useRef<HTMLDivElement | null>(null)
+	const tooltipRef = useRef<HTMLDivElement>(null)
 
 	const [relatedX, relatedY] = useRelated({
 		tooltipRef,
@@ -40,11 +40,11 @@ const Index = (props: IPropsTooltip) => {
 
 	return (
 		<div
-			ref={tooltipRef}
 			className={relatedX ? styles.tooltipDetailsContainer : styles.tooltipDetailsContainerHidden}
+			ref={tooltipRef}
 			style={{ left: relatedX, top: relatedY }}
 		>
-			<TooltipContent task={task} fontSize={fontSize} fontFamily={fontFamily} />
+			<Content {...{ task, fontSize, fontFamily }} />
 		</div>
 	)
 }

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import styles from './index.css'
 
-import type { IPropsTooltipContent } from './types'
+import type { IPropsTooltipContent } from '../../types'
 
 const Index = (props: IPropsTooltipContent) => {
 	const { task, fontSize, fontFamily } = props
