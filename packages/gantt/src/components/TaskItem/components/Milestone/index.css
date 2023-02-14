@@ -1,0 +1,10 @@
+._local {
+	cursor: pointer;
+	outline: none;
+      
+	:global {
+		.milestoneBackground {
+			user-select: none;
+		}
+	}
+}
