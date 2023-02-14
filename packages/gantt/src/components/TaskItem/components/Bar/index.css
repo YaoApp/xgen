@@ -1,0 +1,27 @@
+._local {
+	cursor: pointer;
+	outline: none;
+
+	&:hover {
+		:global {
+			.barHandle {
+				visibility: visible;
+				opacity: 1;
+			}
+		}
+	}
+
+	:global {
+		.barHandle {
+			fill: #ddd;
+			cursor: ew-resize;
+			opacity: 0;
+			visibility: hidden;
+		}
+
+		.barBackground {
+			user-select: none;
+			stroke-width: 0;
+		}
+	}
+}

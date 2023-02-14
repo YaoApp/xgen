@@ -2,9 +2,9 @@ import { useEffect, useRef } from 'react'
 
 import { Header, Table } from './components'
 
-import type { IProps } from './types'
+import type { IPropsTaskList } from './types'
 
-const Index = (props: IProps) => {
+const Index = (props: IPropsTaskList) => {
 	const {
 		headerHeight,
 		fontFamily,

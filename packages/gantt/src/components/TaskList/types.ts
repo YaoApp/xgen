@@ -1,7 +1,7 @@
 import type { Task, BarTask } from '@/types'
 import type { RefObject } from 'react'
 
-export interface IProps {
+export interface IPropsTaskList {
 	headerHeight: number
 	rowWidth: string
 	fontFamily: string
