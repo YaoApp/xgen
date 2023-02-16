@@ -1,5 +1,3 @@
-import type { Task } from './task'
-
 export interface StylingOption {
 	headerHeight?: number
 	columnWidth?: number
@@ -24,26 +22,4 @@ export interface StylingOption {
 	arrowColor?: string
 	arrowIndent?: number
 	todayColor?: string
-	TooltipContent?: React.FC<{
-		task: Task
-		fontSize: string
-		fontFamily: string
-	}>
-	TaskListHeader?: React.FC<{
-		headerHeight: number
-		rowWidth: string
-		fontFamily: string
-		fontSize: string
-	}>
-	TaskListTable?: React.FC<{
-		rowHeight: number
-		rowWidth: string
-		fontFamily: string
-		fontSize: string
-		locale: string
-		tasks: Task[]
-		selectedTaskId: string
-		setSelectedTask: (taskId: string) => void
-		onExpanderClick: (task: Task) => void
-	}>
 }
