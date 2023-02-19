@@ -39,8 +39,11 @@ export const conventionRoutes = {
 		/hooks\.(j|t)sx?$/,
 		/locales\.(j|t)sx?$/,
 		/components\//,
+            /model\//,
+		/types\//,
 		/hooks\//,
-		/locales\//
+		/locales\//,
+		/_(.*)$/
 	]
 }
 
@@ -55,8 +58,8 @@ export const links = [
 
 export const chainWebpack = (config: Config, _: any) => {
 	const reg_shadowcss = /\.sss$/
-      const reg_shadowless = /\.lsss$/
-      
+	const reg_shadowless = /\.lsss$/
+
 	config.module.rule('asset').exclude.add(reg_shadowcss).end().exclude.add(reg_shadowless).end()
 	config.plugin('monaco-editor-webpack-plugin').use(MonacoWebpackPlugin, [{ languages: ['json', 'javascript'] }])
 
@@ -79,8 +82,7 @@ export const chainWebpack = (config: Config, _: any) => {
 		.end()
 		.use('less-loader')
 		.loader('less-loader')
-            .end()
-      
+		.end()
 }
 
 const sp_jsc_config = process.platform === 'win32' && process.env.NODE_ENV === 'development' ? { target: 'es2022' } : {}
