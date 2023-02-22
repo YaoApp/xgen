@@ -20,7 +20,7 @@ import type { IPropsPureForm } from '@/components/base/PureForm/types'
 import type { IPropsBreadcrumb, IPropsAnchor } from './types'
 
 const Index = (props: Component.FormComponent) => {
-	const { parent, model, id, form, onBack } = props
+	const { parent, parentNamespace, model, id, form, onBack } = props
 	const [x] = useState(() => container.resolve(Model))
 	const locale = getLocale()
 	const page_title_prefix = usePageTitle(locales[locale], id!, form!.type)
@@ -42,7 +42,7 @@ const Index = (props: Component.FormComponent) => {
 	})
 
 	useLayoutEffect(() => {
-		x.init(parent, model, id, form, onFormBack)
+		x.init(parent, parentNamespace, model, id, form, onFormBack)
 
 		window.$app.Event.on(`${x.namespace.value}/fullscreen`, toggleFullscreen)
 
@@ -51,7 +51,7 @@ const Index = (props: Component.FormComponent) => {
 
 			window.$app.Event.off(`${x.namespace.value}/fullscreen`, toggleFullscreen)
 		}
-	}, [parent, model, id, form, onFormBack])
+	}, [parent, parentNamespace, model, id, form, onFormBack])
 
 	const onSave = useMemoizedFn((v) => {
 		const data = { ...v }

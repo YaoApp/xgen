@@ -45,6 +45,7 @@ const Index = (props: IProps) => {
 					name='Form'
 					props={{
 						parent: 'Modal',
+						parentNamespace: namespace,
 						model: config.Form.model,
 						id,
 						form: { type: config.Form.type },

@@ -21,6 +21,7 @@ export default class Model {
 	sections = [] as Array<FormType.SectionResult>
 	rendered = false
 	form_name = ''
+	parent_namespace = '' as Component.FormComponent['parentNamespace']
 
 	constructor(
 		private service: Service,
@@ -80,7 +81,8 @@ export default class Model {
 
 		message.success(this.global.locale_messages.messages.table.save.success)
 
-		if (this.parent === 'Modal') window.$app.Event.emit(`${this.namespace.parent}/search`)
+		if (this.parent === 'Modal')
+			window.$app.Event.emit(`${this.parent_namespace ?? this.namespace.parent}/search`)
 
 		return Promise.resolve(res)
 	}
@@ -96,13 +98,15 @@ export default class Model {
 
 		message.success(this.global.locale_messages.messages.table.delete.success)
 
-		if (this.parent === 'Modal') window.$app.Event.emit(`${this.namespace.parent}/search`)
+		if (this.parent === 'Modal')
+			window.$app.Event.emit(`${this.parent_namespace ?? this.namespace.parent}/search`)
 
 		return Promise.resolve(res)
 	}
 
 	init(
 		parent: Component.StackComponent['parent'],
+		parentNamespace: Component.FormComponent['parentNamespace'],
 		model: Component.StackComponent['model'],
 		id: Component.StackComponent['id'],
 		form: Component.StackComponent['form'],
@@ -112,10 +116,11 @@ export default class Model {
 		this.data = {} as Global.AnyObject
 
 		this.form_name = `Form-${parent}-${model}`
+		this.parent_namespace = parentNamespace
 		this.global.stack.push(this.form_name)
 
-            this.namespace.paths = toJS(this.global.stack.paths)
-            
+		this.namespace.paths = toJS(this.global.stack.paths)
+
 		this.rendered = false
 		this.parent = parent
 		this.model = model

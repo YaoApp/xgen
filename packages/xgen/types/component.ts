@@ -23,6 +23,7 @@ export declare namespace Component {
 	}
 
 	interface FormComponent extends StackComponent {
+		parentNamespace?: string
 		onBack?: () => void
 	}
 

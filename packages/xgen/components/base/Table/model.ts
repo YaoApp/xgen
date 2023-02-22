@@ -175,7 +175,7 @@ export default class Model {
 				this.namespace.paths = toJS(this.global.stack.paths)
 			}
 
-			if (parent === 'Form') {
+			if (parent === 'Form' || parent === 'Dashboard') {
 				const global_stack_paths = toJS(this.global.stack.paths)
 
 				global_stack_paths.push(`Table-${parent}-${model}`)
