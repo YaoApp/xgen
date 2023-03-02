@@ -95,15 +95,15 @@ Before you run dev, you must generate theme css files to public by `pnpm run bui
 
 Only three steps for developing cloud components:
 
-### define a component like this:
+### Step1: define a component like this:
 
 ![image](https://user-images.githubusercontent.com/25472851/222555152-7cc9e166-48f7-4d68-8e9b-6bd7ca7df774.png)
 
-### update your build config in rollup:
+### Step2: update your build config in rollup:
 
 ![image](https://user-images.githubusercontent.com/25472851/222555443-adc92297-1cba-486c-a1ed-95134e628980.png)
 
-### use your component in [table/form] json:
+### Step3: use your component in [table/form] json:
 
 ![image](https://user-images.githubusercontent.com/25472851/222556074-ce13fa62-62f4-497c-936e-4889428524f1.png)
 
