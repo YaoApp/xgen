@@ -17,6 +17,7 @@ import Helmet from './components/Helmet'
 import Loading from './components/Loading'
 import Menu from './components/Menu'
 import Nav from './components/Nav'
+import Neo from './components/Neo'
 import LoginWrapper from './wrappers/Login'
 
 import type { IPropsHelmet, IPropsLoginWrapper, IPropsLoading, IPropsNav, IPropsMenu, IPropsContainer } from './types'
@@ -104,6 +105,7 @@ const Index = () => {
 							<Loading {...props_loading}></Loading>
 							<Nav {...props_nav}></Nav>
 							<Menu {...props_menu}></Menu>
+							<Neo></Neo>
 							<Container {...props_container}>
 								<Outlet />
 							</Container>
