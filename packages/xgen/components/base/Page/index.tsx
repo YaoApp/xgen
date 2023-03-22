@@ -1,6 +1,7 @@
 import { useMemoizedFn, useTitle } from 'ahooks'
 import clsx from 'clsx'
 import { toJS } from 'mobx'
+import { observer } from 'mobx-react-lite'
 
 import { useGlobal } from '@/context/app'
 
@@ -57,4 +58,4 @@ const Index = (props: IProps) => {
 	)
 }
 
-export default window.$app.memo(Index)
+export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

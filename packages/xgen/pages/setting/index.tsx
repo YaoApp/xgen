@@ -1,5 +1,6 @@
 import { Switch } from 'antd'
 import clsx from 'clsx'
+import { observer } from 'mobx-react-lite'
 
 import { useGlobal } from '@/context/app'
 import { useIntl } from '@/hooks'
@@ -39,4 +40,4 @@ const Index = () => {
 	)
 }
 
-export default window.$app.memo(Index)
+export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

@@ -26,6 +26,8 @@
             "@ant-design/icons": "^4.8.0",
             "@editorjs/editorjs": "^2.26.4",
             "@matrixage/atom.css": "^2.0.1",
+            "@mdx-js/mdx": "^2.3.0",
+            "@mdx-js/react": "^2.3.0",
             "@umijs/max": "4.0.62",
             "@yaoapp/actionflow": "workspace:*",
             "@yaoapp/editorjs_plugins": "workspace:*",
