@@ -1,5 +1,11 @@
 export declare namespace App {
-	type Theme = 'light' | 'dark'
+      type Theme = 'light' | 'dark'
+
+	interface ChatInfo {
+		is_neo: boolean
+		text: string
+		actions?: []
+	}
 
 	type Role = {
 		captcha: string

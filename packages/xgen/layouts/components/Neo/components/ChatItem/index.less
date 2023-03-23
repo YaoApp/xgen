@@ -1,0 +1,44 @@
+._local {
+	margin-top: 18px;
+
+	&.left_content {
+		:global {
+			.avatar {
+				margin-right: 12px;
+			}
+
+			.chat_content {
+				padding-bottom: 0;
+				border-top-left-radius: 0;
+			}
+		}
+	}
+
+	&.right_content {
+		:global {
+			.avatar {
+				margin-left: 12px;
+			}
+
+			.chat_content {
+				border-top-right-radius: 0;
+			}
+		}
+	}
+
+	:global {
+		.avatar {
+			width: 30px;
+			height: 30px;
+			margin-top: -6px;
+		}
+
+		.chat_content {
+			max-width: calc(100% - 42px - 42px);
+			padding: 12px;
+			font-size: 13px;
+			background-color: var(--color_bg_nav);
+			border-radius: 12px;
+		}
+	}
+}

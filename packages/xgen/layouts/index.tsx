@@ -20,7 +20,15 @@ import Nav from './components/Nav'
 import Neo from './components/Neo'
 import LoginWrapper from './wrappers/Login'
 
-import type { IPropsHelmet, IPropsLoginWrapper, IPropsLoading, IPropsNav, IPropsMenu, IPropsContainer } from './types'
+import type {
+	IPropsHelmet,
+	IPropsLoginWrapper,
+	IPropsLoading,
+	IPropsNav,
+	IPropsMenu,
+	IPropsNeo,
+	IPropsContainer
+} from './types'
 
 const Index = () => {
 	const messages = useIntl()
@@ -86,6 +94,11 @@ const Index = () => {
 		visible: global.visible_menu
 	}
 
+      const props_neo: IPropsNeo = {
+            avatar: global.avatar,
+		chat_messages: toJS(global.chat_messages)
+	}
+
 	const props_container: IPropsContainer = {
 		menu: menu_items,
 		visible_menu: global.visible_menu
@@ -105,7 +118,7 @@ const Index = () => {
 							<Loading {...props_loading}></Loading>
 							<Nav {...props_nav}></Nav>
 							<Menu {...props_menu}></Menu>
-							<Neo></Neo>
+							<Neo {...props_neo}></Neo>
 							<Container {...props_container}>
 								<Outlet />
 							</Container>

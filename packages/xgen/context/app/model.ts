@@ -3,6 +3,7 @@ import { makeAutoObservable, reaction, toJS } from 'mobx'
 import { genConfig } from 'react-nice-avatar'
 import { singleton } from 'tsyringe'
 
+import { sleep } from '@/knife'
 import { Stack } from '@/models'
 import Service from '@/services/app'
 import { getCurrentMenuIndexs } from '@/utils'
@@ -26,6 +27,7 @@ export default class GlobalModel {
 	menu_key_path = (local.menu_key_path || []) as Array<string>
 	loading: boolean = false
 	visible_menu: boolean = true
+	chat_messages = [] as Array<App.ChatInfo>
 
 	constructor(private service: Service, public stack: Stack) {
 		makeAutoObservable(this, {}, { autoBind: true })
@@ -50,6 +52,20 @@ export default class GlobalModel {
 
 		local.remote_cache = res.optional?.remoteCache ?? true
 		local.token_storage = res.token?.storage || 'sessionStorage'
+
+		return Promise.resolve()
+	}
+
+	async chat(text: string) {
+		this.chat_messages.push({ is_neo: false, text })
+
+		await sleep(900)
+
+		const { res, err } = await this.service.chat<App.ChatInfo>({ text })
+
+		if (err) return Promise.reject()
+
+		this.chat_messages.push({ ...res, is_neo: true })
 
 		return Promise.resolve()
 	}
@@ -111,11 +127,13 @@ export default class GlobalModel {
 	}
 
 	on() {
+		window.$app.Event.on('app/chat', this.chat)
 		window.$app.Event.on('app/getAppInfo', this.getAppInfo)
 		window.$app.Event.on('app/updateMenuStatus', this.updateMenuStatus)
 	}
 
 	off() {
+		window.$app.Event.off('app/chat', this.chat)
 		window.$app.Event.off('app/getAppInfo', this.getAppInfo)
 		window.$app.Event.off('app/updateMenuStatus', this.updateMenuStatus)
 	}

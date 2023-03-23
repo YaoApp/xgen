@@ -64,6 +64,17 @@ export interface IPropsMenu {
 	visible: GlobalModel['visible_menu']
 }
 
+export interface IPropsNeo {
+	avatar: GlobalModel['avatar']
+	chat_messages: GlobalModel['chat_messages']
+}
+
+export interface IPropsNeoChatItem {
+	avatar: GlobalModel['avatar']
+	chat_info: App.ChatInfo
+	callback: () => void
+}
+
 export interface IPropsContainer {
 	menu: Array<App.Menu>
 	visible_menu: GlobalModel['visible_menu']

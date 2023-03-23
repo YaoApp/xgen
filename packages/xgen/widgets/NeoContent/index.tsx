@@ -4,17 +4,18 @@ import { Fragment, useState } from 'react'
 import JsxRuntime from 'react/jsx-runtime'
 
 import { evaluate } from '@mdx-js/mdx'
-import { MDXProvider, useMDXComponents } from '@mdx-js/react'
+import { useMDXComponents } from '@mdx-js/react'
 
 import components from './components'
 import styles from './index.less'
 
 interface IProps {
 	source?: string
+	callback?: () => void
 }
 
 const Index = (props: IProps) => {
-	const { source = `<Test>world</Test>` } = props
+	const { source = `<Test>world</Test>`, callback } = props
 	const [target, setTarget] = useState<any>()
 	const mdx_components = useMDXComponents(components)
 
@@ -26,13 +27,10 @@ const Index = (props: IProps) => {
 		})
 
 		setTarget(Content)
+		callback?.()
 	}, [source])
 
-	return (
-		<div className={clsx(styles._local)}>
-			<MDXProvider components={mdx_components}>{target}</MDXProvider>
-		</div>
-	)
+	return <div className={clsx(styles._local)}>{target}</div>
 }
 
 export default window.$app.memo(Index)
