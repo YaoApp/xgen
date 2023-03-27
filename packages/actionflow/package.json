@@ -23,6 +23,7 @@
       "module": "dist/index.js",
       "types": "dist/index.d.ts",
       "scripts": {
+            "compile":"pnpm run build",
             "dev": "rollup --c rollup.dev.ts --configPlugin swc3 -w",
             "build": "rollup --c rollup.build.ts --configPlugin swc3 && tsc",
             "exec": "rollup --c rollup.build.ts --configPlugin swc3 && node dist"

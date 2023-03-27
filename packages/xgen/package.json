@@ -14,7 +14,6 @@
             "packages/*"
       ],
       "scripts": {
-            "postinstall": "max setup",
             "dev": "max dev",
             "local": "max preview --port 8000",
             "build": "pnpm run build:theme && max build && pnpm run build:after",
