@@ -236,6 +236,9 @@ importers:
       '@antv/x6':
         specifier: ^2.9.4
         version: 2.9.4
+      '@antv/x6-plugin-scroller':
+        specifier: ^2.0.8
+        version: 2.0.8(@antv/x6@2.9.4)
       '@antv/x6-react-shape':
         specifier: ^2.1.1
         version: 2.1.1(@antv/x6@2.9.4)(react-dom@18.2.0)(react@18.2.0)
@@ -281,12 +284,18 @@ importers:
       axios:
         specifier: ^0.27.2
         version: 0.27.2
+      classix:
+        specifier: ^2.1.24
+        version: 2.1.24
       clsx:
         specifier: ^1.2.1
         version: 1.2.1
       echarts:
         specifier: ^5.4.1
         version: 5.4.1
+      emittery:
+        specifier: ^1.0.1
+        version: 1.0.1
       fast-equals:
         specifier: ^5.0.1
         version: 5.0.1
@@ -837,6 +846,14 @@ packages:
 
   /@antv/x6-geometry@2.0.4:
     resolution: {integrity: sha512-dlsLNRRTiCw8TsJ/03j3y5IbbbK4Npf6zBH6kAx8nnW+edNT/TAOChvPRzizwD+vA7wY9Rp2AiRnp/vCdIYC5w==}
+    dev: false
+
+  /@antv/x6-plugin-scroller@2.0.8(@antv/x6@2.9.4):
+    resolution: {integrity: sha512-iaMhk/idMlvRHboSuwRjtEHhXVgFQiwxHLyLtfW3vkZ2qo4cRwUALK7qmyZ0XA9nGHiJxQl8QMZYqd6RmHpGUw==}
+    peerDependencies:
+      '@antv/x6': ^2.x
+    dependencies:
+      '@antv/x6': 2.9.4
     dev: false
 
   /@antv/x6-react-shape@2.1.1(@antv/x6@2.9.4)(react-dom@18.2.0)(react@18.2.0):
@@ -6305,6 +6322,10 @@ packages:
     resolution: {integrity: sha512-cOU9usZw8/dXIXKtwa8pM0OTJQuJkxMN6w30csNRUerHfeQ5R6U3kkU/FtJeIf3M202OHfY2U8ccInBG7/xogA==}
     dev: true
 
+  /classix@2.1.24:
+    resolution: {integrity: sha512-JisRdwL5G+MW7aJ5kfdutnoMIpd5VmBSeuCYXlikoWdIS9wO+QiorfvdEzLrD0zsDarV+aFGitpLYe3dRe7srA==}
+    dev: false
+
   /classnames@2.3.1:
     resolution: {integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==}
     dev: false
@@ -7254,6 +7275,11 @@ packages:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
     engines: {node: '>=12'}
     dev: true
+
+  /emittery@1.0.1:
+    resolution: {integrity: sha512-2ID6FdrMD9KDLldGesP6317G78K7km/kMcwItRtVFva7I/cSEOIaLpewaUb+YLXVwdAp3Ctfxh/V5zIl1sj7dQ==}
+    engines: {node: '>=14.16'}
+    dev: false
 
   /emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}

@@ -10,12 +10,17 @@ import {
 	useMemoizedFn,
 	useMount,
 	useSize,
-	useToggle
+	useToggle,
+	useUpdateEffect
 } from 'ahooks'
-import { Form, Input } from 'antd'
+import { Button, ConfigProvider, Drawer, Form, Input, Popover } from 'antd'
+import axios from 'axios'
+import { cx } from 'classix'
+import Emittery from 'emittery'
 import { deepEqual } from 'fast-equals'
 import { autorun, configure, makeAutoObservable, reaction, toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
+import { nanoid } from 'nanoid'
 import * as React from 'react'
 import * as ReactDom from 'react-dom'
 import * as ReactDomClient from 'react-dom/client'
@@ -24,6 +29,7 @@ import { createMakeAndWithStyles } from 'tss-react'
 import { container, injectable, singleton } from 'tsyringe'
 
 import { Graph, Markup } from '@antv/x6'
+import { Scroller } from '@antv/x6-plugin-scroller'
 import { register } from '@antv/x6-react-shape'
 
 System.set('app:react', { default: React, ...React })
@@ -31,6 +37,10 @@ System.set('app:react-dom', { default: ReactDom, ...ReactDom })
 System.set('app:react-dom/client', { default: ReactDomClient, ...ReactDomClient })
 System.set('app:react/jsx-runtime', { ...JsxRuntime })
 
+System.set('app:axios', { default: axios })
+System.set('app:emittery', { default: Emittery })
+System.set('app:nanoid', { nanoid })
+System.set('app:classix', { cx })
 System.set('app:tss-react', { createMakeAndWithStyles })
 System.set('app:fast-equals', { deepEqual })
 
@@ -40,8 +50,9 @@ System.set('app:mobx-react-lite', { observer })
 
 System.set('app:@antv/x6', { Graph, Markup })
 System.set('app:@antv/x6-react-shape', { register })
+System.set('app:@antv/x6-plugin-scroller', { Scroller })
 
-System.set('app:antd', { Input, Form })
+System.set('app:antd', { Input, Form, Drawer, Popover, Button, ConfigProvider })
 System.set('app:ahooks', {
 	useMemoizedFn,
 	useClickAway,
@@ -51,27 +62,37 @@ System.set('app:ahooks', {
 	useDeepCompareEffect,
 	useKeyPress,
 	useAsyncEffect,
-	useSize
+	useSize,
+	useUpdateEffect
 })
 
 System.addImportMap({
-	imports: {
-		[`react`]: 'app:react',
-		[`react-dom`]: 'app:react-dom',
-		[`react-dom/client`]: 'app:react-dom/client',
-		[`react/jsx-runtime`]: 'app:react/jsx-runtime',
+	imports: [
+		'react',
+		'react-dom',
+		'react-dom/client',
+		'react/jsx-runtime',
 
-		[`tss-react`]: 'app:tss-react',
-		[`fast-equals`]: 'app:fast-equals',
+		'axios',
+		'emittery',
+		'nanoid',
+		'classix',
+		'tss-react',
+		'fast-equals',
 
-		[`tsyringe`]: 'app:tsyringe',
-		[`mobx`]: 'app:mobx',
-		[`mobx-react-lite`]: 'app:mobx-react-lite',
+		'tsyringe',
+		'mobx',
+		'mobx-react-lite',
 
-		[`@antv/x6`]: 'app:@antv/x6',
-		[`@antv/x6-react-shape`]: 'app:@antv/x6-react-shape',
+		'@antv/x6',
+		'@antv/x6-react-shape',
+		'@antv/x6-plugin-scroller',
 
-		[`antd`]: 'app:antd',
-		[`ahooks`]: 'app:ahooks'
-	}
+		'antd',
+		'ahooks'
+	].reduce((total, item) => {
+		total[item] = `app:${item}`
+
+		return total
+	}, {} as Record<string, string>)
 })
