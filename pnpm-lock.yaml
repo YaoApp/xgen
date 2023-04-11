@@ -465,6 +465,10 @@ importers:
       url-pattern:
         specifier: ^1.0.3
         version: 1.0.3
+    optionalDependencies:
+      '@yaoapp/pro':
+        specifier: workspace:*
+        version: link:../pro
     devDependencies:
       '@swc/core':
         specifier: ^1.3.25
