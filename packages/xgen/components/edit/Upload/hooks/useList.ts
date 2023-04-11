@@ -16,7 +16,8 @@ export default (value: IProps['value']) => {
 				const real_item = {
 					uid: item,
 					name: item,
-					response: item
+					response: item,
+					thumbUrl: item
 				} as UploadFile<string>
 
 				if (/(webp|svg|png|gif|jpg|jpeg|jfif|bmp|dpg|ico)$/i.test(item)) {
