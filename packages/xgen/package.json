@@ -20,6 +20,9 @@
             "build:theme": "tsx ./build/theme.ts",
             "build:after": "tsx ./build/after.ts"
       },
+      "optionalDependencies": {
+            "@yaoapp/pro": "workspace:*"
+      },
       "dependencies": {
             "@abraham/reflection": "^0.11.0",
             "@ant-design/icons": "^4.8.0",

@@ -6,7 +6,9 @@
             "build": "turbo run build",
             "dev:xgen": "turbo run dev --filter=xgen",
             "build:xgen": "turbo run build --filter=xgen",
-            "prettier": "prettier --parser=typescript --write \"**/*.ts?(x)\""
+            "prettier": "prettier --parser=typescript --write \"**/*.ts?(x)\"",
+            "submodule:init": "git submodule update --init --recursive",
+            "submodule:update": "git submodule sync && git submodule update --recursive --remote --merge"
       },
       "gitHooks": {
             "pre-commit": "lint-staged --allow-empty"
