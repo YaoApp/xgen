@@ -26,6 +26,7 @@
       "dependencies": {
             "@abraham/reflection": "^0.11.0",
             "@ant-design/icons": "^4.8.0",
+            "@antv/layout": "^0.3.20",
             "@antv/x6": "^2.9.4",
             "@antv/x6-plugin-scroller": "^2.0.8",
             "@antv/x6-react-shape": "^2.1.1",
@@ -72,6 +73,7 @@
             "react-sortablejs": "^6.1.4",
             "sortablejs": "^1.15.0",
             "systemjs": "^6.13.0",
+            "ts-pattern": "^4.2.2",
             "tslib": "^2.4.1",
             "tss-react": "^4.8.2",
             "tsyringe": "^4.7.0",

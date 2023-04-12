@@ -4,7 +4,7 @@ import { base, chainWebpack, conventionRoutes, links, metas, proxy, srcTranspile
 
 export default defineConfig({
 	mfsu: { esbuild: false, strategy: 'eager', exclude: ['monaco-editor-webpack-plugin'] },
-	monorepoRedirect: { srcDir: ['./'] },
+	extraBabelIncludes: ['@yaoapp/pro'],
 	srcTranspiler: 'swc',
 	srcTranspilerOptions,
 	jsMinifier: 'swc',
