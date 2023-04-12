@@ -3,8 +3,7 @@
       "pipeline": {
             "compile": {},
             "dev": {
-                  "cache": false,
-                  "persistent": true
+                  "cache": false
             },
             "build": {
                   "dependsOn": [
