@@ -65,10 +65,12 @@ export interface IPropsMenu {
 }
 
 export interface IPropsNeo {
+	stack: string
 	api: string
 }
 
 export interface IPropsNeoChatItem {
+	context: App.Context
 	chat_info: App.ChatInfo
 	callback: () => void
 }

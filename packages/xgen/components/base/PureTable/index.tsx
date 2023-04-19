@@ -1,6 +1,6 @@
 import { useMemoizedFn } from 'ahooks'
 import { Table } from 'antd'
-import { useMemo } from 'react'
+import { useLayoutEffect, useMemo } from 'react'
 
 import { getLocale } from '@umijs/max'
 
@@ -29,6 +29,10 @@ const Index = (props: IPropsPureTable) => {
 	const in_form = parent === 'Form'
 	const { customStyle, ...rest_table_props } = table_props || {}
 	const list_columns = useColumns(namespace, primary, columns, table_props?.scroll, operation)
+
+	useLayoutEffect(() => {
+		window.$app.Event.emit('app/getContext', { namespace, primary, data: {} })
+	}, [namespace, primary])
 
 	const table_pagination: TablePaginationConfig = {
 		current: Number(pagination.page) || 1,

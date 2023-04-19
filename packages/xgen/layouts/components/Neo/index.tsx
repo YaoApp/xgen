@@ -3,7 +3,7 @@ import { Input } from 'antd'
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChatCircleText, PaperPlaneTilt, X } from 'phosphor-react'
-import { useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { Else, If, Then } from 'react-if'
 
 import { useLocation } from '@umijs/max'
@@ -13,22 +13,34 @@ import { useEventStream } from './hooks'
 import styles from './index.less'
 
 import type { IPropsNeo } from '../../types'
+import type { App } from '@/types'
+
+const { TextArea } = Input
 
 const Index = (props: IPropsNeo) => {
-	const { api } = props
+	const { stack, api } = props
 	const { pathname } = useLocation()
 	const [visible, setVisible] = useState(false)
+	const [context, setContext] = useState<App.Context>({
+		namespace: '',
+		primary: '',
+		data_item: {}
+	})
 	const ref = useRef<HTMLDivElement>(null)
 	const [value, { onChange }] = useEventTarget({ initialValue: '' })
 	const { messages, loading, setMessages } = useEventStream(api)
 
 	useKeyPress('enter', () => submit())
 
-	// useLayoutEffect(() => {
-	// 	if (!ref.current) return
+      const getContext = useMemoizedFn((ctx: App.Context) => setContext(ctx))
 
-	// 	ref.current.scrollTop = 100 + ref.current.scrollHeight - ref.current.clientHeight
-	// }, [chat_messages])
+	useLayoutEffect(() => {
+		window.$app.Event.on('app/getContext', getContext)
+
+		return () => {
+			window.$app.Event.off('app/getContext', getContext)
+		}
+	}, [])
 
 	const callback = useMemoizedFn(() => {
 		setTimeout(() => {
@@ -42,9 +54,12 @@ const Index = (props: IPropsNeo) => {
 		if (loading) return
 		if (!value) return
 
-		onChange({ target: { value: '' } })
+		setMessages([...messages, { is_neo: false, text: value, context: { stack, pathname } }])
 
-		setMessages([...messages, { is_neo: false, text: value, context: { pathname } }])
+		setTimeout(() => {
+			onChange({ target: { value: '' } })
+			callback()
+		}, 3)
 	})
 
 	return (
@@ -60,12 +75,13 @@ const Index = (props: IPropsNeo) => {
 					>
 						<div className='chatbox_transition_wrap flex flex_column'>
 							<div className='header_wrap w_100 border_box flex align_center'>
-								<span className='title'>晚上好，我是Neo，你的AI业务助手</span>
+								<span className='title'>你好，我是Neo，你的AI业务助手</span>
 							</div>
 							<div className='content_wrap w_100 justify_end' ref={ref}>
 								<div className='chat_contents w_100 border_box flex flex_column justify_end'>
 									{messages.map((item, index) => (
-										<ChatItem
+                                                            <ChatItem
+                                                                  context={context}
 											chat_info={item}
 											callback={callback}
 											key={index}
@@ -74,12 +90,13 @@ const Index = (props: IPropsNeo) => {
 								</div>
 							</div>
 							<div className='footer_wrap w_100 border_box flex align_center relative'>
-								<Input
-									className='input_chat'
+								<TextArea
+									className='input_chat flex align_center'
 									placeholder='输入业务指令或者询问任何问题'
+									autoSize
 									value={value}
 									onChange={onChange}
-								></Input>
+								></TextArea>
 								<div
 									className={clsx(
 										'btn_submit flex justify_center align_center absolute clickable',

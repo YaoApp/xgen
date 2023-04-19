@@ -95,6 +95,7 @@ const Index = () => {
 	}
 
 	const props_neo: IPropsNeo = {
+		stack: global.stack.paths.join('/'),
 		api: global.app_info.optional?.neo?.api!
 	}
 

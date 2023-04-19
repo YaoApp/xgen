@@ -5,7 +5,7 @@
 		:global {
 			.chat_content {
 				padding-bottom: 0;
-				border-top-left-radius: 0;
+				border-top-right-radius: 0;
 			}
 		}
 	}
@@ -13,7 +13,7 @@
 	&.right_content {
 		:global {
 			.chat_content {
-				border-top-right-radius: 0;
+				border-top-left-radius: 0;
 				background-color: var(--color_main);
 				color: white;
 			}
@@ -22,11 +22,20 @@
 
 	:global {
 		.chat_content {
-			max-width: calc(100% - 42px);
 			padding: 12px;
 			font-size: 13px;
 			background-color: var(--color_bg_nav);
 			border-radius: 12px;
+		}
+
+		.confirm_wrap {
+			padding-bottom: 12px;
+
+			.btn_yes {
+				&:hover {
+					text-decoration: underline;
+				}
+			}
 		}
 	}
 }

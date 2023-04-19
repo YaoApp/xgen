@@ -70,6 +70,10 @@ const Index = (props: IPropsPureForm) => {
 		return () => window.$app.Event.off(`${namespace}/submit`, submit)
 	}, [])
 
+	useLayoutEffect(() => {
+		window.$app.Event.emit('app/getContext', { namespace, primary, data })
+	}, [namespace, primary, data])
+
 	const props_actions: IPropsActions = {
 		namespace,
 		primary,

@@ -1,6 +1,6 @@
 import { useMemoizedFn } from 'ahooks'
 import ntry from 'nice-try'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { getToken } from '@/knife'
 
@@ -9,13 +9,18 @@ import type { App } from '@/types'
 export default (api: string) => {
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
 	const [loading, setLoading] = useState(false)
+	const event_source = useRef<EventSource>()
 
 	const getData = useMemoizedFn((message: App.ChatHuman) => {
 		setLoading(true)
 
 		const es = new EventSource(
-			`/api${api}?content=${message.text}&context=${JSON.stringify(message.context)}&token=${getToken()}`
+			`/api${api}?content=${encodeURIComponent(message.text)}&context=${encodeURIComponent(
+				JSON.stringify(message.context)
+			)}&token=${encodeURIComponent(getToken())}`
 		)
+
+		event_source.current = es
 
 		es.onopen = () => {
 			messages.push({ is_neo: true, text: '' })
@@ -27,16 +32,22 @@ export default (api: string) => {
 			if (!formated_data) return
 
 			const { text, confirm, actions, done } = formated_data
+			const current_answer = messages[messages.length - 1] as App.ChatAI
 
-			if (done) return setLoading(false)
+			if (done) {
+				current_answer.confirm = confirm
+				current_answer.actions = actions
+
+				setMessages(messages)
+
+				return setLoading(false)
+			}
+
 			if (!text) return
 
-			const _messages = [...messages]
-			const lastest_answer = _messages[_messages.length - 1]
+			current_answer.text = current_answer.text + text
 
-			lastest_answer.text = lastest_answer.text + text
-
-			setMessages([..._messages])
+			setMessages(messages)
 		}
 
 		es.onerror = () => {
@@ -55,6 +66,10 @@ export default (api: string) => {
 
 		getData(latest_message)
 	}, [messages])
+
+	useEffect(() => {
+		return () => event_source.current?.close()
+	}, [])
 
 	return { messages, loading, setMessages }
 }
