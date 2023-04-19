@@ -1,11 +1,21 @@
 export declare namespace App {
-      type Theme = 'light' | 'dark'
+	type Theme = 'light' | 'dark'
 
-	interface ChatInfo {
+	type ChatAI = {
 		is_neo: boolean
 		text: string
+		done: boolean
+		confirm?: boolean
 		actions?: []
 	}
+
+	type ChatHuman = {
+		is_neo: boolean
+		text: string
+		context?: { pathname: string }
+	}
+
+	type ChatInfo = ChatHuman | ChatAI
 
 	type Role = {
 		captcha: string
@@ -62,6 +72,8 @@ export declare namespace App {
 		optional?: {
 			/** remote api cache, default is true */
 			remoteCache?: boolean
+			/** neo config, for chatgpt service */
+			neo?: { api: string }
 		}
 	}
 

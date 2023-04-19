@@ -94,9 +94,8 @@ const Index = () => {
 		visible: global.visible_menu
 	}
 
-      const props_neo: IPropsNeo = {
-            avatar: global.avatar,
-		chat_messages: toJS(global.chat_messages)
+	const props_neo: IPropsNeo = {
+		api: global.app_info.optional?.neo?.api!
 	}
 
 	const props_container: IPropsContainer = {
@@ -118,10 +117,10 @@ const Index = () => {
 							<Loading {...props_loading}></Loading>
 							<Nav {...props_nav}></Nav>
 							<Menu {...props_menu}></Menu>
-							<Neo {...props_neo}></Neo>
 							<Container {...props_container}>
 								<Outlet />
 							</Container>
+							{global.app_info.optional?.neo?.api && <Neo {...props_neo}></Neo>}
 						</Fragment>
 					)}
 				</GlobalContext.Provider>

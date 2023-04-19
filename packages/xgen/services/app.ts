@@ -24,9 +24,4 @@ export default class Index {
 	getUserMenu<Res>() {
 		return axios.get<{}, Response<Res>>(`/api/${window.$app.api_prefix}/app/menu`)
 	}
-
-	@catchError()
-	chat<Res>(data: { text: string }) {
-		return axios.post<{}, Response<Res>>(`/api/neo/chat`, data)
-	}
 }

@@ -420,6 +420,9 @@ importers:
       nanoid:
         specifier: ^4.0.0
         version: 4.0.0
+      nice-try:
+        specifier: ^3.0.1
+        version: 3.0.1
       phosphor-react:
         specifier: ^1.4.1
         version: 1.4.1(react@18.2.0)
@@ -500,6 +503,9 @@ importers:
       '@types/mustache':
         specifier: ^4.2.2
         version: 4.2.2
+      '@types/nice-try':
+        specifier: ^2.1.0
+        version: 2.1.0
       '@types/node':
         specifier: ^18.11.17
         version: 18.11.18
@@ -4796,6 +4802,10 @@ packages:
 
   /@types/mustache@4.2.2:
     resolution: {integrity: sha512-MUSpfpW0yZbTgjekDbH0shMYBUD+X/uJJJMm9LXN1d5yjl5lCY1vN/eWKD6D1tOtjA6206K0zcIPnUaFMurdNA==}
+    dev: true
+
+  /@types/nice-try@2.1.0:
+    resolution: {integrity: sha512-pJaR/8Ijp4SbMJfzNLc/BgvkfbYTIvDiaheb5yGrdF4AeqPPQJq2K/Gk2tL4WasRITUAWXSa6+MvB8yyjQQnlQ==}
     dev: true
 
   /@types/node@18.11.18:
@@ -12614,6 +12624,10 @@ packages:
     resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
     dev: false
 
+  /nice-try@3.0.1:
+    resolution: {integrity: sha512-Fge6ClHO5v/z/tN31B2wlCPfRm289/ag1O2oi+EWNdAhxOZqGW1fWsisROvUuXaE7UEAYdd+upiAMvz57bK2MQ==}
+    dev: false
+
   /no-case@3.0.4:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
     dependencies:
@@ -16799,7 +16813,7 @@ packages:
         optional: true
     dependencies:
       '@emotion/cache': 11.10.7
-      '@emotion/react': 11.10.6(@types/react@18.0.33)(react@18.2.0)
+      '@emotion/react': 11.10.6(@types/react@18.0.27)(react@18.2.0)
       '@emotion/serialize': 1.1.1
       '@emotion/utils': 1.2.0
       react: 18.2.0
