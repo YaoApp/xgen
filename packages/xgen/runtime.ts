@@ -14,7 +14,7 @@ import {
 	useToggle,
 	useUpdateEffect
 } from 'ahooks'
-import { Button, ConfigProvider, Drawer, Form, Input, Popover, Select } from 'antd'
+import { Button, Checkbox, ConfigProvider, Drawer, Form, Input, Popover, Radio, Select, Table } from 'antd'
 import to from 'await-to-js'
 import axios from 'axios'
 import { cx } from 'classix'
@@ -145,7 +145,10 @@ const import_maps = {
 		Drawer,
 		Popover,
 		Button,
-		Select
+		Select,
+		Table,
+		Checkbox,
+		Radio
 	},
 	['ahooks']: {
 		useMemoizedFn,
