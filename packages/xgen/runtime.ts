@@ -14,7 +14,20 @@ import {
 	useToggle,
 	useUpdateEffect
 } from 'ahooks'
-import { Button, Checkbox, ConfigProvider, Drawer, Form, Input, Popover, Radio, Select, Table } from 'antd'
+import {
+	Button,
+	Checkbox,
+	ConfigProvider,
+	Drawer,
+	Form,
+	Input,
+	InputNumber,
+	Popover,
+	Radio,
+	Select,
+	Table,
+	Tooltip
+} from 'antd'
 import to from 'await-to-js'
 import axios from 'axios'
 import { cx } from 'classix'
@@ -26,6 +39,7 @@ import { nanoid } from 'nanoid'
 import * as React from 'react'
 import * as ReactDom from 'react-dom'
 import * as ReactDomClient from 'react-dom/client'
+import root from 'react-shadow'
 import * as JsxRuntime from 'react/jsx-runtime'
 import { match, P } from 'ts-pattern'
 import { createMakeAndWithStyles } from 'tss-react'
@@ -63,6 +77,9 @@ const import_maps = {
 		...JsxRuntime
 	},
 
+	['react-shadow']: {
+		default: root
+	},
 	['await-to-js']: {
 		default: to
 	},
@@ -148,7 +165,9 @@ const import_maps = {
 		Select,
 		Table,
 		Checkbox,
-		Radio
+		Radio,
+		InputNumber,
+		Tooltip
 	},
 	['ahooks']: {
 		useMemoizedFn,
