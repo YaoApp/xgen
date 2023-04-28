@@ -14,8 +14,10 @@ export default (api: string) => {
 	const getData = useMemoizedFn((message: App.ChatHuman) => {
 		setLoading(true)
 
+		const _api = api.startsWith('http') ? api : `/api${api}`
+
 		const es = new EventSource(
-			`/api${api}?content=${encodeURIComponent(message.text)}&context=${encodeURIComponent(
+			`${_api}?content=${encodeURIComponent(message.text)}&context=${encodeURIComponent(
 				JSON.stringify(message.context)
 			)}&token=${encodeURIComponent(getToken())}`
 		)
