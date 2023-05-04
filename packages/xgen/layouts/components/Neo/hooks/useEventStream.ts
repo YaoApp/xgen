@@ -1,4 +1,5 @@
 import { useMemoizedFn } from 'ahooks'
+import axios from 'axios'
 import ntry from 'nice-try'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
@@ -12,7 +13,7 @@ export default (api: string) => {
 	const [cmd, setCmd] = useState<App.ChatAI['command']>()
 	const event_source = useRef<EventSource>()
 
-	const neo_api = useMemo(() => (api.startsWith('http') ? api : `/api/__yao${api}`), [api])
+	const neo_api = useMemo(() => (api.startsWith('http') ? api : `/api/${window.$app.api_prefix}${api}`), [api])
 
 	const getData = useMemoizedFn((message: App.ChatHuman) => {
 		setLoading(true)
@@ -72,22 +73,12 @@ export default (api: string) => {
 		}
 	})
 
-	const exitCmd = useMemoizedFn(() => {
+	const exitCmd = useMemoizedFn(async () => {
 		setCmd(undefined)
 
-		const api = neo_api.startsWith('http') ? neo_api : `${window.location.origin}${neo_api}`
-
-		setMessages([
-			...messages,
-			{
-				is_neo: false,
-				text: `curl --location --request POST --X POST '${api}?token=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwic2lkIjoicUhnMDFDRGptOVZUWlZDLWJnUFI1MTY4MzE1MDE5MTQ0MSIsImRhdGEiOnt9LCJhdWQiOiJYaWFuZyBNZXRhZGF0YSBBZG1pbiBQYW5lbCIsImV4cCI6MTY4MzE1Mzc5OCwianRpIjoiMSIsImlhdCI6MTY4MzE1MDE5OCwiaXNzIjoieWFvIiwibmJmIjoxNjgzMTUwMTk4LCJzdWIiOiJVc2VyIFRva2VuIn0.FdL_7OiLL6aMx0zS9ar0yGYmeT1_sAgnF5gncJcruLs' \
-                        --header 'Content-Type: application/json' \
-                        --data '{
-                        "cmd": "ExitCommandMode"
-                        }'`
-			}
-		])
+		try {
+			await axios.post(`${neo_api}?token=${encodeURIComponent(getToken())}`, { cmd: 'ExitCommandMode' })
+		} catch (error) {}
 	})
 
 	useEffect(() => {
