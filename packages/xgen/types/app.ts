@@ -9,6 +9,11 @@ export declare namespace App {
 		done: boolean
 		confirm?: boolean
 		actions?: Array<Action.ActionParams>
+		command?: {
+			id: string
+			name: string
+			request: string
+		}
 	}
 
 	type ChatHuman = {

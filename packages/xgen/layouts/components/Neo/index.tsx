@@ -28,11 +28,11 @@ const Index = (props: IPropsNeo) => {
 	})
 	const ref = useRef<HTMLDivElement>(null)
 	const [value, { onChange }] = useEventTarget({ initialValue: '' })
-	const { messages, loading, setMessages } = useEventStream(api)
+	const { messages, cmd, loading, setMessages, exitCmd } = useEventStream(api)
 
 	useKeyPress('enter', () => submit())
 
-      const getContext = useMemoizedFn((ctx: App.Context) => setContext(ctx))
+	const getContext = useMemoizedFn((ctx: App.Context) => setContext(ctx))
 
 	useLayoutEffect(() => {
 		window.$app.Event.on('app/getContext', getContext)
@@ -62,6 +62,8 @@ const Index = (props: IPropsNeo) => {
 		}, 3)
 	})
 
+	console.log(cmd)
+
 	return (
 		<div className={clsx('fixed flex flex_column align_end', styles._local)}>
 			<AnimatePresence>
@@ -74,14 +76,30 @@ const Index = (props: IPropsNeo) => {
 						transition={{ duration: 0.18 }}
 					>
 						<div className='chatbox_transition_wrap flex flex_column'>
-							<div className='header_wrap w_100 border_box flex align_center'>
-								<span className='title'>你好，我是Neo，你的AI业务助手</span>
+							<div className='header_wrap w_100 border_box flex justify_between align_center'>
+								<If condition={cmd?.name}>
+									<Then>
+										<div className='title flex flex_column'>
+											<span className='cmd_title'>命令模式：</span>
+											<span className='cmd_name'>{cmd?.name}</span>
+										</div>
+										<span
+											className='btn_exit_cmd cursor_point'
+											onClick={exitCmd}
+										>
+											退出
+										</span>
+									</Then>
+									<Else>
+										<div className='title'>你好，我是Neo，你的AI业务助手</div>
+									</Else>
+								</If>
 							</div>
 							<div className='content_wrap w_100 justify_end' ref={ref}>
 								<div className='chat_contents w_100 border_box flex flex_column justify_end'>
 									{messages.map((item, index) => (
-                                                            <ChatItem
-                                                                  context={context}
+										<ChatItem
+											context={context}
 											chat_info={item}
 											callback={callback}
 											key={index}

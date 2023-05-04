@@ -1,6 +1,6 @@
 import { useMemoizedFn } from 'ahooks'
 import ntry from 'nice-try'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { getToken } from '@/knife'
 
@@ -9,15 +9,16 @@ import type { App } from '@/types'
 export default (api: string) => {
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
 	const [loading, setLoading] = useState(false)
+	const [cmd, setCmd] = useState<App.ChatAI['command']>()
 	const event_source = useRef<EventSource>()
+
+	const neo_api = useMemo(() => (api.startsWith('http') ? api : `/api/__yao${api}`), [api])
 
 	const getData = useMemoizedFn((message: App.ChatHuman) => {
 		setLoading(true)
 
-		const _api = api.startsWith('http') ? api : `/api${api}`
-
 		const es = new EventSource(
-			`${_api}?content=${encodeURIComponent(message.text)}&context=${encodeURIComponent(
+			`${neo_api}?content=${encodeURIComponent(message.text)}&context=${encodeURIComponent(
 				JSON.stringify(message.context)
 			)}&token=${encodeURIComponent(getToken())}`
 		)
@@ -33,7 +34,7 @@ export default (api: string) => {
 
 			if (!formated_data) return
 
-			const { text, confirm, actions, done } = formated_data
+			const { text, confirm, actions, done, command } = formated_data
 			const current_answer = messages[messages.length - 1] as App.ChatAI
 
 			if (done) {
@@ -41,6 +42,18 @@ export default (api: string) => {
 				current_answer.actions = actions
 
 				setMessages(messages)
+
+				if (command) setCmd(command)
+
+				return setLoading(false)
+			}
+
+			if (cmd && !command) {
+				current_answer.confirm = confirm
+				current_answer.actions = actions
+
+				setMessages(messages)
+				setCmd(undefined)
 
 				return setLoading(false)
 			}
@@ -59,6 +72,24 @@ export default (api: string) => {
 		}
 	})
 
+	const exitCmd = useMemoizedFn(() => {
+		setCmd(undefined)
+
+		const api = neo_api.startsWith('http') ? neo_api : `${window.location.origin}${neo_api}`
+
+		setMessages([
+			...messages,
+			{
+				is_neo: false,
+				text: `curl --location --request POST --X POST '${api}?token=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwic2lkIjoicUhnMDFDRGptOVZUWlZDLWJnUFI1MTY4MzE1MDE5MTQ0MSIsImRhdGEiOnt9LCJhdWQiOiJYaWFuZyBNZXRhZGF0YSBBZG1pbiBQYW5lbCIsImV4cCI6MTY4MzE1Mzc5OCwianRpIjoiMSIsImlhdCI6MTY4MzE1MDE5OCwiaXNzIjoieWFvIiwibmJmIjoxNjgzMTUwMTk4LCJzdWIiOiJVc2VyIFRva2VuIn0.FdL_7OiLL6aMx0zS9ar0yGYmeT1_sAgnF5gncJcruLs' \
+                        --header 'Content-Type: application/json' \
+                        --data '{
+                        "cmd": "ExitCommandMode"
+                        }'`
+			}
+		])
+	})
+
 	useEffect(() => {
 		if (!messages.length) return
 
@@ -73,5 +104,5 @@ export default (api: string) => {
 		return () => event_source.current?.close()
 	}, [])
 
-	return { messages, loading, setMessages }
+	return { messages, cmd, loading, setMessages, exitCmd }
 }
