@@ -62,8 +62,6 @@ const Index = (props: IPropsNeo) => {
 		}, 3)
 	})
 
-	console.log(cmd)
-
 	return (
 		<div className={clsx('fixed flex flex_column align_end', styles._local)}>
 			<AnimatePresence>
