@@ -4,6 +4,7 @@ import ntry from 'nice-try'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { getToken } from '@/knife'
+import { toUnicode } from '@/utils'
 
 import type { App } from '@/types'
 
@@ -61,7 +62,7 @@ export default (api: string) => {
 
 			if (!text) return
 
-			current_answer.text = current_answer.text + text
+			current_answer.text = current_answer.text + toUnicode(text)
 
 			setMessages(messages)
 		}

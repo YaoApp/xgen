@@ -47,7 +47,7 @@ const Index = (props: IPropsNeoChatItem) => {
 		>
 			<If condition={is_neo}>
 				<Then>
-					<div className='chat_content w_100 border_box flex flex_column'>
+                              <div className='chat_content w_100 border_box flex flex_column'>
 						<NeoContent source={text} callback={callback}></NeoContent>
 						<When condition={confirm && actions?.length}>
 							<div className='confirm_wrap flex align_center justify_between'>
