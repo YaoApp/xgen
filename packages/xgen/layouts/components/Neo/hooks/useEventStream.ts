@@ -12,8 +12,8 @@ export default (api: string) => {
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
 	const [loading, setLoading] = useState(false)
 	const [cmd, setCmd] = useState<App.ChatAI['command']>()
-	const event_source = useRef<EventSource>()
-
+      const event_source = useRef<EventSource>()
+      
 	const neo_api = useMemo(() => (api.startsWith('http') ? api : `/api/${window.$app.api_prefix}${api}`), [api])
 
 	const getData = useMemoizedFn((message: App.ChatHuman) => {
