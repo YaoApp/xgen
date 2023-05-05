@@ -40,7 +40,7 @@ const Index = (props: IPropsNeo) => {
 		return () => {
 			window.$app.Event.off('app/getContext', getContext)
 		}
-	}, [])
+      }, [])
 
 	const callback = useMemoizedFn(() => {
 		setTimeout(() => {
