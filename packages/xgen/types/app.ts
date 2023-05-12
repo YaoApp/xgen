@@ -86,7 +86,7 @@ export declare namespace App {
 			/** remote api cache, default is true */
 			remoteCache?: boolean
 			/** neo config, for chatgpt service */
-			neo?: { api: string }
+			neo?: { api: string; studio?: boolean }
 		}
 	}
 

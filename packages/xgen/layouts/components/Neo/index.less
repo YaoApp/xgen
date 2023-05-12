@@ -20,18 +20,11 @@
 
 	:global {
 		.chatbox_wrap {
-			width: 360px;
-			height: 480px;
 			border-radius: 24px;
 			background-color: var(--color_bg_menu);
 			margin-bottom: 18px;
 			box-shadow: var(--shadow);
 			overflow: hidden;
-
-			.chatbox_transition_wrap {
-				width: 360px;
-				height: 480px;
-			}
 
 			--header_height: 48px;
 
@@ -58,6 +51,18 @@
 						text-decoration: underline;
 					}
 				}
+
+				.btn_max {
+					width: 24px;
+					height: 24px;
+					margin-right: -4px;
+					border-radius: var(--radius);
+
+					&:hover {
+						color: var(--color_main);
+						background-color: var(--color_bg_nav);
+					}
+				}
 			}
 
 			.content_wrap {
@@ -67,6 +72,14 @@
 				.chat_contents {
 					padding: 18px;
 					min-height: 100%;
+				}
+
+				.btn_stop_wrap {
+                              margin-top: 18px;
+
+					.icon_stop {
+						margin-top: 1px;
+					}
 				}
 			}
 

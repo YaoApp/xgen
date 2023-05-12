@@ -14,7 +14,7 @@ export default class Flow {
 	__ORDER_LOGS__ = [] as Array<string>
 
 	public init(queue: Queue) {
-            this.raw_queue = queue
+		this.raw_queue = queue
 
 		this.pushRunQueue(queue[0])
 	}
@@ -36,7 +36,7 @@ export default class Flow {
 	private async handleTask(item: QueueItem) {
 		const { task, name, payload, next, error } = item
 
-		const [err, res] = await to(task(getTemplateValue(payload, this.results)))
+		const [err, res] = await to(task(decodeURIComponent(getTemplateValue(payload, this.results))))
 
 		const task_index = this.run_queue.findIndex((it) => it.name === name)
 

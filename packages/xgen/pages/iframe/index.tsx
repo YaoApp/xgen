@@ -1,15 +1,15 @@
 import { useLayoutEffect, useMemo } from 'react'
 
-import { history } from '@umijs/max'
+import { useLocation } from '@umijs/max'
 
 const Index = () => {
-	const { location } = history
+	const { search } = useLocation()
 
 	const src = useMemo(() => {
-		if (!location.search) return ''
+		if (!search) return ''
 
-		return new URLSearchParams(location.search).get('src') || ''
-	}, [location.search])
+		return new URLSearchParams(search).get('src') || ''
+	}, [search])
 
 	useLayoutEffect(() => {
 		document.body.style.overflow = 'hidden'

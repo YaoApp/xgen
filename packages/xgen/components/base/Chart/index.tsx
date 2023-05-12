@@ -18,6 +18,10 @@ const Index = (props: Component.BaseComponent) => {
 
 	useLayoutEffect(() => {
 		x.init(parent, model)
+
+		return () => {
+			x.off()
+		}
 	}, [parent, model])
 
 	const onFinish = useMemoizedFn((v: any) => {

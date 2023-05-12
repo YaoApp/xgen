@@ -30,12 +30,18 @@ export declare namespace Action {
 		args: Array<any>
 	}
 
+	interface Reload {
+		neo?: boolean
+	}
+
 	interface ActionMap {
 		'Common.openModal': OpenModal
 		'Common.closeModal': {}
 		'Common.historyPush': HistoryPush
 		'Common.historyBack': {}
 		'Common.confirm': Confirm
+		'Common.refetch': {}
+		'Common.reload': Reload
 		'Table.search': {}
 		'Table.save': Global.StringObject
 		'Table.delete': {}

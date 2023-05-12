@@ -134,11 +134,17 @@ export default class Model {
 		this.on(onBack)
 	}
 
+	refetch() {
+		this.getSetting()
+		this.find()
+	}
+
 	on(onBack: Component.FormComponent['onBack']) {
 		window.$app.Event.on(`${this.namespace.value}/find`, this.find)
 		window.$app.Event.on(`${this.namespace.value}/save`, this.save)
 		window.$app.Event.on(`${this.namespace.value}/delete`, this.delete)
 		window.$app.Event.on(`${this.namespace.value}/back`, onBack!)
+		window.$app.Event.on(`${this.namespace.value}/refetch`, this.refetch)
 	}
 
 	off(onBack: Component.FormComponent['onBack']) {
@@ -146,6 +152,7 @@ export default class Model {
 		window.$app.Event.off(`${this.namespace.value}/save`, this.save)
 		window.$app.Event.off(`${this.namespace.value}/delete`, this.delete)
 		window.$app.Event.off(`${this.namespace.value}/back`, onBack!)
+		window.$app.Event.off(`${this.namespace.value}/refetch`, this.refetch)
 
 		this.global.stack.remove(this.form_name)
 	}

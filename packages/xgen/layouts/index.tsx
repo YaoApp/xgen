@@ -96,7 +96,8 @@ const Index = () => {
 
 	const props_neo: IPropsNeo = {
 		stack: global.stack.paths.join('/'),
-		api: global.app_info.optional?.neo?.api!
+		api: global.app_info.optional?.neo?.api!,
+		studio: global.app_info.optional?.neo?.studio
 	}
 
 	const props_container: IPropsContainer = {

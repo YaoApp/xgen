@@ -3,18 +3,21 @@ import axios from 'axios'
 import ntry from 'nice-try'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { getToken } from '@/knife'
+import { getToken, getStudio } from '@/knife'
 import { toUnicode } from '@/utils'
 
 import type { App } from '@/types'
 
-export default (api: string) => {
+type Args = { api: string; studio?: boolean }
+
+export default ({ api, studio }: Args) => {
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
 	const [loading, setLoading] = useState(false)
 	const [cmd, setCmd] = useState<App.ChatAI['command']>()
-      const event_source = useRef<EventSource>()
-      
+	const event_source = useRef<EventSource>()
+
 	const neo_api = useMemo(() => (api.startsWith('http') ? api : `/api/${window.$app.api_prefix}${api}`), [api])
+	const studio_token = useMemo(() => (studio ? `&studio=${encodeURIComponent(getStudio())}` : ''), [studio])
 
 	const getData = useMemoizedFn((message: App.ChatHuman) => {
 		setLoading(true)
@@ -22,7 +25,7 @@ export default (api: string) => {
 		const es = new EventSource(
 			`${neo_api}?content=${encodeURIComponent(message.text)}&context=${encodeURIComponent(
 				JSON.stringify(message.context)
-			)}&token=${encodeURIComponent(getToken())}`
+			)}&token=${encodeURIComponent(getToken())}${studio_token}`
 		)
 
 		event_source.current = es
@@ -43,7 +46,7 @@ export default (api: string) => {
 				current_answer.confirm = confirm
 				current_answer.actions = actions
 
-				setMessages(messages)
+				setMessages([...messages])
 
 				if (command) setCmd(command)
 
@@ -54,7 +57,7 @@ export default (api: string) => {
 				current_answer.confirm = confirm
 				current_answer.actions = actions
 
-				setMessages(messages)
+				setMessages([...messages])
 				setCmd(undefined)
 
 				return setLoading(false)
@@ -62,9 +65,13 @@ export default (api: string) => {
 
 			if (!text) return
 
-			current_answer.text = current_answer.text + toUnicode(text)
+			if (text.startsWith('\r')) {
+				current_answer.text = toUnicode(text.replace('\r', ''))
+			} else {
+				current_answer.text = current_answer.text + toUnicode(text)
+			}
 
-			setMessages(messages)
+			setMessages([...messages])
 		}
 
 		es.onerror = () => {
@@ -74,11 +81,17 @@ export default (api: string) => {
 		}
 	})
 
+	const stop = useMemoizedFn(() => {
+		event_source.current?.close()
+	})
+
 	const exitCmd = useMemoizedFn(async () => {
 		setCmd(undefined)
 
 		try {
-			await axios.post(`${neo_api}?token=${encodeURIComponent(getToken())}`, { cmd: 'ExitCommandMode' })
+			await axios.post(`${neo_api}?token=${encodeURIComponent(getToken())}${studio_token}`, {
+				cmd: 'ExitCommandMode'
+			})
 		} catch (error) {}
 	})
 
@@ -96,5 +109,5 @@ export default (api: string) => {
 		return () => event_source.current?.close()
 	}, [])
 
-	return { messages, cmd, loading, setMessages, exitCmd }
+	return { messages, cmd, loading, setMessages, stop, exitCmd }
 }

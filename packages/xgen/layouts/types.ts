@@ -67,6 +67,7 @@ export interface IPropsMenu {
 export interface IPropsNeo {
 	stack: string
 	api: string
+	studio?: boolean
 }
 
 export interface IPropsNeoChatItem {

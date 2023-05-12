@@ -73,9 +73,25 @@ export default class Model {
 
 		this.getSetting()
 		this.search()
+		this.on()
 	}
 
 	resetSearchParams() {
 		this.search_params = {}
+	}
+
+	refetch() {
+		this.getSetting()
+		this.search()
+	}
+
+	on() {
+		window.$app.Event.on(`${this.namespace.value}/search`, this.search)
+		window.$app.Event.on(`${this.namespace.value}/refetch`, this.refetch)
+	}
+
+	off() {
+            window.$app.Event.off(`${this.namespace.value}/search`, this.search)
+		window.$app.Event.off(`${this.namespace.value}/refetch`, this.refetch)
 	}
 }

@@ -212,12 +212,18 @@ export default class Model {
 		this.search_params = {}
 	}
 
+	refetch() {
+		this.getSetting()
+		this.search()
+	}
+
 	on() {
 		window.$app.Event.on(`${this.namespace.value}/search`, this.search)
 		window.$app.Event.on(`${this.namespace.value}/save`, this.save)
 		window.$app.Event.on(`${this.namespace.value}/delete`, this.delete)
 		window.$app.Event.on(`${this.namespace.value}/batchDelete`, this.batchDelete)
 		window.$app.Event.on(`${this.namespace.value}/batchUpdate`, this.batchUpdate)
+		window.$app.Event.on(`${this.namespace.value}/refetch`, this.refetch)
 	}
 
 	off() {
@@ -226,6 +232,7 @@ export default class Model {
 		window.$app.Event.off(`${this.namespace.value}/delete`, this.delete)
 		window.$app.Event.off(`${this.namespace.value}/batchDelete`, this.batchDelete)
 		window.$app.Event.off(`${this.namespace.value}/batchUpdate`, this.batchUpdate)
+		window.$app.Event.off(`${this.namespace.value}/refetch`, this.refetch)
 
 		this.global.stack.remove(this.namespace.paths.slice(-1)[0])
 	}

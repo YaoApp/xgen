@@ -1,12 +1,13 @@
 import { useEventTarget, useKeyPress, useMemoizedFn } from 'ahooks'
-import { Input } from 'antd'
+import { Input, Button } from 'antd'
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ChatCircleText, PaperPlaneTilt, X } from 'phosphor-react'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { ChatCircleText, PaperPlaneTilt, X, ArrowsOutSimple, ArrowsInSimple, Stop } from 'phosphor-react'
+import { useLayoutEffect, useEffect, useRef, useState } from 'react'
 import { Else, If, Then } from 'react-if'
 
-import { useLocation } from '@umijs/max'
+import { useLocation, getLocale } from '@umijs/max'
+import { local } from '@yaoapp/storex'
 
 import { ChatItem } from './components'
 import { useEventStream } from './hooks'
@@ -18,9 +19,11 @@ import type { App } from '@/types'
 const { TextArea } = Input
 
 const Index = (props: IPropsNeo) => {
-	const { stack, api } = props
+	const { stack, api, studio } = props
+	const locale = getLocale()
 	const { pathname } = useLocation()
 	const [visible, setVisible] = useState(false)
+	const [max, setMax] = useState(() => local.neo_max ?? false)
 	const [context, setContext] = useState<App.Context>({
 		namespace: '',
 		primary: '',
@@ -28,19 +31,27 @@ const Index = (props: IPropsNeo) => {
 	})
 	const ref = useRef<HTMLDivElement>(null)
 	const [value, { onChange }] = useEventTarget({ initialValue: '' })
-	const { messages, cmd, loading, setMessages, exitCmd } = useEventStream(api)
+	const { messages, cmd, loading, setMessages, stop, exitCmd } = useEventStream({ api, studio })
+	const is_cn = locale === 'zh-CN'
 
 	useKeyPress('enter', () => submit())
 
+	useEffect(() => {
+		local.neo_max = max
+	}, [max])
+
 	const getContext = useMemoizedFn((ctx: App.Context) => setContext(ctx))
+	const setNeoVisible = useMemoizedFn(() => setVisible(true))
 
 	useLayoutEffect(() => {
 		window.$app.Event.on('app/getContext', getContext)
+		window.$app.Event.on('app/setNeoVisible', setNeoVisible)
 
 		return () => {
 			window.$app.Event.off('app/getContext', getContext)
+			window.$app.Event.off('app/setNeoVisible', setNeoVisible)
 		}
-      }, [])
+	}, [])
 
 	const callback = useMemoizedFn(() => {
 		setTimeout(() => {
@@ -69,27 +80,47 @@ const Index = (props: IPropsNeo) => {
 					<motion.div
 						className='chatbox_wrap'
 						initial={{ opacity: 0, width: 0, height: 0 }}
-						animate={{ opacity: 1, width: 360, height: 480 }}
+						animate={{
+							opacity: 1,
+							width: max ? 720 : 360,
+							height: max ? 'calc(100vh - 30px - 48px - 18px - 60px)' : 480
+						}}
 						exit={{ opacity: 0, width: 0, height: 0 }}
 						transition={{ duration: 0.18 }}
 					>
-						<div className='chatbox_transition_wrap flex flex_column'>
+						<div className='chatbox_transition_wrap w_100 h_100 flex flex_column'>
 							<div className='header_wrap w_100 border_box flex justify_between align_center'>
 								<If condition={cmd?.name}>
 									<Then>
 										<div className='title flex flex_column'>
-											<span className='cmd_title'>命令模式：</span>
+											<span className='cmd_title'>
+												{is_cn ? '命令模式：' : 'Command mode:'}
+											</span>
 											<span className='cmd_name'>{cmd?.name}</span>
 										</div>
 										<span
 											className='btn_exit_cmd cursor_point'
 											onClick={exitCmd}
 										>
-											退出
+											{is_cn ? '退出' : 'Exit'}
 										</span>
 									</Then>
 									<Else>
-										<div className='title'>你好，我是Neo，你的AI业务助手</div>
+										<div className='title'>
+											{is_cn
+												? '你好，我是Neo，你的AI业务助手'
+												: 'Hello, I am Neo, your AI business assistant.'}
+										</div>
+										<div
+											className='btn_max flex justify_center align_center clickable'
+											onClick={() => setMax(!max)}
+										>
+											{max ? (
+												<ArrowsInSimple size={16} />
+											) : (
+												<ArrowsOutSimple size={16} />
+											)}
+										</div>
 									</Else>
 								</If>
 							</div>
@@ -103,12 +134,32 @@ const Index = (props: IPropsNeo) => {
 											key={index}
 										></ChatItem>
 									))}
+									{loading && (
+										<div className='btn_stop_wrap w_100 flex justify_center'>
+											<Button
+												className='flex align_center'
+												icon={
+													<Stop
+														className='icon_stop mr_4'
+														size={16}
+													></Stop>
+												}
+												onClick={stop}
+											>
+												{is_cn ? '停止生成' : 'Stop generating'}
+											</Button>
+										</div>
+									)}
 								</div>
 							</div>
 							<div className='footer_wrap w_100 border_box flex align_center relative'>
 								<TextArea
 									className='input_chat flex align_center'
-									placeholder='输入业务指令或者询问任何问题'
+									placeholder={
+										is_cn
+											? '输入业务指令或者询问任何问题'
+											: 'Input business commands or ask any questions.'
+									}
 									autoSize
 									value={value}
 									onChange={onChange}

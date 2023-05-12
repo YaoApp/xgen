@@ -6,6 +6,7 @@ import { Else, If, Then, When } from 'react-if'
 
 import { useAction } from '@/actions'
 import { NeoContent } from '@/widgets'
+import { getLocale } from '@umijs/max'
 
 import styles from './index.less'
 
@@ -16,7 +17,9 @@ const Index = (props: IPropsNeoChatItem) => {
 	const { context, chat_info, callback } = props
 	const { is_neo, text } = chat_info as App.ChatHuman
 	const { confirm, actions } = chat_info as App.ChatAI
+	const locale = getLocale()
 	const onAction = useAction()
+	const is_cn = locale === 'zh-CN'
 
 	const onExecActions = useMemoizedFn(() => {
 		onAction({
@@ -47,17 +50,21 @@ const Index = (props: IPropsNeoChatItem) => {
 		>
 			<If condition={is_neo}>
 				<Then>
-                              <div className='chat_content w_100 border_box flex flex_column'>
+					<div className='chat_content w_100 border_box flex flex_column'>
 						<NeoContent source={text} callback={callback}></NeoContent>
 						<When condition={confirm && actions?.length}>
 							<div className='confirm_wrap flex align_center justify_between'>
-								<span className='text'>消息包含业务指令，是否执行？</span>
+								<span className='text'>
+									{is_cn
+										? '消息包含业务指令，是否执行？'
+										: 'The message contains business commands, shall I proceed with the execution?'}
+								</span>
 								<div
 									className='btn_yes flex align_center cursor_point'
 									onClick={onExecActions}
 								>
 									<Check className='mr_2' size={15}></Check>
-									<span>执行</span>
+									<span>{is_cn ? '执行' : 'Exec'}</span>
 								</div>
 							</div>
 						</When>
