@@ -4,7 +4,7 @@ import ntry from 'nice-try'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { getToken, getStudio } from '@/knife'
-import { toUnicode } from '@/utils'
+import { retryUntil, toUnicode } from '@/utils'
 
 import type { App } from '@/types'
 
@@ -16,8 +16,23 @@ export default ({ api, studio }: Args) => {
 	const [cmd, setCmd] = useState<App.ChatAI['command']>()
 	const event_source = useRef<EventSource>()
 
-	const neo_api = useMemo(() => (api.startsWith('http') ? api : `/api/${window.$app.api_prefix}${api}`), [api])
-	const studio_token = useMemo(() => (studio ? `&studio=${encodeURIComponent(getStudio())}` : ''), [studio])
+	const neo_api = useMemo(() => {
+		if (api.startsWith('http')) {
+			return api
+		}
+
+		if (studio) {
+			const { protocol, hostname } = window.location
+			return `${protocol}//${hostname}:${getStudio().port}${api}`
+		}
+
+		return `/api/${window.$app.api_prefix}${api}`
+	}, [api])
+
+	const studio_token = useMemo(
+		() => (studio ? `&studio=${encodeURIComponent('Bearer ' + getStudio().token)}` : ''),
+		[studio]
+	)
 
 	const getData = useMemoizedFn((message: App.ChatHuman) => {
 		setLoading(true)
@@ -71,7 +86,11 @@ export default ({ api, studio }: Args) => {
 				current_answer.text = current_answer.text + toUnicode(text)
 			}
 
-			setMessages([...messages])
+			const message_new = [...messages]
+			if (message_new.length > 0) {
+				message_new[message_new.length - 1] = { ...current_answer }
+				setMessages(message_new)
+			}
 		}
 
 		es.onerror = () => {
