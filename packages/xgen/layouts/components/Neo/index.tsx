@@ -88,8 +88,8 @@ const Index = (props: IPropsNeo) => {
 						exit={{ opacity: 0, width: 0, height: 0 }}
 						transition={{ duration: 0.18 }}
 					>
-						<div className='chatbox_transition_wrap w_100 h_100 flex flex_column'>
-							<div className='header_wrap w_100 border_box flex justify_between align_center'>
+						<div className='chatbox_transition_wrap w_100 h_100 flex flex_column relative'>
+							<div className='header_wrap w_100 border_box flex justify_between align_center absolute top_0'>
 								<If condition={cmd?.name}>
 									<Then>
 										<div className='title flex flex_column'>

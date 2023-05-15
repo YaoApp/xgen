@@ -2,6 +2,7 @@ import { useAsyncEffect } from 'ahooks'
 import clsx from 'clsx'
 import { Fragment, useState } from 'react'
 import * as JsxRuntime from 'react/jsx-runtime'
+import rehypeHighlight from 'rehype-highlight'
 import remarkGfm from 'remark-gfm'
 
 import { compile, run } from '@mdx-js/mdx'
@@ -18,14 +19,18 @@ interface IProps {
 const Index = (props: IProps) => {
 	const { source, callback } = props
 	const [target, setTarget] = useState<any>()
-      const mdx_components = useMDXComponents(components)
-      
-	useAsyncEffect(async () => {
+	const mdx_components = useMDXComponents(components)
+
+      useAsyncEffect(async () => {
+		console.log(source)
+            
 		const compiled_source = await compile(source, {
 			outputFormat: 'function-body',
 			providerImportSource: '#',
-			remarkPlugins: [remarkGfm]
-		})
+			remarkPlugins: [remarkGfm],
+			rehypePlugins: [rehypeHighlight]
+            })
+
 		const { default: Content } = await run(compiled_source, {
 			...JsxRuntime,
 			Fragment,

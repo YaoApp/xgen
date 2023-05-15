@@ -4,7 +4,7 @@ import ntry from 'nice-try'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { getToken, getStudio } from '@/knife'
-import { retryUntil, toUnicode } from '@/utils'
+import { toUnicode } from '@/utils'
 
 import type { App } from '@/types'
 

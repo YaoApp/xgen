@@ -13,6 +13,18 @@
 	}
 }
 
+[data-theme='dark'] {
+	._local {
+		:global {
+			.chatbox_wrap {
+				.header_wrap {
+					background-color: rgba(0, 0, 0, 0.6);
+				}
+			}
+		}
+	}
+}
+
 ._local {
 	z-index: 1000;
 	right: 30px;
@@ -33,6 +45,8 @@
 				padding: 0 18px;
 				border-bottom: 1px solid var(--color_border_light);
 				line-height: 1;
+				backdrop-filter: saturate(180%) blur(15px);
+				background-color: rgba(255, 255, 255, 0.6);
 
 				.cmd_title {
 					font-size: 12px;
@@ -71,11 +85,12 @@
 
 				.chat_contents {
 					padding: 18px;
+					padding-top: 48px;
 					min-height: 100%;
 				}
 
 				.btn_stop_wrap {
-                              margin-top: 18px;
+					margin-top: 18px;
 
 					.icon_stop {
 						margin-top: 1px;
