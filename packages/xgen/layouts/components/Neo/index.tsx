@@ -82,8 +82,8 @@ const Index = (props: IPropsNeo) => {
 						initial={{ opacity: 0, width: 0, height: 0 }}
 						animate={{
 							opacity: 1,
-							width: max ? 720 : 360,
-							height: max ? 'calc(100vh - 30px - 48px - 18px - 60px)' : 480
+							width: max ? 900 : 360,
+							height: max ? 'min(1200px,calc(100vh - 30px - 48px - 18px - 60px))' : 480
 						}}
 						exit={{ opacity: 0, width: 0, height: 0 }}
 						transition={{ duration: 0.18 }}

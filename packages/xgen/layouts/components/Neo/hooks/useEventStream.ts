@@ -17,17 +17,13 @@ export default ({ api, studio }: Args) => {
 	const event_source = useRef<EventSource>()
 
 	const neo_api = useMemo(() => {
-		if (api.startsWith('http')) {
-			return api
-		}
+		const { protocol, hostname } = window.location
 
-		if (studio) {
-			const { protocol, hostname } = window.location
-			return `${protocol}//${hostname}:${getStudio().port}${api}`
-		}
+		if (api.startsWith('http')) return api
+		if (studio) return `${protocol}//${hostname}:${getStudio().port}${api}`
 
 		return `/api/${window.$app.api_prefix}${api}`
-	}, [api])
+	}, [api, studio])
 
 	const studio_token = useMemo(
 		() => (studio ? `&studio=${encodeURIComponent('Bearer ' + getStudio().token)}` : ''),
@@ -87,8 +83,10 @@ export default ({ api, studio }: Args) => {
 			}
 
 			const message_new = [...messages]
+
 			if (message_new.length > 0) {
 				message_new[message_new.length - 1] = { ...current_answer }
+
 				setMessages(message_new)
 			}
 		}
@@ -101,6 +99,8 @@ export default ({ api, studio }: Args) => {
 	})
 
 	const stop = useMemoizedFn(() => {
+		setLoading(false)
+
 		event_source.current?.close()
 	})
 

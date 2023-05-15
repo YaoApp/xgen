@@ -36,7 +36,7 @@ export default class Flow {
 	private async handleTask(item: QueueItem) {
 		const { task, name, payload, next, error } = item
 
-		const [err, res] = await to(task(decodeURIComponent(getTemplateValue(payload, this.results))))
+		const [err, res] = await to(task(getTemplateValue(payload, this.results)))
 
 		const task_index = this.run_queue.findIndex((it) => it.name === name)
 
