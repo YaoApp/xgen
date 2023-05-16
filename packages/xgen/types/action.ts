@@ -18,6 +18,7 @@ export declare namespace Action {
 		pathname: string
 		search?: any
 		public?: boolean
+		refetch?: boolean
 	}
 
 	interface Confirm {

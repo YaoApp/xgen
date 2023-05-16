@@ -1,5 +1,5 @@
-import { default as H1 } from './H1'
+import { default as Code } from './Code'
 
 export default {
-	Test: H1
+	code: Code
 }

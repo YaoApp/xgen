@@ -24,6 +24,7 @@ const Index = (props: IPropsNeo) => {
 	const { pathname } = useLocation()
 	const [visible, setVisible] = useState(false)
 	const [max, setMax] = useState(() => local.neo_max ?? false)
+	const [resized, setResized] = useState(false)
 	const [context, setContext] = useState<App.Context>({
 		namespace: '',
 		primary: '',
@@ -154,7 +155,10 @@ const Index = (props: IPropsNeo) => {
 							</div>
 							<div className='footer_wrap w_100 border_box flex align_center relative'>
 								<TextArea
-									className='input_chat flex align_center'
+									className={clsx(
+										'input_chat flex align_center',
+										resized && 'resized'
+									)}
 									placeholder={
 										is_cn
 											? '输入业务指令或者询问任何问题'
@@ -163,6 +167,7 @@ const Index = (props: IPropsNeo) => {
 									autoSize
 									value={value}
 									onChange={onChange}
+									onResize={({ height }) => setResized(height > 38)}
 								></TextArea>
 								<div
 									className={clsx(

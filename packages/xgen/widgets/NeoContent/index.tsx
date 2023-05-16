@@ -4,6 +4,7 @@ import { Fragment, useState } from 'react'
 import * as JsxRuntime from 'react/jsx-runtime'
 import rehypeHighlight from 'rehype-highlight'
 import remarkGfm from 'remark-gfm'
+import { visit } from 'unist-util-visit'
 
 import { compile, run } from '@mdx-js/mdx'
 import { useMDXComponents } from '@mdx-js/react'
@@ -21,15 +22,44 @@ const Index = (props: IProps) => {
 	const [target, setTarget] = useState<any>()
 	const mdx_components = useMDXComponents(components)
 
-      useAsyncEffect(async () => {
-		console.log(source)
-            
+	useAsyncEffect(async () => {
 		const compiled_source = await compile(source, {
+			format: 'mdx',
 			outputFormat: 'function-body',
 			providerImportSource: '#',
 			remarkPlugins: [remarkGfm],
-			rehypePlugins: [rehypeHighlight]
-            })
+			rehypePlugins: [
+				() => (tree) => {
+                              visit(tree, (node) => {
+                                    if (node?.type === 'text' && node?.value === '\n') {
+                                          node.type='element'
+                                          node.tagName='p'
+                                          node.properties={className:'_newline'}
+                                    }
+
+						if (node?.type === 'element' && node?.tagName === 'pre') {
+							const [codeEl] = node.children
+
+							if (codeEl.tagName !== 'code') return
+
+							node.raw = codeEl.children?.[0].value
+						}
+					})
+				},
+				rehypeHighlight,
+				() => (tree) => {
+                              visit(tree, (node) => {
+						if (node?.type === 'element' && node?.tagName === 'pre') {
+							for (const child of node.children) {
+								if (child.tagName === 'code') {
+									child.properties['raw'] = node.raw
+								}
+							}
+						}
+					})
+				}
+			]
+		})
 
 		const { default: Content } = await run(compiled_source, {
 			...JsxRuntime,

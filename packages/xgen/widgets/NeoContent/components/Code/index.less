@@ -1,0 +1,131 @@
+._local {
+	border-radius: var(--radius);
+	border: 1px solid var(--color_border);
+	color: #d0d0d0;
+	background: #232326;
+      
+	:global {
+		.code_header_wrap {
+                  height: 37px;
+			padding: 0px 18px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
+			.lang {
+				font-size: 14px;
+				font-weight: bold;
+			}
+
+			.btn_copy {
+				width: 24px;
+				height: 24px;
+				margin-right: -4px;
+				background-color: rgba(255, 255, 255, 0.15);
+				border-radius: var(--radius);
+
+				&:hover {
+					background-color: rgba(255, 255, 255, 0.24);
+				}
+			}
+		}
+
+		.code_content_wrap {
+			display: block;
+			overflow-x: auto;
+			padding: 12px 18px;
+		}
+
+
+		.hljs ::selection,
+		.hljs::selection {
+			background-color: var(--color_main);
+			color: #d0d0d0;
+		}
+		.hljs-comment {
+			color: #505050;
+		}
+		.hljs-tag {
+			color: #b0b0b0;
+		}
+		.hljs-operator,
+		.hljs-punctuation,
+		.hljs-subst {
+			color: #d0d0d0;
+		}
+		.hljs-operator {
+			opacity: 0.7;
+		}
+		.hljs-bullet,
+		.hljs-deletion,
+		.hljs-name,
+		.hljs-selector-tag,
+		.hljs-template-variable,
+		.hljs-variable {
+			color: #fb9fb1;
+		}
+		.hljs-attr,
+		.hljs-link,
+		.hljs-literal,
+		.hljs-number,
+		.hljs-symbol,
+		.hljs-variable.constant_ {
+			color: #eda987;
+		}
+		.hljs-class .hljs-title,
+		.hljs-title,
+		.hljs-title.class_ {
+			color: #ddb26f;
+		}
+		.hljs-strong {
+			font-weight: 700;
+			color: #ddb26f;
+		}
+		.hljs-addition,
+		.hljs-code,
+		.hljs-string,
+		.hljs-title.class_.inherited__ {
+			color: #acc267;
+		}
+		.hljs-built_in,
+		.hljs-doctag,
+		.hljs-keyword.hljs-atrule,
+		.hljs-quote,
+		.hljs-regexp {
+			color: #12cfc0;
+		}
+		.hljs-attribute,
+		.hljs-function .hljs-title,
+		.hljs-section,
+		.hljs-title.function_,
+		.ruby .hljs-property {
+			color: #6fc2ef;
+		}
+		.diff .hljs-meta,
+		.hljs-keyword,
+		.hljs-template-tag,
+		.hljs-type {
+			color: #e1a3ee;
+		}
+		.hljs-emphasis {
+			color: #e1a3ee;
+			font-style: italic;
+		}
+		.hljs-meta,
+		.hljs-meta .hljs-keyword,
+		.hljs-meta .hljs-string {
+			color: #deaf8f;
+		}
+		.hljs-meta .hljs-keyword,
+		.hljs-meta-keyword {
+			font-weight: 700;
+		}
+	}
+}
+
+.inline {
+	background-color: var(--color_bg);
+	padding: 3px 6px;
+	border-radius: var(--radius);
+	border-bottom: 2px solid var(--color_border);
+	font-weight: bold;
+      font-size: 12px;
+}

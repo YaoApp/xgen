@@ -11,10 +11,17 @@
 
 	&.right_content {
 		:global {
+                  ::selection{
+                        background-color: white;
+                        color: black;
+                  }
+
 			.chat_content {
 				border-top-left-radius: 0;
 				background-color: var(--color_main);
 				color: white;
+
+                        
 			}
 		}
 	}

@@ -18,7 +18,7 @@
 		:global {
 			.chatbox_wrap {
 				.header_wrap {
-					background-color: rgba(0, 0, 0, 0.6);
+					background-color: rgba(47, 47, 52, 0.81);
 				}
 			}
 		}
@@ -45,9 +45,9 @@
 				padding: 0 18px;
 				border-bottom: 1px solid var(--color_border_light);
 				line-height: 1;
-				backdrop-filter: saturate(180%) blur(15px);
-				background-color: rgba(255, 255, 255, 0.6);
-
+				backdrop-filter: saturate(180%) blur(6px);
+				background-color: rgba(255, 255, 255, 0.81);
+                        
 				.cmd_title {
 					font-size: 12px;
 					margin-bottom: 3px;
@@ -109,6 +109,10 @@
 					border-radius: 38px;
 					background-color: var(--color_bg_nav);
 					line-height: 24px;
+
+                              &.resized{
+                                    border-radius: 16px;
+                              }
 				}
 
 				.btn_submit {
