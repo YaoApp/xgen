@@ -516,6 +516,9 @@ importers:
       url-pattern:
         specifier: ^1.0.3
         version: 1.0.3
+      vfile:
+        specifier: ^5.3.7
+        version: 5.3.7
     optionalDependencies:
       '@yaoapp/pro':
         specifier: workspace:*

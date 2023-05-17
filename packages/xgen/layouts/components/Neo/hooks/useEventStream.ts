@@ -35,17 +35,17 @@ export default ({ api, studio }: Args) => {
 	// 	if (!neo_api) return
 
 	// 	const [err, res] = await to(
-	// 		axios.get(`${neo_api}/history?&token=${encodeURIComponent(getToken())}${studio_token}`)
-      //       )
+	// 		axios.get(`${neo_api}/history?token=${encodeURIComponent(getToken())}${studio_token}`)
+	// 	)
 
 	// 	console.log(err, res)
-      // }, [ neo_api, studio_token ])
-      
-      // useAsyncEffect(async () => {
+	// }, [neo_api, studio_token])
+
+	// useAsyncEffect(async () => {
 	// 	if (!neo_api) return
 
-      //       const [err, res] = await to(
-	// 		axios.get(`${neo_api}/commands?&token=${encodeURIComponent(getToken())}${studio_token}`)
+	// 	const [err, res] = await to(
+	// 		axios.get(`${neo_api}/commands?token=${encodeURIComponent(getToken())}${studio_token}`)
 	// 	)
 
 	// 	console.log(err, res)
