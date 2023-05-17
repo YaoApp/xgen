@@ -3,17 +3,25 @@ import type { Action } from '@/types'
 export declare namespace App {
 	type Theme = 'light' | 'dark'
 
+	type ChatCmd = {
+		id: string
+		name: string
+		request: string
+      }
+      
+      type ChatCommand = {
+		use: string
+		name: string
+		description: string
+	}
+
 	type ChatAI = {
 		is_neo: boolean
 		text: string
 		done: boolean
 		confirm?: boolean
 		actions?: Array<Action.ActionParams>
-		command?: {
-			id: string
-			name: string
-			request: string
-		}
+		command?: ChatCmd
 	}
 
 	type ChatHuman = {
@@ -23,6 +31,14 @@ export declare namespace App {
 	}
 
 	type ChatInfo = ChatHuman | ChatAI
+
+	type ChatHistory = {
+		command?: ChatCmd
+		data: Array<{
+			content: string
+			role: 'user' | 'assistant'
+		}>
+	}
 
 	interface Context {
 		namespace: string

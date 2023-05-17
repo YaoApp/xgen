@@ -18,7 +18,7 @@
 		:global {
 			.chatbox_wrap {
 				.header_wrap {
-					background-color: rgba(47, 47, 52, 0.81);
+					background-color: rgba(47, 47, 52, 0.9);
 				}
 			}
 		}
@@ -45,9 +45,9 @@
 				padding: 0 18px;
 				border-bottom: 1px solid var(--color_border_light);
 				line-height: 1;
-				backdrop-filter: saturate(180%) blur(6px);
-				background-color: rgba(255, 255, 255, 0.81);
-                        
+				backdrop-filter: saturate(180%) blur(12px);
+				background-color: rgba(255, 255, 255, 0.9);
+
 				.cmd_title {
 					font-size: 12px;
 					margin-bottom: 3px;
@@ -110,9 +110,9 @@
 					background-color: var(--color_bg_nav);
 					line-height: 24px;
 
-                              &.resized{
-                                    border-radius: 16px;
-                              }
+					&.resized {
+						border-radius: 16px;
+					}
 				}
 
 				.btn_submit {
@@ -164,6 +164,50 @@
 
 			svg {
 				fill: var(--color_main);
+			}
+		}
+	}
+}
+
+.commands_popover {
+	:global {
+		.xgen-popover-inner-content {
+			padding: 0;
+		}
+	}
+}
+
+.commands {
+      padding: 8px;
+      overflow-y: scroll;
+
+	:global {
+		.command_item_wrap {
+			background-color: var(--color_bg_nav);
+			padding: 6px 8px;
+			margin-bottom: 6px;
+                  border-radius: var(--radius);
+
+                  &:hover{
+                        background-color: var(--color_bg);
+                  }
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+
+			.command_use {
+				color: var(--color_main);
+				font-weight: bold;
+			}
+
+			.command_name {
+                        margin-right: 6px;
+			}
+
+			.command_desc {
+                        color: var(--color_text_grey);
+                        font-size: 12px;
 			}
 		}
 	}

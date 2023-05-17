@@ -1,11 +1,12 @@
 import { useEventTarget, useKeyPress, useMemoizedFn } from 'ahooks'
-import { Input, Button } from 'antd'
+import { Input, Button, Popover } from 'antd'
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChatCircleText, PaperPlaneTilt, X, ArrowsOutSimple, ArrowsInSimple, Stop } from 'phosphor-react'
-import { useLayoutEffect, useEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useEffect, useRef, useState, useMemo } from 'react'
 import { Else, If, Then } from 'react-if'
 
+import { fuzzyQuery } from '@/knife'
 import { useLocation, getLocale } from '@umijs/max'
 import { local } from '@yaoapp/storex'
 
@@ -22,9 +23,12 @@ const Index = (props: IPropsNeo) => {
 	const { stack, api, studio } = props
 	const locale = getLocale()
 	const { pathname } = useLocation()
+	const textarea = useRef<HTMLTextAreaElement>(null)
 	const [visible, setVisible] = useState(false)
 	const [max, setMax] = useState(() => local.neo_max ?? false)
 	const [resized, setResized] = useState(false)
+	const [visible_commands, setVisibleCommands] = useState(false)
+	const [search_commands, setSearchCommands] = useState<Array<App.ChatCommand>>([])
 	const [context, setContext] = useState<App.Context>({
 		namespace: '',
 		primary: '',
@@ -32,7 +36,7 @@ const Index = (props: IPropsNeo) => {
 	})
 	const ref = useRef<HTMLDivElement>(null)
 	const [value, { onChange }] = useEventTarget({ initialValue: '' })
-	const { messages, cmd, loading, setMessages, stop, exitCmd } = useEventStream({ api, studio })
+	const { messages, cmd, commands, loading, setMessages, stop, exitCmd } = useEventStream({ api, studio })
 	const is_cn = locale === 'zh-CN'
 
 	useKeyPress('enter', () => submit())
@@ -40,6 +44,22 @@ const Index = (props: IPropsNeo) => {
 	useEffect(() => {
 		local.neo_max = max
 	}, [max])
+
+	useEffect(() => {
+		if (!value || value?.indexOf(' ') !== -1) {
+			setVisibleCommands(false)
+
+			return
+		}
+
+		if (value.startsWith('/')) setVisibleCommands(true)
+	}, [value])
+
+	useEffect(() => {
+		if (!value || value?.indexOf(' ') !== -1 || !visible_commands) return
+
+		setSearchCommands(fuzzyQuery(commands, value.replace('/', ''), 'name'))
+	}, [commands, value, visible_commands])
 
 	const getContext = useMemoizedFn((ctx: App.Context) => setContext(ctx))
 	const setNeoVisible = useMemoizedFn(() => setVisible(true))
@@ -73,6 +93,35 @@ const Index = (props: IPropsNeo) => {
 			callback()
 		}, 3)
 	})
+
+	const onCommand = useMemoizedFn((use: string) => {
+		onChange({ target: { value: `/${use} ` } })
+
+		textarea.current?.focus()
+	})
+
+	const Commands = useMemo(() => {
+		return (
+			<div
+				className={clsx('border_box', styles.commands)}
+				style={{ width: `calc(${max ? 900 : 360}px - 9px * 2)`, maxHeight: max ? 720 : 360 }}
+			>
+				{(search_commands.length ? search_commands : commands).map((item) => (
+					<div
+						className='command_item_wrap w_100 flex flex_column'
+						key={item.use}
+						onClick={() => onCommand(item.use)}
+					>
+						<div className='w_100 flex justify_between align_center'>
+							<span className='command_name'>{item.name}</span>
+							<span className='command_use'>{item.use}</span>
+						</div>
+						<span className='command_desc w_100'>{item.description}</span>
+					</div>
+				))}
+			</div>
+		)
+	}, [commands, max, search_commands])
 
 	return (
 		<div className={clsx('fixed flex flex_column align_end', styles._local)}>
@@ -154,21 +203,30 @@ const Index = (props: IPropsNeo) => {
 								</div>
 							</div>
 							<div className='footer_wrap w_100 border_box flex align_center relative'>
-								<TextArea
-									className={clsx(
-										'input_chat flex align_center',
-										resized && 'resized'
-									)}
-									placeholder={
-										is_cn
-											? '输入业务指令或者询问任何问题'
-											: 'Input business commands or ask any questions.'
-									}
-									autoSize
-									value={value}
-									onChange={onChange}
-									onResize={({ height }) => setResized(height > 38)}
-								></TextArea>
+								<Popover
+									overlayClassName={styles.commands_popover}
+									content={Commands}
+									placement='topLeft'
+									showArrow={false}
+									open={visible_commands}
+								>
+									<TextArea
+										className={clsx(
+											'input_chat flex align_center',
+											resized && 'resized'
+										)}
+										placeholder={
+											is_cn
+												? '输入业务指令或者询问任何问题'
+												: 'Input business commands or ask any questions.'
+										}
+										ref={textarea}
+										autoSize
+										value={value}
+										onChange={onChange}
+										onResize={({ height }) => setResized(height > 38)}
+									></TextArea>
+								</Popover>
 								<div
 									className={clsx(
 										'btn_submit flex justify_center align_center absolute clickable',

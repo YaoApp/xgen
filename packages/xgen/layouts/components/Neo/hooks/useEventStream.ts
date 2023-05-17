@@ -14,8 +14,8 @@ export default ({ api, studio }: Args) => {
 	const event_source = useRef<EventSource>()
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
 	const [loading, setLoading] = useState(false)
-	const [cmd, setCmd] = useState<App.ChatAI['command']>()
-	const [commands, setCommands] = useState([])
+	const [cmd, setCmd] = useState<App.ChatCmd>()
+	const [commands, setCommands] = useState<Array<App.ChatCommand>>([])
 
 	const neo_api = useMemo(() => {
 		const { protocol, hostname } = window.location
@@ -31,25 +31,31 @@ export default ({ api, studio }: Args) => {
 		[studio]
 	)
 
-	// useAsyncEffect(async () => {
-	// 	if (!neo_api) return
+	useAsyncEffect(async () => {
+		if (!neo_api) return
 
-	// 	const [err, res] = await to(
-	// 		axios.get(`${neo_api}/history?token=${encodeURIComponent(getToken())}${studio_token}`)
-	// 	)
+		const [err, res] = await to<App.ChatHistory>(
+			axios.get(`${neo_api}/history?token=${encodeURIComponent(getToken())}${studio_token}`)
+		)
 
-	// 	console.log(err, res)
-	// }, [neo_api, studio_token])
+		if (err) return
 
-	// useAsyncEffect(async () => {
-	// 	if (!neo_api) return
+		if (res.command) setCmd(res.command)
 
-	// 	const [err, res] = await to(
-	// 		axios.get(`${neo_api}/commands?token=${encodeURIComponent(getToken())}${studio_token}`)
-	// 	)
+		setMessages(res.data.map(({ role, content }) => ({ is_neo: role === 'assistant', text: content })))
+	}, [neo_api, studio_token])
 
-	// 	console.log(err, res)
-	// }, [neo_api, studio_token])
+	useAsyncEffect(async () => {
+		if (!neo_api) return
+
+		const [err, res] = await to<Array<App.ChatCommand>>(
+			axios.get(`${neo_api}/commands?token=${encodeURIComponent(getToken())}${studio_token}`)
+		)
+
+		if (err) return
+
+		setCommands(res)
+	}, [neo_api, studio_token])
 
 	const getData = useMemoizedFn((message: App.ChatHuman) => {
 		setLoading(true)
@@ -149,5 +155,5 @@ export default ({ api, studio }: Args) => {
 		return () => event_source.current?.close()
 	}, [])
 
-	return { messages, cmd, loading, setMessages, stop, exitCmd }
+	return { messages, cmd, commands, loading, setMessages, stop, exitCmd }
 }
