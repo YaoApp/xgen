@@ -108,7 +108,7 @@ export default class Model {
 		parent: Component.StackComponent['parent'],
 		parentNamespace: Component.FormComponent['parentNamespace'],
 		model: Component.StackComponent['model'],
-		id: Component.StackComponent['id'],
+		id: Required<Component.StackComponent>['id'],
 		form: Component.StackComponent['form'],
 		onBack: Component.FormComponent['onBack']
 	) {
@@ -124,12 +124,12 @@ export default class Model {
 		this.rendered = false
 		this.parent = parent
 		this.model = model
-		this.id = Number(id)
+		this.id = id === '0' ? 0 : id
 		this.type = form!.type
 
 		this.getSetting()
 
-		if (Number(id) !== 0) this.find()
+		if (this.id !== 0) this.find()
 
 		this.on(onBack)
 	}

@@ -42,7 +42,7 @@ const Index = (props: Component.FormComponent) => {
 	})
 
 	useLayoutEffect(() => {
-		x.init(parent, parentNamespace, model, id, form, onFormBack)
+		x.init(parent, parentNamespace, model, id!, form, onFormBack)
 
 		window.$app.Event.on(`${x.namespace.value}/fullscreen`, toggleFullscreen)
 

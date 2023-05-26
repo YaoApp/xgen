@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react'
 import type { Global } from '@/types'
 
 export declare namespace Component {
-	type IdType = number
+	type IdType = number | string
 	type FormType = 'view' | 'edit'
 
 	interface BindValue {
@@ -18,7 +18,7 @@ export declare namespace Component {
 	}
 
 	interface StackComponent extends BaseComponent {
-		id?: IdType
+		id?: string
 		form?: { type: FormType }
 	}
 
