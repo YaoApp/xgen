@@ -63,35 +63,42 @@ import { local, session } from '@yaoapp/storex'
 const import_maps = {
 	['react']: {
 		default: React,
-		...React
+            ...React,
+            __useDefault: true
 	},
 	['react-dom']: {
 		default: ReactDom,
-		...ReactDom
+		...ReactDom,
+            __useDefault: true
 	},
 	['react-dom/client']: {
 		default: ReactDomClient,
-		...ReactDomClient
+		...ReactDomClient,
+            __useDefault: true
 	},
 	['react/jsx-runtime']: {
 		...JsxRuntime
 	},
 
 	['react-shadow']: {
-		default: root
+		default: root,
+            __useDefault: true
 	},
 	['await-to-js']: {
-		default: to
+		default: to,
+            __useDefault: true
 	},
 	['ts-pattern']: {
 		match,
 		P
 	},
 	['axios']: {
-		default: axios
+		default: axios,
+            __useDefault: true
 	},
 	['emittery']: {
-		default: Emittery
+		default: Emittery,
+            __useDefault: true
 	},
 	['nanoid']: {
 		nanoid

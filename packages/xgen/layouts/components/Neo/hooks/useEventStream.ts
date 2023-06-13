@@ -27,7 +27,7 @@ export default ({ api, studio }: Args) => {
 	}, [api, studio])
 
 	const studio_token = useMemo(
-		() => (studio ? `&studio=${encodeURIComponent('Bearer ' + getStudio().token)}` : ''),
+		() => (studio ? `&studio=${encodeURIComponent('Bearer ' + getStudio()?.token)}` : ''),
 		[studio]
 	)
 
@@ -41,7 +41,8 @@ export default ({ api, studio }: Args) => {
 		if (err) return
 
 		if (res.command) setCmd(res.command)
-
+            if (!res?.data) return
+            
 		setMessages(res.data.map(({ role, content }) => ({ is_neo: role === 'assistant', text: content })))
 	}, [neo_api, studio_token])
 

@@ -19,7 +19,7 @@ const Index = ({ type, name, props }: IProps) => {
 
 			return lazy(() =>
 				// @ts-ignore
-				System.import(`${origin}/components/${component_name}/index.js`).catch(() => {
+				System.import(`${origin}/components/${component_name}.js`).catch(() => {
 					message.error(`Component is not exist, type:'${type}' name:'${name}'`)
 				})
 			)
