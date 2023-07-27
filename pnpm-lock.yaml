@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -160,8 +160,6 @@ importers:
       xo:
         specifier: ^0.52.3
         version: 0.52.4(webpack@5.86.0)
-
-  packages/neo: {}
 
   packages/pro:
     dependencies:
@@ -594,31 +592,6 @@ importers:
       webpack-chain:
         specifier: ^6.5.1
         version: 6.5.1
-
-  packages/yaocli:
-    dependencies:
-      await-to-js:
-        specifier: ^3.0.0
-        version: 3.0.0
-    devDependencies:
-      '@rollup/plugin-node-resolve':
-        specifier: ^15.0.1
-        version: 15.0.1(rollup@3.12.1)
-      '@swc/core':
-        specifier: ^1.3.23
-        version: 1.3.32
-      rollup:
-        specifier: ^3.7.4
-        version: 3.12.1
-      rollup-plugin-delete:
-        specifier: ^2.0.0
-        version: 2.0.0
-      rollup-plugin-swc3:
-        specifier: ^0.8.0
-        version: 0.8.0(@swc/core@1.3.32)(rollup@3.12.1)
-      typescript:
-        specifier: ^4.9.4
-        version: 4.9.5
 
 packages:
 
@@ -5748,7 +5721,7 @@ packages:
     resolution: {integrity: sha512-hy8b7Y1J8OGe6LbAjj3xniQrj3v6lsivCcrmf4TzSgPzLkhIeKgc5IZnT7ReIqmEuodjfO8EYAuoFvIrHi/+jQ==}
     deprecated: This is a stub types definition. history provides its own type definitions, so you do not need this installed.
     dependencies:
-      history: 4.10.1
+      history: 5.3.0
     dev: false
 
   /@types/hoist-non-react-statics@3.3.1:
@@ -5926,7 +5899,7 @@ packages:
     resolution: {integrity: sha512-eFajSUASYbPHg2BDM1G8Btx+YqGgvROPIg6sBhl3O4kbDdYXdFdfrgQFf/pcBuQVObjfT9AL/dd15jilR5DIEA==}
     dependencies:
       '@types/history': 5.0.0
-      '@types/react': 18.0.27
+      '@types/react': 18.0.33
       '@types/react-router': 5.1.20
     dev: false
 
@@ -5934,16 +5907,16 @@ packages:
     resolution: {integrity: sha512-0Vcr0HzpZTC+PQVY6vGJ57yv1hFZSPFs/QHqYPbn2uEDKUYBV3dAZQtoTYhsa1bGqRE91yedgX29AM68FlxfmA==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.0.27
+      '@types/react': 18.0.33
       '@types/react-router': 5.1.20
-      redux: 3.7.2
+      redux: 4.2.1
     dev: false
 
   /@types/react-router@5.1.20:
     resolution: {integrity: sha512-jGjmu/ZqS7FjSH6owMcD5qpq19+1RS9DeVRqfl1FeBMxTDQAGwlMWOcs52NDoXaNKyG3d1cYQFMs9rCrb88o9Q==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.0.27
+      '@types/react': 18.0.33
     dev: false
 
   /@types/react-slick@0.23.10:

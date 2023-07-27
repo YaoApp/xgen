@@ -8,7 +8,7 @@ import { Icon } from '@/widgets'
 import type { IPropsActions } from '../../types'
 
 const Index = (props: IPropsActions) => {
-	const { namespace, actions } = props
+	const { namespace, actions, query } = props
 	const onAction = useAction()
 
 	return (
@@ -21,14 +21,15 @@ const Index = (props: IPropsActions) => {
 					type='primary'
 					icon={<Icon name={it.icon} size={15}></Icon>}
 					key={index}
-					onClick={() =>
+					onClick={() => {
 						onAction({
 							namespace: namespace ?? '',
 							primary: '',
 							data_item: null,
-							it
+							it,
+							extra: { query }
 						})
-					}
+					}}
 				>
 					{it.title}
 				</Button>

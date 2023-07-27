@@ -19,6 +19,7 @@ export declare namespace Action {
 		search?: any
 		public?: boolean
 		refetch?: boolean
+		withFilterQuery?: boolean
 	}
 
 	interface Confirm {

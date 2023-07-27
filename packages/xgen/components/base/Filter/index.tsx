@@ -1,7 +1,7 @@
 import { Button, Col, Form, Row, Tooltip } from 'antd'
 import clsx from 'clsx'
 import { toJS } from 'mobx'
-import { useLayoutEffect } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { When } from 'react-if'
 
 import { X } from '@/components'
@@ -24,6 +24,7 @@ const Index = (props: IPropsFilter) => {
 	const locale = getLocale()
 	const [form] = useForm()
 	const [params] = useSearchParams()
+	const [query, setQuery] = useState(null)
 	const is_cn = locale === 'zh-CN'
 	const { getFieldsValue, resetFields, setFieldsValue, submit } = form
 	const { display_more, opacity_more, visible_more, setVisibleMore } = useVisibleMore()
@@ -52,7 +53,8 @@ const Index = (props: IPropsFilter) => {
 
 	const props_actions: IPropsActions = {
 		namespace,
-		actions
+		actions,
+		query
 	}
 
 	return (
@@ -62,6 +64,7 @@ const Index = (props: IPropsFilter) => {
 			name={form_name}
 			onFinish={onFinish}
 			onReset={onReset}
+			onValuesChange={(_, values) => setQuery(values)}
 		>
 			<Row gutter={16} style={{ marginBottom: 16 }}>
 				{base.map((item: any, index: number) => (

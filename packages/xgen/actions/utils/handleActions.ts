@@ -6,7 +6,7 @@ import { Service, Studio } from '../Yao'
 import type { Queue } from '@yaoapp/actionflow'
 import type { OnAction } from '../useAction'
 
-export default ({ namespace, primary, data_item, it }: OnAction) => {
+export default ({ namespace, primary, data_item, it, extra }: OnAction) => {
 	return it.action.reduce((total: Queue, item) => {
 		const { name, type, payload, next, error } = item
 
@@ -20,7 +20,7 @@ export default ({ namespace, primary, data_item, it }: OnAction) => {
 				total.push({ task: closeModal({ namespace }), ...flow_info })
 				break
 			case 'Common.historyPush':
-				total.push({ task: historyPush({ namespace }), ...flow_info })
+				total.push({ task: historyPush({ namespace, extra }), ...flow_info })
 				break
 			case 'Common.historyBack':
 				total.push({ task: historyBack(), ...flow_info })

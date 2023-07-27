@@ -17,6 +17,7 @@ export interface IPropsFilter {
 export interface IPropsActions {
 	namespace?: Namespace['value']
 	actions: TableType.Setting['filter']['actions']
+	query: any
 }
 
 export interface Locale {

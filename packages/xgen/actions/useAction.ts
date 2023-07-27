@@ -8,10 +8,11 @@ export interface OnAction {
 	primary: Component.Props['__primary']
 	data_item: any
 	it: Action.Props
+	extra?: any
 }
 
-const onAction = ({ namespace, primary, data_item, it }: OnAction) => {
-	const actions = handleActions({ namespace, primary, data_item, it })
+const onAction = ({ namespace, primary, data_item, it, extra }: OnAction) => {
+	const actions = handleActions({ namespace, primary, data_item, it, extra })
 
 	new Flow().init(actions)
 }

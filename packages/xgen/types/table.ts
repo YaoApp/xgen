@@ -59,7 +59,9 @@ export declare namespace TableType {
 			filter: Common.Fields
 			table: Common.Fields
 		}
-		config?: Common.Config
+		config?: Common.Config & {
+			actionWithQuery?: boolean
+		}
 	}
 
 	interface SearchParams {
