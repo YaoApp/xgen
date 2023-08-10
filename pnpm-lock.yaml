@@ -184,12 +184,18 @@ importers:
       '@dnd-kit/utilities':
         specifier: ^3.2.1
         version: 3.2.1(react@18.2.0)
+      '@editorjs/editorjs':
+        specifier: ^2.26.4
+        version: 2.26.5
       '@emotion/react':
         specifier: ^11.10.6
         version: 11.10.6(@types/react@18.0.33)(react@18.2.0)
       '@phosphor-icons/react':
         specifier: ^2.0.8
         version: 2.0.8(react-dom@18.2.0)(react@18.2.0)
+      '@yaoapp/editorjs_plugins':
+        specifier: workspace:*
+        version: link:../editorjs_plugins
       '@yaoapp/storex':
         specifier: workspace:^
         version: link:../storex
@@ -3355,7 +3361,7 @@ packages:
       codex-notifier: 1.1.2
       codex-tooltip: 1.0.5
       html-janitor: 2.0.4
-      nanoid: 3.3.4
+      nanoid: 3.3.6
     dev: false
 
   /@editorjs/header@2.7.0:
@@ -14100,16 +14106,10 @@ packages:
       stylis: 4.2.0
     dev: false
 
-  /nanoid@3.3.4:
-    resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
-    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
-    hasBin: true
-
   /nanoid@3.3.6:
     resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
-    dev: false
 
   /nanoid@4.0.0:
     resolution: {integrity: sha512-IgBP8piMxe/gf73RTQx7hmnhwz0aaEXYakvqZyE302IXW3HyVNhdNGC+O2MwMAVhLEnvXlvKtGbtJf6wvHihCg==}
@@ -15633,7 +15633,7 @@ packages:
     resolution: {integrity: sha512-tP7u/Sn/dVxK2NnruI4H9BG+x+Wxz6oeZ1cJ8P6G/PZY0IKk4k/63TDsQf2kQq3+qoJeLm2kIBUNlZe3zgb4Zg==}
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
-      nanoid: 3.3.4
+      nanoid: 3.3.6
       picocolors: 1.0.0
       source-map-js: 1.0.2
 

@@ -58,23 +58,25 @@ import {
 	verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import EditorJS from '@editorjs/editorjs'
+import { Header, Image, Marker, NestedList, Paragraph, Underline } from '@yaoapp/editorjs_plugins'
 import { local, session } from '@yaoapp/storex'
 
 const import_maps = {
 	['react']: {
 		default: React,
-            ...React,
-            __useDefault: true
+		...React,
+		__useDefault: true
 	},
 	['react-dom']: {
 		default: ReactDom,
 		...ReactDom,
-            __useDefault: true
+		__useDefault: true
 	},
 	['react-dom/client']: {
 		default: ReactDomClient,
 		...ReactDomClient,
-            __useDefault: true
+		__useDefault: true
 	},
 	['react/jsx-runtime']: {
 		...JsxRuntime
@@ -82,11 +84,11 @@ const import_maps = {
 
 	['react-shadow']: {
 		default: root,
-            __useDefault: true
+		__useDefault: true
 	},
 	['await-to-js']: {
 		default: to,
-            __useDefault: true
+		__useDefault: true
 	},
 	['ts-pattern']: {
 		match,
@@ -94,11 +96,11 @@ const import_maps = {
 	},
 	['axios']: {
 		default: axios,
-            __useDefault: true
+		__useDefault: true
 	},
 	['emittery']: {
 		default: Emittery,
-            __useDefault: true
+		__useDefault: true
 	},
 	['nanoid']: {
 		nanoid
@@ -162,6 +164,11 @@ const import_maps = {
 		CSS
 	},
 
+	['@editorjs/editorjs']: {
+		default: EditorJS,
+		__useDefault: true
+	},
+
 	['antd']: {
 		ConfigProvider,
 		Input,
@@ -193,6 +200,14 @@ const import_maps = {
 	['@yaoapp/storex']: {
 		local,
 		session
+	},
+	['@yaoapp/editorjs_plugins']: {
+		Header,
+		Image,
+		Marker,
+		NestedList,
+		Paragraph,
+		Underline
 	}
 } as Record<string, System.Module>
 
