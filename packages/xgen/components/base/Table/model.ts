@@ -49,14 +49,20 @@ export default class Model {
 
 		if (res.header.preset?.batch?.columns && res.header.preset?.batch?.columns?.length) {
 			this.batch_columns = this.column_utils.reduce(res.header.preset.batch.columns, res.fields.table)
+		} else {
+			this.batch_columns = []
 		}
 
 		if (res.filter?.columns && res.filter?.columns?.length) {
 			this.filter_columns = this.column_utils.reduce(res.filter.columns, res.fields.filter)
+		} else {
+			this.filter_columns = []
 		}
 
 		if (res.table.columns && res.table.columns?.length) {
 			this.table_columns = this.column_utils.reduce(res.table.columns, res.fields.table)
+		} else {
+			this.table_columns = []
 		}
 	}
 

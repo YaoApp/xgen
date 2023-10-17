@@ -41,8 +41,8 @@ const Index = (props: IPropsFilter) => {
 		if (!Object.keys(search_params).length) return
 
 		setFieldsValue(search_params)
-	}, [parent, params])
-
+      }, [ parent, params ])
+      
 	if (!columns.length && !actions?.length) return null
 
 	const onReset = () => {
