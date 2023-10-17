@@ -6,7 +6,7 @@ import type { IPropsChartRender } from '../types'
 const Index = (props: IPropsChartRender) => {
 	const { item, data = [] } = props
 
-	if (!data) return null
+	if (data === null || data === undefined) return null
 
 	return (
 		<Card title={item.name} style={item.view.props?.cardStyle} ignoreMarginBottom>

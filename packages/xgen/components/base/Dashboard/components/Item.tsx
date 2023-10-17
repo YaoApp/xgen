@@ -21,7 +21,7 @@ const Index = (props: IPropsItem) => {
 		)
 	}
 
-	if (item.view.type.startsWith('chart/')) {
+      if (item.view.type.startsWith('chart/')) {
 		if (item.width) {
 			return (
 				<Col span={item.width} style={{ marginBottom: 16 }}>

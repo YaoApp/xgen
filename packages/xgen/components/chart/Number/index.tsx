@@ -29,8 +29,8 @@ const Index = (props: IProps) => {
 		const duration = props.data.current - props.data.prev
 
 		return `${duration > 0 ? '+' : '-'} ${((Math.abs(duration) * 100) / props.data.prev).toFixed(1)}`
-	}, [props.data])
-
+      }, [ props.data ])
+      
 	if (typeof props.data === 'number') {
 		return (
 			<div className={clsx([styles._local, 'w_100 flex flex_column'])}>
