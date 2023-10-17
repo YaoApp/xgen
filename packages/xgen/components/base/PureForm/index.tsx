@@ -126,13 +126,14 @@ const Index = (props: IPropsPureForm) => {
 				<Actions {...props_actions}></Actions>
 			</div>
 			<div className='form_content_container w_100 flex relative'>
-				<Form
+                        <Form
+                              className='w_100'
 					form={form}
 					name={namespace}
 					disabled={disabled}
 					layout='vertical'
 					onValuesChange={onValuesChange}
-					style={form_styles}
+                              style={ form_styles }
 				>
 					<div className='form_wrap w_100 border_box'>
 						<Sections {...props_sections}></Sections>
