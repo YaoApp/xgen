@@ -7,11 +7,33 @@
 				padding-top: 11px;
 				padding-left: 10px;
 
+				&.custom {
+					@image_size: unset;
+					@min_image_size: 83px;
+
+					.xgen-upload-select-picture-card {
+						min-width: @min_image_size;
+						min-height: @min_image_size;
+						width: @image_size;
+						height: @image_size;
+					}
+
+					.xgen-upload-list-picture-card-container {
+						min-width: @min_image_size;
+						min-height: @min_image_size;
+						width: @image_size;
+						height: @image_size;
+					}
+				}
+
 				@image_size: 83px;
 
 				.xgen-upload-select-picture-card {
 					width: @image_size;
 					height: @image_size;
+                              display: inline-flex;
+                              align-items: center;
+                              justify-content: center;
 				}
 
 				.xgen-upload-list-picture-card-container {
@@ -58,53 +80,53 @@
 					height: 160px;
 				}
 			}
-
-			.upload_video_wrap {
-				&:hover {
-					.icon_delete {
-						display: flex;
-					}
-				}
-
-				.video {
-					width: 100%;
-					height: 160px;
-					border-radius: 6px;
-
-					object-fit: fill;
-				}
-
-				.icon_delete {
-					right: -1px;
-					bottom: -1px;
-					z-index: 1;
-					display: none;
-					width: 27px;
-					height: 27px;
-					border-top-left-radius: 6px;
-					border-bottom-right-radius: 6px;
-					background-color: white;
-					color: black;
-					cursor: pointer;
-
-					&:hover {
-						background-color: var(--color_danger);
-
-						.icon {
-							color: white;
-						}
-					}
-
-					.icon {
-						color: var(--color_danger);
-						font-size: 15px;
-					}
-				}
-			}
 		}
 	}
 
 	:global {
+            .upload_custom_wrap {
+                  &:hover {
+                        .icon_delete {
+                              display: flex;
+                        }
+                  }
+
+                  .video {
+                        width: 100%;
+                        height: 160px;
+                        border-radius: 6px;
+
+                        object-fit: fill;
+                  }
+
+                  .icon_delete {
+                        right: -1px;
+                        bottom: -1px;
+                        z-index: 1;
+                        display: none;
+                        width: 27px;
+                        height: 27px;
+                        border-top-left-radius: 6px;
+                        border-bottom-right-radius: 6px;
+                        background-color: white;
+                        color: black;
+                        cursor: pointer;
+
+                        &:hover {
+                              background-color: var(--color_danger);
+
+                              .icon {
+                                    color: white;
+                              }
+                        }
+
+                        .icon {
+                              color: var(--color_danger);
+                              font-size: 15px;
+                        }
+                  }
+            }
+            
 		.xgen-upload.xgen-upload-select-picture-card {
 			margin-right: 11px;
 			margin-bottom: 11px;

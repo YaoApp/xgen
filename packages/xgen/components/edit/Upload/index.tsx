@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import { Item } from '@/components'
 import { getToken } from '@/knife'
 
+import Image from './components/Image'
 import UploadBtn from './components/UploadBtn'
 import filemap from './filemap'
 import useList from './hooks/useList'
@@ -17,7 +18,7 @@ import type { UploadProps } from 'antd'
 import type { IProps, CustomProps, IPropsUploadBtn } from './types'
 
 const Custom = window.$app.memo((props: CustomProps) => {
-	const { api, filetype, maxCount, desc, onChange: trigger } = props
+	const { api, filetype, maxCount, desc, imageSize, onChange: trigger } = props
 	const { list, setList } = useList(props.value)
 	const visible_btn = useVisibleBtn(list.length, maxCount || 1)
 
@@ -43,7 +44,11 @@ const Custom = window.$app.memo((props: CustomProps) => {
 		...props,
 		name: 'file',
 		listType: filemap[filetype].listType,
-		className: clsx(['form_item_upload_wrap', filemap[filetype].className]),
+		className: clsx([
+			'form_item_upload_wrap',
+			filemap[filetype].className,
+			filetype === 'image' && imageSize && 'custom'
+		]),
 		action,
 		headers: { authorization: getToken() },
 		fileList: list,
@@ -53,6 +58,12 @@ const Custom = window.$app.memo((props: CustomProps) => {
 
 	if (filemap[filetype]?.render) {
 		props_upload['itemRender'] = filemap[filetype].render
+	}
+
+	if (filetype === 'image' && imageSize) {
+		props_upload['itemRender'] = (_, file, _fileList, { remove }) => (
+			<Image file={file} imageSize={imageSize} remove={remove}></Image>
+		)
 	}
 
 	const props_upload_btn: IPropsUploadBtn = {

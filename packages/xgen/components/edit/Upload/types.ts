@@ -6,6 +6,7 @@ interface CommonProps {
 	value: Array<string>
 	filetype: 'image' | 'file' | 'video'
 	desc?: string
+	imageSize?: { width: string; height: string }
 }
 
 export interface IProps extends UploadProps, Component.PropsEditComponent, CommonProps {
@@ -25,9 +26,13 @@ export interface FileType {
 	}
 }
 
-export interface IPropsVideo {
+export interface IPropsCustomRender {
 	file: UploadFile<string>
 	remove: () => void
+}
+
+export interface IPropsCustomImage extends IPropsCustomRender {
+	imageSize: CommonProps['imageSize']
 }
 
 export interface IPropsUploadBtn {
