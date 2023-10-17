@@ -1,5 +1,6 @@
 import { Affix, Button } from 'antd'
 import clsx from 'clsx'
+import { debounce } from 'lodash-es'
 import { Fragment, useMemo, useState } from 'react'
 import { When } from 'react-if'
 
@@ -17,7 +18,7 @@ const Index = (props: IPropsActions) => {
 	const [stick, setStick] = useState<boolean | undefined>(false)
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled()
-      const onAction = useAction()
+	const onAction = useAction()
 
 	const _actions = useMemo(() => {
 		const when_add = id === 0
@@ -28,8 +29,8 @@ const Index = (props: IPropsActions) => {
 		if (when_view) return handle_actions.filter((item) => item.showWhenView)
 
 		return handle_actions.filter((item) => !item.hideWhenEdit)
-      }, [ actions, data, id, type ])
-      
+	}, [actions, data, id, type])
+
 	return (
 		<Affix offsetTop={11} style={{ zIndex: disabledActionsAffix ? 0 : 101 }} onChange={(v) => setStick(v)}>
 			<div
@@ -49,14 +50,16 @@ const Index = (props: IPropsActions) => {
 									getDisabled(it.disabled)
 								])}
 								icon={<Icon name={it.icon} size={15}></Icon>}
-								onClick={() =>
-									onAction({
-										namespace,
-										primary,
-										data_item: data,
-										it
-									})
-								}
+								onClick={debounce(
+									() =>
+										onAction({
+											namespace,
+											primary,
+											data_item: data,
+											it
+										}),
+									450
+								)}
 							>
 								{it.title}
 							</Button>
