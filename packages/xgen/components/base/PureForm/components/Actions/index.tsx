@@ -58,7 +58,8 @@ const Index = (props: IPropsActions) => {
 											data_item: data,
 											it
 										}),
-									450
+									450,
+									{ leading: true }
 								)}
 							>
 								{it.title}
