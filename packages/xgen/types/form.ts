@@ -79,6 +79,8 @@ export declare namespace FormType {
 		}
 		config?: Common.Config & {
 			showAnchor?: boolean
+			viewTitle?: string
+			editTitle?: string
 		}
 	}
 }

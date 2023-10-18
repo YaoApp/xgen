@@ -2,7 +2,7 @@ import { useFullscreen, useMemoizedFn } from 'ahooks'
 import clsx from 'clsx'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { container } from 'tsyringe'
 
 import { Page, PureForm } from '@/components'
@@ -25,9 +25,20 @@ const Index = (props: Component.FormComponent) => {
 	const locale = getLocale()
 	const page_title_prefix = usePageTitle(locales[locale], id!, form!.type)
 	const hooks = useHooks(toJS(x.setting.hooks!), toJS(x.setting.fields), toJS(x.data))
-	const title = page_title_prefix + x.setting.name
 	const ref_container = useRef<HTMLDivElement>(null)
 	const [is_fullscreen, { toggleFullscreen }] = useFullscreen(ref_container)
+
+      const title = useMemo(() => {
+            if (x.setting?.config?.viewTitle && x.type === 'view') {
+                  return x.setting.config.viewTitle
+            }
+
+            if (x.setting?.config?.editTitle && x.type === 'edit') {
+                  return x.setting.config.editTitle
+            }
+
+		return page_title_prefix + x.setting.name
+	}, [page_title_prefix, x.setting.name, x.type, x.setting?.config?.viewTitle, x.setting?.config?.editTitle])
 
 	const onFormBack = useMemoizedFn(() => {
 		if (onBack) {
