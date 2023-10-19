@@ -7,9 +7,9 @@ export declare namespace App {
 		id: string
 		name: string
 		request: string
-      }
-      
-      type ChatCommand = {
+	}
+
+	type ChatCommand = {
 		use: string
 		name: string
 		description: string
@@ -102,7 +102,7 @@ export declare namespace App {
 			/** remote api cache, default is true */
 			remoteCache?: boolean
 			/** neo config, for chatgpt service */
-			neo?: { api: string; studio?: boolean }
+			neo?: { api: string; studio?: boolean; name?: string }
 		}
 	}
 

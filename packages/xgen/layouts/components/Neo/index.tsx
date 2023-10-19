@@ -20,7 +20,7 @@ import type { App } from '@/types'
 const { TextArea } = Input
 
 const Index = (props: IPropsNeo) => {
-	const { stack, api, studio } = props
+	const { stack, api, studio, name } = props
 	const locale = getLocale()
 	const { pathname } = useLocation()
 	const textarea = useRef<HTMLTextAreaElement>(null)
@@ -158,8 +158,10 @@ const Index = (props: IPropsNeo) => {
 									<Else>
 										<div className='title'>
 											{is_cn
-												? '你好，我是Neo，你的AI业务助手'
-												: 'Hello, I am Neo, your AI business assistant.'}
+												? `你好，我是${name ?? 'Neo'}，你的AI业务助手`
+												: `Hello, I am ${
+														name ?? 'Neo'
+												  }, your AI business assistant.`}
 										</div>
 										<div
 											className='btn_max flex justify_center align_center clickable'
