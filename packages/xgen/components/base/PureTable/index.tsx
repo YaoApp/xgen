@@ -31,7 +31,7 @@ const Index = (props: IPropsPureTable) => {
 	const list_columns = useColumns(namespace, primary, columns, table_props?.scroll, operation)
 
 	useLayoutEffect(() => {
-		window.$app.Event.emit('app/getContext', { namespace, primary, data: {} })
+		window.$app.Event.emit('app/getContext', { namespace, primary, data_item: {} })
 	}, [namespace, primary])
 
 	const table_pagination: TablePaginationConfig = {

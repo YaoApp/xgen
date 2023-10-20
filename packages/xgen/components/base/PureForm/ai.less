@@ -1,0 +1,50 @@
+.popover {
+	width: 270px;
+	padding-bottom: 6px !important;
+
+	:global {
+		.xgen-popover-arrow {
+			right: 9px !important;
+
+			.xgen-popover-arrow-content {
+				background-color: var(--color_main) !important;
+				border-radius: 0 !important;
+			}
+		}
+
+		.xgen-popover-inner {
+			background-color: var(--color_main) !important;
+
+			.xgen-popover-inner-content {
+				padding: 6px;
+			}
+		}
+
+		.field_ask_wrap {
+			::-webkit-input-placeholder {
+				color: rgba(255, 255, 255, 0.45) !important;
+			}
+
+			::selection {
+				background-color: white;
+				color: var(--color_main);
+			}
+
+			.input_ask {
+				width: calc(100% - 27px - 6px);
+				height: 27px;
+				background-color: var(--color_main) !important;
+				color: white;
+			}
+
+			.btn_confirm {
+				width: 27px;
+				height: 27px;
+				margin-left: 6px;
+				color: white;
+				background-color: transparent;
+				border: none;
+			}
+		}
+	}
+}

@@ -14,14 +14,14 @@ interface IProps extends FormItemProps {
 const Index = (props: IProps) => {
 	const { children, __bind, __name, hideLabel, ...rest_props } = props
 
+	const Title = (
+		<a id={__name} className='disabled' href={`#${__name}`}>
+			<label>{__name}</label>
+		</a>
+	)
+
 	const real_props = {
-		label: hideLabel ? (
-			''
-		) : (
-			<a id={__name} className='disabled' href={`#${__name}`}>
-				<label>{__name}</label>
-			</a>
-		),
+		label: hideLabel ? '' : Title,
 		name: __bind,
 		noStyle: !__name
 	}

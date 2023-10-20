@@ -1,12 +1,29 @@
-import { Col } from 'antd'
-import { useMemo } from 'react'
+import { useMemoizedFn } from 'ahooks'
+import { Col, Popover, Input } from 'antd'
+import clsx from 'clsx'
+import { observer } from 'mobx-react-lite'
+import { PaperPlaneTilt } from 'phosphor-react'
+import { useMemo, useState, useRef } from 'react'
 
 import { X } from '@/components'
+import { useGlobal } from '@/context/app'
+
+import styles from '../ai.less'
 
 import type { IPropsFormItem } from '../types'
 
+const { TextArea } = Input
+
 const Index = (props: IPropsFormItem) => {
 	const { namespace, primary, type, item } = props
+	const global = useGlobal()
+	const input = useRef<any>(null)
+	const [visible, setVisible] = useState(false)
+
+	const show_ai = useMemo(
+		() => global.app_info.optional?.neo?.api && item.edit.props?.ai,
+		[global.app_info.optional?.neo?.api, item.edit.props?.ai]
+	)
 
 	const disabled_props = useMemo(() => {
 		if (type === 'view') return { disabled: true }
@@ -19,8 +36,53 @@ const Index = (props: IPropsFormItem) => {
 		return { disabled }
 	}, [type, item.edit.props?.disabled])
 
-	return (
-		<Col span={item.width}>
+	const showAI = useMemoizedFn(() => setVisible(true))
+
+	const askAI = useMemoizedFn(() => {
+		const target = input?.current?.resizableTextArea?.textArea
+            
+		if (!target) return
+		if (!target.value) return
+
+		window.$app.Event.emit('app/getField', {
+			title: item.name,
+			bind: item.bind,
+			text: target.value
+		})
+
+		setVisible(false)
+	})
+
+	const Ask = (
+		<div className='field_ask_wrap flex'>
+			<TextArea
+				className='input_ask'
+				placeholder={item.edit.props?.ai?.placeholder}
+				bordered
+				autoFocus
+				autoSize
+				ref={input}
+				onPressEnter={askAI}
+			></TextArea>
+			<div className='btn_confirm flex justify_center align_center clickable' onClick={askAI}>
+				<PaperPlaneTilt size={16} weight='bold'></PaperPlaneTilt>
+			</div>
+		</div>
+	)
+
+	const Content = (
+		<Col className='form_col_wrap relative' span={item.width}>
+			{show_ai && (
+				<span
+					className={clsx([
+						'mark_ai absolute flex justify_center align_center clickable',
+						visible && 'visible'
+					])}
+					onClick={showAI}
+				>
+					AI
+				</span>
+			)}
 			<X
 				type='edit'
 				name={item.edit.type}
@@ -36,6 +98,25 @@ const Index = (props: IPropsFormItem) => {
 			></X>
 		</Col>
 	)
+
+	return show_ai ? (
+		<Popover
+			overlayClassName={styles.popover}
+			placement='topRight'
+			trigger='click'
+			getPopupContainer={(n) => n.parentElement!}
+			destroyTooltipOnHide
+			content={Ask}
+			open={visible}
+			onOpenChange={(v) => {
+				if (!v) setVisible(v)
+			}}
+		>
+			{Content}
+		</Popover>
+	) : (
+		Content
+	)
 }
 
-export default window.$app.memo(Index)
+export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

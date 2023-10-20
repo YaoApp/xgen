@@ -27,7 +27,7 @@ export declare namespace App {
 	type ChatHuman = {
 		is_neo: boolean
 		text: string
-		context?: { stack: string; pathname: string }
+		context?: { stack: string; pathname: string; formdata: any; field?: Field }
 	}
 
 	type ChatInfo = ChatHuman | ChatAI
@@ -44,6 +44,11 @@ export declare namespace App {
 		namespace: string
 		primary: string
 		data_item: any
+	}
+
+	interface Field {
+		name: string
+		bind: string
 	}
 
 	type Role = {

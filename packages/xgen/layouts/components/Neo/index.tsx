@@ -34,6 +34,10 @@ const Index = (props: IPropsNeo) => {
 		primary: '',
 		data_item: {}
 	})
+	const [field, setField] = useState<App.Field>({
+		name: '',
+		bind: ''
+	})
 	const ref = useRef<HTMLDivElement>(null)
 	const [value, { onChange }] = useEventTarget({ initialValue: '' })
 	const { messages, cmd, commands, loading, setMessages, stop, exitCmd } = useEventStream({ api, studio })
@@ -61,15 +65,31 @@ const Index = (props: IPropsNeo) => {
 		setSearchCommands(fuzzyQuery(commands, value.replace('/', ''), 'name'))
 	}, [commands, value, visible_commands])
 
-	const getContext = useMemoizedFn((ctx: App.Context) => setContext(ctx))
+	const getContext = useMemoizedFn((v: App.Context) => setContext(v))
+	const getField = useMemoizedFn((v: App.Field & { text: string }) => {
+		if (loading) stop()
+
+		setField(v)
+
+		setMessages([
+			...messages,
+			{
+				is_neo: false,
+				text: v.text,
+				context: { stack, pathname, formdata: context.data_item, field: { name: v.name, bind: v.bind } }
+			}
+		])
+	})
 	const setNeoVisible = useMemoizedFn(() => setVisible(true))
 
 	useLayoutEffect(() => {
 		window.$app.Event.on('app/getContext', getContext)
+		window.$app.Event.on('app/getField', getField)
 		window.$app.Event.on('app/setNeoVisible', setNeoVisible)
 
 		return () => {
 			window.$app.Event.off('app/getContext', getContext)
+			window.$app.Event.off('app/getField', getField)
 			window.$app.Event.off('app/setNeoVisible', setNeoVisible)
 		}
 	}, [])
@@ -86,7 +106,10 @@ const Index = (props: IPropsNeo) => {
 		if (loading) return
 		if (!value) return
 
-		setMessages([...messages, { is_neo: false, text: value, context: { stack, pathname } }])
+		setMessages([
+			...messages,
+			{ is_neo: false, text: value, context: { stack, pathname, formdata: context.data_item, field } }
+		])
 
 		setTimeout(() => {
 			onChange({ target: { value: '' } })
@@ -157,11 +180,7 @@ const Index = (props: IPropsNeo) => {
 									</Then>
 									<Else>
 										<div className='title'>
-											{is_cn
-												? `你好，我是${name ?? 'Neo'}，你的AI业务助手`
-												: `Hello, I am ${
-														name ?? 'Neo'
-												  }, your AI business assistant.`}
+											{is_cn ? 'AI业务助手' : 'AI Assistant'}
 										</div>
 										<div
 											className='btn_max flex justify_center align_center clickable'
@@ -181,6 +200,7 @@ const Index = (props: IPropsNeo) => {
 									{messages.map((item, index) => (
 										<ChatItem
 											context={context}
+											field={field}
 											chat_info={item}
 											callback={callback}
 											key={index}

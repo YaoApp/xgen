@@ -73,6 +73,7 @@ export interface IPropsNeo {
 
 export interface IPropsNeoChatItem {
 	context: App.Context
+	field: App.Field
 	chat_info: App.ChatInfo
 	callback: () => void
 }
