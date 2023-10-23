@@ -6,6 +6,7 @@ import { getTemplateValue } from './utils'
 import type { Queue, QueueItem } from './types'
 
 export default class Flow {
+	namespace = ''
 	private raw_queue: Queue = []
 	private run_queue: Queue = []
 	private run_index = 0
@@ -13,7 +14,8 @@ export default class Flow {
 
 	__ORDER_LOGS__ = [] as Array<string>
 
-	public init(queue: Queue) {
+	public init(namespace: string, queue: Queue) {
+		this.namespace = namespace
 		this.raw_queue = queue
 
 		this.pushRunQueue(queue[0])
@@ -65,7 +67,12 @@ export default class Flow {
 			const next_task_index = this.raw_queue.findIndex((it) => it.name === next)
 			const next_task = this.raw_queue.at(next_task_index)
 
-			if (!next_task) return
+			if (!next_task) {
+				// @ts-ignore
+				window.$app.Event.emit(`${this.namespace}/form/actions/done`)
+
+				return
+			}
 
 			this.pushRunQueue(next_task)
 
@@ -78,7 +85,12 @@ export default class Flow {
 
 		const next_task = this.raw_queue.at(this.run_index)
 
-		if (!next_task) return
+		if (!next_task) {
+			// @ts-ignore
+			window.$app.Event.emit(`${this.namespace}/form/actions/done`)
+
+			return
+		}
 
 		this.pushRunQueue(next_task)
 	}

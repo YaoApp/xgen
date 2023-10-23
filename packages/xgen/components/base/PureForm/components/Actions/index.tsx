@@ -1,7 +1,8 @@
+import { useMemoizedFn } from 'ahooks'
 import { Affix, Button } from 'antd'
 import clsx from 'clsx'
 import { debounce } from 'lodash-es'
-import { Fragment, useMemo, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import { When } from 'react-if'
 
 import { useAction } from '@/actions'
@@ -12,13 +13,25 @@ import { Icon } from '@/widgets'
 import styles from './index.less'
 
 import type { IPropsActions } from '../../types'
-
 const Index = (props: IPropsActions) => {
 	const { namespace, primary, type, id, actions, data, disabledActionsAffix } = props
 	const [stick, setStick] = useState<boolean | undefined>(false)
+	const [loading, setLoading] = useState('')
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled()
 	const onAction = useAction()
+
+	const unLoading = useMemoizedFn(() => setLoading(''))
+
+	useEffect(() => {
+		window.$app.Event.on(`${namespace}/form/actions/done`, unLoading)
+
+		return () => {
+			window.$app.Event.off(`${namespace}/form/actions/done`, unLoading)
+
+			unLoading()
+		}
+	}, [namespace])
 
 	const _actions = useMemo(() => {
 		const when_add = id === 0
@@ -47,20 +60,21 @@ const Index = (props: IPropsActions) => {
 								className={clsx([
 									'btn_action border_box flex justify_center align_center clickable',
 									getStyle(it.style),
-									getDisabled(it.disabled)
+									getDisabled(it.disabled),
+									loading !== '' && 'disabled'
 								])}
 								icon={<Icon name={it.icon} size={15}></Icon>}
-								onClick={debounce(
-									() =>
-										onAction({
-											namespace,
-											primary,
-											data_item: data,
-											it
-										}),
-									450,
-									{ leading: true }
-								)}
+								onClick={() => {
+									setLoading(`${it.title}-${index}`)
+
+									onAction({
+										namespace,
+										primary,
+										data_item: data,
+										it
+									})
+								}}
+								loading={loading === `${it.title}-${index}`}
 							>
 								{it.title}
 							</Button>

@@ -14,7 +14,7 @@ export interface OnAction {
 const onAction = ({ namespace, primary, data_item, it, extra }: OnAction) => {
 	const actions = handleActions({ namespace, primary, data_item, it, extra })
 
-	new Flow().init(actions)
+	new Flow().init(namespace, actions)
 }
 
 export default () => onAction
