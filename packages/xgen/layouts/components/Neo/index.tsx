@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChatCircleText, PaperPlaneTilt, X, ArrowsOutSimple, ArrowsInSimple, Stop } from 'phosphor-react'
 import { useLayoutEffect, useEffect, useRef, useState, useMemo } from 'react'
-import { Else, If, Then } from 'react-if'
+import { Else, If, Then, When } from 'react-if'
 
 import { fuzzyQuery } from '@/knife'
 import { useLocation, getLocale } from '@umijs/max'
@@ -15,7 +15,7 @@ import { useEventStream } from './hooks'
 import styles from './index.less'
 
 import type { IPropsNeo } from '../../types'
-import type { App } from '@/types'
+import type { App, Common } from '@/types'
 
 const { TextArea } = Input
 
@@ -36,7 +36,8 @@ const Index = (props: IPropsNeo) => {
 	})
 	const [field, setField] = useState<App.Field>({
 		name: '',
-		bind: ''
+		bind: '',
+		config: {} as Common.FieldDetail
 	})
 	const ref = useRef<HTMLDivElement>(null)
 	const [value, { onChange }] = useEventTarget({ initialValue: '' })
@@ -66,7 +67,7 @@ const Index = (props: IPropsNeo) => {
 	}, [commands, value, visible_commands])
 
 	const getContext = useMemoizedFn((v: App.Context) => setContext(v))
-	const getField = useMemoizedFn((v: App.Field & { text: string }) => {
+	const getField = useMemoizedFn((v: App.Field & { text: string; config: Common.FieldDetail }) => {
 		if (loading) stop()
 
 		setField(v)
@@ -76,11 +77,18 @@ const Index = (props: IPropsNeo) => {
 			{
 				is_neo: false,
 				text: v.text,
-				context: { stack, pathname, formdata: context.data_item, field: { name: v.name, bind: v.bind } }
+				context: {
+					namespace: context.namespace,
+					stack,
+					pathname,
+					formdata: context.data_item,
+					field: { name: v.name, bind: v.bind },
+					config: v.config
+				}
 			}
 		])
 	})
-	const setNeoVisible = useMemoizedFn(() => setVisible(true))
+	const setNeoVisible = useMemoizedFn((v) => setVisible(v ?? true))
 
 	useLayoutEffect(() => {
 		window.$app.Event.on('app/getContext', getContext)
@@ -108,7 +116,18 @@ const Index = (props: IPropsNeo) => {
 
 		setMessages([
 			...messages,
-			{ is_neo: false, text: value, context: { stack, pathname, formdata: context.data_item, field } }
+			{
+				is_neo: false,
+				text: value,
+				context: {
+					namespace: context.namespace,
+					stack,
+					pathname,
+					formdata: context.data_item,
+					field: { name: field.name, bind: field.bind },
+					config: field.config
+				}
+			}
 		])
 
 		setTimeout(() => {
@@ -146,6 +165,18 @@ const Index = (props: IPropsNeo) => {
 		)
 	}, [commands, max, search_commands])
 
+	const exit = useMemoizedFn(() => {
+		if (cmd?.name) exitCmd()
+
+		if (field.name) {
+			setField({
+				name: '',
+				bind: '',
+				config: {} as Common.FieldDetail
+			})
+		}
+	})
+
 	return (
 		<div className={clsx('fixed flex flex_column align_end', styles._local)}>
 			<AnimatePresence>
@@ -163,18 +194,27 @@ const Index = (props: IPropsNeo) => {
 					>
 						<div className='chatbox_transition_wrap w_100 h_100 flex flex_column relative'>
 							<div className='header_wrap w_100 border_box flex justify_between align_center absolute top_0'>
-								<If condition={cmd?.name}>
+								<If condition={cmd?.name || field.name}>
 									<Then>
-										<div className='title flex flex_column'>
-											<span className='cmd_title'>
-												{is_cn ? '命令模式：' : 'Command mode:'}
-											</span>
-											<span className='cmd_name'>{cmd?.name}</span>
-										</div>
-										<span
-											className='btn_exit_cmd cursor_point'
-											onClick={exitCmd}
-										>
+										{cmd?.name && (
+											<div className='title flex flex_column'>
+												<span className='cmd_title'>
+													{is_cn ? '命令模式：' : 'Command mode:'}
+												</span>
+												<span className='cmd_name'>{cmd?.name}</span>
+											</div>
+										)}
+										{field.name && (
+											<div className='title flex flex_column'>
+												<span className='cmd_title'>
+													{is_cn ? '字段模式：' : 'Field mode:'}
+												</span>
+												<span className='cmd_name'>
+													{field.name}-{field.bind}
+												</span>
+											</div>
+										)}
+										<span className='btn_exit_cmd cursor_point' onClick={exit}>
 											{is_cn ? '退出' : 'Exit'}
 										</span>
 									</Then>

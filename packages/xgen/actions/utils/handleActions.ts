@@ -1,4 +1,14 @@
-import { closeModal, confirm, historyBack, historyPush, openModal, refetch, reload } from '../Common'
+import {
+	closeModal,
+	confirm,
+	historyBack,
+	historyPush,
+	openModal,
+	refetch,
+	reload,
+	showMessage,
+	emitEvent
+} from '../Common'
 import { delete as formDelete, find as formFind, fullscreen as formFullscreen, submit as formSubmit } from '../Form'
 import { delete as TableDelete, save as tableSave, search as tableSearch } from '../Table'
 import { Service, Studio } from '../Yao'
@@ -33,6 +43,12 @@ export default ({ namespace, primary, data_item, it, extra }: OnAction) => {
 				break
 			case 'Common.reload':
 				total.push({ task: reload(), ...flow_info })
+				break
+			case 'Common.showMessage':
+				total.push({ task: showMessage(), ...flow_info })
+				break
+			case 'Common.emitEvent':
+				total.push({ task: emitEvent(), ...flow_info })
 				break
 			case 'Table.search':
 				total.push({ task: tableSearch({ namespace }), ...flow_info })

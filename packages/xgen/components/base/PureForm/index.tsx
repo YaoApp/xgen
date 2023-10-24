@@ -66,9 +66,13 @@ const Index = (props: IPropsPureForm) => {
 
 	useLayoutEffect(() => {
 		window.$app.Event.on(`${namespace}/submit`, submit)
+		window.$app.Event.on(`${namespace}/setFieldsValue`, setFieldsValue)
 
-		return () => window.$app.Event.off(`${namespace}/submit`, submit)
-	}, [])
+		return () => {
+			window.$app.Event.off(`${namespace}/submit`, submit)
+			window.$app.Event.off(`${namespace}/setFieldsValue`, setFieldsValue)
+		}
+	}, [namespace])
 
 	useLayoutEffect(() => {
 		window.$app.Event.emit('app/getContext', { namespace, primary, data_item: data })

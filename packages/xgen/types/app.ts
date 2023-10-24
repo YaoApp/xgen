@@ -1,4 +1,4 @@
-import type { Action } from '@/types'
+import type { Action, Common } from '@/types'
 
 export declare namespace App {
 	type Theme = 'light' | 'dark'
@@ -27,7 +27,14 @@ export declare namespace App {
 	type ChatHuman = {
 		is_neo: boolean
 		text: string
-		context?: { stack: string; pathname: string; formdata: any; field?: Field }
+		context?: {
+			namespace: string
+			stack: string
+			pathname: string
+			formdata: any
+			field?: Omit<Field, 'config'>
+			config?: Common.FieldDetail
+		}
 	}
 
 	type ChatInfo = ChatHuman | ChatAI
@@ -49,6 +56,7 @@ export declare namespace App {
 	interface Field {
 		name: string
 		bind: string
+		config: Common.FieldDetail
 	}
 
 	type Role = {

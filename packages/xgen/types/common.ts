@@ -26,6 +26,7 @@ export declare namespace Common {
 	}
 
 	interface FieldDetail {
+		id: string
 		bind: string
 		view: {
 			bind?: string

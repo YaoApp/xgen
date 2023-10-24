@@ -1,9 +1,9 @@
 import { useMemoizedFn } from 'ahooks'
-import { Col, Popover, Input } from 'antd'
+import { Col, Popover, Input, Button } from 'antd'
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 import { PaperPlaneTilt } from 'phosphor-react'
-import { useMemo, useState, useRef } from 'react'
+import { useMemo, useState, useRef, useEffect } from 'react'
 
 import { X } from '@/components'
 import { useGlobal } from '@/context/app'
@@ -19,6 +19,15 @@ const Index = (props: IPropsFormItem) => {
 	const global = useGlobal()
 	const input = useRef<any>(null)
 	const [visible, setVisible] = useState(false)
+	const [loading, setLoading] = useState(false)
+
+	const unLoading = useMemoizedFn(() => setLoading(false))
+
+	useEffect(() => {
+		window.$app.Event.on(`${namespace}/${item.bind}/unloading`, unLoading)
+
+		return () => window.$app.Event.off(`${namespace}/${item.bind}/unloading`, unLoading)
+	}, [namespace, item])
 
 	const show_ai = useMemo(
 		() => global.app_info.optional?.neo?.api && item.edit.props?.ai,
@@ -38,19 +47,23 @@ const Index = (props: IPropsFormItem) => {
 
 	const showAI = useMemoizedFn(() => setVisible(true))
 
-	const askAI = useMemoizedFn(() => {
+	const askAI = useMemoizedFn((e) => {
+		e.preventDefault()
+
 		const target = input?.current?.resizableTextArea?.textArea
-            
+
 		if (!target) return
 		if (!target.value) return
 
 		window.$app.Event.emit('app/getField', {
 			title: item.name,
 			bind: item.bind,
-			text: target.value
+			text: target.value,
+			config: item
 		})
 
 		setVisible(false)
+		setLoading(true)
 	})
 
 	const Ask = (
@@ -82,6 +95,11 @@ const Index = (props: IPropsFormItem) => {
 				>
 					AI
 				</span>
+			)}
+			{loading && (
+				<Button className='ai_loading' type='ghost' size='small' loading>
+					<span className='mark_ai'>AI</span>
+				</Button>
 			)}
 			<X
 				type='edit'
