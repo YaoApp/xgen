@@ -56,7 +56,7 @@ const Index = (props: IPropsFormItem) => {
 		if (!target.value) return
 
 		window.$app.Event.emit('app/getField', {
-			title: item.name,
+			name: item.name,
 			bind: item.bind,
 			text: target.value,
 			config: item

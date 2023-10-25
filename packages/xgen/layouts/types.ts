@@ -68,7 +68,6 @@ export interface IPropsNeo {
 	stack: string
 	api: string
 	studio?: boolean
-	name?: string
 }
 
 export interface IPropsNeoChatItem {

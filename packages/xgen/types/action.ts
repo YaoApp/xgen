@@ -42,9 +42,17 @@ export declare namespace Action {
 	}
 
 	type EmitEvent = { key: string; value: any } | EventToggleNeo | EventSetFieldsValue | EventUnLoadingAI
-	type EventToggleNeo = { key: 'setNeoVisible'; value: boolean }
-	type EventSetFieldsValue = { key: `$namespace/setFieldsValue`; value: Record<string, any> }
-      type EventUnLoadingAI = { key: `$namespace/$item.bind/unloading` }
+	type EventToggleNeo = {
+		key: 'app/setNeoVisible'
+		value: { visible: boolean; placeholder?: string; signal?: any }
+	}
+	type EventSetFieldsValue = {
+		key: `$namespace/setFieldsValue`
+		value: Record<string, any>
+	}
+	type EventUnLoadingAI = {
+		key: `$namespace/$item.bind/unloading`
+	}
 
 	interface ActionMap {
 		'Common.openModal': OpenModal

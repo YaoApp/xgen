@@ -34,6 +34,7 @@ export declare namespace App {
 			formdata: any
 			field?: Omit<Field, 'config'>
 			config?: Common.FieldDetail
+			signal?: ChatContext['signal']
 		}
 	}
 
@@ -45,6 +46,11 @@ export declare namespace App {
 			content: string
 			role: 'user' | 'assistant'
 		}>
+	}
+
+	interface ChatContext {
+		placeholder: string
+		signal: any
 	}
 
 	interface Context {
@@ -115,7 +121,7 @@ export declare namespace App {
 			/** remote api cache, default is true */
 			remoteCache?: boolean
 			/** neo config, for chatgpt service */
-			neo?: { api: string; studio?: boolean; name?: string }
+			neo?: { api: string; studio?: boolean }
 		}
 	}
 

@@ -30,7 +30,7 @@ const Index = (props: IPropsNeoChatItem) => {
 				action: actions!
 			}
 		})
-	})
+      })
 
 	useEffect(() => {
 		if (confirm) return
