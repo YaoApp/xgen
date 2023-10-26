@@ -47,12 +47,12 @@ export default class Flow {
 		this.__PUSH_ORDER_LOGS__(name)
 
 		if (!isNull(err)) {
-			if (!error) return
+			if (!error) return this.done()
 
 			const error_task_index = this.raw_queue.findIndex((it) => it.name === error)
 			const error_task = this.raw_queue.at(error_task_index)
 
-			if (!error_task) return
+			if (!error_task) return this.done()
 
 			this.pushRunQueue(error_task)
 
@@ -67,12 +67,7 @@ export default class Flow {
 			const next_task_index = this.raw_queue.findIndex((it) => it.name === next)
 			const next_task = this.raw_queue.at(next_task_index)
 
-			if (!next_task) {
-				// @ts-ignore
-				window.$app.Event.emit(`${this.namespace}/form/actions/done`)
-
-				return
-			}
+			if (!next_task) return this.done()
 
 			this.pushRunQueue(next_task)
 
@@ -85,14 +80,14 @@ export default class Flow {
 
 		const next_task = this.raw_queue.at(this.run_index)
 
-		if (!next_task) {
-			// @ts-ignore
-			window.$app.Event.emit(`${this.namespace}/form/actions/done`)
-
-			return
-		}
+		if (!next_task) return this.done()
 
 		this.pushRunQueue(next_task)
+	}
+
+	done() {
+		// @ts-ignore
+		window.$app.Event.emit(`${this.namespace}/form/actions/done`)
 	}
 
 	private __PUSH_ORDER_LOGS__(name: string) {
