@@ -15,16 +15,22 @@ export default ({ namespace, extra }: Args) => {
 					: undefined
 			const params = search || query ? `?${search ?? ''}${query ?? ''}` : ''
 
-			if (payload.pathname.startsWith('http')) {
+                  if (payload.pathname.startsWith('http')) {
+                        resolve()
+                        
 				return window.open(payload.pathname + params)
 			} else {
-				if (payload.public) {
+                        if (payload.public) {
+                              resolve()
+
 					return window.open(window.location.origin + payload.pathname + params)
 				}
 
 				window.addEventListener('popstate', () => resolve(), { once: true })
 
-				if (history.location.pathname.indexOf(payload.pathname) !== -1) {
+                        if (history.location.pathname.indexOf(payload.pathname) !== -1) {
+                              resolve()
+
 					window.$app.Event.emit(`${namespace}/refetch`)
 				} else {
 					history.push({
