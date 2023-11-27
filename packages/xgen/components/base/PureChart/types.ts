@@ -16,8 +16,10 @@ export interface IPropsChartLink {
 	link: string
 }
 
+export interface LocalePureChart {
+	link_tooltip: string
+}
+
 export interface Locale {
-	[key: string]: {
-		link_tooltip: string
-	}
+	[key: string]: LocalePureChart
 }

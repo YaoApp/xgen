@@ -1,6 +1,6 @@
-import type { Locale } from './types'
+import type { Locale, LocalePureTable } from './types'
 
-export default {
+const locale = {
 	'zh-CN': {
 		pagination: {
 			total: {
@@ -18,3 +18,9 @@ export default {
 		}
 	}
 } as Locale
+
+export default locale
+
+export const Message = (key: any): LocalePureTable => {
+	return locale[key] || locale['en-US']
+}

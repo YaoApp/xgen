@@ -20,9 +20,11 @@ export interface IPropsActions {
 	query: any
 }
 
+export interface LocaleFilter {
+	search: string
+	reset: string
+}
+
 export interface Locale {
-	[key: string]: {
-		search: string
-		reset: string
-	}
+	[key: string]: LocaleFilter
 }

@@ -15,14 +15,16 @@ export interface IPropsAnchorItem {
 	item: FormType.Column
 }
 
-export interface Locale {
-	[key: string]: {
-		page: {
-			title: {
-				add: string
-				view: string
-				edit: string
-			}
+export interface LocaleForm {
+	page: {
+		title: {
+			add: string
+			view: string
+			edit: string
 		}
 	}
+}
+
+export interface Locale {
+	[key: string]: LocaleForm
 }

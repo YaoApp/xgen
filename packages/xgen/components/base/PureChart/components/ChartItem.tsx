@@ -4,7 +4,7 @@ import { X } from '@/components'
 import { Card } from '@/widgets'
 import { useIntl } from '@umijs/max'
 
-import locales from '../locales'
+import { Message } from '../locales'
 import ChartLink from './ChartLink'
 
 import type { IPropsChartItem } from '../types'
@@ -13,7 +13,7 @@ const Index = (props: IPropsChartItem) => {
 	const { item, data } = props
 	const { cardStyle, ...view_props } = item.view.props
 	const { locale } = useIntl()
-	const locale_messages = locales[locale]
+	const locale_messages = Message(locale)
 
 	return (
 		<Col span={item.width}>

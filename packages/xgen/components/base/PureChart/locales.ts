@@ -1,6 +1,6 @@
-import type { Locale } from './types'
+import type { Locale, LocalePureChart } from './types'
 
-export default {
+const locale = {
 	'zh-CN': {
 		link_tooltip: '查看更多数据'
 	},
@@ -8,3 +8,9 @@ export default {
 		link_tooltip: 'Check more data'
 	}
 } as Locale
+
+export default locale
+
+export const Message = (key: any): LocalePureChart => {
+	return locale[key] || locale['en-US']
+}

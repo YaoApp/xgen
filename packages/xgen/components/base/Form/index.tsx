@@ -12,7 +12,7 @@ import Anchor from './components/Anchor'
 import Breadcrumb from './components/Breadcrumb'
 import { useHooks, usePageTitle } from './hooks'
 import styles from './index.less'
-import locales from './locales'
+import { Message } from './locales'
 import Model from './model'
 
 import type { Component } from '@/types'
@@ -23,19 +23,19 @@ const Index = (props: Component.FormComponent) => {
 	const { parent, parentNamespace, model, id, form, onBack } = props
 	const [x] = useState(() => container.resolve(Model))
 	const locale = getLocale()
-	const page_title_prefix = usePageTitle(locales[locale], id!, form!.type)
+	const page_title_prefix = usePageTitle(Message(locale), id!, form!.type)
 	const hooks = useHooks(toJS(x.setting.hooks!), toJS(x.setting.fields), toJS(x.data))
 	const ref_container = useRef<HTMLDivElement>(null)
 	const [is_fullscreen, { toggleFullscreen }] = useFullscreen(ref_container)
 
-      const title = useMemo(() => {
-            if (x.setting?.config?.viewTitle && x.type === 'view') {
-                  return x.setting.config.viewTitle
-            }
+	const title = useMemo(() => {
+		if (x.setting?.config?.viewTitle && x.type === 'view') {
+			return x.setting.config.viewTitle
+		}
 
-            if (x.setting?.config?.editTitle && x.type === 'edit') {
-                  return x.setting.config.editTitle
-            }
+		if (x.setting?.config?.editTitle && x.type === 'edit') {
+			return x.setting.config.editTitle
+		}
 
 		return page_title_prefix + x.setting.name
 	}, [page_title_prefix, x.setting.name, x.type, x.setting?.config?.viewTitle, x.setting?.config?.editTitle])

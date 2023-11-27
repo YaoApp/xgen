@@ -5,7 +5,7 @@ import { useLayoutEffect, useMemo } from 'react'
 import { getLocale } from '@umijs/max'
 
 import { useColumns } from './hooks'
-import locales from './locales'
+import { Message } from './locales'
 
 import type { TablePaginationConfig } from 'antd'
 import type { IPropsPureTable } from './types'
@@ -41,7 +41,7 @@ const Index = (props: IPropsPureTable) => {
 		showSizeChanger: true,
 		showTotal: useMemoizedFn(
 			(total: number) =>
-				locales[locale].pagination.total.before + total + locales[locale].pagination.total.after
+				Message(locale).pagination.total.before + total + Message(locale).pagination.total.after
 		)
 	}
 

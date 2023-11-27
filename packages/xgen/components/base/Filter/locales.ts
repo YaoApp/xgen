@@ -1,6 +1,6 @@
-import type { Locale } from './types'
+import type { Locale, LocaleFilter } from './types'
 
-export default {
+const locale = {
 	'zh-CN': {
 		search: '搜索',
 		reset: '重置'
@@ -10,3 +10,9 @@ export default {
 		reset: 'Reset'
 	}
 } as Locale
+
+export default locale
+
+export const Message = (key: any): LocaleFilter => {
+	return locale[key] || locale['en-US']
+}

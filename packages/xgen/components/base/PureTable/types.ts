@@ -41,13 +41,15 @@ export interface IPropsActions {
 	data_item: any
 }
 
-export interface Locale {
-	[key: string]: {
-		pagination: {
-			total: {
-				before: string
-				after: string
-			}
+export interface LocalePureTable {
+	pagination: {
+		total: {
+			before: string
+			after: string
 		}
 	}
+}
+
+export interface Locale {
+	[key: string]: LocalePureTable
 }

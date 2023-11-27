@@ -1,6 +1,6 @@
-import type { Locale } from './types'
+import type { Locale, LocaleForm } from './types'
 
-export default {
+const locale = {
 	'zh-CN': {
 		page: {
 			title: {
@@ -20,3 +20,9 @@ export default {
 		}
 	}
 } as Locale
+
+export default locale
+
+export const Message = (key: any): LocaleForm => {
+	return locale[key] || locale['en-US']
+}

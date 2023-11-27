@@ -12,7 +12,7 @@ import { getLocale, useSearchParams } from '@umijs/max'
 import Actions from './components/Actions'
 import { useCalcLayout, useVisibleMore } from './hooks'
 import styles from './index.less'
-import locales from './locales'
+import { Message } from './locales'
 
 import type { IPropsFilter, IPropsActions } from './types'
 
@@ -41,8 +41,8 @@ const Index = (props: IPropsFilter) => {
 		if (!Object.keys(search_params).length) return
 
 		setFieldsValue(search_params)
-      }, [ parent, params ])
-      
+	}, [parent, params])
+
 	if (!columns.length && !actions?.length) return null
 
 	const onReset = () => {
@@ -87,7 +87,7 @@ const Index = (props: IPropsFilter) => {
 							type='primary'
 							htmlType='submit'
 						>
-							{locales[locale].search}
+							{Message(locale).search}
 						</Button>
 					</Col>
 					<Col>
@@ -95,7 +95,7 @@ const Index = (props: IPropsFilter) => {
 							className='btn_filter_action flex justify_center align_center'
 							htmlType='reset'
 						>
-							{locales[locale].reset}
+							{Message(locale).reset}
 						</Button>
 					</Col>
 				</When>
