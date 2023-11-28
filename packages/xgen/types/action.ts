@@ -62,6 +62,7 @@ export declare namespace Action {
 		'Common.confirm': Confirm
 		'Common.refetch': {}
 		'Common.reload': Reload
+		'Common.reloadMenu': {}
 		'Common.showMessage': ShowMessage
 		'Common.emitEvent': EmitEvent
 		'Table.search': {}

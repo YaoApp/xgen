@@ -6,6 +6,7 @@ import {
 	openModal,
 	refetch,
 	reload,
+	reloadMenu,
 	showMessage,
 	emitEvent
 } from '../Common'
@@ -44,6 +45,11 @@ export default ({ namespace, primary, data_item, it, extra }: OnAction) => {
 			case 'Common.reload':
 				total.push({ task: reload(), ...flow_info })
 				break
+
+			case 'Common.reloadMenu':
+				total.push({ task: reloadMenu(), ...flow_info })
+				break
+
 			case 'Common.showMessage':
 				total.push({ task: showMessage(), ...flow_info })
 				break

@@ -55,6 +55,18 @@ export default class GlobalModel {
 		return Promise.resolve()
 	}
 
+	async getUserMenu() {
+		const { res, err } = await this.service.getUserMenu<App.Menus>()
+		if (err) return Promise.reject()
+
+		this.menus = res
+		this.menu = res?.items || []
+
+		local.menus = this.menus
+		local.menu = this.menu
+		return Promise.resolve()
+	}
+
 	setAvatar(avatar?: AvatarFullConfig) {
 		this.avatar = avatar || genConfig()
 
@@ -113,11 +125,13 @@ export default class GlobalModel {
 
 	on() {
 		window.$app.Event.on('app/getAppInfo', this.getAppInfo)
+		window.$app.Event.on('app/getUserMenu', this.getUserMenu)
 		window.$app.Event.on('app/updateMenuStatus', this.updateMenuStatus)
 	}
 
 	off() {
 		window.$app.Event.off('app/getAppInfo', this.getAppInfo)
+		window.$app.Event.off('app/getUserMenu', this.getUserMenu)
 		window.$app.Event.off('app/updateMenuStatus', this.updateMenuStatus)
 	}
 }
