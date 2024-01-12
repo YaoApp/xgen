@@ -52,6 +52,15 @@ const Index = (props: IProps) => {
 	}, [])
 
 	if (typeof props.__value === 'string') {
+		// Match the label of the current value
+		if (props.options) {
+			const option = props.options.find((item) => item.value === props.__value)
+			if (option) {
+				return <CommonTag pure={props.pure} item={option}></CommonTag>
+			}
+		}
+
+		// Use the value of props directly
 		return (
 			<CommonTag
 				pure={props.pure}
