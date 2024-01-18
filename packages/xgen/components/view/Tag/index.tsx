@@ -51,7 +51,7 @@ const Index = (props: IProps) => {
 		x.remote.init()
 	}, [])
 
-	if (typeof props.__value === 'string') {
+	if (typeof props.__value === 'string' || typeof props.__value === 'number') {
 		// Match the label of the current value
 		if (props.options) {
 			const option = props.options.find((item) => item.value === props.__value)

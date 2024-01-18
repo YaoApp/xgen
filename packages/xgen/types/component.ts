@@ -58,12 +58,12 @@ export declare namespace Component {
 
 	interface Option {
 		label: string
-		value: string
+		value: string | number
 	}
 
 	interface TagOption {
 		label: string
-		value: string
+		value: string | number
 		color?: string
 		textColor?: string
 	}
