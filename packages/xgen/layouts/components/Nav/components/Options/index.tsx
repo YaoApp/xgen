@@ -15,6 +15,7 @@ const Index = (props: IPropsOptions) => {
 	const { items, current_nav, in_setting, avatar, user, setAvatar, setInSetting } = props
 	const messages = useIntl()
 
+	console.log('options render', items)
 	const Avatar = (
 		<NiceAvatar
 			className='avatar cursor_point transition_normal'
@@ -35,7 +36,7 @@ const Index = (props: IPropsOptions) => {
 	return (
 		<div id='setting_items_wrap' className={clsx([styles._local, 'w_100 flex flex_column'])}>
 			<div className='nav_items w_100 flex flex_column align_center'>
-				{items.map((item, index) => (
+				{items?.map((item, index) => (
 					<NavItem
 						item={item}
 						active={in_setting && current_nav === index}

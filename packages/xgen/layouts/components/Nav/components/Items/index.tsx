@@ -44,7 +44,7 @@ const Index = (props: IPropsItems) => {
 				></div>
 			</When>
 			<div id='menu_items_wrap' className='nav_items w_100 border_box flex flex_column'>
-				{items.map((item, index) => (
+				{items?.map((item, index) => (
 					<NavItem
 						item={item}
 						active={!in_setting && current_nav === index}
