@@ -15,7 +15,6 @@ const Index = (props: IPropsOptions) => {
 	const { items, current_nav, in_setting, avatar, user, setAvatar, setInSetting } = props
 	const messages = useIntl()
 
-	console.log('options render', items)
 	const Avatar = (
 		<NiceAvatar
 			className='avatar cursor_point transition_normal'
