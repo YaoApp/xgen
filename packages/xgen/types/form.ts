@@ -78,6 +78,7 @@ export declare namespace FormType {
 			form: Common.EditFields
 		}
 		config?: Common.Config & {
+			hideBreadcrumb?: boolean
 			showAnchor?: boolean
 			viewTitle?: string
 			editTitle?: string

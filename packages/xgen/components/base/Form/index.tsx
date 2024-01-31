@@ -110,7 +110,9 @@ const Index = (props: Component.FormComponent) => {
 			<Page className={clsx([styles._local, 'w_100'])} title={title} full={x.setting?.config?.full}>
 				<div className='flex relative'>
 					<div className='w_100 flex flex_column'>
-						<Breadcrumb {...props_breadcrumb}></Breadcrumb>
+						{!x.setting?.config?.hideBreadcrumb && (
+							<Breadcrumb {...props_breadcrumb}></Breadcrumb>
+						)}
 						<div
 							className={clsx([is_fullscreen && styles.fullscreen, 'w_100'])}
 							ref={ref_container}
