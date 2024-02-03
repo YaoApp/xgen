@@ -19,6 +19,7 @@ interface ICustom {
 	showLabel?: boolean
 	hasChildren?: boolean
 	onChange?: (v: any) => void
+	[item: string]: any
 }
 
 interface IProps extends Component.PropsEditComponent, ICustom {}
@@ -29,8 +30,7 @@ const List = window.$app.memo(
 		const [x] = useState(() => container.resolve(Model))
 		const [value, setValue] = useState([])
 
-		useLayoutEffect(() => x.init(name), [name])
-
+		useLayoutEffect(() => x.init(props), [name])
 		useEffect(() => {
 			if (!props.value) return
 

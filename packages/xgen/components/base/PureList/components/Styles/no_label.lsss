@@ -8,6 +8,11 @@
 		justify-content: center;
 	}
 
+	.xgen-checkbox-group,
+	.xgen-radio-group {
+		padding: 0 11px;
+	}
+
 	.field_tooltip {
 		position: absolute;
 		top: -36px;

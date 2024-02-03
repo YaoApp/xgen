@@ -14,19 +14,19 @@ export const base = `/${process.env.BASE}/`
 
 export const proxy = {
 	'/api': {
-		target: 'http://_dev.com:5099',
+		target: 'http://127.0.0.1:5099',
 		changeOrigin: true
 	},
 	'/components': {
-		target: 'http://_dev.com:5099',
+		target: 'http://127.0.0.1:5099',
 		changeOrigin: true
 	},
 	'/assets': {
-		target: 'http://_dev.com:5099',
+		target: 'http://127.0.0.1:5099',
 		changeOrigin: true
 	},
 	'/iframe': {
-		target: 'http://_dev.com:5099',
+		target: 'http://127.0.0.1:5099',
 		changeOrigin: true
 	}
 }
@@ -39,7 +39,7 @@ export const conventionRoutes = {
 		/hooks\.(j|t)sx?$/,
 		/locales\.(j|t)sx?$/,
 		/components\//,
-            /model\//,
+		/model\//,
 		/types\//,
 		/hooks\//,
 		/locales\//,
