@@ -96,6 +96,7 @@ const Index = (props: Component.FormComponent) => {
 		data: toJS(x.data),
 		sections: toJS(x.sections),
 		actions: toJS(x.setting.actions),
+		frame: toJS(x.setting.form.frame),
 		hooks,
 		title,
 		props: toJS(x.setting.form?.props),

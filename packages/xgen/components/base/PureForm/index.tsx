@@ -3,7 +3,7 @@ import { Form } from 'antd'
 import to from 'await-to-js'
 import clsx from 'clsx'
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { When } from 'react-if'
+import { Else, If, Then, When } from 'react-if'
 
 import Actions from './components/Actions'
 import Reference from './components/Reference'
@@ -12,6 +12,7 @@ import { useOnValuesChange } from './hooks'
 import styles from './index.less'
 
 import type { IPropsPureForm, IPropsActions, IPropsSections, IPropsReference } from './types'
+import Frame from '../Frame'
 
 const { useForm } = Form
 
@@ -28,6 +29,7 @@ const Index = (props: IPropsPureForm) => {
 		hooks,
 		title,
 		disabledActionsAffix,
+		frame,
 		props: form_props = {},
 		setData,
 		setSetting,
@@ -130,22 +132,29 @@ const Index = (props: IPropsPureForm) => {
 				<Actions {...props_actions}></Actions>
 			</div>
 			<div className='form_content_container w_100 flex relative'>
-				<Form
-					className='w_100'
-					form={form}
-					name={namespace}
-					disabled={disabled}
-					layout='vertical'
-					onValuesChange={onValuesChange}
-					style={form_styles}
-				>
-					<div className='form_wrap w_100 border_box'>
-						<Sections {...props_sections}></Sections>
-					</div>
-				</Form>
-				<When condition={!!form_props?.reference}>
-					<Reference {...props_reference}></Reference>
-				</When>
+				<If condition={frame?.url && frame?.url != ''}>
+					<Then>
+						<Frame {...frame} data={data} />
+					</Then>
+					<Else>
+						<Form
+							className='w_100'
+							form={form}
+							name={namespace}
+							disabled={disabled}
+							layout='vertical'
+							onValuesChange={onValuesChange}
+							style={form_styles}
+						>
+							<div className='form_wrap w_100 border_box'>
+								<Sections {...props_sections}></Sections>
+							</div>
+						</Form>
+						<When condition={!!form_props?.reference}>
+							<Reference {...props_reference}></Reference>
+						</When>
+					</Else>
+				</If>
 			</div>
 		</div>
 	)

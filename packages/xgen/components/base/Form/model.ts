@@ -19,6 +19,7 @@ export default class Model {
 	setting = {} as FormType.Setting
 	data = {} as Global.AnyObject
 	sections = [] as Array<FormType.SectionResult>
+	frame = {} as FormType.Frame
 	rendered = false
 	form_name = ''
 	parent_namespace = '' as Component.FormComponent['parentNamespace']
@@ -54,6 +55,7 @@ export default class Model {
 		this.rendered = true
 		this.setting = target
 		this.sections = this.column_utils.reduceSections(target.form.sections || [], target.fields.form)
+		this.frame = target.form.frame || ({} as FormType.Frame)
 	}
 
 	async find() {

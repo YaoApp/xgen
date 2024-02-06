@@ -7,6 +7,11 @@ export declare namespace FormType {
 		columns: Array<Column>
 	}
 
+	interface Frame {
+		url: string
+		params?: Record<string, string>
+	}
+
 	interface SectionResult {
 		title?: string
 		desc?: string
@@ -73,6 +78,7 @@ export declare namespace FormType {
 				showSectionDivideLine?: boolean
 			}
 			sections: Array<Section>
+			frame?: Frame
 		}
 		fields: {
 			form: Common.EditFields
