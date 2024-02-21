@@ -40,7 +40,7 @@ export class ColumnUtils {
 	}
 
 	reduce(columns: Array<Common.BaseColumn>, fields: Common.Fields) {
-		return columns.reduce((total: Array<Common.Column>, item) => {
+		return (columns || []).reduce((total: Array<Common.Column>, item) => {
 			total.push(this.handleTableColumn(item, fields))
 
 			return total
@@ -48,7 +48,7 @@ export class ColumnUtils {
 	}
 
 	reduceAny<I, O, F>(columns: Array<I & Item>, fields: F & Fields) {
-		return columns.reduce((total: Array<O>, item) => {
+		return (columns || []).reduce((total: Array<O>, item) => {
 			total.push(this.handleAnyColumn(item, fields))
 
 			return total
@@ -69,11 +69,11 @@ export class ColumnUtils {
 			return total
 		}
 
-		return sections.reduce((total: Array<FormType.SectionResult>, item) => {
+		return (sections || []).reduce((total: Array<FormType.SectionResult>, item) => {
 			total.push({
 				title: item.title,
 				desc: item.desc,
-				columns: item.columns.reduce(getColumns, [])
+				columns: (item.columns || []).reduce(getColumns, [])
 			})
 
 			return total
@@ -94,11 +94,11 @@ export class ColumnUtils {
 			return total
 		}
 
-		return columns.reduce((total: Array<Dashboard.TargetColumn>, item) => {
+		return (columns || []).reduce((total: Array<Dashboard.TargetColumn>, item) => {
 			if ('rows' in item) {
 				total.push({
 					width: item.width,
-					rows: item.rows.reduce(getColumns, [])
+					rows: (item.rows || []).reduce(getColumns, [])
 				})
 			} else {
 				total.push(this.handleAnyColumn(item, fields))

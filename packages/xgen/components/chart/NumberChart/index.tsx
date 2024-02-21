@@ -31,7 +31,7 @@ const Index = (props: IProps) => {
 	const global = useGlobal()
 	const ref = useRef<HTMLDivElement>(null)
 
-	const current = props.data[props.data.length - 1]
+	const current = props.data[props.data.length - 1] || { value : 0}
 	const is_dark = global.theme === 'dark'
 	const is_line = props.type === 'line'
 
