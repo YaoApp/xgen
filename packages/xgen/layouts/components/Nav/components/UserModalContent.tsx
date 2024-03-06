@@ -12,18 +12,28 @@ const Index = (props: IPropsUserModalContent) => {
 	const { user, locale_messages, Avatar, setAvatar } = props
 
 	const clearStorage = useMemoizedFn(() => {
-		history.push(local.login_url || '/')
+		if (!local.logout_redirect) {
+			history.push(local.login_url || '/')
+		}
 
 		const excludes = ['paths', 'avatar', 'xgen_theme', 'remote_cache', 'token_storage', 'temp_sid']
 		const all = []
-
 		for (let index = 0; index < localStorage.length; index++) {
 			all.push(localStorage.key(index)!)
 		}
 
 		difference(all, excludes).map((item) => local.removeItem(item))
-
 		sessionStorage.clear()
+
+		// Clear the token and studio token
+		localStorage.removeItem('xgen:token')
+		localStorage.removeItem('xgen:studio')
+
+		// Redirect to the custom logout page
+		if (local.logout_redirect) {
+			window.location = local.logout_redirect
+			return
+		}
 	})
 
 	return (

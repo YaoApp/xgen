@@ -80,6 +80,7 @@ export default class Model {
 		local.menu = this.global.menu
 		local.current_nav = current_nav
 		local.login_url = getPath(history.location.pathname)
+		local.logout_redirect = res.logout_redirect || false
 
 		await window.$app.sleep(600)
 
