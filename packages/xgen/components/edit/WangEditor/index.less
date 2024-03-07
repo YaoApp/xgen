@@ -1,0 +1,45 @@
+._local {
+	// textarea - css vars
+	--w-e-textarea-bg-color: transparent;
+	--w-e-textarea-color: var(--color_text);
+	--w-e-textarea-border-color: var(--color_border);
+	--w-e-textarea-slight-border-color: var(--color_border_light);
+	--w-e-textarea-slight-color: var(--color_text_grey);
+	--w-e-textarea-slight-bg-color: var(--color_bg);
+	--w-e-textarea-selected-border-color: #b4d5ff; // 选中的元素，如选中了分割线
+	--w-e-textarea-handler-bg-color: var(--color_main); // 工具，如图片拖拽按钮
+	--w-e-textarea-border-radius: var(--radius);
+
+	// toolbar - css vars
+	--w-e-toolbar-color: var(--color_title);
+	--w-e-toolbar-bg-color: var(--color_bg_nav);
+	--w-e-toolbar-active-color: var(--color_text_contrast);
+	--w-e-toolbar-active-bg-color: var(--color_bg);
+	--w-e-toolbar-disabled-color: var(--color_text_grey);
+	--w-e-toolbar-border-color: var(--color_border_soft);
+
+	// modal - css vars
+	--w-e-modal-button-bg-color: var(--color_bg);
+	--w-e-modal-button-border-color: var(--color_border_soft);
+
+	padding: 4px 12px 12px 12px;
+	z-index: 500;
+	background: var(--color_bg_nav);
+	border-radius: var(--radius);
+}
+
+._editor {
+	background: var(--color_bg_menu);
+	border-radius: var(--radius);
+	padding: 12px 24px 12px 24px;
+}
+
+._toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 8px 0;
+
+	button {
+		border-radius: var(--radius);
+	}
+}

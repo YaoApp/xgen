@@ -39,6 +39,8 @@
             "@mdx-js/mdx": "^2.3.0",
             "@mdx-js/react": "^2.3.0",
             "@umijs/max": "4.0.68",
+            "@wangeditor/editor": "^5.1.23",
+            "@wangeditor/editor-for-react": "^1.0.6",
             "@yaoapp/actionflow": "workspace:*",
             "@yaoapp/editorjs_plugins": "workspace:*",
             "@yaoapp/emittery": "workspace:*",

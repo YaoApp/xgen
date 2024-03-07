@@ -4,7 +4,6 @@ import { injectable } from 'tsyringe'
 import { ColumnUtils, Common } from '@/services'
 
 import type { List, Common as CommonType } from '@/types'
-import { ICustom } from '../RichText'
 import { IProps } from 'ahooks/lib/useWhyDidYouUpdate'
 
 @injectable()
