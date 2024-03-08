@@ -132,7 +132,6 @@ const Index = () => {
 								<Then>
 									<Nav {...props_nav}></Nav>
 									<Menu {...props_menu}></Menu>
-									<div>----</div>
 									<Container {...props_container}>
 										<Outlet />
 									</Container>
