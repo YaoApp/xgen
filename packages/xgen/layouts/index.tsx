@@ -7,10 +7,14 @@ import { observer } from 'mobx-react-lite'
 import { Fragment, useLayoutEffect, useMemo, useState } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
 import { container } from 'tsyringe'
+import { If, Then } from 'react-if'
 
 import { GlobalContext, GlobalModel } from '@/context/app'
 import { useIntl } from '@/hooks'
 import { Outlet, useLocation } from '@umijs/max'
+
+import ContainerColumnOne from './components/ColumnOne/Container'
+import MenuColumnOne from './components/ColumnOne/Menu'
 
 import Container from './components/Container'
 import Helmet from './components/Helmet'
@@ -102,7 +106,8 @@ const Index = () => {
 
 	const props_container: IPropsContainer = {
 		menu: menu_items,
-		visible_menu: global.visible_menu
+		visible_menu: global.visible_menu,
+		menu_layout: global.app_info.optional?.menu?.layout || '2-columns'
 	}
 
 	return (
@@ -117,11 +122,33 @@ const Index = () => {
 					) : (
 						<Fragment>
 							<Loading {...props_loading}></Loading>
-							<Nav {...props_nav}></Nav>
-							<Menu {...props_menu}></Menu>
-							<Container {...props_container}>
-								<Outlet />
-							</Container>
+							<If
+								condition={
+									!global.app_info.optional ||
+									!global.app_info.optional.menu ||
+									global.app_info.optional?.menu?.layout === '2-columns'
+								}
+							>
+								<Then>
+									<Nav {...props_nav}></Nav>
+									<Menu {...props_menu}></Menu>
+									<div>----</div>
+									<Container {...props_container}>
+										<Outlet />
+									</Container>
+								</Then>
+							</If>
+							<If condition={global.app_info.optional?.menu?.layout === '1-column'}>
+								<Then>
+									<MenuColumnOne
+										{...props_menu}
+										nav_props={props_nav}
+									></MenuColumnOne>
+									<ContainerColumnOne {...props_container}>
+										<Outlet />
+									</ContainerColumnOne>
+								</Then>
+							</If>
 							{global.app_info.optional?.neo?.api && <Neo {...props_neo}></Neo>}
 						</Fragment>
 					)}

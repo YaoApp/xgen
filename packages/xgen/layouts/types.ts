@@ -62,6 +62,7 @@ export interface IPropsMenu {
 	items: Array<App.Menu>
 	menu_key_path: GlobalModel['menu_key_path']
 	visible: GlobalModel['visible_menu']
+	nav_props?: IPropsNav
 }
 
 export interface IPropsNeo {
@@ -80,6 +81,7 @@ export interface IPropsNeoChatItem {
 export interface IPropsContainer {
 	menu: Array<App.Menu>
 	visible_menu: GlobalModel['visible_menu']
+	menu_layout: '1-column' | '2-columns'
 }
 
 export interface IPropsSettingModalContent {
