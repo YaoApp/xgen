@@ -6,6 +6,7 @@ import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor'
 
 import { Item } from '@/components'
 import { getLocale } from '@umijs/max'
+import Upload from './upload'
 
 import type { Component } from '@/types'
 import clsx from 'clsx'
@@ -14,9 +15,12 @@ import styles from './index.less'
 export interface IWangEditor {
 	value: any
 	disabled?: boolean
-	maxHeight?: number
-	UploadByFileApi?: string
-	UploadByUrlApi?: string
+	autoFocus?: boolean
+	minHeight?: number
+	imageUrl?: string
+	imageUpload?: string
+	videoUpload?: string
+	videoUrl?: string
 	placeholder?: string
 	onChange?: (v: any) => void
 }
@@ -27,9 +31,41 @@ const WangEditor = window.$app.memo((props: IWangEditor) => {
 	const is_cn = getLocale() === 'zh-CN'
 	const [editor, setEditor] = useState<IDomEditor | null>(null)
 	const [html, setHtml] = useState(props.value)
+	const minHeight = props.minHeight || 300
 	const toolbarConfig: Partial<IToolbarConfig> = {}
 	const editorConfig: Partial<IEditorConfig> = {
-		placeholder: props.placeholder || is_cn ? '请输入内容' : 'Please enter content'
+		placeholder: props.placeholder || is_cn ? '请输入内容' : 'Please enter content',
+		autoFocus: props.autoFocus || false,
+		readOnly: props.disabled || false,
+		MENU_CONF: {}
+	}
+
+	// Upload Image
+	if (props.imageUpload && props.imageUpload != '') {
+		editorConfig.MENU_CONF!['uploadImage'] = {
+			async customUpload(file: File, insertFn: any) {
+				if (props.imageUpload) {
+					const { path, url } = await Upload.File(props.imageUpload, file, props.imageUrl)
+					if (insertFn) {
+						insertFn(url, '', url)
+					}
+				}
+			}
+		}
+	}
+
+	// Upload Video
+	if (props.videoUpload && props.videoUpload != '') {
+		editorConfig.MENU_CONF!['uploadVideo'] = {
+			async customUpload(file: File, insertFn: any) {
+				if (props.videoUpload) {
+					const { path, url } = await Upload.File(props.videoUpload, file, props.videoUrl)
+					if (insertFn) {
+						insertFn(url, '', url)
+					}
+				}
+			}
+		}
 	}
 
 	useEffect(() => {
@@ -49,8 +85,9 @@ const WangEditor = window.$app.memo((props: IWangEditor) => {
 				mode='default'
 			/>
 			<Editor
-				className={clsx([styles._editor])}
 				mode='default'
+				className={clsx([styles._editor])}
+				style={{ minHeight: minHeight }}
 				defaultConfig={editorConfig}
 				value={html}
 				onCreated={setEditor}
@@ -66,7 +103,6 @@ const WangEditor = window.$app.memo((props: IWangEditor) => {
 
 const Index = (props: IProps) => {
 	const { __bind, __name, itemProps, ...rest_props } = props
-
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
 			<WangEditor {...rest_props}></WangEditor>
