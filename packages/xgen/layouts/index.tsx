@@ -95,6 +95,7 @@ const Index = () => {
 		parent: menu[global.current_nav],
 		items: menu_items,
 		menu_key_path: toJS(global.menu_key_path),
+		menu_selected_keys: toJS(global.menu_selected_keys),
 		visible: global.visible_menu
 	}
 

@@ -11,16 +11,23 @@ import styles from './index.less'
 
 import type { IPropsMenu } from '../../../types'
 import type { MenuProps } from 'antd'
+import { Utils } from './utils'
 
 const Index = (props: IPropsMenu) => {
 	const { locale_messages, parent, items, menu_key_path, visible, nav_props } = props
 	const { visible_input, current_items, toggle, setInput } = useSearch(items)
-	const { menu_items } = useMenuItems(current_items)
+	// const { menu_items } = useMenuItems(current_items)
 	const [openKeys, setOpenKeys] = useState<Array<string>>([])
 
 	useDeepCompareEffect(() => {
 		setOpenKeys(menu_key_path)
 	}, [menu_key_path])
+
+	console.log('menu_key_path', menu_key_path)
+
+	// Merge the props_menu with the nav_props
+	const menuItems = Utils.Merge(nav_props?.menus?.items || [], current_items, nav_props?.menus?.setting || [])
+	const { menu_items } = useMenuItems(nav_props?.menus?.items || [])
 
 	const props_menu: MenuProps = {
 		items: menu_items,
@@ -36,8 +43,6 @@ const Index = (props: IPropsMenu) => {
 			history.push(key)
 		}
 	}
-
-	console.log('nav_props', nav_props)
 
 	return (
 		<div className={clsx([styles._local, (!items?.length || !visible) && styles.hidden])}>

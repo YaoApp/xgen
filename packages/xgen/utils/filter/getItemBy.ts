@@ -1,13 +1,13 @@
 import { find } from 'lodash-es'
 
-const Index = (items: Array<any>, paths: Array<string | number>, key: string) => {
-	return paths.reduce((total, v) => {
+const Index = (key: string, items: Array<any>, keys: Array<string | number>) => {
+	return keys.reduce((total, v) => {
 		const target = find(items, (item) => item[key] === v)
 
 		if (target?.children?.length) {
-			paths.shift()
+			keys.shift()
 
-			total = Index(target.children, paths, key)
+			total = Index(key, target.children, keys)
 		} else {
 			total = target
 		}

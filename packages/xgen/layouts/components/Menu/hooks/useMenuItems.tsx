@@ -1,6 +1,7 @@
 import { Fragment, useMemo } from 'react'
 
 import type { IPropsMenu } from '../../../types'
+import { Icon } from '@/widgets'
 
 const getMenuItems = (items: IPropsMenu['items']) => {
 	return items.reduce(
@@ -18,10 +19,14 @@ const getMenuItems = (items: IPropsMenu['items']) => {
 			} else {
 				menu_item['label'] = item.name
 			}
-			menu_item['key'] = item.path
-
+			menu_item['key'] = item.key
 			pure_item['label'] = item.name
-			pure_item['key'] = item.path
+			pure_item['key'] = item.key
+
+			// Item icon
+			if (item.icon) {
+				menu_item['icon'] = <Icon name={item.icon} size={14}></Icon>
+			}
 
 			if (item?.children && item?.children?.length) {
 				menu_item['children'] = getMenuItems(item.children).menu_items

@@ -137,6 +137,7 @@ export declare namespace App {
 
 	interface Menu {
 		id: number
+		key: string
 		name: string
 		icon: string
 		path: string

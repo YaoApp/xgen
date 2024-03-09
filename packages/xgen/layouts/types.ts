@@ -61,6 +61,7 @@ export interface IPropsMenu {
 	parent: App.Menu
 	items: Array<App.Menu>
 	menu_key_path: GlobalModel['menu_key_path']
+	menu_selected_keys: GlobalModel['menu_selected_keys']
 	visible: GlobalModel['visible_menu']
 	nav_props?: IPropsNav
 }

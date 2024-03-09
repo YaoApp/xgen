@@ -22,9 +22,11 @@ export default class GlobalModel {
 	user = (local.user || {}) as App.User
 	menus = (local.menus || { items: [], setting: {} }) as App.Menus
 	menu = (local.menu || []) as Array<App.Menu>
+
 	in_setting = (local.in_setting || false) as boolean
 	current_nav: number = local.current_nav || 0
 	menu_key_path = (local.menu_key_path || []) as Array<string>
+	menu_selected_keys: Array<string> = (local.menu_key_path || []) as Array<string>
 	loading: boolean = false
 	visible_menu: boolean = true
 
@@ -56,15 +58,46 @@ export default class GlobalModel {
 	}
 
 	async getUserMenu() {
+		console.log('getUserMenu')
 		const { res, err } = await this.service.getUserMenu<App.Menus>()
 		if (err) return Promise.reject()
+		this.setMenus(res)
+		return Promise.resolve()
+	}
 
-		this.menus = res
-		this.menu = res?.items || []
+	setMenus(menus: App.Menus, current_nav?: number, in_setting?: boolean) {
+		// Set keys for the menu items
+		const setKeys = (items: Array<App.Menu>, parent_key: string, in_setting: boolean) => {
+			let idxkey = 0
+			items.forEach((item) => {
+				const parent = parent_key != '' ? '/_parent' + parent_key : ''
+				const setting = in_setting ? '/_setting' : ''
+				const id = idxkey > 0 ? '/_' + idxkey : ''
+				const key = `${item.path}/_menu${setting}${parent}${id}`
+				item.key = key
+				idxkey++
+				if (item.children) setKeys(item.children, item.key, in_setting)
+			})
+		}
 
+		setKeys(menus.items, '', in_setting || false)
+		setKeys(menus.setting, '', true)
+		this.menus = menus
+		this.menu = menus?.items || []
 		local.menus = this.menus
 		local.menu = this.menu
-		return Promise.resolve()
+		if (current_nav !== undefined) this.setCurrentNav(current_nav)
+		if (in_setting !== undefined) this.setInSetting(in_setting)
+	}
+
+	setCurrentNav(current_nav: number) {
+		this.current_nav = current_nav
+		local.current_nav = current_nav
+	}
+
+	setInSetting(in_setting: boolean) {
+		this.in_setting = in_setting
+		local.in_setting = in_setting
 	}
 
 	setAvatar(avatar?: AvatarFullConfig) {
@@ -88,16 +121,16 @@ export default class GlobalModel {
 		})
 	}
 
-	updateMenuStatus(pathname: string) {
-		const { hit, current_nav, paths } = getCurrentMenuIndexs(
-			pathname,
+	updateMenuStatus(itemkey_or_pathname: string) {
+		const { hit, current_nav, paths, keys } = getCurrentMenuIndexs(
+			itemkey_or_pathname,
 			toJS(this.in_setting ? this.menus.setting : this.menus.items)
 		)
 
 		if (!hit) return
-
 		this.current_nav = current_nav
 		this.menu_key_path = paths
+		this.menu_selected_keys = keys
 	}
 
 	reactions() {
@@ -120,6 +153,10 @@ export default class GlobalModel {
 		reaction(
 			() => this.menu_key_path,
 			(v) => (local.menu_key_path = v)
+		)
+		reaction(
+			() => this.menu_selected_keys,
+			(v) => (local.menu_selected_keys = v)
 		)
 	}
 

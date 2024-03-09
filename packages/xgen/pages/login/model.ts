@@ -58,12 +58,8 @@ export default class Model {
 		if (!entry) return message.warning(this.global.locale_messages.login.no_entry)
 
 		const current_nav = findIndex(res.menus.items, (item) => item.path === entry) || 0
-
 		this.global.user = res.user
-		this.global.menus = res.menus
-		this.global.menu = res.menus.items
-		this.global.current_nav = current_nav
-		this.global.in_setting = false
+		this.global.setMenus(res.menus, current_nav, false)
 
 		if (this.global.app_info.token?.storage === 'localStorage') {
 			local.token = res.token
@@ -76,16 +72,12 @@ export default class Model {
 		}
 
 		local.user = res.user
-		local.menus = this.global.menus
-		local.menu = this.global.menu
 		local.current_nav = current_nav
 		local.login_url = getPath(history.location.pathname)
 		local.logout_redirect = res.logout_redirect || false
 
 		await window.$app.sleep(600)
-
 		this.loading.login = false
-
 		history.push(entry)
 	}
 

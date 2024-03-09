@@ -13,21 +13,21 @@ import type { IPropsMenu } from '../../types'
 import type { MenuProps } from 'antd'
 
 const Index = (props: IPropsMenu) => {
-	const { locale_messages, parent, items, menu_key_path, visible } = props
+	const { locale_messages, parent, items, menu_selected_keys, visible } = props
 	const { visible_input, current_items, toggle, setInput } = useSearch(items)
 	const { menu_items } = useMenuItems(current_items)
 	const [openKeys, setOpenKeys] = useState<Array<string>>([])
 
 	useDeepCompareEffect(() => {
-		setOpenKeys(menu_key_path)
-	}, [menu_key_path])
+		setOpenKeys(menu_selected_keys)
+	}, [menu_selected_keys])
 
 	const props_menu: MenuProps = {
 		items: menu_items,
 		mode: 'inline',
 		inlineIndent: 20,
 		forceSubMenuRender: true,
-		selectedKeys: menu_key_path,
+		selectedKeys: menu_selected_keys,
 		openKeys,
 		onOpenChange(openKeys) {
 			setOpenKeys(openKeys)

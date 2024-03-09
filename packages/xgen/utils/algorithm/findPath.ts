@@ -9,7 +9,14 @@ export default (data: Array<any>, key: string, value: any) => {
 		for (let item of data) {
 			paths.push(omit(item, 'children'))
 
-			if (item[key] === value) return (result = cloneDeep(paths))
+			// If the key and value are matched, return the path
+			if (key == 'key' && item.key && item.key != '') {
+				const itemRoute = item.key.split('/_menu')[0]
+				const findRoute = value.split('/_menu')[0]
+				if (itemRoute === findRoute && item.key.includes(value)) return (result = cloneDeep(paths))
+			}
+
+			if (item.key === value || item[key] === value) return (result = cloneDeep(paths))
 
 			const children = Array.isArray(item.children) ? item.children : []
 

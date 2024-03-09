@@ -17,7 +17,6 @@ export interface IPropsNavItem {
 
 const Index = (props: IPropsNavItem) => {
 	const { item, active, onClick } = props
-
 	return (
 		<Tooltip title={item.name} placement='right'>
 			<Link
@@ -26,7 +25,7 @@ const Index = (props: IPropsNavItem) => {
 					active && styles.active,
 					'w_100 flex justify_center align_center clickable'
 				])}
-				to={item.path}
+				to={item.key}
 				onClick={onClick}
 			>
 				<If condition={item.badge || item.dot}>
