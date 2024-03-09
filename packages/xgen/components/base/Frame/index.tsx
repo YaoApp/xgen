@@ -29,9 +29,7 @@ const Index = (props: IProps) => {
 			p1 = p1.trim()
 			return data?.[p1] || ''
 		})
-
-		const uri = new URL(new_url)
-		const new_params = uri.searchParams
+		const new_params = new URLSearchParams()
 		for (const key in params) {
 			const value = params[key]
 			new_params.append(

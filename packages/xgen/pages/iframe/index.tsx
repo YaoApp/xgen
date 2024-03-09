@@ -7,8 +7,7 @@ const Index = () => {
 
 	const src = useMemo(() => {
 		if (!search) return ''
-
-		return new URLSearchParams(search).get('src') || ''
+		return search.split('?src=')[1].split('/_menu')[0]
 	}, [search])
 
 	useLayoutEffect(() => {
@@ -23,8 +22,7 @@ const Index = () => {
 		<iframe
 			className='w_100 h_100vh'
 			src={src}
-			frameBorder='0'
-			style={{ backgroundColor: 'var(--color_bg)' }}
+			style={{ backgroundColor: 'var(--color_bg)', border: 'none' }}
 		></iframe>
 	)
 }
