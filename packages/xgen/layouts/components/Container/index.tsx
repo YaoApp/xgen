@@ -9,7 +9,6 @@ import type { IPropsContainer } from '../../types'
 
 const Index = (props: IPropsContainer & { children: React.ReactNode }) => {
 	const { children, menu, visible_menu, show_name } = props
-	console.log(`container show_name:`, show_name)
 	return (
 		<div
 			id='container'

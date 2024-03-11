@@ -18,9 +18,6 @@ export interface IPropsNavItem {
 
 const Index = (props: IPropsNavItem) => {
 	const { item, active, show_name, onClick } = props
-
-	console.log(`nav item show_name:`, show_name)
-
 	return (
 		<>
 			<If condition={show_name === true}>
