@@ -126,8 +126,8 @@ export declare namespace App {
 			remoteCache?: boolean
 			/** neo config, for chatgpt service */
 			neo?: { api: string; studio?: boolean }
-			/** menu config, default is { layout:"2-columns", hide:false }  */
-			menu?: { layout: '1-column' | '2-columns'; hide?: boolean }
+			/** menu config, default is { layout:"2-columns", hide:false, showName:false }  */
+			menu?: { layout: '1-column' | '2-columns'; hide?: boolean; showName?: boolean }
 		}
 	}
 

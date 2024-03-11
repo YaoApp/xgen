@@ -12,7 +12,7 @@ import styles from './index.less'
 import type { IPropsOptions, IPropsUserModalContent } from '@/layouts/types'
 
 const Index = (props: IPropsOptions) => {
-	const { items, current_nav, in_setting, avatar, user, setAvatar, setInSetting } = props
+	const { items, current_nav, show_name, in_setting, avatar, user, setAvatar, setInSetting } = props
 	const messages = useIntl()
 
 	const Avatar = (
@@ -40,6 +40,7 @@ const Index = (props: IPropsOptions) => {
 						item={item}
 						active={in_setting && current_nav === index}
 						onClick={onClick}
+						show_name={show_name}
 						key={index}
 					></NavItem>
 				))}

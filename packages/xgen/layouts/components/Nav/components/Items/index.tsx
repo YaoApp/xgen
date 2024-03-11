@@ -9,7 +9,7 @@ import styles from './index.less'
 import type { IPropsItems } from '@/layouts/types'
 
 const Index = (props: IPropsItems) => {
-	const { items, current_nav, in_setting, setInSetting } = props
+	const { items, current_nav, in_setting, show_name, setInSetting } = props
 	const size_nav_wrap = useSize(() => document.getElementById('nav_wrap'))
 	const size_menu_items_wrap = useSize(() => document.getElementById('menu_items_wrap'))
 	const size_setting_items_wrap = useSize(() => document.getElementById('setting_items_wrap'))
@@ -49,6 +49,7 @@ const Index = (props: IPropsItems) => {
 						item={item}
 						active={!in_setting && current_nav === index}
 						onClick={onClick}
+						show_name={show_name}
 						key={index}
 					></NavItem>
 				))}

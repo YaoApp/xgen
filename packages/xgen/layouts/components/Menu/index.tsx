@@ -1,7 +1,7 @@
 import { useDeepCompareEffect } from 'ahooks'
 import { Input, Menu } from 'antd'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Icon } from '@/widgets'
 import { history } from '@umijs/max'
@@ -37,8 +37,15 @@ const Index = (props: IPropsMenu) => {
 		}
 	}
 
+	const show_name = props.nav_props?.app_info?.optional?.menu?.showName || false
+
 	return (
-		<div className={clsx([styles._local, (!items?.length || !visible) && styles.hidden])}>
+		<div
+			className={clsx([
+				show_name ? styles._local_showname : styles._local,
+				(!items?.length || !visible) && styles.hidden
+			])}
+		>
 			<div className='title_wrap w_100 border_box flex justify_between align_center relative'>
 				{visible_input ? (
 					<Input
