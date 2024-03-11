@@ -62,6 +62,7 @@ const Index = () => {
 
 	const menu_items = useMemo(() => menu[global.current_nav]?.children || [], [menu, global.current_nav])
 	const layout = global.app_info.optional?.menu?.layout || '2-columns'
+	const show_name = global.app_info.optional?.menu?.showName || false
 	const props_helmet: IPropsHelmet = {
 		theme: global.theme,
 		app_info: global.app_info
@@ -76,7 +77,8 @@ const Index = () => {
 	const props_loading: IPropsLoading = {
 		loading: global.loading,
 		menu: menu_items,
-		visible_menu: global.visible_menu
+		visible_menu: global.visible_menu,
+		show_name: show_name
 	}
 
 	const props_nav: IPropsNav = {
@@ -97,7 +99,7 @@ const Index = () => {
 		menu_key_path: toJS(global.menu_key_path),
 		menu_selected_keys: toJS(global.menu_selected_keys),
 		visible: global.visible_menu,
-		show_name: global.app_info.optional?.menu?.showName || false
+		show_name: show_name
 	}
 
 	const props_neo: IPropsNeo = {
@@ -109,7 +111,8 @@ const Index = () => {
 	const props_container: IPropsContainer = {
 		menu: menu_items,
 		visible_menu: global.visible_menu,
-		menu_layout: layout
+		menu_layout: layout,
+		show_name: show_name
 	}
 
 	return (

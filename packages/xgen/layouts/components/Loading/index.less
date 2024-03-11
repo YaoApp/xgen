@@ -41,3 +41,37 @@
 		}
 	}
 }
+
+._local_showname {
+	margin-left: 320px;
+	width: calc(100vw - 92px - 228px);
+	background-color: var(--color_bg);
+	transition: all ease 0.15s;
+
+	&.no_menu {
+		margin-left: 92px;
+		width: calc(100vw - 92px);
+	}
+
+	:global {
+		.inner {
+			width: 48px;
+			height: 48px;
+			border-top: @border;
+			border-right: @border;
+			border-bottom: @border;
+			border-left: 2px solid var(--color_main);
+			border-radius: 50%;
+
+			@border:2px solid rgba(var(--r), var(--g), var(--b), 0.15);
+
+			:local {
+				animation: spinner 600ms infinite linear;
+			}
+		}
+
+		.text {
+			letter-spacing: 2px;
+		}
+	}
+}

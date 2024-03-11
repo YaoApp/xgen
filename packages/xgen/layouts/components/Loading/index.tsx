@@ -6,14 +6,14 @@ import styles from './index.less'
 import type { IPropsLoading } from '../../types'
 
 const Index = (props: IPropsLoading) => {
-	const { loading, menu, visible_menu } = props
+	const { loading, menu, visible_menu, show_name } = props
 
 	return (
 		<AnimatePresence>
 			{loading && (
 				<motion.div
 					className={clsx([
-						styles._local,
+						show_name ? styles._local_showname : styles._local,
 						(!menu?.length || !visible_menu) && styles.no_menu,
 						'fixed top_0 left_0 z_index_1000 h_100vh flex flex_column align_center justify_center'
 					])}

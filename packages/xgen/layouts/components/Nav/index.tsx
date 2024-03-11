@@ -35,14 +35,10 @@ const Index = (props: IPropsNav) => {
 		setInSetting
 	}
 
+	console.log(`show_name:`, show_name)
+
 	return (
-		<div
-			id='nav_wrap'
-			className={styles._local}
-			style={{
-				width: props_items.show_name ? '92px' : '80px'
-			}}
-		>
+		<div id='nav_wrap' className={show_name ? styles._local_showname : styles._local}>
 			<div className='flex flex_column'>
 				<Tooltip title={app_info.name} placement='right'>
 					<Link to={'/setting'}>

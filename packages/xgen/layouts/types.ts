@@ -20,6 +20,7 @@ export interface IPropsLoginWrapperLeft {
 export interface IPropsLoading {
 	loading: boolean
 	menu: Array<App.Menu>
+	show_name?: boolean
 	visible_menu: GlobalModel['visible_menu']
 }
 
@@ -86,6 +87,7 @@ export interface IPropsContainer {
 	menu: Array<App.Menu>
 	visible_menu: GlobalModel['visible_menu']
 	menu_layout: '1-column' | '2-columns'
+	show_name?: boolean
 }
 
 export interface IPropsSettingModalContent {
