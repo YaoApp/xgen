@@ -14,6 +14,10 @@ export default {
 			},
 			theme: {
 				title: '主题'
+			},
+			system: {
+				name: '系统',
+				version: '版本'
 			}
 		}
 	}

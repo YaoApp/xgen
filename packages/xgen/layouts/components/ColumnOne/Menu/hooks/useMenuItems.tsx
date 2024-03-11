@@ -24,8 +24,8 @@ const getMenuItems = (items: IPropsMenu['items']) => {
 				menu_item['icon'] = <Icon name={item.icon} size={14}></Icon>
 			}
 
-			menu_item['key'] = item.path
-			pure_item['key'] = item.path
+			menu_item['key'] = item.key
+			pure_item['key'] = item.key
 			pure_item['label'] = item.name
 
 			if (item?.children && item?.children?.length) {

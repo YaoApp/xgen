@@ -6,37 +6,41 @@
 	overflow: hidden;
 	width: 240px;
 	height: 100vh;
-	background-color: var(--color_bg_menu);
+	background-color: var(--color_bg_nav);
 	transform: translate3d(0, 0, 0);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 
 	&.hidden {
 		transform: translate3d(-160px, 0, 0);
+		.title_wrap {
+			height: 60px;
+		}
 	}
 
 	:global {
 		.title_wrap {
-			padding: 0 20px;
-			height: 60px;
-
+			padding: 20px;
 			&::after {
 				position: absolute;
 				bottom: 0;
 				left: 0;
 				width: 100%;
 				height: 1px;
-				background-color: var(--color_border);
+				// background-color: var(--color_border);
 				content: '';
 				transform: scaleY(0.5);
 			}
 
-			.input {
-				width: calc(100% - 36px);
-				height: 32px;
-				background-color: var(--color_bg_nav);
-			}
-
 			.title {
 				font-size: 18px;
+				margin-top: 0.5em;
+			}
+
+			.sub_title {
+				font-size: 14px;
+				margin-top: 0.2em;
 			}
 
 			.icon_wrap {
@@ -57,9 +61,52 @@
 			}
 		}
 
+		.search_wrap {
+			padding: 0 20px;
+			height: 60px;
+
+			.input {
+				width: calc(100% - 36px);
+				height: 32px;
+				background-color: var(--color_bg_nav);
+			}
+		}
+
+		.setting_wrap {
+			height: auto;
+			max-height: 240px;
+			overflow-y: scroll;
+			padding-bottom: 10px;
+			.xgen-menu {
+				background-color: transparent;
+				border-right: none;
+				width: 100%;
+				overflow-x: hidden;
+			}
+			.xgen-menu-item,
+			.xgen-menu-submenu-title {
+				margin: 0 !important;
+				font-weight: 500;
+				font-size: 14px;
+			}
+
+			.badge_wrap {
+				min-width: 16px;
+				height: 16px;
+				line-height: 16px;
+				padding: 0 4px;
+				margin-left: 4px;
+				background-color: var(--color_border);
+				color: var(--color_text);
+				border-radius: 8px;
+				font-size: 12px;
+			}
+		}
+
 		.menu_wrap {
 			overflow-y: scroll;
-			height: calc(100vh - 60px);
+			height: auto;
+			max-height: calc(100vh - 300px);
 
 			.xgen-menu {
 				background-color: transparent;
@@ -72,7 +119,7 @@
 			.xgen-menu-submenu-title {
 				margin: 0 !important;
 				font-weight: 500;
-				font-size: 13px;
+				font-size: 14px;
 			}
 
 			.badge_wrap {

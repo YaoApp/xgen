@@ -4,37 +4,55 @@ import clsx from 'clsx'
 import { useState } from 'react'
 
 import { Icon } from '@/widgets'
-import { history } from '@umijs/max'
+import { history, Link } from '@umijs/max'
 
 import { useMenuItems, useSearch } from './hooks'
 import styles from './index.less'
 
-import type { IPropsMenu } from '../../../types'
+import type { IPropsLogo, IPropsMenu } from '../../../types'
 import type { MenuProps } from 'antd'
+import Logo from './Logo'
 import { Utils } from './utils'
 
 const Index = (props: IPropsMenu) => {
-	const { locale_messages, parent, items, menu_key_path, visible, nav_props } = props
+	const { locale_messages, parent, items, menu_selected_keys, visible, nav_props } = props
 	const { visible_input, current_items, toggle, setInput } = useSearch(items)
 	// const { menu_items } = useMenuItems(current_items)
 	const [openKeys, setOpenKeys] = useState<Array<string>>([])
 
 	useDeepCompareEffect(() => {
-		setOpenKeys(menu_key_path)
-	}, [menu_key_path])
+		setOpenKeys(menu_selected_keys)
+	}, [menu_selected_keys])
 
-	console.log('menu_key_path', menu_key_path)
+	const props_logo: IPropsLogo = {
+		logo: nav_props?.app_info?.logo
+	}
 
-	// Merge the props_menu with the nav_props
-	const menuItems = Utils.Merge(nav_props?.menus?.items || [], current_items, nav_props?.menus?.setting || [])
+	// Application menu items
 	const { menu_items } = useMenuItems(nav_props?.menus?.items || [])
-
 	const props_menu: MenuProps = {
 		items: menu_items,
 		mode: 'inline',
 		inlineIndent: 20,
 		forceSubMenuRender: true,
-		selectedKeys: menu_key_path,
+		selectedKeys: menu_selected_keys,
+		openKeys,
+		onOpenChange(openKeys) {
+			setOpenKeys(openKeys)
+		},
+		onSelect({ key }) {
+			history.push(key)
+		}
+	}
+
+	// Setting menu items
+	const { menu_items: setting_items } = useMenuItems(nav_props?.menus?.setting || [])
+	const props_setting: MenuProps = {
+		items: setting_items,
+		mode: 'vertical',
+		inlineIndent: 20,
+		forceSubMenuRender: true,
+		selectedKeys: menu_selected_keys,
 		openKeys,
 		onOpenChange(openKeys) {
 			setOpenKeys(openKeys)
@@ -46,33 +64,23 @@ const Index = (props: IPropsMenu) => {
 
 	return (
 		<div className={clsx([styles._local, (!items?.length || !visible) && styles.hidden])}>
-			<div className='title_wrap w_100 border_box flex justify_between align_center relative'>
-				{visible_input ? (
-					<Input
-						className='input'
-						autoFocus
-						placeholder={locale_messages.layout.menu.search_placeholder}
-						onChange={({ target: { value } }) => setInput(value)}
-					></Input>
-				) : (
-					<span className='title'>{parent?.name}</span>
-				)}
-				<a
-					className={clsx([
-						'icon_wrap flex justify_center align_center clickable',
-						visible_input ? 'inputing' : ''
-					])}
-					onClick={() => toggle()}
+			<div>
+				<Link
+					to={'/setting'}
+					className='title_wrap w_100 border_box flex flex_column justify_between align_center relative'
 				>
-					{visible_input ? (
-						<Icon name='icon-x' size={16}></Icon>
-					) : (
-						<Icon name='icon-search' size={16}></Icon>
-					)}
-				</a>
+					<Logo {...props_logo}></Logo>
+					<div className='title'> {nav_props?.app_info?.name} </div>
+					<div className='sub_title'>{nav_props?.user?.mobile || nav_props?.user?.email}</div>
+				</Link>
+
+				<div className='menu_wrap w_100'>
+					<Menu {...props_menu}></Menu>
+				</div>
 			</div>
-			<div className='menu_wrap w_100'>
-				<Menu {...props_menu}></Menu>
+
+			<div className='setting_wrap w_100'>
+				<Menu {...props_setting}></Menu>
 			</div>
 		</div>
 	)

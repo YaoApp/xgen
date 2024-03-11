@@ -1,6 +1,13 @@
 {
-      "extends": "./.umi/tsconfig.json",
+	"extends": "./.umi/tsconfig.json",
 	"compilerOptions": {
 		"experimentalDecorators": true,
+		"paths": {
+			"@/*": ["*"],
+			"@@/*": [".umi/*"],
+			"@umijs/max": ["../node_modules/.pnpm/umi@*/node_modules/umi"],
+			"@umijs/max/typings": [".umi/typings"],
+			"@yaoapp/*": ["../*/src"]
+		}
 	}
 }

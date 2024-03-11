@@ -14,6 +14,10 @@ export default {
 			},
 			theme: {
 				title: 'Theme'
+			},
+			system: {
+				name: 'System',
+				version: 'Version'
 			}
 		}
 	}

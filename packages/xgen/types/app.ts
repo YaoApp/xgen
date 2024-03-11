@@ -92,6 +92,10 @@ export declare namespace App {
 	interface Info {
 		/** Application Name */
 		name: string
+
+		/** Application version */
+		version?: string
+
 		/** Application description */
 		description?: string
 		/** api prefix, default is __yao */

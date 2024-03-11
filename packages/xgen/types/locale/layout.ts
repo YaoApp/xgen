@@ -14,5 +14,9 @@ export default interface Layout {
 		theme: {
 			title: string
 		}
+		system: {
+			name: string
+			version: string
+		}
 	}
 }
