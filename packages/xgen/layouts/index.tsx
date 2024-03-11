@@ -61,7 +61,7 @@ const Index = () => {
 	}, [pathname])
 
 	const menu_items = useMemo(() => menu[global.current_nav]?.children || [], [menu, global.current_nav])
-
+	const layout = global.app_info.optional?.menu?.layout || '2-columns'
 	const props_helmet: IPropsHelmet = {
 		theme: global.theme,
 		app_info: global.app_info
@@ -96,7 +96,8 @@ const Index = () => {
 		items: menu_items,
 		menu_key_path: toJS(global.menu_key_path),
 		menu_selected_keys: toJS(global.menu_selected_keys),
-		visible: global.visible_menu
+		visible: global.visible_menu,
+		show_name: global.app_info.optional?.menu?.showName || false
 	}
 
 	const props_neo: IPropsNeo = {
@@ -108,7 +109,7 @@ const Index = () => {
 	const props_container: IPropsContainer = {
 		menu: menu_items,
 		visible_menu: global.visible_menu,
-		menu_layout: global.app_info.optional?.menu?.layout || '2-columns'
+		menu_layout: layout
 	}
 
 	return (
@@ -122,24 +123,20 @@ const Index = () => {
 						</LoginWrapper>
 					) : (
 						<Fragment>
-							<Loading {...props_loading}></Loading>
-							<If
-								condition={
-									!global.app_info.optional ||
-									!global.app_info.optional.menu ||
-									global.app_info.optional?.menu?.layout === '2-columns'
-								}
-							>
+							<If condition={layout === '2-columns'}>
 								<Then>
+									<Loading {...props_loading}></Loading>
 									<Nav {...props_nav}></Nav>
-									<Menu {...props_menu} nav_props={props_nav}></Menu>
+									<Menu {...props_menu}></Menu>
 									<Container {...props_container}>
 										<Outlet />
 									</Container>
 								</Then>
 							</If>
-							<If condition={global.app_info.optional?.menu?.layout === '1-column'}>
+
+							<If condition={layout === '1-column'}>
 								<Then>
+									<Loading {...props_loading}></Loading>
 									<MenuColumnOne
 										{...props_menu}
 										nav_props={props_nav}
@@ -149,6 +146,21 @@ const Index = () => {
 									</ContainerColumnOne>
 								</Then>
 							</If>
+
+							<If condition={layout !== '1-column' && layout !== '2-columns'}>
+								<Then>
+									<div className='text_center mt_20'>
+										<strong>layout = {layout}</strong>
+										<p>
+											app.yao <strong>menu.optional.menu.layout</strong> ,
+											shoule be <strong>1-column</strong> or
+											<strong>2-columns</strong>. Please check the
+											configuration.
+										</p>
+									</div>
+								</Then>
+							</If>
+
 							{global.app_info.optional?.neo?.api && <Neo {...props_neo}></Neo>}
 						</Fragment>
 					)}

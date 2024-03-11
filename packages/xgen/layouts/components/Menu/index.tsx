@@ -13,7 +13,7 @@ import type { IPropsMenu } from '../../types'
 import type { MenuProps } from 'antd'
 
 const Index = (props: IPropsMenu) => {
-	const { locale_messages, parent, items, menu_selected_keys, visible } = props
+	const { locale_messages, parent, items, menu_selected_keys, visible, show_name } = props
 	const { visible_input, current_items, toggle, setInput } = useSearch(items)
 	const { menu_items } = useMenuItems(current_items)
 	const [openKeys, setOpenKeys] = useState<Array<string>>([])
@@ -36,8 +36,6 @@ const Index = (props: IPropsMenu) => {
 			history.push(key)
 		}
 	}
-
-	const show_name = props.nav_props?.app_info?.optional?.menu?.showName || false
 
 	return (
 		<div

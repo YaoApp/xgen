@@ -65,6 +65,7 @@ export interface IPropsMenu {
 	menu_key_path: GlobalModel['menu_key_path']
 	menu_selected_keys: GlobalModel['menu_selected_keys']
 	visible: GlobalModel['visible_menu']
+	show_name?: boolean
 	nav_props?: IPropsNav
 }
 
