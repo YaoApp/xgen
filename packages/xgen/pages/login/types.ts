@@ -32,6 +32,8 @@ export interface ResLogin {
 	token: string
 	user: App.User
 	type: UserType
+	entry?: string
+	sid?: string
 	logout_redirect?: string | boolean
 	studio?: {
 		expires_at: number

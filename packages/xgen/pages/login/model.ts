@@ -53,8 +53,13 @@ export default class Model {
 			return
 		}
 
-		const entry = this.global.app_info?.login?.entry?.[this.user_type]
+		// Save sid
+		if (res.sid) {
+			local.temp_sid = res.sid
+		}
 
+		const user_type = this.user_type === 'user' ? 'user' : 'admin'
+		const entry = res.entry || this.global.app_info?.login?.entry?.[user_type]
 		if (!entry) return message.warning(this.global.locale_messages.login.no_entry)
 
 		const current_nav = findIndex(res.menus.items, (item) => item.path === entry) || 0
