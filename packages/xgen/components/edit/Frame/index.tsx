@@ -16,6 +16,7 @@ interface IFrameIProps {
 	width?: string
 	data?: Record<string, any>
 
+	__value: any // initial value
 	value: any
 	disabled?: boolean
 
@@ -32,9 +33,8 @@ interface IProps extends Component.PropsEditComponent, IFrameIProps {
 
 const Frame = window.$app.memo((props: IFrameIProps) => {
 	const { bind, label, namespace, type, disabled } = props
-	const [value, setValue] = useState(props.value)
+	const [value, setValue] = useState(props.value || props.__value)
 	const ref = useRef<HTMLIFrameElement>(null)
-
 	const getToken = (): string => {
 		const is_session_token = local.token_storage === 'sessionStorage'
 		const token = is_session_token ? session.token : local.token

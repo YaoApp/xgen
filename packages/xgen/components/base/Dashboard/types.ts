@@ -20,3 +20,13 @@ export interface IPropsTableRender {
 export interface IPropsFormRender {
 	item: Dashboard.TargetColumnNormal
 }
+
+export interface IPropsViewRender {
+	item: Dashboard.TargetColumnNormal
+	data: Global.AnyObject
+}
+
+export interface IPropsFrameRender {
+	item: Dashboard.TargetColumnNormal
+	data: Global.AnyObject
+}

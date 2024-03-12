@@ -32,6 +32,6 @@ export declare namespace Dashboard {
 		rows: Array<TargetColumn>
 	}
 
-	type TargetColumnNormal = Common.WideColumn & Common.ViewFieldDetail & { link?: string }
+	type TargetColumnNormal = Common.WideColumn & Common.FieldDetail & { link?: string }
 	type TargetColumn = TargetColumnNormal | TargetRows
 }

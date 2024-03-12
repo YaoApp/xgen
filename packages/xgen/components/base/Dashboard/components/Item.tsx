@@ -5,6 +5,8 @@ import FormRender from './FormRender'
 import TableRender from './TableRender'
 
 import type { IPropsItem } from '../types'
+import ViewRender from './ViewRender'
+import FrameRender from './FrameRender'
 
 const Index = (props: IPropsItem) => {
 	const { item, data, namespace } = props
@@ -21,7 +23,7 @@ const Index = (props: IPropsItem) => {
 		)
 	}
 
-      if (item.view.type.startsWith('chart/')) {
+	if (item.view.type.startsWith('chart/')) {
 		if (item.width) {
 			return (
 				<Col span={item.width} style={{ marginBottom: 16 }}>
@@ -31,6 +33,28 @@ const Index = (props: IPropsItem) => {
 		}
 
 		return <ChartRender item={item} data={data[item.bind]}></ChartRender>
+	}
+
+	if (item.view.type == 'view/Frame' || item.view.type == 'edit/Frame' || item.view.type == 'Frame') {
+		if (item.width) {
+			return (
+				<Col span={item.width} style={{ marginBottom: 16 }}>
+					<FrameRender item={item} data={data}></FrameRender>
+				</Col>
+			)
+		}
+		return <FrameRender item={item} data={data[item.bind]}></FrameRender>
+	}
+
+	if (item.view.type?.startsWith('view/')) {
+		if (item.width) {
+			return (
+				<Col span={item.width} style={{ marginBottom: 16 }}>
+					<ViewRender item={item} data={data}></ViewRender>
+				</Col>
+			)
+		}
+		return <ViewRender item={item} data={data[item.bind]}></ViewRender>
 	}
 
 	if (item.view.type === 'base/Table') {
