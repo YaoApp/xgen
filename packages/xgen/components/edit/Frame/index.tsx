@@ -5,7 +5,7 @@ import { getLocale } from '@umijs/max'
 import { local, session } from '@yaoapp/storex'
 
 import type { InputProps } from 'antd'
-import type { Component } from '@/types'
+import type { App, Component } from '@/types'
 import { Else, If, Then } from 'react-if'
 import { useEffect, useRef, useState } from 'react'
 
@@ -41,6 +41,11 @@ const Frame = window.$app.memo((props: IFrameIProps) => {
 		return token || ''
 	}
 
+	const getTheme = (): App.Theme => {
+		const theme = (local.xgen_theme || 'light') as App.Theme
+		return theme
+	}
+
 	const parseUrl = (url: string, params?: Record<string, string>, data?: Record<string, any>) => {
 		if (url == '') return ''
 
@@ -62,6 +67,7 @@ const Frame = window.$app.memo((props: IFrameIProps) => {
 		}
 		new_params.append('__token', token)
 		new_params.append('__locale', getLocale())
+		new_params.append('__theme', getTheme())
 		new_params.append('__value', value || '')
 		new_params.append('__bind', bind || '')
 		new_params.append('__label', label || '')
