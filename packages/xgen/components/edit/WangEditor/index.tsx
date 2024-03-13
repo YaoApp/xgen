@@ -11,6 +11,7 @@ import Upload from './upload'
 import type { Component } from '@/types'
 import clsx from 'clsx'
 import styles from './index.less'
+import { Else, If, Then } from 'react-if'
 
 export interface IWangEditor {
 	value: any
@@ -22,6 +23,7 @@ export interface IWangEditor {
 	videoUpload?: string
 	videoUrl?: string
 	placeholder?: string
+	type: 'view' | 'edit'
 	onChange?: (v: any) => void
 }
 
@@ -69,6 +71,13 @@ const WangEditor = window.$app.memo((props: IWangEditor) => {
 	}
 
 	useEffect(() => {
+		if (editor == null) return
+		if (props.value == undefined) return
+		if (props.value == html) return
+		setHtml(props.value)
+	}, [props.value])
+
+	useEffect(() => {
 		return () => {
 			if (editor == null) return
 			editor.destroy()
@@ -77,13 +86,26 @@ const WangEditor = window.$app.memo((props: IWangEditor) => {
 	}, [editor])
 
 	return (
-		<div className={clsx([styles._local])}>
-			<Toolbar
-				className={clsx([styles._toolbar])}
-				editor={editor}
-				defaultConfig={toolbarConfig}
-				mode='default'
-			/>
+		<div
+			className={clsx([styles._local])}
+			style={{
+				paddingLeft: props.type == 'view' ? 0 : 12,
+				paddingRight: props.type == 'view' ? 0 : 12
+			}}
+		>
+			<If condition={props.type === 'edit'}>
+				<Then>
+					<Toolbar
+						className={clsx([styles._toolbar])}
+						editor={editor}
+						defaultConfig={toolbarConfig}
+						mode='default'
+					/>
+				</Then>
+				<Else>
+					<div style={{ paddingBottom: 8 }}></div>
+				</Else>
+			</If>
 			<Editor
 				mode='default'
 				className={clsx([styles._editor])}
@@ -102,10 +124,10 @@ const WangEditor = window.$app.memo((props: IWangEditor) => {
 })
 
 const Index = (props: IProps) => {
-	const { __bind, __name, itemProps, ...rest_props } = props
+	const { __bind, __name, __type, itemProps, ...rest_props } = props
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
-			<WangEditor {...rest_props}></WangEditor>
+			<WangEditor {...rest_props} type={__type}></WangEditor>
 		</Item>
 	)
 }
