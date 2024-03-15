@@ -50,7 +50,16 @@ const Custom = window.$app.memo((props: ICustom) => {
 })
 
 const Index = (props: IProps) => {
-	const { __bind, __name, itemProps, extend, ...rest_props } = props
+	const {
+		__bind,
+		__name,
+		itemProps,
+		extend,
+		extendValue,
+		extendValuePlaceholder,
+		extendLabelPlaceholder,
+		...rest_props
+	} = props
 	const [x] = useState(() => container.resolve(Model))
 
 	useLayoutEffect(() => {
@@ -67,13 +76,17 @@ const Index = (props: IProps) => {
 	})
 
 	const extra_props = useMemo(() => {
-		if (!extend) return {}
-
+		if (!extend && !extendValue) return {}
 		return {
 			dropdownRender: (items) => (
 				<Fragment>
 					{items}
-					<Extend addOptionItem={addOptionItem}></Extend>
+					<Extend
+						addOptionItem={addOptionItem}
+						valueOnly={extendValue}
+						valuePlaceholder={extendValuePlaceholder}
+						labelPlaceholder={extendLabelPlaceholder}
+					></Extend>
 				</Fragment>
 			)
 		} as SelectProps

@@ -3,6 +3,9 @@ import type { SelectProps } from 'antd'
 
 export interface IProps extends Remote.IProps, SelectProps {
 	extend?: boolean
+	extendValue?: boolean
+	extendValuePlaceholder?: string
+	extendLabelPlaceholder?: string
 }
 
 export interface ICustom extends SelectProps {
@@ -13,4 +16,7 @@ export interface ICustom extends SelectProps {
 
 export interface IPropsExtend {
 	addOptionItem: (label: string, value: string) => void
+	valueOnly?: boolean
+	valuePlaceholder?: string
+	labelPlaceholder?: string
 }

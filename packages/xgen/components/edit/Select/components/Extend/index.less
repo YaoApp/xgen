@@ -1,16 +1,21 @@
 ._local {
 	padding: 6px;
-      border-top: 1px solid var(--color_border_soft);
+	border-top: 1px solid var(--color_border_soft);
 
 	:global {
 		.input_extend {
 			width: calc((100% - 36px) / 2 - 6px);
-                  box-shadow: none;
+			box-shadow: none;
 		}
 
-            .btn_extend{
-                  width: 36px;
-                  height: 36px;
-            }
+		.value_extend {
+			width: calc(100% - 36px - 6px);
+			box-shadow: none;
+		}
+
+		.btn_extend {
+			width: 36px;
+			height: 36px;
+		}
 	}
 }
