@@ -61,6 +61,9 @@ const Custom = window.$app.memo((props: CustomProps) => {
 	}
 
 	if (filetype === 'image' && imageSize) {
+		if (!imageSize.width && !imageSize.height) {
+			imageSize.height = '92px'
+		}
 		props_upload['itemRender'] = (_, file, _fileList, { remove }) => (
 			<Image file={file} imageSize={imageSize} remove={remove}></Image>
 		)

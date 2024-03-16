@@ -23,6 +23,7 @@ const Index = (props: IProps) => {
 	}
 
 	if (Array.isArray(__value)) {
+		if (__value.length === 0) return <span>-</span>
 		return (
 			<div className={styles._local}>
 				{__value.map((item: string, index: number) => (
