@@ -10,6 +10,7 @@
 		"esModuleInterop": true,
 		"strict": true,
 		"outDir": "dist",
+		"suppressImplicitAnyIndexErrors": true,
 		"baseUrl": ".",
 		"paths": { "@/*": ["./src/*"] }
 	},
