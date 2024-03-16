@@ -18,6 +18,7 @@ export interface IPropsNavItem {
 
 const Index = (props: IPropsNavItem) => {
 	const { item, active, show_name, onClick } = props
+	const icon = typeof item.icon === 'string' ? { name: item.icon, size: 20 } : item.icon
 	return (
 		<>
 			<If condition={show_name === true}>
@@ -35,12 +36,10 @@ const Index = (props: IPropsNavItem) => {
 							<If condition={item.badge || item.dot}>
 								<Then>
 									<Badge count={item.badge} dot={item.dot}>
-										<Icon name={item.icon} size={20}></Icon>
+										{icon && <Icon name={icon?.name} size={icon.size}></Icon>}
 									</Badge>
 								</Then>
-								<Else>
-									<Icon name={item.icon} size={20}></Icon>
-								</Else>
+								<Else>{icon && <Icon name={icon?.name} size={icon.size}></Icon>}</Else>
 							</If>
 						</div>
 						<div className='name'>{item.name}</div>
@@ -62,12 +61,10 @@ const Index = (props: IPropsNavItem) => {
 							<If condition={item.badge || item.dot}>
 								<Then>
 									<Badge count={item.badge} dot={item.dot}>
-										<Icon name={item.icon} size={20}></Icon>
+										{icon && <Icon name={icon?.name} size={icon.size}></Icon>}
 									</Badge>
 								</Then>
-								<Else>
-									<Icon name={item.icon} size={20}></Icon>
-								</Else>
+								<Else>{icon && <Icon name={icon?.name} size={icon.size}></Icon>}</Else>
 							</If>
 						</Link>
 					</Tooltip>

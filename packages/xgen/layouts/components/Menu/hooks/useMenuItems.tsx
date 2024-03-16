@@ -8,6 +8,7 @@ const getMenuItems = (items: IPropsMenu['items']) => {
 		(total: { menu_items: Array<any>; pure_items: Array<any> }, item) => {
 			const menu_item: any = {}
 			const pure_item: any = {}
+			const icon = typeof item.icon === 'string' ? { name: item.icon, size: 14 } : item.icon
 
 			if (item.badge) {
 				menu_item['label'] = (
@@ -24,8 +25,8 @@ const getMenuItems = (items: IPropsMenu['items']) => {
 			pure_item['key'] = item.key
 
 			// Item icon
-			if (item.icon) {
-				menu_item['icon'] = <Icon name={item.icon} size={14}></Icon>
+			if (icon) {
+				menu_item['icon'] = <Icon name={icon?.name} size={icon.size}></Icon>
 			}
 
 			if (item?.children && item?.children?.length) {

@@ -143,7 +143,7 @@ export declare namespace App {
 		id: number
 		key: string
 		name: string
-		icon: string
+		icon?: string | { name: string; size: number }
 		path: string
 		badge?: number
 		dot?: boolean
