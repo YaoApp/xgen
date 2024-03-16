@@ -20,6 +20,13 @@
 }
 
 @font-face {
+	font-weight: 400;
+	font-style: normal;
+	font-family: 'material_symbols_icon';
+	src: local('material_symbols'), url('./icon/material_symbols.woff') format('woff');
+}
+
+@font-face {
 	font-weight: 100;
 	font-style: normal;
 	font-family: 'Outfit';
@@ -84,7 +91,7 @@
 
 [class^='icon-'],
 [class*=' icon-'] {
-      display: inline-block;
+	display: inline-block;
 	text-transform: none;
 	white-space: nowrap;
 	word-wrap: normal;
@@ -124,6 +131,10 @@
 
 .Icon.filled {
 	font-family: 'md_icon_filled';
+}
+
+.Icon.material {
+	font-family: 'material_symbols_icon';
 }
 
 .icon-activity:before {

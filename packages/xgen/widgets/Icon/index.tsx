@@ -33,10 +33,12 @@ const Index = (props: IProps) => {
 
 	const md = useMemo(() => {
 		if (!name) return {}
-
+		// material_symbols https://fonts.google.com/icons
+		if (name.indexOf('material-') !== -1) {
+			return { type: 'material', name: name.replace(/^material-/, '') }
+		}
 		const arr = name.split('-')
 		const type = arr.pop()
-
 		return {
 			type,
 			name: arr.join('_')
