@@ -21,7 +21,7 @@ const Index = (props: IPropsModalWrap) => {
 
 	return (
 		<Drawer
-			className={clsx([styles._local])}
+			className={clsx([styles._local, 'fixed'])}
 			width='auto'
 			open={visible}
 			mask={mask}
