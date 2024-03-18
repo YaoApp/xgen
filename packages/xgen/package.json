@@ -46,7 +46,7 @@
             "@yaoapp/emittery": "workspace:*",
             "@yaoapp/storex": "workspace:*",
             "ahooks": "^3.7.3",
-            "antd": "4.24.3",
+            "antd": "4.24.15",
             "await-to-js": "^3.0.0",
             "axios": "^0.27.2",
             "classix": "^2.1.24",
