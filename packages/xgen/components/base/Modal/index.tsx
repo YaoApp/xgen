@@ -13,7 +13,7 @@ import type { IPropsModalWrap } from './types'
 
 export interface IProps {
 	namespace: Component.Props['__namespace']
-	id: number
+	id: number | string
 	config: Action.OpenModal
 }
 

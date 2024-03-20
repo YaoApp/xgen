@@ -7,10 +7,12 @@ export declare namespace Action {
 		Form?: {
 			type: 'view' | 'edit'
 			model: string
+			id?: number | string
 		}
 		Page?: {
 			type: 'chart'
 			model: string
+			id?: number | string
 		}
 	}
 

@@ -93,6 +93,6 @@ export default class Flow {
 	private __PUSH_ORDER_LOGS__(name: string) {
 		this.__ORDER_LOGS__.push(name)
 
-		console.log(`task running order is: ${this.__ORDER_LOGS__}`)
+		// console.log(`task running order is: ${this.__ORDER_LOGS__}`)
 	}
 }
