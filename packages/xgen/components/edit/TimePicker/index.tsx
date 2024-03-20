@@ -13,30 +13,29 @@ const { RangePicker } = TimePicker
 
 interface ICustom {
 	range?: boolean
+	outputFormat?: string
 }
 
 type IProps = (TimeRangePickerProps | TimePickerProps) & Component.PropsEditComponent & ICustom
+type CustomTimeRangePickerProps = TimeRangePickerProps & { outputFormat?: string }
 
-const CustomRangePicker = window.$app.memo((props: TimeRangePickerProps) => {
+const CustomRangePicker = window.$app.memo((props: CustomTimeRangePickerProps) => {
 	const [value, setValue] = useState<[Moment, Moment]>()
 
 	useEffect(() => {
 		if (!props.value) return
-
 		setValue([moment(props.value[0] as MomentInput), moment(props.value[1] as MomentInput)])
 	}, [props.value])
 
 	const onChange = (v: any) => {
 		if (!props.onChange) return
-
 		props.onChange(
 			[
-				moment(v[0]).format(props?.format as string) as any,
-				moment(v[1]).format(props?.format as string) as any
+				moment(v[0]).format(props?.outputFormat as string) as any,
+				moment(v[1]).format(props?.outputFormat as string) as any
 			],
 			null as any
 		)
-
 		setValue(v)
 	}
 

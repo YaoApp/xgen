@@ -10,9 +10,12 @@ import type { Moment, MomentInput } from 'moment'
 
 const { RangePicker } = DatePicker
 
-interface IProps extends TimeRangePickerProps, Component.PropsEditComponent {}
+interface IProps extends TimeRangePickerProps, Component.PropsEditComponent {
+	outputFormat?: string
+}
+type CustomTimeRangePickerProps = TimeRangePickerProps & { outputFormat?: string }
 
-const Custom = window.$app.memo((props: TimeRangePickerProps) => {
+const Custom = window.$app.memo((props: CustomTimeRangePickerProps) => {
 	const [value, setValue] = useState<[Moment, Moment]>()
 
 	useEffect(() => {
@@ -26,8 +29,8 @@ const Custom = window.$app.memo((props: TimeRangePickerProps) => {
 
 		props.onChange(
 			[
-				moment(v[0]).format(props?.format as string) as any,
-				moment(v[1]).format(props?.format as string) as any
+				moment(v[0]).format(props?.outputFormat as string) as any,
+				moment(v[1]).format(props?.outputFormat as string) as any
 			],
 			null as any
 		)

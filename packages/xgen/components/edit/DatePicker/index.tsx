@@ -31,8 +31,8 @@ const Custom = window.$app.memo((props: DatePickerProps) => {
 	return (
 		<DatePicker
 			{...props}
-                  value={ value }
-                  getPopupContainer={(node) => node.parentNode as HTMLElement}
+			value={value}
+			getPopupContainer={(node) => node.parentNode as HTMLElement}
 			onChange={onChange}
 		></DatePicker>
 	)
