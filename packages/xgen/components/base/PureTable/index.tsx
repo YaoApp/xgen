@@ -67,7 +67,7 @@ const Index = (props: IPropsPureTable) => {
 			dataSource={list}
 			columns={list_columns}
 			sticky={sticky}
-			pagination={hidePagination ? false : table_pagination}
+			pagination={hidePagination || table_props?.hidePagination === true ? false : table_pagination}
 			rowSelection={batch.active ? row_selection : undefined}
 			rowKey={getRowKey}
 			onChange={onChange}

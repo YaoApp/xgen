@@ -38,6 +38,7 @@ export declare namespace TableType {
 	interface CustomTableProps {
 		customStyle?: 'compact'
 		withTotalRow?: boolean
+		hidePagination?: boolean
 	}
 
 	interface Setting {
