@@ -36,6 +36,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 		setValue(v)
 	}
 
+	const onClear = () => setValue(null)
 	return (
 		<Select
 			className={clsx([styles._local, props.mode === 'multiple' && styles.multiple])}
@@ -44,6 +45,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 			getPopupContainer={(node) => node.parentNode}
 			value={value}
 			onChange={onChange}
+			onClear={onClear}
 			{...rest_props}
 		></Select>
 	)
