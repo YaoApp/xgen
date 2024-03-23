@@ -1,7 +1,7 @@
 import { Tag } from 'antd'
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useMemo, useState } from 'react'
 import { container } from 'tsyringe'
 
 import styles from './index.less'
@@ -26,6 +26,15 @@ interface IPropsCommonTag {
 	item: Component.TagOption | undefined
 }
 
+const presets: Record<string, string> = {
+	primary: styles._primary,
+	danger: styles._danger,
+	success: styles._success,
+	warning: styles._warning,
+	title: styles._title,
+	placeholder: styles._placeholder
+}
+
 const CommonTag = window.$app.memo(({ pure, margin, item }: IPropsCommonTag) => {
 	if (item?.label === '<empty>')
 		return <Tag className={styles._local} color={item.color} style={{ backgroundColor: 'transparent' }}></Tag>
@@ -36,8 +45,10 @@ const CommonTag = window.$app.memo(({ pure, margin, item }: IPropsCommonTag) => 
 	if (margin) style['marginRight'] = 4
 	if (item.textColor) style['color'] = item.textColor
 
+	const className = [styles._local]
+	if (item.color && presets[item.color]) className.push(presets[item.color])
 	return (
-		<Tag className={styles._local} color={item.color} style={style}>
+		<Tag className={clsx(...className)} color={item.color} style={style}>
 			{item.label}
 		</Tag>
 	)
@@ -48,14 +59,18 @@ const Index = (props: IProps) => {
 
 	useLayoutEffect(() => {
 		x.remote.raw_props = props
-
 		x.remote.init()
 	}, [])
 
+	const options = useMemo(() => {
+		if (props.options) return props.options
+		return x.remote.options
+	}, [x.remote.options])
+
 	if (typeof props.__value === 'string' || typeof props.__value === 'number') {
 		// Match the label of the current value
-		if (props.options) {
-			const option = props.options.find((item) => item.value === props.__value)
+		if (options) {
+			const option = options.find((item) => item.value === props.__value)
 			if (option) {
 				return <CommonTag pure={props.pure} item={option}></CommonTag>
 			}
