@@ -31,6 +31,7 @@ const presets: Record<string, string> = {
 	danger: styles._danger,
 	success: styles._success,
 	warning: styles._warning,
+	info: styles._info,
 	title: styles._title,
 	placeholder: styles._placeholder
 }
