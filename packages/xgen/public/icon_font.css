@@ -23,7 +23,7 @@
 	font-weight: 400;
 	font-style: normal;
 	font-family: 'material_symbols_icon';
-	src: local('material_symbols'), url('./icon/material_symbols.woff') format('woff');
+	src: local('material_symbols'), url('./icon/material_symbols.woff2') format('woff2');
 }
 
 @font-face {
