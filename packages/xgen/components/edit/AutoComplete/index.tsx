@@ -54,7 +54,11 @@ const Custom = window.$app.memo((props: ICustom) => {
 
 	return (
 		<AutoComplete
-			className={clsx([styles._local, props.mode === 'multiple' && styles.multiple])}
+			className={clsx([
+				styles._local,
+				props.mode === 'multiple' && styles.multiple,
+				props.__type === 'view' && styles.view
+			])}
 			popupClassName={styles._dropdown}
 			placeholder={`${is_cn ? '请输入' : 'Please input '}${__name}`}
 			getPopupContainer={(node) => node.parentNode}
@@ -71,6 +75,7 @@ const Index = (props: IProps) => {
 	const {
 		__bind,
 		__name,
+		__type,
 		itemProps,
 		extend,
 		extendValue,
@@ -86,8 +91,14 @@ const Index = (props: IProps) => {
 	}, [props])
 
 	return (
-		<Item {...itemProps} {...{ __bind, __name }}>
-			<Custom {...rest_props} {...x.target_props} __name={__name} options={x.options}></Custom>
+		<Item {...itemProps} {...{ __bind, __name, __type }}>
+			<Custom
+				{...rest_props}
+				{...x.target_props}
+				__name={__name}
+				__type={__type}
+				options={x.options}
+			></Custom>
 		</Item>
 	)
 }

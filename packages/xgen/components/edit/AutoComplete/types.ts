@@ -10,6 +10,7 @@ export interface IProps extends Remote.IProps, SelectProps {
 
 export interface ICustom extends SelectProps {
 	__name: string
+	__type: string
 	xProps: Remote.XProps
 	extend?: boolean
 	getOptions?: Promise<any>
