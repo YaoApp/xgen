@@ -1,116 +1,67 @@
-import { Drawer, Input } from 'antd'
+import { Drawer, Input, Skeleton } from 'antd'
 
 import { Item } from '@/components'
-import { getLocale } from '@umijs/max'
 
-import type { InputProps } from 'antd'
 import type { Component } from '@/types'
 
-import GridLayout from 'react-grid-layout'
-
-import { Icon } from '@/widgets'
 import { useEffect, useRef, useState } from 'react'
 
 import 'react-grid-layout/css/styles.css'
 import styles from './index.less'
 import clsx from 'clsx'
+import { Presets, Remote, Setting } from './types'
+import Sidebar from './components/Sidebar'
+import Canvas from './components/Canvas'
+import Panel from './components/Panel'
+import { Else, If, Then } from 'react-if'
+import { GetPresets, GetSetting } from './utils'
 
-interface IProps extends InputProps, Component.PropsEditComponent {}
+interface IFormBuilderIProps {
+	setting?: Remote | Setting
+	presets?: Remote | Presets
+	height?: number
+	hideLabel?: boolean
+	data?: Record<string, any>
 
-type Layout = GridLayout.Layout & {
-	icon?: string
+	__value: any // initial value
+	value: any
+	disabled?: boolean
+
+	label?: string
+	bind?: string
+	namespace?: string
+	type?: string
+	onChange?: (v: any) => void
 }
 
+interface IProps extends IFormBuilderIProps, Component.PropsEditComponent {}
+
 const Index = (props: IProps) => {
-	const ref = useRef<HTMLDivElement>(null)
-	const [width, setWidth] = useState(0)
-	const [height, setHeight] = useState(0)
 	const { __bind, __name, itemProps, ...rest_props } = props
+	const [loading, setLoading] = useState<boolean>(false)
+	const [setting, setSetting] = useState<Setting | undefined>(undefined)
+	const [presets, setPresets] = useState<Presets | undefined>(undefined)
+	const ref = useRef<HTMLDivElement>(null)
+
+	// Canvas setting
+	const onChange = (v: any, height: number) => {
+		height = height + 24
+		setHeight(height >= 300 ? height : 300)
+	}
+
+	// Panel setting
 	const [open, setOpen] = useState(false)
-	const [item, setItem] = useState<Record<string, any>>({})
-
-	const is_cn = getLocale() === 'zh-CN'
-
-	const showDrawer = (key: string) => {
-		const layoutItem = layout.find((item) => item.i === key)
-		setItem({ ...layoutItem, title: `${key} Setting` })
-		setOpen(true)
-	}
-
-	const onClose = () => {
-		setOpen(false)
-	}
-
-	const [layout, setLayout] = useState<Layout[]>([
-		{ i: '1', x: 0, y: 0, w: 4, h: 1, resizeHandles: ['w', 'e'] },
-		{ i: '2', x: 4, y: 0, w: 4, h: 1, resizeHandles: ['w', 'e'] },
-		{ i: '3', x: 8, y: 0, w: 4, h: 1, resizeHandles: ['w', 'e'] }
-	])
-
-	// unique id generator
-	// use uuid
-	function generateID(): string {
-		const timestamp: number = new Date().getTime()
-		const random: number = Math.floor(Math.random() * 10000)
-		const uniqueId: string = `${timestamp}${random}`
-		return uniqueId
-	}
-
-	// layout: Layout[], item: Layout, e: Event)
-	const onDrop = (layout: Layout[], layoutItem: GridLayout.Layout, e: any) => {
-		const raw = e.dataTransfer.getData('text') || ''
-		let data: Record<string, any> = {}
-		try {
-			data = JSON.parse(raw)
-		} catch (e: any) {
-			console.error(`Error parsing JSON data: ${e.message}`)
-		}
-
-		// Add the new item to the layout
-		const idx = generateID()
-		layout[layout.length - 1].i = `${data.type} ${idx}`
-		layout[layout.length - 1].resizeHandles = ['w', 'e']
-		layout[layout.length - 1].icon = data.icon || 'material-format_align_left'
-		setLayout(layout)
-	}
-
-	// Update the layout when the layout changes
-	const onLayoutChange = (layout: Layout[]) => {
-		setLayout(layout)
-	}
-
-	const onRemove = (key: string) => {
-		setLayout((prev) => prev.filter((item) => item.i !== key))
-	}
-
-	const onClone = (key: string) => {
-		const layoutItem = layout.find((item) => item.i === key)
-		if (layoutItem) {
-			const idx = generateID()
-			const item = { ...layoutItem, i: `${idx}` }
-
-			// Set the new item to the right of the old one
-			const maxX = Math.max(...layout.map((item) => item.x))
-			const maxY = Math.max(...layout.map((item) => item.y))
-			const x = maxX + 4 >= 12 ? 0 : maxX + 4
-			const y = maxX + 4 >= 12 ? maxY + 1 : maxY
-			const newItem = { ...item, x, y }
-			setLayout((prev) => [...prev, newItem])
-		}
-	}
-
-	// onDropDragOver: (e: DragOverEvent) => Layout
-	const onDropDragOver = (e: any) => {
-		return { w: 4, h: 1 }
-	}
+	const showPanel = (key: string) => setOpen(true)
+	const hidePanel = () => setOpen(false)
 
 	// Set the width of the grid layout
+	const [width, setWidth] = useState(0)
+	const [height, setHeight] = useState(props.height && props.height >= 300 ? props.height : 300)
 	useEffect(() => {
 		const observer = new ResizeObserver((entries) => {
 			for (let entry of entries) {
 				if (entry.target === ref.current) {
 					setWidth(ref.current.offsetWidth - 200)
-					setHeight(300)
 				}
 			}
 		})
@@ -122,111 +73,56 @@ const Index = (props: IProps) => {
 		}
 	}, [])
 
+	// Get setting
+	useEffect(() => {
+		if (!props.setting) return
+
+		setLoading(true)
+		GetSetting(props.setting)
+			.then((setting) => {
+				setLoading(false)
+				setSetting(setting)
+			})
+			.catch(() => {
+				setLoading(false)
+			})
+	}, [props.setting])
+
+	// Get presets
+	useEffect(() => {
+		if (!props.presets) return
+		setLoading(true)
+		GetPresets(props.presets)
+			.then((presets) => {
+				setLoading(false)
+				setPresets(presets)
+			})
+			.catch(() => {
+				setLoading(false)
+			})
+	}, [props.presets])
+
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
-			<div className={clsx(styles._local, 'site-drawer-render-in-current-wrapper')} ref={ref}>
-				<div className='sidebar'>
-					<div
-						className='item'
-						draggable={true}
-						unselectable='on'
-						onDragStart={(e) =>
-							e.dataTransfer.setData(
-								'text/plain',
-								JSON.stringify({ type: 'Input', icon: 'material-format_align_left' })
-							)
-						}
-					>
-						<Icon size={14} name='material-format_align_left' className='mr_6' /> Input
-					</div>
-					<div
-						className='item'
-						draggable={true}
-						unselectable='on'
-						onDragStart={(e) =>
-							e.dataTransfer.setData(
-								'text/plain',
-								JSON.stringify({ type: 'Select', icon: 'material-view_list' })
-							)
-						}
-					>
-						<Icon size={14} name='material-view_list' className='mr_6' /> Select
-					</div>
-					<div
-						className='item'
-						draggable={true}
-						unselectable='on'
-						onDragStart={(e) =>
-							e.dataTransfer.setData(
-								'text/plain',
-								JSON.stringify({ type: 'Date', icon: 'material-date_range' })
-							)
-						}
-					>
-						<Icon size={14} name='material-date_range' className='mr_6' /> Date
-					</div>
-				</div>
-				<div style={{ padding: 12 }}>
-					<div className='relative'>
-						<GridLayout
-							className='layout'
-							layout={layout}
-							cols={12}
-							rowHeight={42}
+			<div className={clsx(styles._local)} ref={ref}>
+				<If condition={loading}>
+					<Then>
+						<div className='loading'>
+							<Skeleton active round />
+						</div>
+					</Then>
+					<Else>
+						<Sidebar types={setting?.types} height={height} />
+						<Canvas
 							width={width}
-							onDrop={onDrop}
-							onDropDragOver={onDropDragOver}
-							onLayoutChange={onLayoutChange}
-							isDroppable={true}
-							draggableHandle='.drag-handle'
-							style={{ minWidth: width, minHeight: height }}
-						>
-							{layout.map((item) => (
-								<div className='field' key={item.i}>
-									<div className='drag-handle'>
-										<Icon
-											size={14}
-											name={item.icon || 'material-format_align_left'}
-											className='mr_6'
-										/>
-										{item.i}
-									</div>
-									<div className='setting'>
-										<Icon
-											size={14}
-											name='material-content_copy'
-											onClick={() => onClone(item.i)}
-										/>
-										<Icon
-											size={14}
-											name='material-settings'
-											onClick={() => showDrawer(item.i)}
-										/>
-										<Icon
-											size={14}
-											onClick={() => onRemove(item.i)}
-											name='material-close'
-										/>
-									</div>
-								</div>
-							))}
-						</GridLayout>
-					</div>
-				</div>
-				<Drawer
-					title={item.title}
-					placement='right'
-					closable={false}
-					maskClosable={true}
-					onClose={onClose}
-					open={open}
-					getContainer={false}
-					className='drawer'
-					maskClassName='mask'
-					style={{ position: 'absolute' }}
-				>
-					<p>Some contents...</p>
-				</Drawer>
+							showPanel={showPanel}
+							setting={setting}
+							presets={presets}
+							onChange={onChange}
+						/>
+						<Panel open={open} onClose={hidePanel} />
+					</Else>
+				</If>
 			</div>
 		</Item>
 	)
