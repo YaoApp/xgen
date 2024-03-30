@@ -10,6 +10,8 @@ export type Type = {
 export type Field = {
 	type: string
 	width?: number
+	x?: number
+	y?: number
 	props?: Record<string, any>
 }
 

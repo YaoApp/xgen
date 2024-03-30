@@ -37,7 +37,7 @@ interface IFormBuilderIProps {
 interface IProps extends IFormBuilderIProps, Component.PropsEditComponent {}
 
 const Index = (props: IProps) => {
-	const { __bind, __name, itemProps, ...rest_props } = props
+	const { __bind, __value, __name, itemProps, ...rest_props } = props
 	const [loading, setLoading] = useState<boolean>(false)
 	const [setting, setSetting] = useState<Setting | undefined>(undefined)
 	const [presets, setPresets] = useState<Presets | undefined>(undefined)
@@ -119,6 +119,7 @@ const Index = (props: IProps) => {
 							setting={setting}
 							presets={presets}
 							onChange={onChange}
+							value={__value}
 						/>
 						<Panel open={open} onClose={hidePanel} />
 					</Else>
