@@ -9,8 +9,9 @@ interface IProps {
 	setting?: Setting
 	presets?: Presets
 	value: any // initial value
-	showPanel: (key: string) => void
+	showPanel: (key: string, field: Field, type: Type) => void
 	onChange?: (v: any, height: number) => void
+	onFieldChange?: (field: Field) => void
 }
 
 const Index = (props: IProps) => {
@@ -170,12 +171,22 @@ const Index = (props: IProps) => {
 									<Icon
 										size={14}
 										name='material-settings'
-										onClick={() => props.showPanel && props.showPanel(key)}
+										onClick={() =>
+											props.showPanel &&
+											fieldMap[key] &&
+											fieldMap[key].type &&
+											typeMap[fieldMap[key].type] &&
+											props.showPanel(
+												key,
+												fieldMap[key],
+												typeMap[fieldMap[key].type]
+											)
+										}
 									/>
 									<Icon
 										size={14}
 										onClick={() => onRemove(key)}
-										name='material-close'
+										name='material-delete'
 									/>
 								</div>
 							</div>

@@ -1,16 +1,35 @@
 import { Icon } from '@/widgets'
-import { Drawer } from 'antd'
-import { useEffect, useState } from 'react'
+import { Drawer, Form } from 'antd'
+import { Field, Type } from '../../types'
+import { Else, If, Then } from 'react-if'
+import Section from '../Section'
 
 interface IProps {
 	open: boolean
+	id?: string
+	field?: Field
+	type?: Type
 	onClose: () => void
+	onChange?: (id: string, bind: string, value: any) => void
 }
 
 const Index = (props: IProps) => {
+	const { id, field, type } = props
+	const label = field?.props?.label || field?.props?.name || type?.label || 'Untitled'
+	const Title = (
+		<div className='flex' style={{ alignItems: 'center' }}>
+			<Icon size={14} name={type?.icon ? type.icon : 'material-format_align_left'} className='mr_6' />
+			{label}
+		</div>
+	)
+
+	const onChange = (id: string, bind: string, value: any) => {
+		props.onChange && props.onChange(id, bind, value)
+	}
+
 	return (
 		<Drawer
-			title={'xx'}
+			title={Title}
 			placement='right'
 			closable={false}
 			maskClosable={true}
@@ -21,7 +40,20 @@ const Index = (props: IProps) => {
 			maskClassName='mask'
 			style={{ position: 'absolute' }}
 		>
-			<p>Some contents...</p>
+			<If condition={field != undefined && type != undefined}>
+				<Then>
+					{type?.props?.map((section, index) => (
+						<Section
+							id={id}
+							key={index}
+							section={section}
+							onChange={onChange}
+							data={field?.props}
+						/>
+					))}
+				</Then>
+				<Else> Someting Error </Else>
+			</If>
 		</Drawer>
 	)
 }

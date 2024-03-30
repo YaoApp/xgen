@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react'
 import 'react-grid-layout/css/styles.css'
 import styles from './index.less'
 import clsx from 'clsx'
-import { Presets, Remote, Setting } from './types'
+import { Field, Presets, Remote, Setting, Type } from './types'
 import Sidebar from './components/Sidebar'
 import Canvas from './components/Canvas'
 import Panel from './components/Panel'
@@ -51,8 +51,23 @@ const Index = (props: IProps) => {
 
 	// Panel setting
 	const [open, setOpen] = useState(false)
-	const showPanel = (key: string) => setOpen(true)
+	const [field, setField] = useState<Field | undefined>(undefined)
+	const [type, setType] = useState<Type | undefined>(undefined)
+	const [id, setId] = useState<string | undefined>(undefined)
+	const showPanel = (key: string, field: Field, type: Type) => {
+		setField(field)
+		setType(type)
+		setId(key)
+		setOpen(true)
+	}
 	const hidePanel = () => setOpen(false)
+	const onChangePanel = (id: string, bind: string, value: any) => {
+		if (field) {
+			const props = { ...field.props }
+			props[bind] = value
+			setField({ ...field, props })
+		}
+	}
 
 	// Set the width of the grid layout
 	const [width, setWidth] = useState(0)
@@ -121,7 +136,14 @@ const Index = (props: IProps) => {
 							onChange={onChange}
 							value={__value}
 						/>
-						<Panel open={open} onClose={hidePanel} />
+						<Panel
+							open={open}
+							onClose={hidePanel}
+							onChange={onChangePanel}
+							id={id}
+							field={field}
+							type={type}
+						/>
 					</Else>
 				</If>
 			</div>
