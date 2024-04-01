@@ -8,6 +8,7 @@ export type Type = {
 }
 
 export type Field = {
+	id?: string
 	type: string
 	width?: number
 	x?: number

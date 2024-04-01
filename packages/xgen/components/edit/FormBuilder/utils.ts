@@ -72,6 +72,7 @@ export const UpdatePosition = (mapping: Record<string, Field>, layout: Layout[])
 		const field = mapping[item.i]
 		if (!field) return false
 
+		field.id = item.i
 		field.x = item.x
 		field.y = item.y
 		field.width = item.w
@@ -80,7 +81,7 @@ export const UpdatePosition = (mapping: Record<string, Field>, layout: Layout[])
 	return newMapping
 }
 
-const generateID = (): string => {
+export const GenerateID = (): string => {
 	const timestamp: number = new Date().getTime()
 	const random: number = Math.floor(Math.random() * 10000)
 	const uniqueId: string = `${timestamp}${random}`
@@ -98,8 +99,9 @@ const _valueToLayout = (value?: Field[]): { layout: Layout[]; mapping: Record<st
 	let y = 0
 	value.map((item, index) => {
 		if (!item) return false
-		const key = generateID()
-		mapping[key] = item
+		const id = item.id || GenerateID()
+		item.id = id
+		mapping[id] = item
 		if (item.x === undefined) {
 			item.x = cols
 		}
@@ -114,7 +116,7 @@ const _valueToLayout = (value?: Field[]): { layout: Layout[]; mapping: Record<st
 		}
 
 		layout.push({
-			i: key,
+			i: id,
 			x: item.x || 0,
 			y: item.y || 0,
 			w: item.width || 4,
