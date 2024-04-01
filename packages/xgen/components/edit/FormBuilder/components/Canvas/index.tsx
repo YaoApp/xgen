@@ -2,7 +2,7 @@ import { Icon } from '@/widgets'
 import GridLayout from 'react-grid-layout'
 import { Field, Layout, Presets, Setting, Type } from '../../types'
 import { useEffect, useState } from 'react'
-import { GenerateID, TypeMappping, UpdatePosition, ValueToLayout } from '../../utils'
+import { GenerateID, LayoutToValue, TypeMappping, UpdatePosition, ValueToLayout } from '../../utils'
 import Panel from '../Panel'
 import clsx from 'clsx'
 
@@ -40,6 +40,8 @@ const Index = (props: IProps) => {
 			const mapping = { ...fieldMap }
 			mapping[id] = { ...field, props }
 			setFieldMap(mapping)
+
+			updateValue(LayoutToValue(layout, mapping))
 		}
 	}
 	const showPanel = (id: string, field: Field, type: Type) => {
@@ -47,6 +49,13 @@ const Index = (props: IProps) => {
 		setType(type)
 		setActive(id)
 		setOpen(true)
+	}
+
+	// Update the value
+	const updateValue = (value: Field[]) => {
+		const maxY = Math.max(...layout.map((item) => item.y))
+		const height = (maxY + 1) * (42 + 10)
+		props.onChange && props.onChange(value, height)
 	}
 
 	// Update value when set from outside
@@ -65,15 +74,12 @@ const Index = (props: IProps) => {
 
 	// Update the layout when the layout changes
 	const onLayoutChange = (layout: Layout[]) => {
-		console.log('layout', layout)
-		// Update the value
+		// Update the layout
 		const mapping = UpdatePosition(fieldMap, layout)
 		setFieldMap(mapping)
 		setLayout(layout)
-
-		const maxY = Math.max(...layout.map((item) => item.y))
-		const height = (maxY + 1) * (42 + 10)
-		props.onChange && props.onChange(layout, height)
+		const value = LayoutToValue(layout, mapping)
+		updateValue(value)
 	}
 
 	const onDrag = (layout: Layout[], layoutItem: GridLayout.Layout, e: any) => {
@@ -203,6 +209,10 @@ const Index = (props: IProps) => {
 							const type = typeMap[field.type]
 							if (!type) {
 								console.error(`[FormBuilder] Type not found: ${field.type}`)
+								return null
+							}
+
+							if (type.name == 'Empty') {
 								return null
 							}
 

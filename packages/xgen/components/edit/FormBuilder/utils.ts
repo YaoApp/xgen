@@ -35,7 +35,9 @@ export const GetPresets = async (presets?: Remote | Presets): Promise<Presets> =
 }
 
 export const TypeMappping = (setting: Setting): Record<string, Type> => {
-	const mapping: Record<string, Type> = {}
+	const mapping: Record<string, Type> = {
+		Empty: { name: 'Empty', label: '', props: [] }
+	}
 	setting.types?.forEach((type) => {
 		if (type.props) {
 			type.props.forEach((prop) => {
@@ -49,6 +51,68 @@ export const TypeMappping = (setting: Setting): Record<string, Type> => {
 		mapping[type.name] = type
 	})
 	return mapping
+}
+
+export const LayoutToValue = (layout: Layout[], mapping: Record<string, Field>, layoutWidth: number = 12): Field[] => {
+	const value: Field[] = []
+	const lines: Layout[][] = []
+	layout.forEach((item) => {
+		if (!lines[item.y]) {
+			lines[item.y] = []
+		}
+		lines[item.y].push(item)
+	})
+
+	// sort by x
+	lines.forEach((line) => {
+		line.sort((a, b) => a.x - b.x)
+	})
+
+	// sort by y
+	lines.sort((a, b) => a[0].y - b[0].y)
+
+	// convert to value padding with empty if has empty space in the middle of the line
+	lines.forEach((line) => {
+		let x = 0
+		line.forEach((item) => {
+			if (item.x > x) {
+				const empty: Field = {
+					type: 'Empty',
+					width: item.x - x,
+					x,
+					y: item.y
+				}
+				value.push(empty)
+			}
+			const field = mapping[item.i]
+			if (field) {
+				value.push(field)
+			}
+			x = item.x + item.w
+		})
+		if (x < layoutWidth) {
+			const empty: Field = {
+				type: 'Empty',
+				width: layoutWidth - x,
+				x,
+				y: line[0].y
+			}
+			value.push(empty)
+		}
+	})
+
+	// Remove the last empty
+	const last = value[value.length - 1]
+	if (last && last.type === 'Empty') {
+		value.pop()
+	}
+
+	// Remove field id, x, y
+	value.forEach((item) => {
+		delete item.x
+		delete item.y
+	})
+	return value
 }
 
 export const ValueToLayout = (

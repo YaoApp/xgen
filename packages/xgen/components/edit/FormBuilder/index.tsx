@@ -1,4 +1,4 @@
-import { Drawer, Input, Skeleton } from 'antd'
+import { Skeleton } from 'antd'
 
 import { Item } from '@/components'
 
@@ -15,14 +15,13 @@ import Canvas from './components/Canvas'
 import { Else, If, Then } from 'react-if'
 import { GetPresets, GetSetting } from './utils'
 
-interface IFormBuilderIProps {
+interface IFormBuilderProps {
 	setting?: Remote | Setting
 	presets?: Remote | Presets
 	height?: number
 	hideLabel?: boolean
 	data?: Record<string, any>
 
-	__value: any // initial value
 	value: any
 	disabled?: boolean
 
@@ -33,19 +32,25 @@ interface IFormBuilderIProps {
 	onChange?: (v: any) => void
 }
 
-interface IProps extends IFormBuilderIProps, Component.PropsEditComponent {}
+interface IProps extends Component.PropsEditComponent, IFormBuilderProps {}
 
-const Index = (props: IProps) => {
-	const { __bind, __value, __name, itemProps, ...rest_props } = props
+const FormBuilder = window.$app.memo((props: IProps) => {
+	const [value, setValue] = useState<any>()
 	const [loading, setLoading] = useState<boolean>(false)
 	const [setting, setSetting] = useState<Setting | undefined>(undefined)
 	const [presets, setPresets] = useState<Presets | undefined>(undefined)
 	const ref = useRef<HTMLDivElement>(null)
 
+	useEffect(() => {
+		if (!props.value) return
+		setValue(props.value)
+	}, [props.value])
+
 	// Canvas setting
-	const onChange = (v: any, height: number) => {
+	const onCanvasChange = (value: any, height: number) => {
 		height = height + 24
 		setHeight(height >= 300 ? height : 300)
+		props.onChange && props.onChange(value)
 	}
 
 	// Set the width of the grid layout
@@ -97,26 +102,33 @@ const Index = (props: IProps) => {
 	}, [props.presets])
 
 	return (
+		<div className={clsx(styles._local)} ref={ref}>
+			<If condition={loading}>
+				<Then>
+					<div className='loading'>
+						<Skeleton active round />
+					</div>
+				</Then>
+				<Else>
+					<Sidebar types={setting?.types} height={height} />
+					<Canvas
+						width={width}
+						setting={setting}
+						presets={presets}
+						onChange={onCanvasChange}
+						value={value}
+					/>
+				</Else>
+			</If>
+		</div>
+	)
+})
+
+const Index = (props: IProps) => {
+	const { __bind, __name, itemProps, ...rest_props } = props
+	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
-			<div className={clsx(styles._local)} ref={ref}>
-				<If condition={loading}>
-					<Then>
-						<div className='loading'>
-							<Skeleton active round />
-						</div>
-					</Then>
-					<Else>
-						<Sidebar types={setting?.types} height={height} />
-						<Canvas
-							width={width}
-							setting={setting}
-							presets={presets}
-							onChange={onChange}
-							value={__value}
-						/>
-					</Else>
-				</If>
-			</div>
+			<FormBuilder {...rest_props} {...{ __bind, __name }}></FormBuilder>
 		</Item>
 	)
 }
