@@ -36,12 +36,22 @@ const Index = (props: IPropsActions) => {
 					</If>
 				</Button>
 			</When>
-			<Plus size={14} weight='bold' onClick={() => onAction('add', parentIds)}></Plus>
+			<Plus size={14} weight='bold' className='action' onClick={() => onAction('add', parentIds)}></Plus>
 			<When condition={hasChildren}>
-				<GitMerge size={14} weight='bold' onClick={() => onAction('addChild', parentIds)}></GitMerge>
+				<GitMerge
+					size={14}
+					weight='bold'
+					className='action'
+					onClick={() => onAction('addChild', parentIds)}
+				></GitMerge>
 			</When>
-			<X size={14} weight='bold' onClick={() => onAction('remove', parentIds)}></X>
-			<DotsSixVertical className='handle  clickable' size={16} weight='bold'></DotsSixVertical>
+			<X size={14} weight='bold' className='action' onClick={() => onAction('remove', parentIds)}></X>
+			<DotsSixVertical
+				className='handle action clickable'
+				size={16}
+				weight='bold'
+				style={{ cursor: 'move' }}
+			></DotsSixVertical>
 		</div>
 	)
 }

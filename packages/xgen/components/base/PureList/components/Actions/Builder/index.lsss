@@ -7,4 +7,11 @@
 	&.hasChildren {
 		width: calc(14px * 5 + 14px * 5);
 	}
+
+	.action {
+		cursor: pointer;
+	}
+	.action:hover {
+		color: var(--color_main);
+	}
 }
