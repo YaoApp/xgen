@@ -9,7 +9,7 @@ interface IProps {
 const Index = (props: IProps) => {
 	return (
 		<div className='sidebar'>
-			<div className='content' style={{ maxHeight: props.height }}>
+			<div className='content' style={{ maxHeight: props.height, minHeight: props.height }}>
 				{props.types?.map((type, index) => (
 					<div
 						key={`${type.name}|${index}`}

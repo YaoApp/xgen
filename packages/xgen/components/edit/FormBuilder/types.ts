@@ -41,11 +41,13 @@ export type Remote = {
 }
 
 export type Setting = {
+	title?: string
 	defaultValue?: Field[]
 	types?: Type[]
 	fields?: Record<string, ColumnComponent>
 }
 
-export type Presets = Field[]
+export type Preset = Field & { icon?: string }
+export type Presets = Preset[]
 
 export type Layout = GridLayout.Layout

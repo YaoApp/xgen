@@ -1,15 +1,16 @@
 import { Icon } from '@/widgets'
 import GridLayout from 'react-grid-layout'
-import { Field, Layout, Presets, Setting, Type } from '../../types'
+import { Field, Layout, Presets, Setting, Type, Remote } from '../../types'
 import { useEffect, useState } from 'react'
 import { GenerateID, LayoutToValue, TypeMappping, UpdatePosition, ValueToLayout } from '../../utils'
 import Panel from '../Panel'
 import clsx from 'clsx'
+import Preset from '../Preset'
 
 interface IProps {
 	width?: number
 	setting?: Setting
-	presets?: Presets
+	presets?: Presets | Remote
 	value: any // initial value
 	onChange?: (v: any, height: number) => void
 }
@@ -90,6 +91,31 @@ const Index = (props: IProps) => {
 	const onResize = (layout: Layout[], layoutItem: GridLayout.Layout, e: any) => {
 		const mapping = UpdatePosition(fieldMap, layout)
 		setFieldMap(mapping)
+	}
+
+	// add from the preset
+	const onAdd = (field: Field) => {
+		const maxY = Math.max(...layout.map((item) => item.y))
+		const copyField = { ...field }
+		copyField.id = GenerateID()
+		copyField.x = 0
+		copyField.y = maxY + 1
+
+		const newValue = [...value, copyField]
+		setValue(newValue)
+		setLayout([
+			...layout,
+			{
+				i: copyField.id,
+				x: copyField.x,
+				y: copyField.y,
+				w: copyField.width || 4,
+				h: 1,
+				resizeHandles: ['w', 'e']
+			}
+		])
+		setFieldMap({ ...fieldMap, [copyField.id]: copyField })
+		showPanel(copyField.id, copyField, typeMap[copyField.type])
 	}
 
 	// Clone the item
@@ -179,6 +205,14 @@ const Index = (props: IProps) => {
 				type={type}
 			/>
 			<div style={{ padding: 12 }}>
+				{(props.presets || props.setting?.title) && (
+					<div className='head'>
+						<div className='title'>{props.setting?.title}</div>
+						<div className='actions'>
+							<Preset data={props.presets} onAdd={onAdd} />
+						</div>
+					</div>
+				)}
 				<div className='relative'>
 					<GridLayout
 						className='layout'

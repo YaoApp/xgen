@@ -17,12 +17,15 @@ export const GetSetting = async (setting?: Remote | Setting): Promise<Setting> =
 	return Promise.resolve(setting as Setting)
 }
 
-export const GetPresets = async (presets?: Remote | Presets): Promise<Presets> => {
+export const GetPresets = async (presets?: Remote | Presets, v?: string): Promise<Presets> => {
 	// Typeof Remote
 	if (presets && 'api' in presets) {
 		presets = presets as Remote
 		const api = presets.api
 		const params = { ...presets.params }
+		if (v) {
+			params.keywords = v
+		}
 		try {
 			const res = await axios.get<any, Presets>(api, { params })
 			return Promise.resolve(res)
@@ -30,7 +33,16 @@ export const GetPresets = async (presets?: Remote | Presets): Promise<Presets> =
 			console.error('[GetSetting] remote search error', err)
 			return Promise.reject(err)
 		}
+	} else {
+		presets = presets as Presets
+		// Filter by keywords
+		if (v) {
+			return Promise.resolve(
+				presets.filter((item) => item.props?.label?.includes(v) || item.props?.name?.includes(v))
+			)
+		}
 	}
+
 	return Promise.resolve(presets as Presets)
 }
 

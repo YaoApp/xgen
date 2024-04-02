@@ -1,0 +1,39 @@
+._local {
+	:global {
+		font-size: 12px;
+		width: 100%;
+
+		.xgen-select-selector {
+			.xgen-select-selection-placeholder {
+				line-height: var(--base_height);
+			}
+
+			.xgen-select-selection-item {
+				line-height: var(--base_height);
+			}
+		}
+	}
+}
+
+._dropdown {
+	:global {
+		.xgen-select-item-option-selected:not(.xgen-select-item-option-disabled) {
+			background-color: transparent;
+			color: var(--color_main);
+		}
+
+		.xgen-select-dropdown {
+			font-size: 12px;
+		}
+
+		.xgen-select-item {
+			font-size: 12px !important;
+		}
+
+		.label {
+			font-size: 12px;
+			display: flex;
+			align-items: center;
+		}
+	}
+}

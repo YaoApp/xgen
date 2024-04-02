@@ -13,14 +13,12 @@ import { Presets, Remote, Setting } from './types'
 import Sidebar from './components/Sidebar'
 import Canvas from './components/Canvas'
 import { Else, If, Then } from 'react-if'
-import { GetPresets, GetSetting } from './utils'
+import { GetSetting } from './utils'
 
 interface IFormBuilderProps {
 	setting?: Remote | Setting
 	presets?: Remote | Presets
 	height?: number
-	hideLabel?: boolean
-	data?: Record<string, any>
 
 	value: any
 	disabled?: boolean
@@ -38,7 +36,6 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 	const [value, setValue] = useState<any>()
 	const [loading, setLoading] = useState<boolean>(false)
 	const [setting, setSetting] = useState<Setting | undefined>(undefined)
-	const [presets, setPresets] = useState<Presets | undefined>(undefined)
 	const ref = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
@@ -49,7 +46,8 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 	// Canvas setting
 	const onCanvasChange = (value: any, height: number) => {
 		height = height + 24
-		setHeight(height >= 300 ? height : 300)
+		const h = height > (props.height || 300) ? height : props.height || 300
+		setHeight(h)
 		props.onChange && props.onChange(value)
 	}
 
@@ -87,20 +85,6 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 			})
 	}, [props.setting])
 
-	// Get presets
-	useEffect(() => {
-		if (!props.presets) return
-		setLoading(true)
-		GetPresets(props.presets)
-			.then((presets) => {
-				setLoading(false)
-				setPresets(presets)
-			})
-			.catch(() => {
-				setLoading(false)
-			})
-	}, [props.presets])
-
 	return (
 		<div className={clsx(styles._local)} ref={ref}>
 			<If condition={loading}>
@@ -114,7 +98,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 					<Canvas
 						width={width}
 						setting={setting}
-						presets={presets}
+						presets={props.presets}
 						onChange={onCanvasChange}
 						value={value}
 					/>
