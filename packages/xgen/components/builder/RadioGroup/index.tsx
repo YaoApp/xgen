@@ -1,25 +1,52 @@
-import { Input } from 'antd'
+import { Radio } from 'antd'
+import { observer } from 'mobx-react-lite'
+import { useEffect, useLayoutEffect, useState } from 'react'
+import { container } from 'tsyringe'
 
 import Item from '../Item'
-import { getLocale } from '@umijs/max'
 
-import type { InputProps } from 'antd'
+import styles from './index.less'
+import Model from './model'
+
 import type { Component } from '@/types'
+import type { RadioGroupProps } from 'antd'
 
-interface IProps extends InputProps, Component.PropsEditComponent {}
+const { Group } = Radio
+
+interface IProps extends RadioGroupProps, Component.PropsEditComponent {}
 
 const Index = (props: IProps) => {
-	const { __bind, __name, defaultValue, onChange, ...rest_props } = props
+	const { __bind, __name, onChange, itemProps, ...rest_props } = props
+	const [x] = useState(() => container.resolve(Model))
+
+	const [value, setValue] = useState(props.value)
+
+	useLayoutEffect(() => {
+		x.remote.raw_props = props
+		x.remote.init()
+	}, [props])
+
+	useEffect(() => {
+		if (value !== props.value) {
+			setValue(props.value)
+		}
+	}, [props.value])
+
+	const onGroupChange = (e: any) => {
+		onChange?.(e.target.value)
+	}
+
 	return (
 		<Item {...{ __bind, __name }}>
-			<Input
-				name={__bind}
-				defaultValue={defaultValue}
+			<Group
+				className={styles._local}
+				value={value}
+				onChange={onGroupChange}
 				{...rest_props}
-				onChange={(e: any) => onChange && onChange(e.target.value)}
-			></Input>
+				options={x.options}
+			></Group>
 		</Item>
 	)
 }
 
-export default window.$app.memo(Index)
+export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()
