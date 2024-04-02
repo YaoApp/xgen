@@ -7,8 +7,7 @@ import Row from '../Row'
 import type { IPropsList } from '../../types'
 
 const Index = (props: IPropsList) => {
-	const { setting, list, showLabel, hasChildren, parentIds = [], onSort, onAction, onChange } = props
-
+	const { setting, list, showLabel, builder, hasChildren, parentIds = [], onSort, onAction, onChange } = props
 	return (
 		<div className='w_100 border_box flex flex_column' style={{ paddingLeft: parentIds?.length && 48 }}>
 			<ReactSortable list={list} handle='.handle' animation={150} setList={(v) => onSort(v, parentIds)}>
@@ -17,6 +16,7 @@ const Index = (props: IPropsList) => {
 						<Row
 							setting={setting}
 							showLabel={showLabel}
+							builder={builder}
 							hasChildren={hasChildren}
 							dataItem={item}
 							parentIds={[...parentIds, item.id]}
@@ -30,6 +30,7 @@ const Index = (props: IPropsList) => {
 									setting={setting}
 									list={item.children}
 									showLabel={showLabel}
+									builder={builder}
 									hasChildren={hasChildren}
 									parentIds={[...parentIds, item.id]}
 									onSort={onSort}

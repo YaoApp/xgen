@@ -1,0 +1,10 @@
+.actions_wrap_builder {
+	width: calc(14px * 3 + 14px * 3);
+	padding-left: 12px;
+	align-items: center;
+	height: 100%;
+
+	&.hasChildren {
+		width: calc(14px * 5 + 14px * 5);
+	}
+}
