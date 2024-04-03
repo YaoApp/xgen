@@ -23,8 +23,10 @@ const Custom = window.$app.memo((props: ICustom) => {
 	const [options, setOptions] = useState<SelectProps['options']>(props.options || [])
 
 	useEffect(() => {
-		if (__value === undefined || __value === null) return
-
+		if (__value === undefined || __value === null) {
+			setValue(null)
+			return
+		}
 		setValue(__value)
 	}, [props.mode, __value])
 

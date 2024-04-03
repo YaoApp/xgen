@@ -73,7 +73,6 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 	// Get setting
 	useEffect(() => {
 		if (!props.setting) return
-
 		setLoading(true)
 		GetSetting(props.setting)
 			.then((setting) => {

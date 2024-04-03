@@ -27,9 +27,11 @@ const Index = (props: IProps) => {
 	}, [props])
 
 	useEffect(() => {
-		if (value !== props.value) {
-			setValue(props.value)
+		if (props.value === undefined || props.value === null) {
+			setValue(null)
+			return
 		}
+		setValue(props.value)
 	}, [props.value])
 
 	const onGroupChange = (e: any) => {

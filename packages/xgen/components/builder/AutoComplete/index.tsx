@@ -21,7 +21,10 @@ const Custom = window.$app.memo((props: ICustom) => {
 	const is_cn = getLocale() === 'zh-CN'
 
 	useEffect(() => {
-		if (__value === undefined || __value === null) return
+		if (__value === undefined || __value === null) {
+			setValue(null)
+			return
+		}
 
 		setValue(__value)
 	}, [props.mode, __value])

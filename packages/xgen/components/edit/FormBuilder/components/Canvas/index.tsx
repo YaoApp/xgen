@@ -208,9 +208,11 @@ const Index = (props: IProps) => {
 				{(props.presets || props.setting?.title) && (
 					<div className='head'>
 						<div className='title'>{props.setting?.title}</div>
-						<div className='actions'>
-							<Preset data={props.presets} onAdd={onAdd} />
-						</div>
+						{props.presets && (
+							<div className='actions'>
+								<Preset data={props.presets} onAdd={onAdd} />
+							</div>
+						)}
 					</div>
 				)}
 				<div className='relative'>
