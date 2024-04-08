@@ -16,10 +16,20 @@ export default class Index {
 		const target: SelectProps = {}
 
 		if (this.remote.raw_props.showSearch) {
-			target['filterOption'] = (input, option) =>
-				String(option?.label || option?.value)
-					.toLowerCase()
-					.indexOf(input.toLowerCase()) >= 0
+			target['filterOption'] = (input, option) => {
+				let labelText = option?.label
+				if (typeof option?.label == 'object') {
+					labelText = (option?.label as any).props?.children?.[1]?.props?.children
+				}
+
+				let valueText = option?.value
+				if (typeof option?.value == 'object') {
+					valueText = JSON.stringify(option?.value)
+				}
+
+				const text = `${labelText}${valueText}`
+				return text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+			}
 		}
 
 		if (this.remote.raw_props.xProps?.search) {

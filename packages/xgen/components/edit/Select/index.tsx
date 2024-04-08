@@ -24,16 +24,10 @@ const Custom = window.$app.memo((props: ICustom) => {
 	const is_cn = getLocale() === 'zh-CN'
 	const [options, setOptions] = useState<SelectProps['options']>(props.options || [])
 
-	useEffect(() => {
-		if (__value === undefined || __value === null) return
-
-		setValue(__value)
-	}, [props.mode, __value])
-
-	useEffect(() => {
-		const opts = []
-		if (props.options) {
-			for (const item of props.options) {
+	const parseOptions = (options?: any[]): SelectProps['options'] => {
+		const opts: SelectProps['options'] = []
+		if (options) {
+			for (const item of options) {
 				let label = item.label
 				if (item.icon) {
 					const size = item.icon.size || 16
@@ -52,8 +46,16 @@ const Custom = window.$app.memo((props: ICustom) => {
 				})
 			}
 		}
+		return opts
+	}
 
-		setOptions(opts)
+	useEffect(() => {
+		if (__value === undefined || __value === null) return
+		setValue(__value)
+	}, [props.mode, __value])
+
+	useEffect(() => {
+		setOptions(parseOptions(props.options))
 	}, [props.options])
 
 	const onChange: SelectProps['onChange'] = (v) => {
@@ -74,7 +76,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 			const params = { ...xProps.remote.params, ['keywords']: v }
 			axios.get<any, SelectProps['options']>(api, { params })
 				.then((res) => {
-					setOptions(res)
+					setOptions(parseOptions(res))
 				})
 				.catch((err) => {
 					console.error('[Select] remote search error', err)
