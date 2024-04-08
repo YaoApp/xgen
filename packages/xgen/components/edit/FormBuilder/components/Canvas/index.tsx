@@ -61,17 +61,20 @@ const Index = (props: IProps) => {
 
 	// Update value when set from outside
 	useEffect(() => {
+		if (props.setting) {
+			const mappping = TypeMappping(props.setting)
+			setTypeMap(mappping)
+		}
+	}, [props.setting])
+
+	useEffect(() => {
 		if (props.value || props.setting?.defaultValue) {
 			const res = ValueToLayout(props.value, props.setting?.defaultValue)
 			setLayout(res.layout)
 			setFieldMap(res.mapping)
 			setValue(props.value || props.setting?.defaultValue)
 		}
-		if (props.setting) {
-			const mappping = TypeMappping(props.setting)
-			setTypeMap(mappping)
-		}
-	}, [props.setting, props.value])
+	}, [props.value])
 
 	// Update the layout when the layout changes
 	const onLayoutChange = (layout: Layout[]) => {

@@ -76,6 +76,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 		setLoading(true)
 		GetSetting(props.setting)
 			.then((setting) => {
+				if (!setting?.types) return
 				setLoading(false)
 				setSetting(setting)
 			})
