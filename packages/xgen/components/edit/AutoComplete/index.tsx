@@ -13,6 +13,7 @@ import Model from './model'
 import type { IProps, ICustom } from './types'
 import type { AutoCompleteProps } from 'antd'
 import axios from 'axios'
+import { Icon } from '@/widgets'
 
 const Custom = window.$app.memo((props: ICustom) => {
 	const { __name, value: __value, xProps, onSearch, ...rest_props } = props
@@ -27,7 +28,28 @@ const Custom = window.$app.memo((props: ICustom) => {
 	}, [props.mode, __value])
 
 	useEffect(() => {
-		setOptions(props.options || [])
+		const opts = []
+		if (props.options) {
+			for (const item of props.options) {
+				let label = item.label
+				if (item.icon) {
+					const size = item.icon.size || 16
+					const name = item.icon.name || item.icon
+					label = (
+						<div style={{ display: 'flex', alignItems: 'center' }}>
+							<Icon name={name} size={size} className='mr_4' />
+							<span>{item.label}</span>
+						</div>
+					)
+				}
+
+				opts.push({
+					label: label,
+					value: item.value
+				})
+			}
+		}
+		setOptions(opts)
 	}, [props.options])
 
 	const onChange: AutoCompleteProps['onChange'] = (v) => {
