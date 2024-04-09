@@ -6,6 +6,9 @@ export declare namespace Common {
 	interface BaseColumn {
 		name: string
 		width?: number
+		icon?: string | { name: string; size?: number }
+		color?: string
+		weight?: number | string
 	}
 
 	interface TableBaseColumn extends BaseColumn {

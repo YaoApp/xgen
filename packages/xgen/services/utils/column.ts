@@ -60,6 +60,9 @@ export class ColumnUtils {
 			if ('tabs' in item) {
 				total.push({
 					width: item?.width || 24,
+					icon: item.icon,
+					color: item.color,
+					weight: item.weight,
 					tabs: this.reduceSections(item.tabs, fields)
 				})
 			} else {
@@ -73,6 +76,9 @@ export class ColumnUtils {
 			total.push({
 				title: item.title,
 				desc: item.desc,
+				icon: item.icon,
+				color: item.color,
+				weight: item.weight,
 				columns: (item.columns || []).reduce(getColumns, [])
 			})
 

@@ -4,6 +4,9 @@ export declare namespace FormType {
 	interface Section {
 		title?: string
 		desc?: string
+		icon?: string | { name: string; size?: number }
+		color?: string
+		weight?: number | string
 		columns: Array<Column>
 	}
 
@@ -15,11 +18,17 @@ export declare namespace FormType {
 	interface SectionResult {
 		title?: string
 		desc?: string
+		icon?: string | { name: string; size?: number }
+		color?: string
+		weight?: number | string
 		columns: Array<ColumnResult>
 	}
 
 	interface RawTab {
 		width?: number
+		icon?: string | { name: string; size?: number }
+		color?: string
+		weight?: number | string
 		tabs: Array<Section>
 	}
 

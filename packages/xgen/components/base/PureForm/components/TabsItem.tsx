@@ -3,6 +3,7 @@ import { Col, Tabs } from 'antd'
 import RowItem from './RowItem'
 
 import type { IPropsTabsItem, IPropsRowItem } from '../types'
+import Text from './Text'
 
 const Index = (props: IPropsTabsItem) => {
 	const { namespace, primary, type, item } = props
@@ -19,7 +20,7 @@ const Index = (props: IPropsTabsItem) => {
 				className='w_100'
 				animated
 				items={item.tabs.map((it, idx) => ({
-					label: it.title,
+					label: <Text {...it} text={it.title || ''} />,
 					key: it.title! + idx,
 					children: <RowItem {...props_row_item} columns={it.columns}></RowItem>
 				}))}

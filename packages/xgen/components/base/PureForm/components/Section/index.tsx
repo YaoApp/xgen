@@ -5,6 +5,7 @@ import RowItem from '../RowItem'
 import styles from './index.less'
 
 import type { IPropsSection, IPropsRowItem } from '../../types'
+import Text from '../Text'
 
 const Index = (props: IPropsSection) => {
 	const { namespace, primary, type, item, showSectionDivideLine } = props
@@ -26,7 +27,7 @@ const Index = (props: IPropsSection) => {
 				>
 					<div className='flex align_center'>
 						<span className={clsx(['section_title', showSectionDivideLine && 'with_line'])}>
-							{item.title}
+							<Text {...item} text={item.title || ''} />
 						</span>
 						<When condition={showSectionDivideLine}>
 							<span className='divide_line'></span>
