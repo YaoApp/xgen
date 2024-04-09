@@ -14,6 +14,7 @@ import Sidebar from './components/Sidebar'
 import Canvas from './components/Canvas'
 import { Else, If, Then } from 'react-if'
 import { GetSetting } from './utils'
+import { useGlobal } from '@/context/app'
 
 interface IFormBuilderProps {
 	setting?: Remote | Setting
@@ -37,6 +38,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [setting, setSetting] = useState<Setting | undefined>(undefined)
 	const ref = useRef<HTMLDivElement>(null)
+	const global = useGlobal()
 
 	useEffect(() => {
 		if (!props.value) return
@@ -72,11 +74,11 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 
 	// Get setting
 	useEffect(() => {
-		if (!props.setting) return
 		setLoading(true)
+		if (global.loading) return
+		if (!props.setting) return
 		GetSetting(props.setting)
 			.then((setting) => {
-				if (!setting?.types) return
 				setLoading(false)
 				setSetting(setting)
 			})
