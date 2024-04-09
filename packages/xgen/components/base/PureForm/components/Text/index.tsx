@@ -54,7 +54,7 @@ const Index = (props: IProps) => {
 	styles['color'] = props.color ? getColor(props.color) : undefined
 	styles['fontWeight'] = props.weight ? getWeight(props.weight) : undefined
 	if (props.icon) {
-		const size = typeof props.icon === 'string' ? 12 : props.icon.size || 12
+		const size = typeof props.icon === 'string' ? 14 : props.icon.size || 14
 		styles['marginLeft'] = 4
 		return (
 			<div className='flex align_center' style={styles}>
