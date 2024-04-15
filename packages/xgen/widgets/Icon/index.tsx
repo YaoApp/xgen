@@ -17,6 +17,9 @@ interface IProps {
 	size?: number
 	/** 图标颜色，适用所有字体颜色 */
 	color?: string
+
+	style?: React.CSSProperties
+
 	/** 点击事件 */
 	onClick?: () => void
 }
@@ -48,11 +51,11 @@ const Index = (props: IProps) => {
 	}, [name])
 
 	if (name.indexOf('icon-') !== -1) {
-		return <i className={clsx([name, className])} style={style} onClick={onClick}></i>
+		return <i className={clsx([name, className])} style={{ ...style, ...props.style }} onClick={onClick}></i>
 	}
 
 	return (
-		<i className={clsx(['Icon', md.type, className])} style={style} onClick={onClick}>
+		<i className={clsx(['Icon', md.type, className])} style={{ ...style, ...props.style }} onClick={onClick}>
 			{md.name}
 		</i>
 	)

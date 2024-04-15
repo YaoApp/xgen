@@ -14,6 +14,8 @@ import type { IPropsFormItem } from '../types'
 
 const { TextArea } = Input
 
+const aiExclude: Record<string, boolean> = { FlowBuilder: true }
+
 const Index = (props: IPropsFormItem) => {
 	const { namespace, primary, type, item } = props
 	const global = useGlobal()
@@ -30,7 +32,7 @@ const Index = (props: IPropsFormItem) => {
 	}, [namespace, item])
 
 	const show_ai = useMemo(
-		() => global.app_info.optional?.neo?.api && item.edit.props?.ai,
+		() => global.app_info.optional?.neo?.api && item.edit.props?.ai && !aiExclude[item.edit.type],
 		[global.app_info.optional?.neo?.api, item.edit.props?.ai]
 	)
 
