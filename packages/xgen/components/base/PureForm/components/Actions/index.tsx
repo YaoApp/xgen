@@ -36,8 +36,7 @@ const Index = (props: IPropsActions) => {
 	const _actions = useMemo(() => {
 		const when_add = id === 0
 		const when_view = type === 'view'
-		const handle_actions = getTemplateValue(actions!, data)
-
+		const handle_actions = getTemplateValue(actions!, data || {})
 		if (when_add) return handle_actions.filter((item) => item.showWhenAdd)
 		if (when_view) return handle_actions.filter((item) => item.showWhenView)
 

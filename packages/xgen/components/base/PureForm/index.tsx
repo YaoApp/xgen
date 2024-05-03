@@ -13,7 +13,6 @@ import styles from './index.less'
 
 import type { IPropsPureForm, IPropsActions, IPropsSections, IPropsReference } from './types'
 import Frame from '../Frame'
-import { Dot } from '@/utils'
 
 const { useForm } = Form
 
@@ -59,7 +58,7 @@ const Index = (props: IPropsPureForm) => {
 	}, [id])
 
 	useLayoutEffect(() => {
-		setFieldsValue(Dot(data)) // Support for nested data
+		setFieldsValue(data)
 		if (!Object.keys(data).length) return
 		if (!onLoadSync) return
 

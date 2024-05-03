@@ -9,6 +9,8 @@ interface IProps {
 	id?: string
 	field?: Field
 	type?: Type
+	fixed: boolean
+	offsetTop: number
 	onClose: () => void
 	onChange?: (id: string, bind: string, value: any) => void
 }
@@ -38,7 +40,7 @@ const Index = (props: IProps) => {
 			getContainer={false}
 			className='drawer'
 			maskClassName='mask'
-			style={{ position: 'absolute' }}
+			style={{ position: props.fixed ? 'fixed' : 'absolute' }}
 		>
 			<If condition={field != undefined && type != undefined}>
 				<Then>

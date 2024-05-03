@@ -18,9 +18,10 @@ import type { UploadProps } from 'antd'
 import type { IProps, CustomProps, IPropsUploadBtn } from './types'
 
 const Custom = window.$app.memo((props: CustomProps) => {
-	const { api, filetype, maxCount, desc, imageSize, onChange: trigger } = props
+	const { api, maxCount, desc, imageSize, onChange: trigger } = props
 	const { list, setList } = useList(props.value)
 	const visible_btn = useVisibleBtn(list.length, maxCount || 1)
+	const filetype = filemap[props.filetype] ? props.filetype : 'image'
 
 	const onChange: UploadProps['onChange'] = useMemoizedFn(({ file, fileList }) => {
 		const { status } = file

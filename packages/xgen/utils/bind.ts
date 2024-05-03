@@ -1,4 +1,4 @@
-export const Dot = (data: Record<string, any>): Record<string, any> => {
+export const Dot = (data: Record<string, any>, max = 2): Record<string, any> => {
 	// data["foo"] = {"bar": "hello", "args": ["a", {"hi": "hello"}, "b"]}
 	// -> data["foo"] ={"bar": "hello"}
 	//    data["foo.bar"] = "hello"
@@ -7,12 +7,13 @@ export const Dot = (data: Record<string, any>): Record<string, any> => {
 	//    data["foo.args[1].hi"] = "hello"
 	//
 	const res: Record<string, any> = { ...data }
-	const walk = (obj: any, path: string[] = []) => {
+	const walk = (obj: any, path: string[] = [], depth = 0) => {
+		if (depth > max) return
 		if (Array.isArray(obj)) {
 			for (let i = 0; i < obj.length; i++) {
 				const val = obj[i]
 				if (typeof val === 'object' && val !== null) {
-					walk(val, path.concat(`[${i}]`))
+					walk(val, path.concat(`[${i}]`), depth + 1)
 				} else {
 					res[path.concat(`[${i}]`).join('')] = val
 				}
@@ -22,7 +23,7 @@ export const Dot = (data: Record<string, any>): Record<string, any> => {
 				const val = obj[key]
 				res[path.concat(path.length > 0 ? `.${key}` : `${key}`).join('')] = val
 				if (typeof val === 'object' && val !== null) {
-					walk(val, path.concat(path.length > 0 ? `.${key}` : `${key}`))
+					walk(val, path.concat(path.length > 0 ? `.${key}` : `${key}`), depth + 1)
 				}
 			}
 		}

@@ -12,6 +12,8 @@ interface IProps {
 	setting?: Setting
 	presets?: Presets | Remote
 	value: any // initial value
+	fixed: boolean
+	offsetTop: number
 	onChange?: (v: any, height: number) => void
 }
 
@@ -206,6 +208,8 @@ const Index = (props: IProps) => {
 				id={active}
 				field={field}
 				type={type}
+				fixed={props.fixed}
+				offsetTop={props.offsetTop}
 			/>
 			<div style={{ padding: 12 }}>
 				{(props.presets || props.setting?.title) && (

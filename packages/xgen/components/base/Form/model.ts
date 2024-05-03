@@ -9,6 +9,7 @@ import { ColumnUtils, Common, Form } from '@/services'
 import Service from './services'
 
 import type { FormType, TableType, Component, Global } from '@/types'
+import { Dot } from '@/utils'
 
 @injectable()
 export default class Model {
@@ -18,6 +19,7 @@ export default class Model {
 	type = '' as Component.FormType
 	setting = {} as FormType.Setting
 	data = {} as Global.AnyObject
+	__data = {} as Global.AnyObject
 	sections = [] as Array<FormType.SectionResult>
 	frame = {} as FormType.Frame
 	rendered = false
@@ -68,7 +70,6 @@ export default class Model {
 		if (err) return Promise.reject()
 
 		this.data = res
-
 		return Promise.resolve()
 	}
 

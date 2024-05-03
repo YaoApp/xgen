@@ -18,13 +18,12 @@ import axios from 'axios'
 
 const Custom = window.$app.memo((props: ICustom) => {
 	const { __name, value: __value, xProps, ...rest_props } = props
-	const [value, setValue] = useState<SelectProps['value']>()
+	const [value, setValue] = useState<SelectProps['value']>(undefined)
 	const is_cn = getLocale() === 'zh-CN'
 	const [options, setOptions] = useState<SelectProps['options']>(props.options || [])
 
 	useEffect(() => {
 		if (__value === undefined || __value === null) {
-			setValue(null)
 			return
 		}
 		setValue(__value)

@@ -52,9 +52,10 @@ export default class Index {
 		const { res, err } = await this.service.getOptions<Component.Params, Array<any>>(remote.api, params)
 		if (err) return
 
-		if (local.remote_cache) sessionStorage.setItem(session_key, encode(res))
-		if (cache_key) sessionStorage.setItem(cache_key, encode({ res: res, ts: ts }))
-		this.options = res
+		const options = this.fixOptions(res)
+		if (local.remote_cache) sessionStorage.setItem(session_key, encode(options))
+		if (cache_key) sessionStorage.setItem(cache_key, encode({ res: options, ts: ts }))
+		this.options = options
 		if (cache_key) delete Index.pending[cache_key] // unlock the cache
 	}
 
@@ -75,8 +76,37 @@ export default class Index {
 		this.options = res
 	}
 
+	// check the options is array and has {label, value} structure
+	// string[] to [{label: string, value: string}]
+	// {label: string, value: string}[] to [{label: string, value: string}]
+	// {label: string, value: string} to [{label: string, value: string}]
+	// {label: string}[] to [{label: string, value: string}]
+	// {value: string} to [{label: string, value: string}]
+	fixOptions(options: any) {
+		const optionsFixed: { label: string; value: string; [key: string]: any }[] = []
+		if (Array.isArray(options)) {
+			options.forEach((option) => {
+				if (typeof option === 'string') {
+					optionsFixed.push({ label: option, value: option })
+				} else if (Array.isArray(option)) {
+					optionsFixed.push({ label: option[0], value: option[1] })
+				} else if (typeof option === 'object') {
+					if (option.label && option.value) {
+						optionsFixed.push(option)
+					} else if (option.label) {
+						optionsFixed.push({ ...option, label: option.label, value: option.label })
+					} else if (option.value) {
+						optionsFixed.push({ ...option, label: option.value, value: option.value })
+					}
+				}
+			})
+			return optionsFixed
+		}
+		return []
+	}
+
 	init() {
-		if (this.raw_props.options) this.options = this.raw_props.options
+		if (this.raw_props.options) this.options = this.fixOptions(this.raw_props.options)
 		if (this.raw_props.xProps?.remote) this.getOptions()
 	}
 }
