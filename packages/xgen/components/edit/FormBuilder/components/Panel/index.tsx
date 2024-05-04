@@ -40,7 +40,7 @@ const Index = (props: IProps) => {
 			getContainer={false}
 			className='drawer'
 			maskClassName='mask'
-			style={{ position: props.fixed ? 'fixed' : 'absolute' }}
+			style={{ position: props.fixed ? 'fixed' : 'absolute', zIndex: props.fixed ? 101 : 99 }}
 		>
 			<If condition={field != undefined && type != undefined}>
 				<Then>

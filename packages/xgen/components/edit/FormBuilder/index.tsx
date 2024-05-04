@@ -34,6 +34,8 @@ interface IFormBuilderProps {
 interface IProps extends Component.PropsEditComponent, IFormBuilderProps {}
 
 const FormBuilder = window.$app.memo((props: IProps) => {
+	const [width, setWidth] = useState(0)
+	const [height, setHeight] = useState(props.height && props.height >= 300 ? props.height : 300)
 	const [isFixed, setIsFixed] = useState(false)
 	const [value, setValue] = useState<any>()
 	const [loading, setLoading] = useState<boolean>(false)
@@ -46,7 +48,9 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 	useEffect(() => {
 		const handleScroll = () => {
 			const top = ref.current?.getBoundingClientRect().top || 0
-			if (top <= offsetTop) {
+			const height = ref.current?.offsetHeight || 0
+			// console.log(top, height, top + height)
+			if (top <= offsetTop && top + height > offsetTop) {
 				setIsFixed(true)
 			} else {
 				setIsFixed(false)
@@ -72,9 +76,6 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 		props.onChange && props.onChange(value)
 	}
 
-	// Set the width of the grid layout
-	const [width, setWidth] = useState(0)
-	const [height, setHeight] = useState(props.height && props.height >= 300 ? props.height : 300)
 	useEffect(() => {
 		const observer = new ResizeObserver((entries) => {
 			for (let entry of entries) {

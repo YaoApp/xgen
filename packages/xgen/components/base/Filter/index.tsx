@@ -66,7 +66,7 @@ const Index = (props: IPropsFilter) => {
 			onReset={onReset}
 			onValuesChange={(_, values) => setQuery(values)}
 		>
-			<Row gutter={16} style={{ marginBottom: 16 }}>
+			<Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
 				{base.map((item: any, index: number) => (
 					<Col span={item.width} key={index}>
 						<X
@@ -128,7 +128,7 @@ const Index = (props: IPropsFilter) => {
 					>
 						<Icon className='icon' name='icon-x' size={16}></Icon>
 					</a>
-					<Row gutter={16} style={{ marginBottom: 16 }}>
+					<Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
 						{more.map((item: any, index: number) => (
 							<Col span={item.width} key={index}>
 								<X
