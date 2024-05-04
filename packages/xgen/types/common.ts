@@ -1,6 +1,7 @@
 export declare namespace Common {
 	interface Config {
 		full?: boolean
+		[key: string]: any
 	}
 
 	interface BaseColumn {

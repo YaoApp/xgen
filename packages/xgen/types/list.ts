@@ -4,6 +4,10 @@ export declare namespace List {
 	interface Setting {
 		list: {
 			columns: Array<Common.BaseColumn>
+			props: {
+				placeholder?: string
+				[key: string]: any
+			}
 		}
 		fields: {
 			list: Common.EditFields

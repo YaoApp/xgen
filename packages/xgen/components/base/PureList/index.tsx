@@ -38,6 +38,7 @@ const Index = (props: IProps) => {
 
 	const props_empty: IPropsEmpty = {
 		builder,
+		placeholder: props.props?.placeholder || '添加数据项',
 		onAdd
 	}
 

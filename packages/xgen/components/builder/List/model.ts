@@ -10,6 +10,9 @@ import { IProps } from 'ahooks/lib/useWhyDidYouUpdate'
 export default class Model {
 	props = {} as IProps
 	columns = [] as Array<CommonType.EditColumn>
+	listProps: List.Setting['list']['props'] = {
+		placeholder: 'Add Item'
+	}
 
 	constructor(private common: Common, private column_utils: ColumnUtils) {
 		makeAutoObservable(this, {}, { autoBind: true })
@@ -36,6 +39,10 @@ export default class Model {
 				CommonType.EditColumn,
 				CommonType.EditFields
 			>(res.list.columns, res.fields.list)
+		}
+
+		if (res.list.props) {
+			this.listProps = res.list.props
 		}
 	}
 

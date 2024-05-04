@@ -41,9 +41,7 @@ const List = window.$app.memo(
 
 		const onChange = useMemoizedFn((v: any) => {
 			if (!props.onChange) return
-
 			props.onChange(v)
-
 			setValue(v)
 		})
 
@@ -51,6 +49,7 @@ const List = window.$app.memo(
 			<div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
 				<PureList
 					setting={toJS(x.columns)}
+					props={x.listProps}
 					list={value}
 					builder={true}
 					hasChildren={hasChildren}

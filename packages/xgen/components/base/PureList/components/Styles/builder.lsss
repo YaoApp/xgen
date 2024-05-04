@@ -6,7 +6,9 @@
 		margin-bottom: 6px;
 	}
 
-	.xgen-input {
+	.xgen-input, 
+	.xgen-select, 
+	.xgen-select-item {
 		font-size: 12px;
 	}
 
@@ -15,8 +17,17 @@
 		height: 32.85px;
 	}
 
-	.xgen-form-item-control-input {
-		min-height: 32px;
+	.xgen-form-item-control-input,
+	.xgen-select-item {
+		min-height: 32.85px;
+	}
+
+	.xgen-select-single .xgen-select-selector {
+		height: 32.85px !important;
+	}
+
+	.xgen-select-single .xgen-select-selector .xgen-select-selection-item, .xgen-select-single .xgen-select-selector .xgen-select-selection-placeholder {
+		line-height: 32.85px !important;
 	}
 
 	.sortable-ghost {

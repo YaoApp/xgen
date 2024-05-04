@@ -15,12 +15,37 @@ import Model from './model'
 import type { IProps, ICustom } from './types'
 import type { SelectProps } from 'antd'
 import axios from 'axios'
+import { Icon } from '@/widgets'
 
 const Custom = window.$app.memo((props: ICustom) => {
 	const { __name, value: __value, xProps, ...rest_props } = props
 	const [value, setValue] = useState<SelectProps['value']>(undefined)
 	const is_cn = getLocale() === 'zh-CN'
 	const [options, setOptions] = useState<SelectProps['options']>(props.options || [])
+	const parseOptions = (options?: any[]): SelectProps['options'] => {
+		const opts: SelectProps['options'] = []
+		if (options) {
+			for (const item of options) {
+				let label = item.label
+				if (item.icon) {
+					const size = item.icon.size || 12
+					const name = item.icon.name || item.icon
+					label = (
+						<div style={{ display: 'flex', alignItems: 'center' }}>
+							<Icon name={name} size={size} className='mr_4' />
+							<span>{item.label}</span>
+						</div>
+					)
+				}
+
+				opts.push({
+					label: label,
+					value: item.value
+				})
+			}
+		}
+		return opts
+	}
 
 	useEffect(() => {
 		if (__value === undefined || __value === null) {
@@ -30,7 +55,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 	}, [props.mode, __value])
 
 	useEffect(() => {
-		setOptions(props.options || [])
+		setOptions(parseOptions(props.options || []))
 	}, [props.options])
 
 	const onChange: SelectProps['onChange'] = (v) => {
@@ -51,7 +76,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 			const params = { ...xProps.remote.params, ['keywords']: v }
 			axios.get<any, SelectProps['options']>(api, { params })
 				.then((res) => {
-					setOptions(res)
+					setOptions(parseOptions(res))
 				})
 				.catch((err) => {
 					console.error('[Select] remote search error', err)

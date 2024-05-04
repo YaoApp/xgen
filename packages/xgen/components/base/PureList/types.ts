@@ -10,11 +10,16 @@ export interface IProps {
 	hasChildren?: boolean
 	showLabel?: boolean
 	builder?: boolean
+	props?: {
+		placeholder?: string
+		[key: string]: any
+	}
 	onChangeForm?: (v: Array<any> | { data: Array<any>; delete: Array<string | number> }) => void
 }
 
 export interface IPropsEmpty {
 	builder?: boolean
+	placeholder?: string
 	onAdd: Model['onAdd']
 }
 

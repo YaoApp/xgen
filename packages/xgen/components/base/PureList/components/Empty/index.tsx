@@ -20,7 +20,7 @@ const Index = (props: IPropsEmpty) => {
 					icon={<PlusCircle className='mr_6' size={14}></PlusCircle>}
 					onClick={() => onAdd([])}
 				>
-					添加数据项
+					{props.placeholder || '添加数据项'}
 				</Button>
 			</div>
 		)
@@ -35,7 +35,7 @@ const Index = (props: IPropsEmpty) => {
 				icon={<PlusCircle className='mr_6' size={18}></PlusCircle>}
 				onClick={() => onAdd([])}
 			>
-				添加数据项
+				{props.placeholder || '添加数据项'}
 			</Button>
 		</div>
 	)

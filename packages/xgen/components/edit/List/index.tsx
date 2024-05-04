@@ -48,6 +48,7 @@ const List = window.$app.memo(
 		return (
 			<PureList
 				setting={toJS(x.columns)}
+				props={x.listProps}
 				list={value}
 				showLabel={showLabel}
 				hasChildren={hasChildren}
