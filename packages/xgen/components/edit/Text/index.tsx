@@ -25,7 +25,7 @@ const Index = (props: IProps) => {
 	const value = props.text || ''
 	const height = props.height || 36
 	return (
-		<div style={{ height: height }}>
+		<div style={{ height: height }} className='flex align_center'>
 			<Text {...props} __value={value} onSave={() => {}} />
 		</div>
 	)

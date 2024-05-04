@@ -25,6 +25,7 @@ interface IProps extends Component.PropsViewComponent {
 
 	color?: string
 	format?: string
+	size?: number
 }
 
 const Index = (props: IProps) => {
@@ -83,7 +84,8 @@ const Index = (props: IProps) => {
 				value: __value as Value,
 				style: {
 					fontWeight: props?.weight ? getWeight(props.weight) : undefined,
-					color: getColor(props.color)
+					color: getColor(props.color),
+					fontSize: props.size ? props.size : undefined
 				}
 			}
 		}

@@ -7,8 +7,12 @@ import { CSSProperties } from 'react'
 interface IProps {
 	color?: string
 	size?: number
+	height?: number
 	title?: string
 	desc?: string
+	width?: number
+	titleColor?: string
+	titleSize?: number
 }
 const Index = (props: IProps) => {
 	const global = useGlobal()
@@ -32,13 +36,18 @@ const Index = (props: IProps) => {
 
 	const lineStyles: CSSProperties = {}
 	const titleStyles: CSSProperties = {}
+	const wrapStyles: CSSProperties = {}
+	wrapStyles['height'] = props.height ? props.height : undefined
 	lineStyles['backgroundColor'] = props.color ? getColor(props.color) : undefined
 	titleStyles['backgroundColor'] = props.color ? getColor(props.color) : undefined
+	titleStyles['color'] = props.titleColor ? getColor(props.titleColor) : '#ffffff'
+	titleStyles['fontSize'] = props.titleSize ? props.titleSize : undefined
+	lineStyles['width'] = props.width ? props.width : '100%'
 	lineStyles['height'] = props.size ? props.size : 1
 
 	return (
 		<div className={clsx([styles._local, 'w_100 border_box flex flex_column'])}>
-			<div className='wrap flex flex_column disabled'>
+			<div className='wrap flex flex_column disabled' style={wrapStyles}>
 				<div className='flex align_center'>
 					{props.title && props.title != '' && (
 						<span className={clsx(['title', 'with_line'])} style={titleStyles}>
