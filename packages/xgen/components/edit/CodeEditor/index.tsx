@@ -31,15 +31,20 @@ const Custom = window.$app.memo((props: ICustom) => {
 
 	useEffect(() => {
 		if (!props.value) return
-
+		if (typeof props.value !== 'string') {
+			try {
+				setValue(JSON.stringify(props.value, null, 2))
+			} catch (e) {
+				console.error(`CodeEditor: ${e}`)
+			}
+			return
+		}
 		setValue(props.value)
 	}, [props.value])
 
 	const onChange = (v: any) => {
 		if (!props.onChange) return
-
 		props.onChange(v)
-
 		setValue(v)
 	}
 
