@@ -10,6 +10,7 @@ import Service from './services'
 
 import type { FormType, TableType, Component, Global } from '@/types'
 import { Dot } from '@/utils'
+import { isNumber } from 'lodash-es'
 
 @injectable()
 export default class Model {
@@ -84,8 +85,14 @@ export default class Model {
 
 		message.success(this.global.locale_messages.messages.table.save.success)
 
-		if (this.parent === 'Modal')
+		if (this.parent === 'Modal') {
 			window.$app.Event.emit(`${this.parent_namespace ?? this.namespace.parent}/search`)
+		}
+
+		// Set id to the response if the id is 0 and the response is a string or number
+		if (this.id === 0 && (typeof res == 'string' || isNumber(res)) && res !== 0) {
+			this.id = res
+		}
 
 		return Promise.resolve(res)
 	}
@@ -138,6 +145,7 @@ export default class Model {
 	}
 
 	refetch() {
+		console.log('refetch')
 		this.getSetting()
 		this.find()
 	}
