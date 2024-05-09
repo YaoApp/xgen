@@ -26,6 +26,7 @@ export default class Model {
 	rendered = false
 	form_name = ''
 	parent_namespace = '' as Component.FormComponent['parentNamespace']
+	onBack = undefined as Component.FormComponent['onBack']
 
 	constructor(
 		private service: Service,
@@ -141,30 +142,36 @@ export default class Model {
 
 		if (this.id !== 0) this.find()
 
-		this.on(onBack)
+		this.onBack = onBack
+		this.on()
 	}
 
 	refetch() {
-		console.log('refetch')
 		this.getSetting()
 		this.find()
 	}
 
-	on(onBack: Component.FormComponent['onBack']) {
+	back() {
+		if (this.parent === 'Modal') {
+			window.$app.Event.emit(`${this.parent_namespace ?? this.namespace.parent}/search`)
+		}
+		this.onBack!()
+	}
+
+	on() {
 		window.$app.Event.on(`${this.namespace.value}/find`, this.find)
 		window.$app.Event.on(`${this.namespace.value}/save`, this.save)
 		window.$app.Event.on(`${this.namespace.value}/delete`, this.delete)
-		window.$app.Event.on(`${this.namespace.value}/back`, onBack!)
+		window.$app.Event.on(`${this.namespace.value}/back`, this.back)
 		window.$app.Event.on(`${this.namespace.value}/refetch`, this.refetch)
 	}
 
-	off(onBack: Component.FormComponent['onBack']) {
+	off() {
 		window.$app.Event.off(`${this.namespace.value}/find`, this.find)
 		window.$app.Event.off(`${this.namespace.value}/save`, this.save)
 		window.$app.Event.off(`${this.namespace.value}/delete`, this.delete)
-		window.$app.Event.off(`${this.namespace.value}/back`, onBack!)
+		window.$app.Event.off(`${this.namespace.value}/back`, this.back)
 		window.$app.Event.off(`${this.namespace.value}/refetch`, this.refetch)
-
 		this.global.stack.remove(this.form_name)
 	}
 }
