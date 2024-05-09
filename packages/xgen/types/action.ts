@@ -22,6 +22,7 @@ export declare namespace Action {
 		public?: boolean
 		refetch?: boolean
 		withFilterQuery?: boolean
+		withToken?: boolean | string
 	}
 
 	interface Confirm {
