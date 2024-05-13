@@ -1,11 +1,13 @@
 import Preset from '@/components/edit/FormBuilder/components/Preset'
 import { Icon } from '@/widgets'
 import { Button } from 'antd'
+import Flow from '../Flow'
 
 interface IProps {
 	text: string
 	icon?: string
-	width?: number
+	width: number
+	height: number
 }
 
 const Index = (props: IProps) => {
@@ -23,6 +25,7 @@ const Index = (props: IProps) => {
 					<Preset />
 				</div>
 			</div>
+			<Flow width={props.width} height={props.height} name={props.text} />
 		</div>
 	)
 }

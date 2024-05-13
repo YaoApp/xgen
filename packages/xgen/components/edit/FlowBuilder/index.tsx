@@ -57,7 +57,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 		return (
 			<div className='builder'>
 				<Sidebar types={types} height={height} />
-				<Canvas icon={props.icon} text={props.text} width={width} />
+				<Canvas icon={props.icon} text={props.text} height={height} width={width} />
 			</div>
 		)
 	}

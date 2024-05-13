@@ -1,0 +1,287 @@
+._local {
+	:global {
+		padding: 0 12px 10px 12px;
+
+		.providerflow {
+			flex-direction: column;
+			display: flex;
+			flex-grow: 1;
+			height: 100%;
+		}
+
+		.providerflow aside {
+			font-size: 12px;
+		}
+
+		.providerflow aside .description {
+			margin-bottom: 10px;
+		}
+
+		.providerflow aside .title {
+			font-weight: 700;
+			margin-bottom: 5px;
+		}
+
+		.providerflow aside .transform {
+			margin-bottom: 20px;
+		}
+
+		.providerflow .reactflow-wrapper {
+			flex-grow: 1;
+		}
+
+		.providerflow .selectall {
+			margin-top: 10px;
+		}
+
+		.react-flow__attribution {
+			opacity: 0.2 !important;
+			background: transparent !important;
+		}
+
+		.react-flow__attribution:hover {
+			opacity: 0.6 !important;
+		}
+
+		.react-flow__attribution:hover a {
+			color: var(--color_main) !important;
+		}
+
+		.react-flow__node {
+			// background-color: var(--color_bg);
+			// border: 1px solid var(--color_border_soft);
+			border: none;
+			border-radius: var(--radius);
+			// box-shadow: none;
+			// font-weight: 400;
+			color: var(--color_text);
+			padding: 0;
+			margin: 0;
+			height: 42px;
+			background: transparent;
+		}
+
+		.react-flow__handle {
+			min-width: 10px;
+			min-height: 16px;
+			width: 10px;
+			height: 16px;
+			background: var(--color_placeholder);
+			border: 1px solid var(--color_bg_nav);
+			border-radius: 4px;
+		}
+
+		.react-flow__handle:hover {
+			min-width: 10px;
+			min-height: 16px;
+			width: 14px;
+			height: 20px;
+			// 100ms ease-in-out
+			transition: width 0.1s, height 0.1s;
+		}
+
+		.react-flow__handle-right {
+			right: -6px;
+		}
+
+		.react-flow__handle-left {
+			left: -6px;
+		}
+
+		.react-flow__handle:hover.react-flow__handle-right {
+			right: -8px;
+		}
+
+		.react-flow__handle:hover.react-flow__handle-left {
+			left: -8px;
+		}
+
+		// class="react-flow__panel react-flow__controls bottom left"
+
+		.react-flow__controls {
+			box-shadow: none;
+
+			button:first-child {
+				border-top-left-radius: var(--radius);
+				border-top-right-radius: var(--radius);
+			}
+
+			button:last-child {
+				border-bottom-left-radius: var(--radius);
+				border-bottom-right-radius: var(--radius);
+			}
+
+			button {
+				background: var(--color_bg);
+				color: var(--color_text);
+				border-bottom: 1px solid var(--color_border_soft);
+			}
+
+			// disabled
+			button[disabled] {
+				background: var(--color_bg_menu);
+				color: var(--color_text_grey);
+			}
+
+			button:hover {
+				background: var(--color_bg_menu);
+			}
+		}
+
+		// Themes ---- default, primary, danger, success, warning
+
+		// Default
+		.default {
+			font-size: 12px;
+			font-weight: 500;
+			border-radius: var(--radius);
+			background-color: var(--color_title);
+			color: var(--color_bg_menu);
+			border: 2px solid var(--color_title);
+		}
+
+		.default:hover {
+			opacity: 0.9;
+		}
+
+		.default.selected {
+			background-color: var(--color_bg_menu);
+			box-shadow: var(--shadow);
+			color: var(--color_title);
+			border: 2px solid var(--color_title);
+		}
+
+		.default .react-flow__handle {
+			background: var(--color_title);
+		}
+
+		// Primary
+		.primary {
+			font-size: 12px;
+			font-weight: 500;
+			border-radius: var(--radius);
+			background-color: var(--color_main);
+			color: var(--color_bg_menu);
+			border: 2px solid var(--color_main);
+		}
+
+		.primary:hover {
+			opacity: 0.9;
+		}
+
+		.primary.selected {
+			background-color: var(--color_bg_menu);
+			box-shadow: var(--shadow);
+			color: var(--color_main);
+			border: 2px solid var(--color_main);
+		}
+
+		.primary .react-flow__handle {
+			background: var(--color_main);
+		}
+
+		// Danger
+		.danger {
+			font-size: 12px;
+			font-weight: 500;
+			border-radius: var(--radius);
+			background-color: var(--color_danger);
+			color: var(--color_bg_menu);
+			border: 2px solid var(--color_danger);
+		}
+
+		.danger:hover {
+			opacity: 0.9;
+		}
+
+		.danger.selected {
+			background-color: var(--color_bg_menu);
+			border: 1px solid var(--color_danger);
+			box-shadow: var(--shadow);
+			color: var(--color_danger);
+			border: 2px solid var(--color_danger);
+		}
+
+		.danger .react-flow__handle {
+			background: var(--color_danger);
+		}
+
+		// Success
+		.success {
+			font-size: 12px;
+			font-weight: 500;
+			border-radius: var(--radius);
+			background-color: var(--color_success);
+			color: var(--color_bg_menu);
+			border: 2px solid var(--color_success);
+		}
+
+		.success:hover {
+			opacity: 0.9;
+		}
+
+		.success.selected {
+			background-color: var(--color_bg_menu);
+			box-shadow: var(--shadow);
+			color: var(--color_success);
+			border: 2px solid var(--color_success);
+		}
+
+		.success .react-flow__handle {
+			background: var(--color_success);
+		}
+
+		// Warning
+		.warning {
+			font-size: 12px;
+			font-weight: 500;
+			border-radius: var(--radius);
+			background-color: var(--color_warning);
+			color: var(--color_bg_menu);
+			border: 2px solid var(--color_warning);
+		}
+
+		.warning:hover {
+			opacity: 0.9;
+		}
+
+		.warning.selected {
+			background-color: var(--color_bg_menu);
+			border: 1px solid var(--color_warning);
+			box-shadow: var(--shadow);
+			color: var(--color_warning);
+			border: 2px solid var(--color_warning);
+		}
+
+		.warning .react-flow__handle {
+			background: var(--color_warning);
+		}
+
+		.react-flow__node-default.selectable.selected,
+		.react-flow__node-default.selectable:focus,
+		.react-flow__node-default.selectable:focus-visible,
+		.react-flow__node-input.selectable.selected,
+		.react-flow__node-input.selectable:focus,
+		.react-flow__node-input.selectable:focus-visible,
+		.react-flow__node-output.selectable.selected,
+		.react-flow__node-output.selectable:focus,
+		.react-flow__node-output.selectable:focus-visible,
+		.react-flow__node-group.selectable.selected,
+		.react-flow__node-group.selectable:focus,
+		.react-flow__node-group.selectable:focus-visible {
+			box-shadow: none;
+		}
+
+		@media screen and (min-width: 768px) {
+			.providerflow {
+				flex-direction: row;
+			}
+
+			.providerflow aside {
+				width: 20%;
+				max-width: 250px;
+				height: 200px;
+			}
+		}
+	}
+}
