@@ -8,16 +8,19 @@ import ReactFlow, {
 	Background,
 	Controls,
 	Edge,
+	MarkerType,
 	ReactFlowProvider,
 	Viewport,
 	addEdge,
 	useEdgesState,
 	useNodesState,
-	useReactFlow
+	useReactFlow,
+	useStore
 } from 'reactflow'
 import { useCallback, useRef } from 'react'
 
 import 'reactflow/dist/style.css'
+import { right } from '@antv/x6/lib/registry/port-layout/line'
 
 interface IProps {
 	name?: string
@@ -35,12 +38,11 @@ const Flow = (props: IProps) => {
 			className: 'default',
 			data: {
 				label: (
-					<div
-						className='flex items_center'
-						style={{ paddingLeft: 12, paddingRight: 12, height: '100%', alignItems: 'center' }}
-					>
+					<div className='flex align_center'>
 						<Icon name='material-psychology' style={{ marginRight: 4 }} size={16} />
-						<div style={{ textAlign: 'left' }}>{`${props.name} Node 1`}</div>
+						<div
+							style={{ textAlign: 'left' }}
+						>{`发送 HTTP 请求到微博请求到微博请求到微博请求到微博请求到微博请`}</div>
 					</div>
 				)
 			},
@@ -50,6 +52,37 @@ const Flow = (props: IProps) => {
 
 	let id = 2
 	const getId = () => `${id++}`
+
+	const getEdgeStyle = (theme: string) => {
+		let color = 'var(--color_title)'
+		switch (theme) {
+			case 'primary':
+				color = 'var(--color_main)'
+				break
+			case 'success':
+				color = 'var(--color_success)'
+				break
+			case 'warning':
+				color = 'var(--color_warning)'
+				break
+			case 'danger':
+				color = 'var(--color_danger)'
+				break
+		}
+
+		console.log('color:', color)
+		return {
+			style: {
+				strokeWidth: 2,
+				stroke: color
+			},
+			markerEnd: {
+				type: MarkerType.ArrowClosed,
+				width: 12,
+				color: color
+			}
+		}
+	}
 
 	const initialEdges: any[] = []
 	const reactFlowWrapper = useRef(null)
@@ -62,7 +95,7 @@ const Flow = (props: IProps) => {
 	const onConnect = useCallback((params: any) => {
 		// reset the start node on connections
 		connectingNodeId.current = null
-		setEdges((eds) => addEdge(params, eds))
+		setEdges((eds) => addEdge({ ...params, ...getEdgeStyle('default') }, eds))
 	}, [])
 
 	const onConnectStart = useCallback((_: any, { nodeId }: any) => {
@@ -87,15 +120,7 @@ const Flow = (props: IProps) => {
 					targetPosition: 'left',
 					data: {
 						label: (
-							<div
-								className='flex items_center'
-								style={{
-									paddingLeft: 12,
-									paddingRight: 12,
-									height: '100%',
-									alignItems: 'center'
-								}}
-							>
+							<div className='flex align_center'>
 								<Icon name='material-psychology' style={{ marginRight: 4 }} size={16} />
 								<div style={{ textAlign: 'left' }}>{`${props.name} Node ${id}`}</div>
 							</div>
@@ -106,8 +131,12 @@ const Flow = (props: IProps) => {
 
 				setNodes((nds) => nds.concat(newNode))
 				setEdges((eds: any[]) => {
-					console.log({ id, source: connectingNodeId.current, target: id })
-					return eds.concat({ id, source: connectingNodeId.current, target: id })
+					return eds.concat({
+						id,
+						source: connectingNodeId.current,
+						target: id,
+						...getEdgeStyle('primary')
+					})
 				})
 			}
 		},

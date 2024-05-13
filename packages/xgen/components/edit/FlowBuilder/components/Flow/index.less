@@ -48,52 +48,59 @@
 		}
 
 		.react-flow__node {
-			// background-color: var(--color_bg);
-			// border: 1px solid var(--color_border_soft);
 			border: none;
 			border-radius: var(--radius);
-			// box-shadow: none;
-			// font-weight: 400;
 			color: var(--color_text);
 			padding: 0;
 			margin: 0;
-			height: 42px;
+			height: auto;
+			padding: 8px 16px;
 			background: transparent;
+			width: auto;
+			max-width: 260px;
+			word-break: break-all;
 		}
 
 		.react-flow__handle {
-			min-width: 10px;
-			min-height: 16px;
-			width: 10px;
-			height: 16px;
+			min-width: 16px;
+			min-height: 24px;
+			width: 16px;
+			height: 24px;
 			background: var(--color_placeholder);
 			border: 1px solid var(--color_bg_nav);
 			border-radius: 4px;
 		}
 
 		.react-flow__handle:hover {
-			min-width: 10px;
-			min-height: 16px;
-			width: 14px;
-			height: 20px;
+			min-width: 24px;
+			min-height: 32px;
+			width: 24px;
+			height: 32px;
 			// 100ms ease-in-out
 			transition: width 0.1s, height 0.1s;
 		}
 
 		.react-flow__handle-right {
-			right: -6px;
-		}
-
-		.react-flow__handle-left {
-			left: -6px;
+			right: -10px;
 		}
 
 		.react-flow__handle:hover.react-flow__handle-right {
-			right: -8px;
+			right: -16px;
+		}
+
+		.react-flow__handle-left {
+			left: -10px;
 		}
 
 		.react-flow__handle:hover.react-flow__handle-left {
-			left: -8px;
+			left: -16px;
+		}
+
+		.react-flow__edge-path,
+		.react-flow__connection-path {
+			stroke: var(--color_title_grey);
+			stroke-width: 2;
+			fill: none;
 		}
 
 		// class="react-flow__panel react-flow__controls bottom left"
@@ -153,6 +160,7 @@
 
 		.default .react-flow__handle {
 			background: var(--color_title);
+			box-shadow: 0 0 0 1px var(--color_bg_nav);
 		}
 
 		// Primary
@@ -178,6 +186,7 @@
 
 		.primary .react-flow__handle {
 			background: var(--color_main);
+			box-shadow: 0 0 0 1px var(--color_bg_nav);
 		}
 
 		// Danger
