@@ -8,24 +8,30 @@ import ReactFlow, {
 	Background,
 	Controls,
 	Edge,
+	EdgeTypes,
 	MarkerType,
 	ReactFlowProvider,
 	Viewport,
 	addEdge,
+	updateEdge,
 	useEdgesState,
 	useNodesState,
 	useReactFlow,
 	useStore
 } from 'reactflow'
 import { useCallback, useRef } from 'react'
+import CustomEdge from './Edge'
 
 import 'reactflow/dist/style.css'
-import { right } from '@antv/x6/lib/registry/port-layout/line'
 
 interface IProps {
 	name?: string
 	width: number
 	height: number
+}
+
+const edgeTypes: EdgeTypes = {
+	custom: CustomEdge
 }
 
 const Flow = (props: IProps) => {
@@ -46,7 +52,7 @@ const Flow = (props: IProps) => {
 					</div>
 				)
 			},
-			position: { x: 0, y: 50 }
+			position: { x: 0, y: 0 }
 		}
 	]
 
@@ -70,7 +76,6 @@ const Flow = (props: IProps) => {
 				break
 		}
 
-		console.log('color:', color)
 		return {
 			style: {
 				strokeWidth: 2,
@@ -87,7 +92,6 @@ const Flow = (props: IProps) => {
 	const initialEdges: any[] = []
 	const reactFlowWrapper = useRef(null)
 	const connectingNodeId = useRef(null)
-
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 	const { screenToFlowPosition } = useReactFlow()
@@ -95,7 +99,9 @@ const Flow = (props: IProps) => {
 	const onConnect = useCallback((params: any) => {
 		// reset the start node on connections
 		connectingNodeId.current = null
-		setEdges((eds) => addEdge({ ...params, ...getEdgeStyle('default') }, eds))
+		setEdges((eds) =>
+			addEdge({ ...params, data: { label: '条件' }, type: 'custom', ...getEdgeStyle('default') }, eds)
+		)
 	}, [])
 
 	const onConnectStart = useCallback((_: any, { nodeId }: any) => {
@@ -134,7 +140,9 @@ const Flow = (props: IProps) => {
 					return eds.concat({
 						id,
 						source: connectingNodeId.current,
+						data: { label: '条件' },
 						target: id,
+						type: 'custom',
 						...getEdgeStyle('primary')
 					})
 				})
@@ -156,6 +164,8 @@ const Flow = (props: IProps) => {
 				fitView
 				fitViewOptions={{ maxZoom: 1 }}
 				nodeOrigin={[0.5, 0]}
+				snapToGrid
+				edgeTypes={edgeTypes}
 			>
 				<Background />
 				<Controls />

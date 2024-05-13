@@ -41,7 +41,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 		const observer = new ResizeObserver((entries) => {
 			for (let entry of entries) {
 				if (entry.target === ref.current) {
-					setWidth(ref.current.offsetWidth - 200)
+					setWidth(ref.current.offsetWidth)
 				}
 			}
 		})
@@ -56,7 +56,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	const Builder = (props: { text: string; icon?: string }) => {
 		return (
 			<div className='builder'>
-				<Sidebar types={types} height={height} />
+				{/* <Sidebar types={types} height={height} /> */}
 				<Canvas icon={props.icon} text={props.text} height={height} width={width} />
 			</div>
 		)

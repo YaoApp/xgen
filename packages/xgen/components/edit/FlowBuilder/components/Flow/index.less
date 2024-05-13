@@ -96,11 +96,17 @@
 			left: -16px;
 		}
 
+		// Edge
 		.react-flow__edge-path,
 		.react-flow__connection-path {
 			stroke: var(--color_title_grey);
 			stroke-width: 2;
 			fill: none;
+		}
+
+		.selected .react-flow__edge-path,
+		.selected .react-flow__connection-path {
+			stroke-width: 3 !important;
 		}
 
 		// class="react-flow__panel react-flow__controls bottom left"
