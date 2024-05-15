@@ -32,16 +32,23 @@ interface IProps extends Component.PropsEditComponent, IFlowBuilderProps {}
 
 const FlowBuilder = window.$app.memo((props: IProps) => {
 	const ref = useRef<HTMLDivElement>(null)
+	const [showSidebar, setShowSidebar] = useState<boolean>(true)
 	const [loading, setLoading] = useState<boolean>(false)
+
+	// Toggle the sidebar
+	const toggleSidebar = () => {
+		setShowSidebar(!showSidebar)
+	}
 
 	// Set the width of the grid layout
 	const [width, setWidth] = useState(0)
 	const [height, setHeight] = useState(props.height && props.height >= 300 ? props.height : 300)
 	useEffect(() => {
+		const offsetWidth = showSidebar ? 200 : 0
 		const observer = new ResizeObserver((entries) => {
 			for (let entry of entries) {
 				if (entry.target === ref.current) {
-					setWidth(ref.current.offsetWidth)
+					setWidth(ref.current.offsetWidth - offsetWidth)
 				}
 			}
 		})
@@ -51,13 +58,20 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 		return () => {
 			observer.disconnect()
 		}
-	}, [])
+	}, [showSidebar])
 
 	const Builder = (props: { text: string; icon?: string }) => {
 		return (
 			<div className='builder'>
-				{/* <Sidebar types={types} height={height} /> */}
-				<Canvas icon={props.icon} text={props.text} height={height} width={width} />
+				<Sidebar types={types} height={height} visible={showSidebar} />
+				<Canvas
+					toggleSidebar={toggleSidebar}
+					showSidebar={showSidebar}
+					icon={props.icon}
+					text={props.text}
+					height={height}
+					width={width}
+				/>
 			</div>
 		)
 	}
@@ -140,8 +154,6 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 
 const Index = (props: IProps) => {
 	const { __bind, __name, itemProps, ai, ...rest_props } = props
-	console.log('FlowBuilder', ai)
-
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
 			<FlowBuilder {...rest_props} {...{ __bind, __name }}></FlowBuilder>

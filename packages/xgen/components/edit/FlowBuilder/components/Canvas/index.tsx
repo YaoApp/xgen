@@ -2,12 +2,15 @@ import Preset from '@/components/edit/FormBuilder/components/Preset'
 import { Icon } from '@/widgets'
 import { Button } from 'antd'
 import Flow from '../Flow'
+import { useState } from 'react'
 
 interface IProps {
 	text: string
 	icon?: string
 	width: number
 	height: number
+	showSidebar: boolean
+	toggleSidebar: () => void
 }
 
 const Index = (props: IProps) => {
@@ -15,6 +18,12 @@ const Index = (props: IProps) => {
 		<div style={{ width: props.width }}>
 			<div className='head'>
 				<div className='title'>
+					<a onClick={props.toggleSidebar} style={{ marginRight: 6 }} className='flex align_center'>
+						<Icon
+							name={props.showSidebar ? 'material-first_page' : 'material-last_page'}
+							size={18}
+						/>
+					</a>
 					<Icon name={props.icon || ''} size={14} style={{ marginRight: 4 }} />
 					{props.text}
 				</div>

@@ -23,6 +23,7 @@ import { useCallback, useRef } from 'react'
 import CustomEdge from './Edge'
 
 import 'reactflow/dist/style.css'
+import CustomNode from './Node'
 
 interface IProps {
 	name?: string
@@ -34,23 +35,22 @@ const edgeTypes: EdgeTypes = {
 	custom: CustomEdge
 }
 
+const nodeTypes = {
+	custom: CustomNode
+}
+
 const Flow = (props: IProps) => {
 	const initialNodes: any[] = [
 		{
 			id: '1',
-			type: 'input',
+			type: 'custom',
 			sourcePosition: 'right',
 			targetPosition: 'left',
 			className: 'default',
 			data: {
-				label: (
-					<div className='flex align_center'>
-						<Icon name='material-psychology' style={{ marginRight: 4 }} size={16} />
-						<div
-							style={{ textAlign: 'left' }}
-						>{`发送 HTTP 请求到微博请求到微博请求到微博请求到微博请求到微博请`}</div>
-					</div>
-				)
+				showTargetHandle: false,
+				description: `这是根节点, 可以添加你的节点，对接后台数据`,
+				icon: { name: 'material-business', size: 16 }
 			},
 			position: { x: 0, y: 0 }
 		}
@@ -97,10 +97,9 @@ const Flow = (props: IProps) => {
 	const { screenToFlowPosition } = useReactFlow()
 
 	const onConnect = useCallback((params: any) => {
-		// reset the start node on connections
 		connectingNodeId.current = null
 		setEdges((eds) =>
-			addEdge({ ...params, data: { label: '条件' }, type: 'custom', ...getEdgeStyle('default') }, eds)
+			addEdge({ ...params, data: { label: '<条件>' }, type: 'custom', ...getEdgeStyle('default') }, eds)
 		)
 	}, [])
 
@@ -117,6 +116,7 @@ const Flow = (props: IProps) => {
 				const id = getId()
 				const newNode: any = {
 					id,
+					type: 'custom',
 					position: screenToFlowPosition({
 						x: event.clientX,
 						y: event.clientY
@@ -125,12 +125,8 @@ const Flow = (props: IProps) => {
 					sourcePosition: 'right',
 					targetPosition: 'left',
 					data: {
-						label: (
-							<div className='flex align_center'>
-								<Icon name='material-psychology' style={{ marginRight: 4 }} size={16} />
-								<div style={{ textAlign: 'left' }}>{`${props.name} Node ${id}`}</div>
-							</div>
-						)
+						description: `${props.name} Node ${id}`,
+						icon: 'material-psychology'
 					},
 					origin: [0.5, 0.0]
 				}
@@ -140,7 +136,7 @@ const Flow = (props: IProps) => {
 					return eds.concat({
 						id,
 						source: connectingNodeId.current,
-						data: { label: '条件' },
+						data: { label: '<条件>' },
 						target: id,
 						type: 'custom',
 						...getEdgeStyle('primary')
@@ -166,8 +162,9 @@ const Flow = (props: IProps) => {
 				nodeOrigin={[0.5, 0]}
 				snapToGrid
 				edgeTypes={edgeTypes}
+				nodeTypes={nodeTypes}
 			>
-				<Background />
+				<Background gap={[14, 14]} />
 				<Controls />
 			</ReactFlow>
 		</div>

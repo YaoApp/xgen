@@ -1,0 +1,39 @@
+._label {
+	:global {
+		.description {
+			max-height: 22px;
+			font-size: 14px;
+			line-height: 22px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+}
+
+._toolbar {
+	:global {
+		display: flex;
+		.item {
+			display: flex;
+			background: var(--color_bg);
+			align-items: center;
+			justify-content: center;
+			width: 24px;
+			height: 24px;
+			border-radius: var(--radius);
+			margin-right: 4px;
+			cursor: pointer;
+			color: var(--color_page_title);
+		}
+
+		.item:hover {
+			color: var(--color_main);
+			background: var(--color_bg_menu);
+		}
+
+		.item:last-child {
+			margin-right: 0;
+		}
+	}
+}

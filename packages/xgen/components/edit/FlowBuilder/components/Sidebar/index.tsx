@@ -4,11 +4,13 @@ import { Type } from '../../types'
 interface IProps {
 	types?: Type[]
 	height?: number
+	visible?: boolean
 }
 
 const Index = (props: IProps) => {
+	const className = 'sidebar' + (!props.visible ? ' collapsed' : '')
 	return (
-		<div className='sidebar'>
+		<div className={className}>
 			<div className='content' style={{ maxHeight: props.height, minHeight: props.height }}>
 				{props.types?.map((type, index) => (
 					<div
