@@ -28,6 +28,9 @@ const Index = (props: IProps) => {
 					{props.text}
 				</div>
 				<div className='actions'>
+					<a style={{ marginRight: 12, marginTop: 2 }}>
+						<Icon name='icon-play' size={14} />
+					</a>
 					<a style={{ marginRight: 6, marginTop: 2 }}>
 						<Icon name='icon-settings' size={14} />
 					</a>

@@ -24,7 +24,8 @@ const Index = (props: IProps) => {
 					>
 						<Icon
 							size={14}
-							name={type.icon ? type.icon : 'material-format_align_left'}
+							name={type.icon ? type.icon : 'material-trip_origin'}
+							color={type.color}
 							className='mr_6'
 						/>
 						{type.label ? type.label : type.name}

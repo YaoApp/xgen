@@ -37,3 +37,27 @@
 		}
 	}
 }
+
+._error {
+	:global {
+		position: absolute;
+		left: 0;
+		top: 82px;
+		height: auto;
+		display: flex;
+		justify-content: start;
+		align-items: start;
+		padding: 12px 12px;
+		border-radius: var(--radius);
+		background: var(--color_danger);
+		width: 100%;
+		color: var(--color_bg_nav);
+		font-size: 14px;
+		.icon {
+			padding-top: 4px;
+		}
+		.message {
+			margin-left: 8px;
+		}
+	}
+}

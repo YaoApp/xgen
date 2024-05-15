@@ -5,6 +5,7 @@
  * material icons https://fonts.google.com/icons?icon.set=Material+Icons  *-outline *-filled
  */
 
+import { Color } from '@/utils'
 import clsx from 'clsx'
 import { useMemo } from 'react'
 
@@ -32,7 +33,7 @@ const Index = (props: IProps) => {
 	const style: React.CSSProperties = useMemo(() => {
 		return {
 			fontSize: size + 'px',
-			color
+			color: color != '' ? Color(color) : ''
 		}
 	}, [size, color])
 

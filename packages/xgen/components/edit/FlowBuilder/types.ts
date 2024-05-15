@@ -2,6 +2,7 @@ export type Type = {
 	name: string
 	label?: string
 	icon?: string
+	color?: string
 	props?: TypeProp[]
 }
 

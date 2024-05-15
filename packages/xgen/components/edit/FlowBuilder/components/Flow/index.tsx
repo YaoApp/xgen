@@ -50,7 +50,7 @@ const Flow = (props: IProps) => {
 			data: {
 				showTargetHandle: false,
 				description: `这是根节点, 可以添加你的节点，对接后台数据`,
-				icon: { name: 'material-business', size: 16 }
+				icon: { name: 'material-flag', size: 16 }
 			},
 			position: { x: 0, y: 0 }
 		}
@@ -121,12 +121,14 @@ const Flow = (props: IProps) => {
 						x: event.clientX,
 						y: event.clientY
 					}),
-					className: 'primary',
+					className: id == '2' ? 'primary' : 'default',
 					sourcePosition: 'right',
 					targetPosition: 'left',
 					data: {
+						color: id == '2' ? 'primary' : '#FF6600',
+						error: id != '2' ? '出错啦！ 请检查 ...' : undefined,
 						description: `${props.name} Node ${id}`,
-						icon: 'material-psychology'
+						icon: id == '2' ? 'material-psychology' : ''
 					},
 					origin: [0.5, 0.0]
 				}

@@ -103,23 +103,23 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 		},
 		{
 			name: 'save',
-			label: '保存表单数据',
-			icon: 'material-cloud_download'
+			label: '保存表单数据'
 		},
 		{
 			name: 'goto',
 			label: '页面跳转到',
-			icon: 'material-link'
+			icon: 'material-link',
+			color: 'primary'
 		},
 		{
 			name: 'http',
 			label: '发送 HTTP 请求',
-			icon: 'material-http'
+			color: 'success'
 		},
 		{
 			name: 'sms',
 			label: '发送短信给',
-			icon: 'material-outgoing_mail'
+			color: '#FF6600'
 		}
 	]
 

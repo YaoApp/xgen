@@ -5,11 +5,14 @@ import styles from './index.less'
 import { Icon } from '@/widgets'
 
 const CustomNode: FC<NodeProps> = ({ data }) => {
+	// Default values
 	data.showSourceHandle = data.showSourceHandle === undefined ? true : data.showSourceHandle
 	data.showTargetHandle = data.showTargetHandle === undefined ? true : data.showTargetHandle
 	data.toolbarVisible = data.toolbarVisible === undefined ? true : data.toolbarVisible
 	data.toolbarPosition = data.toolbarPosition === undefined ? Position.Bottom : data.toolbarPosition
 	data.toolbarAlign = data.toolbarAlign === undefined ? 'end' : data.toolbarAlign
+	data.icon = data.icon || { name: 'material-trip_origin', size: 16, color: data.color }
+
 	return (
 		<>
 			<NodeToolbar
@@ -31,11 +34,22 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
 					<Icon name='material-add' size={16} />
 				</a>
 			</NodeToolbar>
+
+			{data.error && (
+				<div className={clsx(styles._error)}>
+					<div className='icon'>
+						<Icon name='material-cancel' size={16} />
+					</div>
+					<div className='message'>{data.error}</div>
+				</div>
+			)}
+
 			<div className={clsx([styles._label, 'flex align_center label'])}>
 				{data.icon && (
 					<Icon
 						name={data.icon?.name ? data.icon?.name : data.icon}
 						style={{ marginRight: 4 }}
+						color={data.icon?.color ? data.icon?.color : 'inherit'}
 						size={data.icon?.size ? data.icon?.size : 16}
 					/>
 				)}
