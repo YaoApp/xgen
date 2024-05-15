@@ -48,6 +48,8 @@ const Flow = (props: IProps) => {
 			targetPosition: 'left',
 			className: 'default',
 			data: {
+				type: '保存表单数据',
+				running: true,
 				showTargetHandle: false,
 				description: `这是根节点, 可以添加你的节点，对接后台数据`,
 				icon: { name: 'material-flag', size: 16 }
@@ -126,6 +128,8 @@ const Flow = (props: IProps) => {
 					targetPosition: 'left',
 					data: {
 						color: id == '2' ? 'primary' : '#FF6600',
+						running: id == '2' ? true : false,
+						type: 'AI 提取数据',
 						error: id != '2' ? '出错啦！ 请检查 ...' : undefined,
 						description: `${props.name} Node ${id}`,
 						icon: id == '2' ? 'material-psychology' : ''

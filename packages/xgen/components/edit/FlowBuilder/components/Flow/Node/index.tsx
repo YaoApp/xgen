@@ -3,6 +3,9 @@ import { FC } from 'react'
 import { NodeProps, Handle, Position, NodeToolbar } from 'reactflow'
 import styles from './index.less'
 import { Icon } from '@/widgets'
+import { Color } from '@/utils'
+import { Spin } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
 
 const CustomNode: FC<NodeProps> = ({ data }) => {
 	// Default values
@@ -11,7 +14,8 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
 	data.toolbarVisible = data.toolbarVisible === undefined ? true : data.toolbarVisible
 	data.toolbarPosition = data.toolbarPosition === undefined ? Position.Bottom : data.toolbarPosition
 	data.toolbarAlign = data.toolbarAlign === undefined ? 'end' : data.toolbarAlign
-	data.icon = data.icon || { name: 'material-trip_origin', size: 16, color: data.color }
+	const color = data.color && data.color != '' ? Color(data.color) : Color('text')
+	data.icon = data.icon || { name: 'material-trip_origin', size: 16 }
 
 	return (
 		<>
@@ -43,14 +47,34 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
 					<div className='message'>{data.error}</div>
 				</div>
 			)}
-
-			<div className={clsx([styles._label, 'flex align_center label'])}>
+			<div className={clsx([styles._type])}>
 				{data.icon && (
 					<Icon
 						name={data.icon?.name ? data.icon?.name : data.icon}
 						style={{ marginRight: 4 }}
-						color={data.icon?.color ? data.icon?.color : 'inherit'}
+						color={color}
 						size={data.icon?.size ? data.icon?.size : 16}
+					/>
+				)}
+				<div style={{ color: color }}>{data.type}</div>
+			</div>
+
+			<div className={clsx([styles._label, 'flex align_center label'])}>
+				{data.icon && data.running !== true && (
+					<Icon
+						name={data.icon?.name ? data.icon?.name : data.icon}
+						style={{ marginRight: 4 }}
+						size={data.icon?.size ? data.icon?.size : 16}
+					/>
+				)}
+				{data.running === true && (
+					<Spin
+						size='small'
+						style={{ marginRight: 4 }}
+						spinning={true}
+						indicator={
+							<LoadingOutlined className='running-icon' style={{ fontSize: 16 }} spin />
+						}
 					/>
 				)}
 				<div className='description' style={{ textAlign: 'left' }}>
