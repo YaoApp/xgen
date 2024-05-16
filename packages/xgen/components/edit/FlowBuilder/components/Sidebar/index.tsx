@@ -19,9 +19,7 @@ const Index = (props: IProps) => {
 						className='item'
 						draggable={true}
 						unselectable='on'
-						onDragStart={(e) =>
-							e.dataTransfer.setData('text/plain', JSON.stringify({ type: type.name }))
-						}
+						onDragStart={(e) => e.dataTransfer.setData('application/reactflow', type.name)}
 					>
 						<Icon
 							size={IconSize(type.icon, 14)}

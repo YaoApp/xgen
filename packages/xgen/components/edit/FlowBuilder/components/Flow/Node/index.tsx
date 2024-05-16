@@ -6,16 +6,42 @@ import { Icon } from '@/widgets'
 import { Color } from '@/utils'
 import { Spin } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
+import { getLocale } from '@umijs/max'
+import { useGlobal } from '@/context/app'
 
 const CustomNode: FC<NodeProps> = ({ data }) => {
+	const global = useGlobal()
+	const is_cn = getLocale() === 'zh-CN'
+	const events = data.events || {}
+
 	// Default values
 	data.showSourceHandle = data.showSourceHandle === undefined ? true : data.showSourceHandle
 	data.showTargetHandle = data.showTargetHandle === undefined ? true : data.showTargetHandle
 	data.toolbarVisible = data.toolbarVisible === undefined ? true : data.toolbarVisible
 	data.toolbarPosition = data.toolbarPosition === undefined ? Position.Bottom : data.toolbarPosition
 	data.toolbarAlign = data.toolbarAlign === undefined ? 'end' : data.toolbarAlign
-	const color = data.color && data.color != '' ? Color(data.color) : Color('text')
+	const color = data.color && data.color != '' ? Color(data.color, global.theme) : Color('text', global.theme)
 	data.icon = data.icon || { name: 'material-trip_origin', size: 16 }
+
+	const onSetting = (event: any) => {
+		event.stopPropagation()
+		events.onSetting && events.onSetting(data.id)
+	}
+
+	const onDelete = (event: any) => {
+		event.stopPropagation()
+		events.onDelete && events.onDelete(data.id)
+	}
+
+	const onDuplicate = (event: any) => {
+		event.stopPropagation()
+		events.onDuplicate && events.onDuplicate(data.id)
+	}
+
+	const onAdd = (event: any) => {
+		event.stopPropagation()
+		events.onAdd && events.onAdd(data.id)
+	}
 
 	return (
 		<>
@@ -25,16 +51,16 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
 				position={data.toolbarPosition}
 				align={data.toolbarAlign}
 			>
-				<a className='item'>
+				<a className='item' onClick={onDuplicate}>
 					<Icon name='material-content_copy' size={16} />
 				</a>
-				<a className='item'>
+				<a className='item' onClick={onSetting}>
 					<Icon name='material-settings' size={16} />
 				</a>
-				<a className='item' style={{ marginRight: 16 }}>
+				<a className='item' style={{ marginRight: 16 }} onClick={onDelete}>
 					<Icon name='material-delete' size={16} />
 				</a>
-				<a className='item'>
+				<a className='item' onClick={onAdd}>
 					<Icon name='material-add' size={16} />
 				</a>
 			</NodeToolbar>
@@ -56,7 +82,7 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
 						size={data.icon?.size ? data.icon?.size : 16}
 					/>
 				)}
-				<div style={{ color: color }}>{data.type}</div>
+				<div style={{ color: color }}>{data.typeLabel || data.type}</div>
 			</div>
 
 			<div className={clsx([styles._label, 'flex align_center label'])}>

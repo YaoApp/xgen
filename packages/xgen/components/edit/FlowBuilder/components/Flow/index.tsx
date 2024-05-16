@@ -10,6 +10,7 @@ import ReactFlow, {
 	Edge,
 	EdgeTypes,
 	MarkerType,
+	ReactFlowInstance,
 	ReactFlowProvider,
 	Viewport,
 	addEdge,
@@ -19,16 +20,21 @@ import ReactFlow, {
 	useReactFlow,
 	useStore
 } from 'reactflow'
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import CustomEdge from './Edge'
 
 import 'reactflow/dist/style.css'
 import CustomNode from './Node'
+import { FlowValue, Setting } from '../../types'
+import { CreateNode, ID, Nodes } from './utils'
+import { getLocale } from '@umijs/max'
 
 interface IProps {
 	name?: string
 	width: number
 	height: number
+	setting?: Setting
+	value?: FlowValue
 }
 
 const edgeTypes: EdgeTypes = {
@@ -40,27 +46,10 @@ const nodeTypes = {
 }
 
 const Flow = (props: IProps) => {
-	const initialNodes: any[] = [
-		{
-			id: '1',
-			type: 'custom',
-			sourcePosition: 'right',
-			targetPosition: 'left',
-			className: 'default',
-			data: {
-				type: '保存表单数据',
-				running: true,
-				showTargetHandle: false,
-				description: `这是根节点, 可以添加你的节点，对接后台数据`,
-				icon: { name: 'material-flag', size: 16 }
-			},
-			position: { x: 0, y: 0 }
-		}
-	]
+	const is_cn = getLocale() === 'zh-CN'
 
 	let id = 2
 	const getId = () => `${id++}`
-
 	const getEdgeStyle = (theme: string) => {
 		let color = 'var(--color_title)'
 		switch (theme) {
@@ -90,13 +79,87 @@ const Flow = (props: IProps) => {
 			}
 		}
 	}
-
 	const initialEdges: any[] = []
+
+	const onDelete = useCallback((id: string) => {
+		setNodes((nds) => nds.filter((node) => node.id !== id))
+	}, [])
+
+	const onAdd = useCallback((id: string) => {
+		console.log('add', id)
+	}, [])
+
+	const onSetting = useCallback((id: string) => {
+		console.log('setting', id)
+	}, [])
+
+	const onDuplicate = useCallback((id: string) => {
+		setNodes((nds: any) => {
+			const node = nds.find((n: any) => n.id === id)
+			if (!node) {
+				console.error(`[FlowBuilder] Node ${id} not found`)
+				return
+			}
+			const data = node?.data || {}
+			const position = { x: (node?.position?.x || 0) + 400, y: node?.position?.y || 0 }
+			const newID = ID()
+			const newNode = {
+				...node,
+				id: newID,
+				data: {
+					...node,
+					...data,
+					id: newID,
+					description: `[${is_cn ? '复本' : 'Copy'}] ${data.description}`
+				},
+				position: position
+			}
+			return nds.concat(newNode as any)
+		})
+	}, [])
+
+	const itemEvents = {
+		onSetting,
+		onDelete,
+		onDuplicate,
+		onAdd
+	}
+
+	const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null)
 	const reactFlowWrapper = useRef(null)
 	const connectingNodeId = useRef(null)
-	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
+	const [nodes, setNodes, onNodesChange] = useNodesState(Nodes(props.value, props.setting, itemEvents))
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 	const { screenToFlowPosition } = useReactFlow()
+
+	const onDrop = useCallback(
+		(event: any) => {
+			event.preventDefault()
+			const type = event.dataTransfer.getData('application/reactflow')
+			const position = reactFlowInstance?.screenToFlowPosition({
+				x: event.clientX,
+				y: event.clientY
+			})
+			if (!position) return
+
+			const description = is_cn ? '<未命名>' : '<Unnamed>'
+			const newNode = CreateNode(
+				type,
+				description,
+				{ x: position?.x, y: position?.y },
+				props.setting,
+				itemEvents
+			)
+			if (!newNode) return
+			setNodes((nds) => nds.concat(newNode as any))
+		},
+		[reactFlowInstance]
+	)
+
+	const onDragOver = useCallback((event: any) => {
+		event.preventDefault()
+		event.dataTransfer.dropEffect = 'move'
+	}, [])
 
 	const onConnect = useCallback((params: any) => {
 		connectingNodeId.current = null
@@ -158,8 +221,11 @@ const Flow = (props: IProps) => {
 			<ReactFlow
 				nodes={nodes}
 				edges={edges}
+				onInit={setReactFlowInstance}
 				onNodesChange={onNodesChange}
 				onEdgesChange={onEdgesChange}
+				onDrop={onDrop}
+				onDragOver={onDragOver}
 				onConnect={onConnect}
 				onConnectStart={onConnectStart}
 				onConnectEnd={onConnectEnd}

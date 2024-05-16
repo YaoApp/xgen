@@ -3,20 +3,26 @@ import { Icon } from '@/widgets'
 import { Button } from 'antd'
 import Flow from '../Flow'
 import { useState } from 'react'
-import { IconT } from '../../types'
+import { FlowValue, IconT, Setting } from '../../types'
 import { IconName, IconSize } from '../../utils'
+import { getLocale } from '@umijs/max'
 
 interface IProps {
-	label: string
-	name?: string
-	icon?: IconT
 	width: number
 	height: number
+	value?: FlowValue
 	showSidebar: boolean
+	setting?: Setting
 	toggleSidebar: () => void
 }
 
 const Index = (props: IProps) => {
+	if (props.width === 0) return null
+	if (!props.setting) return null
+
+	const is_cn = getLocale() === 'zh-CN'
+	const defaultLabel = is_cn ? '未命名' : 'Untitled'
+
 	return (
 		<div style={{ width: props.width }}>
 			<div className='head'>
@@ -28,11 +34,11 @@ const Index = (props: IProps) => {
 						/>
 					</a>
 					<Icon
-						name={IconName(props.icon)}
-						size={IconSize(props.icon)}
+						name={IconName(props.value?.icon)}
+						size={IconSize(props.value?.icon)}
 						style={{ marginRight: 4 }}
 					/>
-					{props.label || props.name || 'Untitled'}
+					{props.value?.label || props.value?.name || defaultLabel}
 				</div>
 				<div className='actions'>
 					<a style={{ marginRight: 12, marginTop: 2 }}>
@@ -44,7 +50,7 @@ const Index = (props: IProps) => {
 					<Preset />
 				</div>
 			</div>
-			<Flow width={props.width} height={props.height} name={props.name} />
+			<Flow width={props.width} height={props.height} setting={props.setting} value={props.value} />
 		</div>
 	)
 }
