@@ -60,7 +60,7 @@ export default (props: HookProps) => {
 			setIgnoreScrollEvent(true)
 		}
 
-		wrapperRef.current?.addEventListener('wheel', handleWheel, { passive: false })
+		wrapperRef.current?.addEventListener('wheel', handleWheel, { passive: true }) // ?
 
 		return () => wrapperRef.current?.removeEventListener('wheel', handleWheel)
 	}, [wrapperRef, scrollX, scrollY, ganttHeight, svgWidth, rtl, ganttFullHeight])
