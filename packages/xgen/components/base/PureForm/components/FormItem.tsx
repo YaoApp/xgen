@@ -14,7 +14,7 @@ import type { IPropsFormItem } from '../types'
 
 const { TextArea } = Input
 
-const aiExclude: Record<string, boolean> = { FlowBuilder: true }
+const aiExclude: Record<string, boolean> = {} // AI mapping that does not need to be displayed
 
 const Index = (props: IPropsFormItem) => {
 	const { namespace, primary, type, item } = props

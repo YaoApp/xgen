@@ -1,14 +1,6 @@
-import { useGlobal } from '@/context/app'
 import colors from '@/styles/preset/vars'
 
-export const Color = (color: string, theme: 'dark' | 'light' | undefined = undefined): string => {
-	const global = useGlobal()
-	theme = theme ? theme : global.theme
-	if (!theme) {
-		const global = useGlobal()
-		theme = global.theme
-	}
-
+export const Color = (color: string, theme: 'dark' | 'light'): string => {
 	const presetColors: Record<string, string> = {
 		primary: theme === 'dark' ? colors.dark.color_main : colors.light.color_main,
 		warning: theme === 'dark' ? colors.dark.color_warning : colors.light.color_warning,

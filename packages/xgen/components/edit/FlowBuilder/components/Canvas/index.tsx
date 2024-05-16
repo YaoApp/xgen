@@ -3,10 +3,13 @@ import { Icon } from '@/widgets'
 import { Button } from 'antd'
 import Flow from '../Flow'
 import { useState } from 'react'
+import { IconT } from '../../types'
+import { IconName, IconSize } from '../../utils'
 
 interface IProps {
-	text: string
-	icon?: string
+	label: string
+	name?: string
+	icon?: IconT
 	width: number
 	height: number
 	showSidebar: boolean
@@ -24,8 +27,12 @@ const Index = (props: IProps) => {
 							size={18}
 						/>
 					</a>
-					<Icon name={props.icon || ''} size={14} style={{ marginRight: 4 }} />
-					{props.text}
+					<Icon
+						name={IconName(props.icon)}
+						size={IconSize(props.icon)}
+						style={{ marginRight: 4 }}
+					/>
+					{props.label || props.name || 'Untitled'}
 				</div>
 				<div className='actions'>
 					<a style={{ marginRight: 12, marginTop: 2 }}>
@@ -37,7 +44,7 @@ const Index = (props: IProps) => {
 					<Preset />
 				</div>
 			</div>
-			<Flow width={props.width} height={props.height} name={props.text} />
+			<Flow width={props.width} height={props.height} name={props.name} />
 		</div>
 	)
 }

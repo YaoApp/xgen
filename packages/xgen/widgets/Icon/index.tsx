@@ -5,6 +5,7 @@
  * material icons https://fonts.google.com/icons?icon.set=Material+Icons  *-outline *-filled
  */
 
+import { useGlobal } from '@/context/app'
 import { Color } from '@/utils'
 import clsx from 'clsx'
 import { useMemo } from 'react'
@@ -27,13 +28,13 @@ interface IProps {
 
 const Index = (props: IProps) => {
 	const { className = '', name = '', size = '24', color = '', onClick } = props
-
+	const global = useGlobal()
 	if (!name) return null
 
 	const style: React.CSSProperties = useMemo(() => {
 		return {
 			fontSize: size + 'px',
-			color: color != '' ? Color(color) : ''
+			color: color != '' ? Color(color, global.theme) : ''
 		}
 	}, [size, color])
 

@@ -1,5 +1,6 @@
 import { Icon } from '@/widgets'
 import { Type } from '../../types'
+import { IconName, IconSize } from '../../utils'
 
 interface IProps {
 	types?: Type[]
@@ -23,8 +24,8 @@ const Index = (props: IProps) => {
 						}
 					>
 						<Icon
-							size={14}
-							name={type.icon ? type.icon : 'material-trip_origin'}
+							size={IconSize(type.icon, 14)}
+							name={IconName(type.icon)}
 							color={type.color}
 							className='mr_6'
 						/>
