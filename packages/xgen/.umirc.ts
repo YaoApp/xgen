@@ -3,7 +3,7 @@ import { defineConfig } from '@umijs/max'
 import { base, chainWebpack, conventionRoutes, links, metas, proxy, srcTranspilerOptions } from './build/config'
 
 export default defineConfig({
-	mfsu: { esbuild: false, strategy: 'eager', exclude: ['monaco-editor-webpack-plugin'] },
+	mfsu: { esbuild: false, strategy: 'eager', exclude: [] },
 	srcTranspiler: 'swc',
 	srcTranspilerOptions,
 	jsMinifier: 'swc',

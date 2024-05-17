@@ -50,7 +50,9 @@ export const chainWebpack = (config: Config, _: any) => {
 	const reg_shadowless = /\.lsss$/
 
 	config.module.rule('asset').exclude.add(reg_shadowcss).end().exclude.add(reg_shadowless).end()
-	config.plugin('monaco-editor-webpack-plugin').use(MonacoWebpackPlugin, [{ languages: ['json', 'javascript'] }])
+	config.plugin('monaco-editor-webpack-plugin').use(MonacoWebpackPlugin, [
+		{ languages: ['json', 'javascript', 'typescript', 'yaml', 'html', 'css', 'sql', 'markdown'] }
+	])
 
 	config.module
 		.rule('shadowcss')

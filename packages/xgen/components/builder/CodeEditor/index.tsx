@@ -26,8 +26,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 	const [value, setValue] = useState<any>()
 	const ref = useRef<monaco.editor.IStandaloneCodeEditor>()
 	const global = useGlobal()
-	const { language = 'json', height = 360 } = props
-
+	const { language = 'json', height = 210 } = props
 	const theme = useMemo(() => (global.theme === 'dark' ? 'x-dark' : 'x-light'), [global.theme])
 
 	useEffect(() => {
