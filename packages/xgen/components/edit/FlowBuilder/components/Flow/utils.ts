@@ -19,6 +19,7 @@ export const Nodes = (value?: FlowValue, setting?: Setting, events?: { [key: str
 				...node,
 				icon: nodeType.icon,
 				color: nodeType.color,
+				background: className,
 				typeLabel: nodeType.label || nodeType.name,
 				events: events
 			},
@@ -48,17 +49,18 @@ export const CreateNode = (
 		props: {},
 		description: description
 	}
-
+	const className = nodeType.background || 'default'
 	return {
 		id: node.id,
 		type: 'custom',
 		sourcePosition: 'right',
 		targetPosition: 'left',
-		className: nodeType.background || 'default',
+		className: className,
 		data: {
 			...node,
 			icon: nodeType.icon,
 			color: nodeType.color,
+			background: className,
 			typeLabel: nodeType.label || nodeType.name,
 			events: events
 		},

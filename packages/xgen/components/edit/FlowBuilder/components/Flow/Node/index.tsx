@@ -8,6 +8,7 @@ import { Spin } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 import { getLocale } from '@umijs/max'
 import { useGlobal } from '@/context/app'
+import Types from '../Types'
 
 const CustomNode: FC<NodeProps> = ({ data }) => {
 	const global = useGlobal()
@@ -38,11 +39,6 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
 		events.onDuplicate && events.onDuplicate(data.id)
 	}
 
-	const onAdd = (event: any) => {
-		event.stopPropagation()
-		events.onAdd && events.onAdd(data.id)
-	}
-
 	return (
 		<>
 			<NodeToolbar
@@ -60,9 +56,12 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
 				<a className='item' style={{ marginRight: 16 }} onClick={onDelete}>
 					<Icon name='material-delete' size={16} />
 				</a>
-				<a className='item' onClick={onAdd}>
-					<Icon name='material-add' size={16} />
-				</a>
+
+				<Types
+					onAdd={(type: string) => {
+						events.onAdd && events.onAdd(data.id, type)
+					}}
+				/>
 			</NodeToolbar>
 
 			{data.error && (

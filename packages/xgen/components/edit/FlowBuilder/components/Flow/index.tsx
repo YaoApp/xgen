@@ -7,18 +7,14 @@ import clsx from 'clsx'
 import ReactFlow, {
 	Background,
 	Controls,
-	Edge,
 	EdgeTypes,
 	MarkerType,
 	ReactFlowInstance,
 	ReactFlowProvider,
-	Viewport,
 	addEdge,
-	updateEdge,
 	useEdgesState,
 	useNodesState,
-	useReactFlow,
-	useStore
+	useReactFlow
 } from 'reactflow'
 import { useCallback, useRef, useState } from 'react'
 import CustomEdge from './Edge'
@@ -28,6 +24,7 @@ import CustomNode from './Node'
 import { FlowValue, Setting } from '../../types'
 import { CreateNode, ID, Nodes } from './utils'
 import { getLocale } from '@umijs/max'
+import { FlowProvider, useFlowContext } from './Provider'
 
 interface IProps {
 	name?: string
@@ -85,12 +82,24 @@ const Flow = (props: IProps) => {
 		setNodes((nds) => nds.filter((node) => node.id !== id))
 	}, [])
 
-	const onAdd = useCallback((id: string) => {
-		console.log('add', id)
-	}, [])
-
-	const onSetting = useCallback((id: string) => {
-		console.log('setting', id)
+	const onAdd = useCallback((id: string, type: string) => {
+		setNodes((nds: any) => {
+			const node = nds.find((n: any) => n.id === id)
+			if (!node) {
+				console.error(`[FlowBuilder] Node ${id} not found`)
+				return
+			}
+			const position = { x: (node?.position?.x || 0) + 400, y: node?.position?.y || 0 }
+			const description = is_cn ? '<未命名>' : '<Unnamed>'
+			const newNode = CreateNode(
+				type,
+				description,
+				{ x: position?.x, y: position?.y },
+				props.setting,
+				itemEvents
+			)
+			return nds.concat(newNode as any)
+		})
 	}, [])
 
 	const onDuplicate = useCallback((id: string) => {
@@ -116,6 +125,10 @@ const Flow = (props: IProps) => {
 			}
 			return nds.concat(newNode as any)
 		})
+	}, [])
+
+	const onSetting = useCallback((id: string) => {
+		console.log('setting', id)
 	}, [])
 
 	const itemEvents = {
@@ -163,8 +176,22 @@ const Flow = (props: IProps) => {
 
 	const onConnect = useCallback((params: any) => {
 		connectingNodeId.current = null
+		let sourceNode: any = null
+		setNodes((nds) => {
+			sourceNode = nds.find((node) => node.id === params.source)
+			return nds
+		})
+
+		// Get the source node
+		if (!sourceNode) {
+			console.error(`[FlowBuilder] Node ${params.source} not found`)
+			return
+		}
+
+		// get source node background color
+		const background = sourceNode?.data?.background
 		setEdges((eds) =>
-			addEdge({ ...params, data: { label: '<条件>' }, type: 'custom', ...getEdgeStyle('default') }, eds)
+			addEdge({ ...params, data: { label: '<条件>' }, type: 'custom', ...getEdgeStyle(background) }, eds)
 		)
 	}, [])
 
@@ -172,63 +199,22 @@ const Flow = (props: IProps) => {
 		connectingNodeId.current = nodeId
 	}, [])
 
-	const onConnectEnd = useCallback(
-		(event: any) => {
-			if (!connectingNodeId.current) return
-			const targetIsPane = event.target.classList.contains('react-flow__pane')
-			if (targetIsPane) {
-				// we need to remove the wrapper bounds, in order to get the correct position
-				const id = getId()
-				const newNode: any = {
-					id,
-					type: 'custom',
-					position: screenToFlowPosition({
-						x: event.clientX,
-						y: event.clientY
-					}),
-					className: id == '2' ? 'primary' : 'default',
-					sourcePosition: 'right',
-					targetPosition: 'left',
-					data: {
-						color: id == '2' ? 'primary' : '#FF6600',
-						running: id == '2' ? true : false,
-						type: 'AI 提取数据',
-						error: id != '2' ? '出错啦！ 请检查 ...' : undefined,
-						description: `${props.name} Node ${id}`,
-						icon: id == '2' ? 'material-psychology' : ''
-					},
-					origin: [0.5, 0.0]
-				}
-
-				setNodes((nds) => nds.concat(newNode))
-				setEdges((eds: any[]) => {
-					return eds.concat({
-						id,
-						source: connectingNodeId.current,
-						data: { label: '<条件>' },
-						target: id,
-						type: 'custom',
-						...getEdgeStyle('primary')
-					})
-				})
-			}
-		},
-		[screenToFlowPosition]
-	)
-
+	const { setHideContextMenu } = useFlowContext()
 	return (
 		<div className='reactflow-wrapper' ref={reactFlowWrapper}>
 			<ReactFlow
 				nodes={nodes}
 				edges={edges}
 				onInit={setReactFlowInstance}
+				onPaneClick={() => {
+					setHideContextMenu && setHideContextMenu(true)
+				}}
 				onNodesChange={onNodesChange}
 				onEdgesChange={onEdgesChange}
 				onDrop={onDrop}
 				onDragOver={onDragOver}
 				onConnect={onConnect}
 				onConnectStart={onConnectStart}
-				onConnectEnd={onConnectEnd}
 				fitView
 				fitViewOptions={{ maxZoom: 1 }}
 				nodeOrigin={[0.5, 0]}
@@ -248,7 +234,9 @@ const Index = (props: IProps) => {
 		<div className={clsx(styles._local)} style={{ height: props.height - 24, width: props.width }}>
 			<div className='providerflow'>
 				<ReactFlowProvider>
-					<Flow {...props} />
+					<FlowProvider setting={props.setting}>
+						<Flow {...props} />
+					</FlowProvider>
 				</ReactFlowProvider>
 			</div>
 		</div>
