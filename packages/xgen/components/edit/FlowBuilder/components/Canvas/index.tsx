@@ -67,6 +67,7 @@ const Index = (props: IProps) => {
 				type={type}
 				fixed={props.fixed}
 				offsetTop={props.offsetTop}
+				width={460}
 			/>
 			<div style={{ width: props.width }}>
 				<div className='head'>

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Editor from 'react-monaco-editor'
 
-import { Item } from '@/components'
+import Item from '../Item'
 import { useGlobal } from '@/context/app'
 import vars from '@/styles/preset/vars'
 

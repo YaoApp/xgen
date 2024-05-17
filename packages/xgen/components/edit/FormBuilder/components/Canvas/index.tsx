@@ -209,6 +209,7 @@ const Index = (props: IProps) => {
 				data={field?.props}
 				type={type}
 				fixed={props.fixed}
+				width={420}
 				offsetTop={props.offsetTop}
 			/>
 			<div style={{ padding: 12 }}>

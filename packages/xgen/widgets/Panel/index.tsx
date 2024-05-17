@@ -12,6 +12,7 @@ interface IProps {
 	label?: string
 	data?: Record<string, any>
 	type?: Type
+	width?: number | string
 	fixed: boolean
 	offsetTop: number
 	defaultIcon?: string
@@ -50,6 +51,7 @@ const Index = (props: IProps) => {
 			getContainer={false}
 			className={clsx(styles._local)}
 			maskClassName='mask'
+			width={props.width || '36%'}
 			style={{ position: props.fixed ? 'fixed' : 'absolute', zIndex: props.fixed ? 101 : 99 }}
 		>
 			<If condition={type != undefined}>
