@@ -14,7 +14,8 @@ import ReactFlow, {
 	addEdge,
 	useEdgesState,
 	useNodesState,
-	useReactFlow
+	useReactFlow,
+	Node as ReactFlowNode
 } from 'reactflow'
 import { useCallback, useRef, useState } from 'react'
 import CustomEdge from './Edge'
@@ -32,6 +33,7 @@ interface IProps {
 	height: number
 	setting?: Setting
 	value?: FlowValue
+	openPanel?: (node: ReactFlowNode<any>) => void
 }
 
 const edgeTypes: EdgeTypes = {
@@ -129,6 +131,16 @@ const Flow = (props: IProps) => {
 
 	const onSetting = useCallback((id: string) => {
 		console.log('setting', id)
+		setNodes((nds: any) => {
+			const node = nds.find((n: any) => n.id === id)
+			if (!node) {
+				console.error(`[FlowBuilder] Node ${id} not found`)
+				return
+			}
+			// Open the panel
+			props.openPanel && props.openPanel(node)
+			return nds
+		})
 	}, [])
 
 	const itemEvents = {

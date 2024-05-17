@@ -1,26 +1,36 @@
 import { Icon } from '@/widgets'
-import { Drawer, Form } from 'antd'
-import { Field, Type } from '../../types'
+import { Drawer } from 'antd'
+import { Type } from './types'
 import { Else, If, Then } from 'react-if'
-import Section from '../Section'
+import Section from './Section'
+import styles from './index.less'
+import clsx from 'clsx'
 
 interface IProps {
 	open: boolean
 	id?: string
-	field?: Field
+	label?: string
+	data?: Record<string, any>
 	type?: Type
 	fixed: boolean
 	offsetTop: number
+	defaultIcon?: string
 	onClose: () => void
 	onChange?: (id: string, bind: string, value: any) => void
 }
 
 const Index = (props: IProps) => {
-	const { id, field, type } = props
-	const label = field?.props?.label || field?.props?.name || type?.label || 'Untitled'
+	const { id, label, data, type } = props
+	const icon =
+		typeof type?.icon === 'string'
+			? { name: type.icon }
+			: typeof type?.icon == 'object'
+			? type.icon
+			: { name: props.defaultIcon || 'material-format_align_left' }
+
 	const Title = (
 		<div className='flex' style={{ alignItems: 'center' }}>
-			<Icon size={14} name={type?.icon ? type.icon : 'material-format_align_left'} className='mr_6' />
+			<Icon size={14} {...icon} className='mr_6' />
 			{label}
 		</div>
 	)
@@ -38,20 +48,14 @@ const Index = (props: IProps) => {
 			onClose={props.onClose}
 			open={props.open}
 			getContainer={false}
-			className='drawer'
+			className={clsx(styles._local)}
 			maskClassName='mask'
 			style={{ position: props.fixed ? 'fixed' : 'absolute', zIndex: props.fixed ? 101 : 99 }}
 		>
-			<If condition={field != undefined && type != undefined}>
+			<If condition={type != undefined}>
 				<Then>
 					{type?.props?.map((section, index) => (
-						<Section
-							id={id}
-							key={index}
-							section={section}
-							onChange={onChange}
-							data={field?.props}
-						/>
+						<Section id={id} key={index} section={section} onChange={onChange} data={data} />
 					))}
 				</Then>
 				<Else> Someting Error </Else>

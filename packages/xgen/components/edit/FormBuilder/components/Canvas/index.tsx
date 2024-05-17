@@ -1,9 +1,8 @@
-import { Icon } from '@/widgets'
+import { Panel, Icon } from '@/widgets'
 import GridLayout from 'react-grid-layout'
 import { Field, Layout, Presets, Setting, Type, Remote } from '../../types'
 import { useEffect, useState } from 'react'
 import { GenerateID, LayoutToValue, TypeMappping, UpdatePosition, ValueToLayout } from '../../utils'
-import Panel from '../Panel'
 import clsx from 'clsx'
 import Preset from '../Preset'
 
@@ -206,7 +205,8 @@ const Index = (props: IProps) => {
 				onClose={hidePanel}
 				onChange={onPanelChange}
 				id={active}
-				field={field}
+				label={field?.props?.label || field?.props?.name || type?.label || 'Untitled'}
+				data={field?.props}
 				type={type}
 				fixed={props.fixed}
 				offsetTop={props.offsetTop}
@@ -269,8 +269,11 @@ const Index = (props: IProps) => {
 										<Icon
 											size={14}
 											name={
-												type.icon
+												type.icon && typeof type.icon == 'string'
 													? type.icon
+													: type.icon &&
+													  typeof type.icon == 'object'
+													? type.icon.name
 													: 'material-format_align_left'
 											}
 											className='mr_6'

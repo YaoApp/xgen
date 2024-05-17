@@ -16,20 +16,23 @@ const Index = ({ type, name, props }: IProps) => {
 		if (name.startsWith('public/')) {
 			const { origin } = window.location
 			const component_name = name.replace('public/', '')
-
 			return lazy(() =>
 				// @ts-ignore
 				System.import(`${origin}/components/${component_name}.js`).catch(() => {
 					message.error(`Component is not exist, type:'${type}' name:'${name}'`)
+					console.error(`Component is not exist, type:'${type}' name:'${name}'`, props)
 				})
 			)
 		}
 
-		return lazy(() =>
-			import(`@/components/${type}/${name}`).catch(() => {
+		return lazy(() => {
+			const component = import(`@/components/${type}/${name}`).catch(() => {
 				message.error(`Component is not exist, type:'${type}' name:'${name}'`)
+				console.error(`Component is not exist, type:'${type}' name:'${name}'`, props)
+				return { default: () => null }
 			})
-		)
+			return component
+		})
 	}, [type, name])
 
 	return (

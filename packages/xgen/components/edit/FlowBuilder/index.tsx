@@ -43,6 +43,26 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	const [activeFlow, setActiveFlow] = useState<string>('')
 
 	// Set the width of the grid layout
+	const offsetTop = 80
+	const [isFixed, setIsFixed] = useState(false)
+	// Fixed sidebar, canvas and toolbar
+	useEffect(() => {
+		const handleScroll = () => {
+			const top = ref.current?.getBoundingClientRect().top || 0
+			const height = ref.current?.offsetHeight || 0
+			if (top <= offsetTop && top + height > offsetTop) {
+				setIsFixed(true)
+			} else {
+				setIsFixed(false)
+			}
+		}
+
+		window.addEventListener('scroll', handleScroll)
+		return () => {
+			window.removeEventListener('scroll', handleScroll)
+		}
+	}, [])
+
 	const [showSidebar, setShowSidebar] = useState<boolean>(true)
 	const [width, setWidth] = useState(0)
 	const [height, setHeight] = useState(props.height && props.height >= 300 ? props.height : 300)
@@ -138,6 +158,8 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 				<Builder
 					width={width}
 					height={height}
+					fixed={isFixed}
+					offsetTop={offsetTop}
 					showSidebar={showSidebar}
 					setting={setting}
 					value={{ ...value, key: key }}
@@ -156,6 +178,8 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 				<Builder
 					width={width}
 					height={height}
+					fixed={isFixed}
+					offsetTop={offsetTop}
 					value={{ label: text, key: text }}
 					showSidebar={showSidebar}
 					setting={setting}
@@ -183,6 +207,8 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 					<Builder
 						width={width}
 						height={height}
+						fixed={isFixed}
+						offsetTop={offsetTop}
 						showSidebar={showSidebar}
 						setting={setting}
 						toggleSidebar={toggleSidebar}
@@ -193,7 +219,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 		setFlows([...newFlows])
 	}
 	useEffect(() => updateFlowsBySetting(setting), [setting])
-	useEffect(() => refreshFlows(), [width, showSidebar, height])
+	useEffect(() => refreshFlows(), [width, showSidebar, height, isFixed])
 
 	// Get setting
 	useEffect(() => {

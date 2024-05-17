@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { TypeProp } from '../../types'
+import { Section } from '../types'
 import Column from '../Column'
 
 interface IProps {
 	id?: string
 	data?: Record<string, any>
-	section: TypeProp
+	section: Section
 	onChange?: (id: string, bind: string, value: any) => void
 }
 

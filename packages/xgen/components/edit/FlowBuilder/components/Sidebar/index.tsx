@@ -10,6 +10,7 @@ interface IProps {
 
 const Index = (props: IProps) => {
 	const className = 'sidebar' + (!props.visible ? ' collapsed' : '')
+
 	return (
 		<div className={className}>
 			<div className='content' style={{ maxHeight: props.height, minHeight: props.height }}>

@@ -1,27 +1,6 @@
-export type Type = {
-	name: string
-	label?: string
-	icon?: string | { name: string; size: number } // the icon of the flow
-	color?: string
-	background?: string
-	props?: TypeProp[]
-}
+import { PanelType, PanelColumnComponent } from '@/widgets'
 
-export type TypeProp = {
-	title?: string
-	columns: Column[]
-}
-
-export type Column = {
-	name: string
-	width?: number
-	component?: ColumnComponent
-}
-
-export type ColumnComponent = {
-	bind: string
-	edit: { type: string; props: Record<string, any> }
-}
+export type Type = PanelType
 
 export type Remote = {
 	api: string
@@ -32,7 +11,7 @@ export type Setting = {
 	title?: string
 	types?: Type[]
 	defaultValue?: FlowValue | FlowValue[]
-	fields?: Record<string, ColumnComponent>
+	fields?: Record<string, PanelColumnComponent>
 }
 
 export type FlowNode = {
@@ -72,6 +51,6 @@ export type IconT =
 	| string
 	| {
 			name: string
-			size: number
+			size?: number
 			color?: string
 	  }

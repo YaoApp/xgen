@@ -9,6 +9,8 @@ interface IProps {
 	height: number
 	showSidebar: boolean
 	setting?: Setting
+	fixed: boolean
+	offsetTop: number
 	toggleSidebar: () => void
 }
 
