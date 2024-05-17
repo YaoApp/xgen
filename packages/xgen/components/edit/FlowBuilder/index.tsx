@@ -153,6 +153,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 
 		return {
 			label: <TabItemLabel text={value.label || value.name || ''} icon={IconName(value.icon)} />,
+			value: value,
 			key: key,
 			children: (
 				<Builder
@@ -171,9 +172,11 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 
 	const blankFlow = () => {
 		const text = is_cn ? `<未命名-${flows.length + 1}>` : `<Untitled-${flows.length + 1}>`
+		const value = { label: text, key: text }
 		return {
 			label: <TabItemLabel text={text} icon={IconName()} />,
 			key: `blank-${Date.now().toString()}`,
+			value: value,
 			children: (
 				<Builder
 					width={width}
@@ -208,6 +211,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 						width={width}
 						height={height}
 						fixed={isFixed}
+						value={{ ...flow.value }}
 						offsetTop={offsetTop}
 						showSidebar={showSidebar}
 						setting={setting}
