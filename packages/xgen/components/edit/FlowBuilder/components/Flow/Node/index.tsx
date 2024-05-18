@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { NodeProps, Handle, Position, NodeToolbar } from 'reactflow'
 import styles from './index.less'
 import { Icon } from '@/widgets'
@@ -10,10 +10,18 @@ import { getLocale } from '@umijs/max'
 import { useGlobal } from '@/context/app'
 import Types from '../Types'
 
-const CustomNode: FC<NodeProps> = ({ data }) => {
+const CustomNode: FC<NodeProps> = (props: { data: any }) => {
+	console.log('CustomNode', props)
+
 	const global = useGlobal()
 	const is_cn = getLocale() === 'zh-CN'
+	const [data, setData] = useState<any>(props.data)
 	const events = data.events || {}
+
+	useEffect(() => {
+		console.log('CustomNode', props.data.description)
+		setData(props.data)
+	}, [props.data])
 
 	// Default values
 	data.showSourceHandle = data.showSourceHandle === undefined ? true : data.showSourceHandle
@@ -113,4 +121,4 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
 	)
 }
 
-export default CustomNode
+export default window.$app.memo(CustomNode)

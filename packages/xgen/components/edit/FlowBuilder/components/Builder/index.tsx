@@ -12,6 +12,7 @@ interface IProps {
 	fixed: boolean
 	offsetTop: number
 	toggleSidebar: () => void
+	onDataChange?: (data: any) => void
 }
 
 const Index = (props: IProps) => {

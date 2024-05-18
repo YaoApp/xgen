@@ -17,6 +17,7 @@ interface IProps {
 	offsetTop: number
 	setting?: Setting
 	toggleSidebar: () => void
+	onDataChange?: (data: any) => void
 }
 
 const Index = (props: IProps) => {
@@ -31,12 +32,28 @@ const Index = (props: IProps) => {
 	const [type, setType] = useState<Type | undefined>(undefined)
 	const [active, setActive] = useState<string | undefined>(undefined)
 	const [node, setNode] = useState<ReactFlowNode<any> | undefined>(undefined)
+	const [data, setData] = useState<any>({})
+	const [updateData, setUpdateData] = useState<{ id: string; bind: string; value: any } | undefined>(undefined)
+
+	const onPanelChange = (id: string, bind: string, value: any) => {
+		setUpdateData(() => ({ id, bind, value }))
+		setData((prev: any) => {
+			prev.props = { ...prev.props, [bind]: value }
+			if (bind == 'description') {
+				prev.description = value
+			}
+			return { ...prev }
+		})
+	}
+
 	const hidePanel = () => {
 		setOpen(false)
 		setActive(undefined)
 	}
-	const onPanelChange = (id: string, bind: string, value: any) => {}
+
 	const showPanel = (node: ReactFlowNode<any>) => {
+		console.log('show-panel', node.id)
+
 		const type = props.setting?.types?.find((item) => item.name === node.data?.type)
 		if (!type) return console.error('Type not found', node)
 
@@ -48,10 +65,11 @@ const Index = (props: IProps) => {
 			})
 		})
 
-		setNode(node)
-		setType(type)
-		setActive(node.id)
-		setOpen(true)
+		setData(() => ({ ...node.data, props: { description: node.data?.description, ...node.data.props } }))
+		setNode(() => node)
+		setType(() => type)
+		setActive(() => node.id)
+		setOpen(() => true)
 	}
 
 	return (
@@ -61,12 +79,9 @@ const Index = (props: IProps) => {
 				onClose={hidePanel}
 				onChange={onPanelChange}
 				id={active}
-				label={node?.data?.label || node?.data?.description || node?.data?.name || defaultLabel}
+				label={data?.label || data?.description || data?.name || defaultLabel}
 				defaultIcon='material-trip_origin'
-				data={{
-					...(node?.data?.props || {}),
-					description: node?.data?.description || node?.data?.name || defaultLabel
-				}}
+				data={{ ...(data.props || {}) }}
 				type={type}
 				fixed={props.fixed}
 				offsetTop={props.offsetTop}
@@ -109,6 +124,8 @@ const Index = (props: IProps) => {
 					setting={props.setting}
 					value={props.value}
 					openPanel={showPanel}
+					updateData={updateData}
+					onDataChange={props.onDataChange}
 				/>
 			</div>
 		</>

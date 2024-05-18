@@ -114,6 +114,10 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 		setActiveFlow(key)
 	}
 
+	const onDataChange = (data: any) => {
+		console.log(data)
+	}
+
 	const onTabEdit = (targetKey: React.MouseEvent | React.KeyboardEvent | string, action: 'add' | 'remove') => {
 		// Add a new tab
 		if (action === 'add') {
@@ -171,6 +175,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 					setting={setting}
 					value={{ ...value, key: key }}
 					toggleSidebar={toggleSidebar}
+					onDataChange={onDataChange}
 				/>
 			)
 		}
@@ -179,9 +184,10 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	const blankFlow = () => {
 		const text = is_cn ? `<未命名-${flows.length + 1}>` : `<Untitled-${flows.length + 1}>`
 		const value = { label: text, key: text }
+		const key = `blank-${Date.now().toString()}`
 		return {
 			label: <TabItemLabel text={text} icon={IconName()} />,
-			key: `blank-${Date.now().toString()}`,
+			key: key,
 			value: value,
 			children: (
 				<Builder
@@ -193,6 +199,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 					showSidebar={showSidebar}
 					setting={setting}
 					toggleSidebar={toggleSidebar}
+					onDataChange={onDataChange}
 				/>
 			)
 		}
@@ -222,6 +229,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 						showSidebar={showSidebar}
 						setting={setting}
 						toggleSidebar={toggleSidebar}
+						onDataChange={onDataChange}
 					/>
 				)
 			}

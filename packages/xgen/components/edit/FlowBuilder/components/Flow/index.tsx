@@ -17,7 +17,7 @@ import ReactFlow, {
 	useReactFlow,
 	Node as ReactFlowNode
 } from 'reactflow'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import CustomEdge from './Edge'
 
 import 'reactflow/dist/style.css'
@@ -34,6 +34,8 @@ interface IProps {
 	setting?: Setting
 	value?: FlowValue
 	openPanel?: (node: ReactFlowNode<any>) => void
+	onDataChange?: (data: any) => void
+	updateData?: { id: string; bind: string; value: any }
 }
 
 const edgeTypes: EdgeTypes = {
@@ -130,7 +132,11 @@ const Flow = (props: IProps) => {
 	}, [])
 
 	const onSetting = useCallback((id: string) => {
-		console.log('setting', id)
+		console.log(
+			'setting',
+			id,
+			nodes.find((n: any) => n.id === id)
+		)
 		setNodes((nds: any) => {
 			const node = nds.find((n: any) => n.id === id)
 			if (!node) {
@@ -138,6 +144,7 @@ const Flow = (props: IProps) => {
 				return
 			}
 			// Open the panel
+			node.selected = true
 			props.openPanel && props.openPanel(node)
 			return nds
 		})
@@ -155,6 +162,30 @@ const Flow = (props: IProps) => {
 	const connectingNodeId = useRef(null)
 	const [nodes, setNodes, onNodesChange] = useNodesState(Nodes(props.value, props.setting, itemEvents))
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+
+	// Responsible for the panel update
+	useEffect(() => {
+		if (!props.updateData) return
+		setNodes((nds) => {
+			if (!props.updateData) return nds
+			const data = props.updateData
+			const newNodes = nds.map((node: any) => {
+				if (node.id !== data.id) return node
+
+				console.log('update-data', data.id, node.id)
+				const newNode = { ...node }
+				newNode.data.props = { ...node.data.props, [data.bind]: data.value }
+				if (data.bind === 'description') {
+					newNode.data.description = data.value
+				}
+				return newNode
+			})
+
+			props.onDataChange && props.onDataChange(nodes)
+			return newNodes
+		})
+	}, [props.updateData])
+
 	const { screenToFlowPosition } = useReactFlow()
 
 	const onDrop = useCallback(
