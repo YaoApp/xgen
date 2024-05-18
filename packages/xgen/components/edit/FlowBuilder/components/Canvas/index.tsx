@@ -1,12 +1,12 @@
 import Preset from '@/components/edit/FormBuilder/components/Preset'
 import { Icon, Panel } from '@/widgets'
-import { Button } from 'antd'
 import Flow from '../Flow'
 import { useState } from 'react'
-import { FlowValue, Setting, Type } from '../../types'
+import { FlowValue, Type } from '../../types'
 import { IconName, IconSize } from '../../utils'
 import { getLocale } from '@umijs/max'
 import { Node as ReactFlowNode } from 'reactflow'
+import { useBuilderContext } from '../Builder/Provider'
 
 interface IProps {
 	width: number
@@ -15,29 +15,25 @@ interface IProps {
 	showSidebar: boolean
 	fixed: boolean
 	offsetTop: number
-	setting?: Setting
 	toggleSidebar: () => void
 	onDataChange?: (data: any) => void
 }
 
 const Index = (props: IProps) => {
 	if (props.width === 0) return null
-	if (!props.setting) return null
 
-	const is_cn = getLocale() === 'zh-CN'
+	const { is_cn, setting, panelData, setPanelData, openPanel, setOpenPanel } = useBuilderContext()
+
 	const defaultLabel = is_cn ? '未命名' : 'Untitled'
 
 	// Panel setting
-	const [open, setOpen] = useState(false)
 	const [type, setType] = useState<Type | undefined>(undefined)
 	const [active, setActive] = useState<string | undefined>(undefined)
-	const [node, setNode] = useState<ReactFlowNode<any> | undefined>(undefined)
-	const [data, setData] = useState<any>({})
 	const [updateData, setUpdateData] = useState<{ id: string; bind: string; value: any } | undefined>(undefined)
 
 	const onPanelChange = (id: string, bind: string, value: any) => {
 		setUpdateData(() => ({ id, bind, value }))
-		setData((prev: any) => {
+		setPanelData((prev: any) => {
 			prev.props = { ...prev.props, [bind]: value }
 			if (bind == 'description') {
 				prev.description = value
@@ -47,41 +43,40 @@ const Index = (props: IProps) => {
 	}
 
 	const hidePanel = () => {
-		setOpen(false)
+		setOpenPanel(false)
 		setActive(undefined)
 	}
 
 	const showPanel = (node: ReactFlowNode<any>) => {
 		console.log('show-panel', node.id)
 
-		const type = props.setting?.types?.find((item) => item.name === node.data?.type)
+		const type = setting?.types?.find((item) => item.name === node.data?.type)
 		if (!type) return console.error('Type not found', node)
 
 		type.props?.forEach((section) => {
 			section?.columns?.forEach((item) => {
-				const component = props.setting?.fields?.[item.name]
+				const component = setting?.fields?.[item.name]
 				if (!component) return console.error('Component not found', item.name)
 				item.component = component
 			})
 		})
 
-		setData(() => ({ ...node.data, props: { description: node.data?.description, ...node.data.props } }))
-		setNode(() => node)
+		setPanelData(() => ({ ...node.data, props: { description: node.data?.description, ...node.data.props } }))
 		setType(() => type)
 		setActive(() => node.id)
-		setOpen(() => true)
+		setOpenPanel(() => true)
 	}
 
 	return (
 		<>
 			<Panel
-				open={open}
+				open={openPanel}
 				onClose={hidePanel}
 				onChange={onPanelChange}
 				id={active}
-				label={data?.label || data?.description || data?.name || defaultLabel}
+				label={panelData?.label || panelData?.description || panelData?.name || defaultLabel}
 				defaultIcon='material-trip_origin'
-				data={{ ...(data.props || {}) }}
+				data={{ ...(panelData.props || {}) }}
 				type={type}
 				fixed={props.fixed}
 				offsetTop={props.offsetTop}
@@ -121,7 +116,6 @@ const Index = (props: IProps) => {
 				<Flow
 					width={props.width}
 					height={props.height}
-					setting={props.setting}
 					value={props.value}
 					openPanel={showPanel}
 					updateData={updateData}

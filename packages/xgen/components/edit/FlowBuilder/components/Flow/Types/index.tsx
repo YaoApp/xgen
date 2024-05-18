@@ -3,14 +3,14 @@ import { Type } from '../../../types'
 import { IconName, IconSize } from '../../../utils'
 import { Dropdown, MenuProps } from 'antd'
 import { useEffect, useState } from 'react'
-import { useFlowContext } from '../Provider'
+import { useBuilderContext } from '../../Builder/Provider'
 
 interface IProps {
 	onAdd?: (type: string) => void
 }
 
 const Index = (props: IProps) => {
-	const { hideContextMenu, setHideContextMenu, setting } = useFlowContext()
+	const { hideContextMenu, setHideContextMenu, setting } = useBuilderContext()
 	const [open, setOpen] = useState(false)
 
 	useEffect(() => {

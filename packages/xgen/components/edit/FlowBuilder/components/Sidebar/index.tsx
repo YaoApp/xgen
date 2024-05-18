@@ -1,20 +1,19 @@
 import { Icon } from '@/widgets'
-import { Type } from '../../types'
 import { IconName, IconSize } from '../../utils'
+import { useBuilderContext } from '../Builder/Provider'
 
 interface IProps {
-	types?: Type[]
 	height?: number
 	visible?: boolean
 }
 
 const Index = (props: IProps) => {
 	const className = 'sidebar' + (!props.visible ? ' collapsed' : '')
-
+	const { setting } = useBuilderContext()
 	return (
 		<div className={className}>
 			<div className='content' style={{ maxHeight: props.height, minHeight: props.height }}>
-				{props.types?.map((type, index) => (
+				{setting?.types?.map((type, index) => (
 					<div
 						key={`${type.name}|${index}`}
 						className='item'

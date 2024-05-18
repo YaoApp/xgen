@@ -1,6 +1,7 @@
 import { FlowValue, Setting } from '../../types'
 import Sidebar from '../Sidebar'
 import Canvas from '../Canvas'
+import { BuilderProvider } from '../Builder/Provider'
 import { getLocale } from '@umijs/max'
 
 interface IProps {
@@ -20,10 +21,12 @@ const Index = (props: IProps) => {
 	if (!props.setting) return null
 
 	return (
-		<div className='builder'>
-			<Sidebar types={props.setting?.types} height={props.height} visible={props.showSidebar} />
-			<Canvas {...props} />
-		</div>
+		<BuilderProvider setting={props.setting} value={props.value}>
+			<div className='builder'>
+				<Sidebar height={props.height} visible={props.showSidebar} />
+				<Canvas {...props} />
+			</div>
+		</BuilderProvider>
 	)
 }
 

@@ -9,43 +9,32 @@ import { LoadingOutlined } from '@ant-design/icons'
 import { getLocale } from '@umijs/max'
 import { useGlobal } from '@/context/app'
 import Types from '../Types'
+import { useBuilderContext } from '../../Builder/Provider'
 
-const CustomNode: FC<NodeProps> = (props: { data: any }) => {
-	console.log('CustomNode', props)
+type IProps = {
+	id: string
+	data: { props?: Record<string, any>; [key: string]: any }
+}
+
+const CustomNode: FC<NodeProps> = (props: IProps) => {
+	const { onDelete, onAdd, onDuplicate, onSetting } = useBuilderContext()
 
 	const global = useGlobal()
-	const is_cn = getLocale() === 'zh-CN'
 	const [data, setData] = useState<any>(props.data)
-	const events = data.events || {}
+	const [color, setColor] = useState<string>(Color('text', global.theme))
 
 	useEffect(() => {
-		console.log('CustomNode', props.data.description)
-		setData(props.data)
+		const data = { ...props.data }
+		data.showSourceHandle = data.showSourceHandle === undefined ? true : data.showSourceHandle
+		data.showTargetHandle = data.showTargetHandle === undefined ? true : data.showTargetHandle
+		data.toolbarVisible = data.toolbarVisible === undefined ? true : data.toolbarVisible
+		data.toolbarPosition = data.toolbarPosition === undefined ? Position.Bottom : data.toolbarPosition
+		data.toolbarAlign = data.toolbarAlign === undefined ? 'end' : data.toolbarAlign
+		const color = data.color && data.color != '' ? Color(data.color, global.theme) : Color('text', global.theme)
+		data.icon = data.icon || { name: 'material-trip_origin', size: 16 }
+		setData(data)
+		setColor(color)
 	}, [props.data])
-
-	// Default values
-	data.showSourceHandle = data.showSourceHandle === undefined ? true : data.showSourceHandle
-	data.showTargetHandle = data.showTargetHandle === undefined ? true : data.showTargetHandle
-	data.toolbarVisible = data.toolbarVisible === undefined ? true : data.toolbarVisible
-	data.toolbarPosition = data.toolbarPosition === undefined ? Position.Bottom : data.toolbarPosition
-	data.toolbarAlign = data.toolbarAlign === undefined ? 'end' : data.toolbarAlign
-	const color = data.color && data.color != '' ? Color(data.color, global.theme) : Color('text', global.theme)
-	data.icon = data.icon || { name: 'material-trip_origin', size: 16 }
-
-	const onSetting = (event: any) => {
-		event.stopPropagation()
-		events.onSetting && events.onSetting(data.id)
-	}
-
-	const onDelete = (event: any) => {
-		event.stopPropagation()
-		events.onDelete && events.onDelete(data.id)
-	}
-
-	const onDuplicate = (event: any) => {
-		event.stopPropagation()
-		events.onDuplicate && events.onDuplicate(data.id)
-	}
 
 	return (
 		<>
@@ -55,21 +44,16 @@ const CustomNode: FC<NodeProps> = (props: { data: any }) => {
 				position={data.toolbarPosition}
 				align={data.toolbarAlign}
 			>
-				<a className='item' onClick={onDuplicate}>
+				<a className='item' onClick={() => onDuplicate(props.id)}>
 					<Icon name='material-content_copy' size={16} />
 				</a>
-				<a className='item' onClick={onSetting}>
+				<a className='item' onClick={() => onSetting(props.id)}>
 					<Icon name='material-settings' size={16} />
 				</a>
-				<a className='item' style={{ marginRight: 16 }} onClick={onDelete}>
+				<a className='item' style={{ marginRight: 16 }} onClick={() => onDelete(props.id)}>
 					<Icon name='material-delete' size={16} />
 				</a>
-
-				<Types
-					onAdd={(type: string) => {
-						events.onAdd && events.onAdd(data.id, type)
-					}}
-				/>
+				<Types onAdd={(type: string) => onAdd(props.id, type)} />
 			</NodeToolbar>
 
 			{data.error && (

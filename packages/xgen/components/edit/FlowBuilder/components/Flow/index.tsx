@@ -12,8 +12,6 @@ import ReactFlow, {
 	ReactFlowInstance,
 	ReactFlowProvider,
 	addEdge,
-	useEdgesState,
-	useNodesState,
 	useReactFlow,
 	Node as ReactFlowNode
 } from 'reactflow'
@@ -22,16 +20,13 @@ import CustomEdge from './Edge'
 
 import 'reactflow/dist/style.css'
 import CustomNode from './Node'
-import { FlowValue, Setting } from '../../types'
-import { CreateNode, ID, Nodes } from './utils'
-import { getLocale } from '@umijs/max'
-import { FlowProvider, useFlowContext } from './Provider'
+import { FlowValue } from '../../types'
+import { useBuilderContext } from '../Builder/Provider'
 
 interface IProps {
 	name?: string
 	width: number
 	height: number
-	setting?: Setting
 	value?: FlowValue
 	openPanel?: (node: ReactFlowNode<any>) => void
 	onDataChange?: (data: any) => void
@@ -47,10 +42,9 @@ const nodeTypes = {
 }
 
 const Flow = (props: IProps) => {
-	const is_cn = getLocale() === 'zh-CN'
+	const { CreateNode, setHideContextMenu, is_cn, nodes, setNodes, onNodesChange, edges, setEdges, onEdgesChange } =
+		useBuilderContext()
 
-	let id = 2
-	const getId = () => `${id++}`
 	const getEdgeStyle = (theme: string) => {
 		let color = 'var(--color_title)'
 		switch (theme) {
@@ -80,88 +74,10 @@ const Flow = (props: IProps) => {
 			}
 		}
 	}
-	const initialEdges: any[] = []
-
-	const onDelete = useCallback((id: string) => {
-		setNodes((nds) => nds.filter((node) => node.id !== id))
-	}, [])
-
-	const onAdd = useCallback((id: string, type: string) => {
-		setNodes((nds: any) => {
-			const node = nds.find((n: any) => n.id === id)
-			if (!node) {
-				console.error(`[FlowBuilder] Node ${id} not found`)
-				return
-			}
-			const position = { x: (node?.position?.x || 0) + 400, y: node?.position?.y || 0 }
-			const description = is_cn ? '<未命名>' : '<Unnamed>'
-			const newNode = CreateNode(
-				type,
-				description,
-				{ x: position?.x, y: position?.y },
-				props.setting,
-				itemEvents
-			)
-			return nds.concat(newNode as any)
-		})
-	}, [])
-
-	const onDuplicate = useCallback((id: string) => {
-		setNodes((nds: any) => {
-			const node = nds.find((n: any) => n.id === id)
-			if (!node) {
-				console.error(`[FlowBuilder] Node ${id} not found`)
-				return
-			}
-			const data = node?.data || {}
-			const position = { x: (node?.position?.x || 0) + 400, y: node?.position?.y || 0 }
-			const newID = ID()
-			const newNode = {
-				...node,
-				id: newID,
-				data: {
-					...node,
-					...data,
-					id: newID,
-					description: `[${is_cn ? '复本' : 'Copy'}] ${data.description}`
-				},
-				position: position
-			}
-			return nds.concat(newNode as any)
-		})
-	}, [])
-
-	const onSetting = useCallback((id: string) => {
-		console.log(
-			'setting',
-			id,
-			nodes.find((n: any) => n.id === id)
-		)
-		setNodes((nds: any) => {
-			const node = nds.find((n: any) => n.id === id)
-			if (!node) {
-				console.error(`[FlowBuilder] Node ${id} not found`)
-				return
-			}
-			// Open the panel
-			node.selected = true
-			props.openPanel && props.openPanel(node)
-			return nds
-		})
-	}, [])
-
-	const itemEvents = {
-		onSetting,
-		onDelete,
-		onDuplicate,
-		onAdd
-	}
 
 	const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null)
 	const reactFlowWrapper = useRef(null)
 	const connectingNodeId = useRef(null)
-	const [nodes, setNodes, onNodesChange] = useNodesState(Nodes(props.value, props.setting, itemEvents))
-	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
 	// Responsible for the panel update
 	useEffect(() => {
@@ -172,7 +88,6 @@ const Flow = (props: IProps) => {
 			const newNodes = nds.map((node: any) => {
 				if (node.id !== data.id) return node
 
-				console.log('update-data', data.id, node.id)
 				const newNode = { ...node }
 				newNode.data.props = { ...node.data.props, [data.bind]: data.value }
 				if (data.bind === 'description') {
@@ -186,8 +101,6 @@ const Flow = (props: IProps) => {
 		})
 	}, [props.updateData])
 
-	const { screenToFlowPosition } = useReactFlow()
-
 	const onDrop = useCallback(
 		(event: any) => {
 			event.preventDefault()
@@ -199,13 +112,7 @@ const Flow = (props: IProps) => {
 			if (!position) return
 
 			const description = is_cn ? '<未命名>' : '<Unnamed>'
-			const newNode = CreateNode(
-				type,
-				description,
-				{ x: position?.x, y: position?.y },
-				props.setting,
-				itemEvents
-			)
+			const newNode = CreateNode(type, description, { x: position?.x, y: position?.y })
 			if (!newNode) return
 			setNodes((nds) => nds.concat(newNode as any))
 		},
@@ -242,7 +149,6 @@ const Flow = (props: IProps) => {
 		connectingNodeId.current = nodeId
 	}, [])
 
-	const { setHideContextMenu } = useFlowContext()
 	return (
 		<div className='reactflow-wrapper' ref={reactFlowWrapper}>
 			<ReactFlow
@@ -277,9 +183,7 @@ const Index = (props: IProps) => {
 		<div className={clsx(styles._local)} style={{ height: props.height - 24, width: props.width }}>
 			<div className='providerflow'>
 				<ReactFlowProvider>
-					<FlowProvider setting={props.setting}>
-						<Flow {...props} />
-					</FlowProvider>
+					<Flow {...props} />
 				</ReactFlowProvider>
 			</div>
 		</div>
