@@ -28,7 +28,6 @@ interface IProps {
 	width: number
 	height: number
 	value?: FlowValue
-	openPanel?: (node: ReactFlowNode<any>) => void
 	onDataChange?: (data: any) => void
 	updateData?: { id: string; bind: string; value: any }
 }

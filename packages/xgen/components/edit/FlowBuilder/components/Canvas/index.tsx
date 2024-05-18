@@ -22,7 +22,7 @@ interface IProps {
 const Index = (props: IProps) => {
 	if (props.width === 0) return null
 
-	const { is_cn, setting, panelData, setPanelData, openPanel, setOpenPanel } = useBuilderContext()
+	const { is_cn, setting, panelNode, setPanelNode, openPanel, setOpenPanel } = useBuilderContext()
 
 	const defaultLabel = is_cn ? '未命名' : 'Untitled'
 
@@ -33,7 +33,7 @@ const Index = (props: IProps) => {
 
 	const onPanelChange = (id: string, bind: string, value: any) => {
 		setUpdateData(() => ({ id, bind, value }))
-		setPanelData((prev: any) => {
+		setPanelNode((prev: any) => {
 			prev.props = { ...prev.props, [bind]: value }
 			if (bind == 'description') {
 				prev.description = value
@@ -45,13 +45,20 @@ const Index = (props: IProps) => {
 	const hidePanel = () => {
 		setOpenPanel(false)
 		setActive(undefined)
+		setPanelNode(undefined)
 	}
 
-	const showPanel = (node: ReactFlowNode<any>) => {
-		console.log('show-panel', node.id)
+	const getType = (node: ReactFlowNode<any> | undefined) => {
+		if (!node) {
+			console.error('Node not found')
+			return undefined
+		}
 
 		const type = setting?.types?.find((item) => item.name === node.data?.type)
-		if (!type) return console.error('Type not found', node)
+		if (!type) {
+			console.error('Type not found', node)
+			return undefined
+		}
 
 		type.props?.forEach((section) => {
 			section?.columns?.forEach((item) => {
@@ -60,11 +67,7 @@ const Index = (props: IProps) => {
 				item.component = component
 			})
 		})
-
-		setPanelData(() => ({ ...node.data, props: { description: node.data?.description, ...node.data.props } }))
-		setType(() => type)
-		setActive(() => node.id)
-		setOpenPanel(() => true)
+		return type
 	}
 
 	return (
@@ -73,11 +76,16 @@ const Index = (props: IProps) => {
 				open={openPanel}
 				onClose={hidePanel}
 				onChange={onPanelChange}
-				id={active}
-				label={panelData?.label || panelData?.description || panelData?.name || defaultLabel}
+				id={panelNode?.id}
+				label={
+					panelNode?.data?.label ||
+					panelNode?.data?.description ||
+					panelNode?.data?.name ||
+					defaultLabel
+				}
 				defaultIcon='material-trip_origin'
-				data={{ ...(panelData.props || {}) }}
-				type={type}
+				data={{ ...(panelNode?.data?.props || {}) }}
+				type={getType(panelNode)}
 				fixed={props.fixed}
 				offsetTop={props.offsetTop}
 				width={460}
@@ -117,7 +125,6 @@ const Index = (props: IProps) => {
 					width={props.width}
 					height={props.height}
 					value={props.value}
-					openPanel={showPanel}
 					updateData={updateData}
 					onDataChange={props.onDataChange}
 				/>
