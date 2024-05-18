@@ -9,15 +9,16 @@ interface IProps extends FormItemProps {
 	children: JSX.Element
 	__bind: string
 	__name: string
+	__namespace?: string
 	hideLabel?: boolean
 }
 
 const Index = (props: IProps) => {
-	const { children, __bind, __name, hideLabel, ...rest_props } = props
+	const { children, __namespace, __bind, __name, hideLabel, ...rest_props } = props
 
 	return (
-		<div className={clsx(styles._local)}>
-			<label htmlFor={__bind} className='item-label'>
+		<div className={clsx([styles._local, 'item'])}>
+			<label htmlFor={`${__namespace || ''}.${__bind}`} className='item-label'>
 				{__name}
 			</label>
 			{children}

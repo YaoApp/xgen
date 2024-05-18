@@ -1,10 +1,8 @@
 import Preset from '@/components/edit/FormBuilder/components/Preset'
 import { Icon, Panel } from '@/widgets'
 import Flow from '../Flow'
-import { useState } from 'react'
-import { FlowValue, Type } from '../../types'
+import { FlowValue } from '../../types'
 import { IconName, IconSize } from '../../utils'
-import { getLocale } from '@umijs/max'
 import { Node as ReactFlowNode } from 'reactflow'
 import { useBuilderContext } from '../Builder/Provider'
 
@@ -34,10 +32,7 @@ const Index = (props: IProps) => {
 			return [...nds]
 		})
 
-		setUpdateData((data: any) => {
-			console.log('setUpdateData', id, bind, value)
-			return { id, bind, value }
-		})
+		setUpdateData((data: any) => ({ id, bind, value }))
 	}
 
 	const hidePanel = () => {

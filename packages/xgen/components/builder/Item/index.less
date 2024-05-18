@@ -2,22 +2,23 @@
 	:global {
 		font-size: 12px;
 		display: flex;
-		align-items: center;
+		align-items: start;
+		flex-direction: column;
+		margin-bottom: 16px;
+		font-weight: 800;
+		width: 100%;
 
-		.item {
-			font-weight: 800;
-		}
 		.item-label {
 			font-size: 12px;
 			font-weight: 500;
 			width: auto;
 			max-width: 160px;
 			min-width: 60px;
-			margin-right: 8px;
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			overflow: hidden;
 			width: auto;
+			margin-bottom: 2px;
 		}
 
 		.item-label:focus {

@@ -23,14 +23,15 @@ interface ICustom {
 
 interface IProps extends Component.PropsEditComponent, ICustom {}
 
-const Custom = window.$app.memo((props: ICustom) => {
+const Custom = window.$app.memo((props: IProps) => {
 	const [showPlaceholder, setShowPlaceholder] = useState(false)
 	const [value, setValue] = useState<any>()
 	const ref = useRef<monaco.editor.IStandaloneCodeEditor>()
 	const global = useGlobal()
 	const { language = 'json', height = 210 } = props
 	const theme = useMemo(() => (global.theme === 'dark' ? 'x-dark' : 'x-light'), [global.theme])
-
+	const [namespace, setNamespace] = useState(props.__namespace)
+	useEffect(() => setNamespace(props.__namespace), [props.__namespace])
 	useEffect(() => {
 		setShowPlaceholder(!props.value)
 		if (typeof props.value !== 'string') {
@@ -47,7 +48,6 @@ const Custom = window.$app.memo((props: ICustom) => {
 	const onChange = (v: any) => {
 		if (!props.onChange) return
 		props.onChange(v)
-		setValue(v)
 	}
 
 	const editorDidMount: EditorDidMount = (editor, monaco) => {
@@ -92,7 +92,9 @@ const Custom = window.$app.memo((props: ICustom) => {
 				height={height}
 				language={language}
 				theme={theme}
+				key={namespace}
 				options={{
+					ariaLabel: props.__name,
 					readOnly: props.disabled,
 					wordWrap: 'on',
 					formatOnPaste: true,
@@ -114,11 +116,11 @@ const Custom = window.$app.memo((props: ICustom) => {
 })
 
 const Index = (props: IProps) => {
-	const { __bind, __name, itemProps, ...rest_props } = props
+	const { __bind, __name, __namespace, itemProps, ...rest_props } = props
 
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
-			<Custom {...rest_props}></Custom>
+			<Custom __bind={__bind} __namespace={__namespace} __name={__name} {...rest_props}></Custom>
 		</Item>
 	)
 }

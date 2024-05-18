@@ -10,14 +10,15 @@ interface IProps extends TextAreaProps, Component.PropsEditComponent {}
 const { TextArea } = Input
 
 const Index = (props: IProps) => {
-	const { __bind, __name, onChange, ...rest_props } = props
+	const { __bind, __name, __namespace, onChange, ...rest_props } = props
 
 	return (
-		<Item {...{ __bind, __name }}>
+		<Item {...{ __bind, __name, __namespace }}>
 			<TextArea
-				{...rest_props}
+				id={`${__namespace || ''}.${__bind}`}
 				name={__bind}
 				onChange={(e: any) => onChange && onChange(e.target.value)}
+				{...rest_props}
 			></TextArea>
 		</Item>
 	)

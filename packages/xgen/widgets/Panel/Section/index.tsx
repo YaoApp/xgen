@@ -40,6 +40,7 @@ const Index = (props: IProps) => {
 						...(column.component?.edit.props || {}),
 						__name: label,
 						__bind: bind,
+						__namespace: `${props.id}.${index}.${bind}`,
 						onChange: (value: any) => onChange(props.id, bind, value),
 						value
 					}
