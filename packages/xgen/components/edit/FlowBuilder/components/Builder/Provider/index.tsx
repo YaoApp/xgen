@@ -37,6 +37,9 @@ interface BuilderContextType {
 
 	openPanel: boolean
 	setOpenPanel: Dispatch<SetStateAction<boolean>>
+
+	updateData: any | undefined
+	setUpdateData: Dispatch<SetStateAction<any | undefined>>
 }
 
 interface IProps {
@@ -121,6 +124,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	const [edges, setEdges, onEdgesChange] = useEdgesState([])
 	const [openPanel, setOpenPanel] = useState(false)
 	const [panelNode, setPanelNode] = useState<ReactFlowNode<any> | undefined>(undefined)
+	const [updateData, setUpdateData] = useState<any | undefined>(undefined)
 
 	const onDelete = useCallback((id: string) => {
 		setNodes((nds) => nds.filter((node) => node.id !== id))
@@ -166,19 +170,20 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	}, [])
 
 	const onSetting = useCallback((id: string) => {
-		console.log(
-			'setting',
-			id,
-			nodes.find((n: any) => n.id === id)
-		)
 		setNodes((nds: any) => {
 			const node = nds.find((n: any) => n.id === id)
 			if (!node) {
 				console.error(`[FlowBuilder] Node ${id} not found`)
 				return
 			}
-			setPanelNode(node)
-			setOpenPanel(true)
+
+			node.data.props = {
+				...node.data.props,
+				description: node.data.description,
+				label: node.data.label
+			}
+			setPanelNode(() => node)
+			setOpenPanel(() => true)
 			return nds
 		})
 	}, [])
@@ -210,7 +215,10 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				panelNode,
 				setPanelNode,
 				openPanel,
-				setOpenPanel
+				setOpenPanel,
+
+				updateData,
+				setUpdateData
 			}}
 		>
 			{props.children}

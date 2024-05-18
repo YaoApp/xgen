@@ -17,13 +17,13 @@ type IProps = {
 }
 
 const CustomNode: FC<NodeProps> = (props: IProps) => {
-	const { onDelete, onAdd, onDuplicate, onSetting } = useBuilderContext()
+	const { onDelete, onAdd, onDuplicate, onSetting, updateData } = useBuilderContext()
 
 	const global = useGlobal()
 	const [data, setData] = useState<any>(props.data)
 	const [color, setColor] = useState<string>(Color('text', global.theme))
 
-	useEffect(() => {
+	const update = () => {
 		const data = { ...props.data }
 		data.showSourceHandle = data.showSourceHandle === undefined ? true : data.showSourceHandle
 		data.showTargetHandle = data.showTargetHandle === undefined ? true : data.showTargetHandle
@@ -34,7 +34,11 @@ const CustomNode: FC<NodeProps> = (props: IProps) => {
 		data.icon = data.icon || { name: 'material-trip_origin', size: 16 }
 		setData(data)
 		setColor(color)
-	}, [props.data])
+	}
+	useEffect(() => update(), [props.data])
+	useEffect(() => {
+		updateData?.id === props.id && update()
+	}, [updateData])
 
 	return (
 		<>

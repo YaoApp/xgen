@@ -16,43 +16,36 @@ interface IProps {
 	fixed: boolean
 	offsetTop: number
 	toggleSidebar: () => void
-	onDataChange?: (data: any) => void
 }
 
 const Index = (props: IProps) => {
 	if (props.width === 0) return null
-
-	const { is_cn, setting, panelNode, setPanelNode, openPanel, setOpenPanel } = useBuilderContext()
-
+	const { is_cn, setting, panelNode, setPanelNode, openPanel, setOpenPanel, setNodes, setUpdateData } =
+		useBuilderContext()
 	const defaultLabel = is_cn ? '未命名' : 'Untitled'
 
-	// Panel setting
-	const [type, setType] = useState<Type | undefined>(undefined)
-	const [active, setActive] = useState<string | undefined>(undefined)
-	const [updateData, setUpdateData] = useState<{ id: string; bind: string; value: any } | undefined>(undefined)
-
 	const onPanelChange = (id: string, bind: string, value: any) => {
-		setUpdateData(() => ({ id, bind, value }))
-		setPanelNode((prev: any) => {
-			prev.props = { ...prev.props, [bind]: value }
-			if (bind == 'description') {
-				prev.description = value
-			}
-			return { ...prev }
+		setNodes((nds) => {
+			const node = nds.find((item) => item.id === id)
+			if (!node) return nds
+			if (bind === 'description') node.data.description = value
+			if (bind === 'label') node.data.label = value
+			node.data.props[bind] = value
+			return [...nds]
+		})
+
+		setUpdateData((data: any) => {
+			console.log('setUpdateData', id, bind, value)
+			return { id, bind, value }
 		})
 	}
 
 	const hidePanel = () => {
 		setOpenPanel(false)
-		setActive(undefined)
-		setPanelNode(undefined)
 	}
 
 	const getType = (node: ReactFlowNode<any> | undefined) => {
-		if (!node) {
-			console.error('Node not found')
-			return undefined
-		}
+		if (!node) return undefined
 
 		const type = setting?.types?.find((item) => item.name === node.data?.type)
 		if (!type) {
@@ -121,13 +114,7 @@ const Index = (props: IProps) => {
 					</div>
 				</div>
 
-				<Flow
-					width={props.width}
-					height={props.height}
-					value={props.value}
-					updateData={updateData}
-					onDataChange={props.onDataChange}
-				/>
+				<Flow width={props.width} height={props.height} value={props.value} />
 			</div>
 		</>
 	)

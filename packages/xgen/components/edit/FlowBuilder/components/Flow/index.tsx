@@ -28,8 +28,6 @@ interface IProps {
 	width: number
 	height: number
 	value?: FlowValue
-	onDataChange?: (data: any) => void
-	updateData?: { id: string; bind: string; value: any }
 }
 
 const edgeTypes: EdgeTypes = {
@@ -77,28 +75,6 @@ const Flow = (props: IProps) => {
 	const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null)
 	const reactFlowWrapper = useRef(null)
 	const connectingNodeId = useRef(null)
-
-	// Responsible for the panel update
-	useEffect(() => {
-		if (!props.updateData) return
-		setNodes((nds) => {
-			if (!props.updateData) return nds
-			const data = props.updateData
-			const newNodes = nds.map((node: any) => {
-				if (node.id !== data.id) return node
-
-				const newNode = { ...node }
-				newNode.data.props = { ...node.data.props, [data.bind]: data.value }
-				if (data.bind === 'description') {
-					newNode.data.description = data.value
-				}
-				return newNode
-			})
-
-			props.onDataChange && props.onDataChange(nodes)
-			return newNodes
-		})
-	}, [props.updateData])
 
 	const onDrop = useCallback(
 		(event: any) => {
