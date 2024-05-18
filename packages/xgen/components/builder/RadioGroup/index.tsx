@@ -20,7 +20,6 @@ const Index = (props: IProps) => {
 	const [x] = useState(() => container.resolve(Model))
 
 	const [value, setValue] = useState(props.value)
-
 	useLayoutEffect(() => {
 		x.remote.raw_props = props
 		x.remote.init()
@@ -28,7 +27,7 @@ const Index = (props: IProps) => {
 
 	useEffect(() => {
 		if (props.value === undefined || props.value === null) {
-			setValue(null)
+			setValue(props.defaultValue || null)
 			return
 		}
 		setValue(props.value)

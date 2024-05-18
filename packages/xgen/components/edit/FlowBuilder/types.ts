@@ -33,7 +33,7 @@ export type FlowEdge = {
 }
 
 export type FlowValue = {
-	key: string
+	key?: string
 	name?: string // the name of the flow
 	label?: string // the label of the flow
 	icon?: IconT // the icon of the flow

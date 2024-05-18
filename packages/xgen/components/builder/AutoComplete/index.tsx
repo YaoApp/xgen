@@ -22,7 +22,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 
 	useEffect(() => {
 		if (__value === undefined || __value === null) {
-			setValue(null)
+			setValue(props.defaultValue || null)
 			return
 		}
 

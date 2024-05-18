@@ -63,7 +63,10 @@ const Index = (props: IProps) => {
 				id={active}
 				label={node?.data?.label || node?.data?.description || node?.data?.name || defaultLabel}
 				defaultIcon='material-trip_origin'
-				data={undefined}
+				data={{
+					...(node?.data?.props || {}),
+					description: node?.data?.description || node?.data?.name || defaultLabel
+				}}
 				type={type}
 				fixed={props.fixed}
 				offsetTop={props.offsetTop}

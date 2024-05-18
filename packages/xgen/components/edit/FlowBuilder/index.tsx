@@ -42,6 +42,12 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	const [flows, setFlows] = useState<any[]>([])
 	const [activeFlow, setActiveFlow] = useState<string>('')
 
+	// Get the form value
+	const [value, setValue] = useState<any>()
+	useEffect(() => {
+		setValue(props.value)
+	}, [props.value])
+
 	// Set the width of the grid layout
 	const offsetTop = 80
 	const [isFixed, setIsFixed] = useState(false)
@@ -192,13 +198,13 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 		}
 	}
 
-	// Update flows by setting
+	// Update flows by setting (initialization or setting change)
 	const updateFlowsBySetting = (setting?: Setting) => {
 		if (!setting) return
-		const defaultValues: FlowValue[] = GetValues(setting.defaultValue)
-		const defaultFlows = defaultValues.map(valueToFlow)
-		defaultFlows.length === 0 && defaultFlows.push(blankFlow())
-		setFlows([...defaultFlows])
+		const values: FlowValue[] = GetValues(value || setting.defaultValue)
+		const flows = values.map(valueToFlow)
+		flows.length === 0 && flows.push(blankFlow())
+		setFlows([...flows])
 	}
 
 	// Refresh flows (when the width, height, or sidebar status changes)

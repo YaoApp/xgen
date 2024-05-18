@@ -9,11 +9,12 @@ import styles from './index.less'
 
 import type { Component } from '@/types'
 
-import type { EditorDidMount, monaco } from 'react-monaco-editor'
+import { EditorDidMount, monaco } from 'react-monaco-editor'
 
 interface ICustom {
 	value: string
 	disabled?: boolean
+	placeholder?: string
 	language?: 'json' | 'javascript' | 'typescript' | 'yaml' | 'html' | 'css' | 'sql' | 'markdown'
 	hideLineNumbers?: boolean
 	height?: number | string
@@ -23,6 +24,7 @@ interface ICustom {
 interface IProps extends Component.PropsEditComponent, ICustom {}
 
 const Custom = window.$app.memo((props: ICustom) => {
+	const [showPlaceholder, setShowPlaceholder] = useState(false)
 	const [value, setValue] = useState<any>()
 	const ref = useRef<monaco.editor.IStandaloneCodeEditor>()
 	const global = useGlobal()
@@ -30,7 +32,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 	const theme = useMemo(() => (global.theme === 'dark' ? 'x-dark' : 'x-light'), [global.theme])
 
 	useEffect(() => {
-		if (!props.value) return
+		setShowPlaceholder(!props.value)
 		if (typeof props.value !== 'string') {
 			try {
 				setValue(JSON.stringify(props.value, null, 2))
@@ -73,29 +75,41 @@ const Custom = window.$app.memo((props: ICustom) => {
 	}
 
 	return (
-		<Editor
-			className={styles._local}
-			width='100%'
-			height={height}
-			language={language}
-			theme={theme}
-			options={{
-				readOnly: props.disabled,
-				wordWrap: 'on',
-				formatOnPaste: true,
-				formatOnType: true,
-				renderLineHighlight: 'none',
-				smoothScrolling: true,
-				padding: { top: 15 },
-				lineNumbersMinChars: 3,
-				minimap: { enabled: false },
-				lineNumbers: props.hideLineNumbers ? 'off' : 'on',
-				scrollbar: { verticalScrollbarSize: 8, horizontalSliderSize: 8, useShadows: false }
-			}}
-			value={value}
-			onChange={onChange}
-			editorDidMount={editorDidMount}
-		></Editor>
+		<div className={styles._local}>
+			<div
+				className='monaco-placeholder'
+				style={{
+					display: showPlaceholder ? 'block' : 'none',
+					top: 14,
+					left: props.hideLineNumbers ? 24 : 48
+				}}
+			>
+				{props.placeholder}
+			</div>
+			<Editor
+				className='monaco-editor'
+				width='100%'
+				height={height}
+				language={language}
+				theme={theme}
+				options={{
+					readOnly: props.disabled,
+					wordWrap: 'on',
+					formatOnPaste: true,
+					formatOnType: true,
+					renderLineHighlight: 'none',
+					smoothScrolling: true,
+					padding: { top: 15 },
+					lineNumbersMinChars: 3,
+					minimap: { enabled: false },
+					lineNumbers: props.hideLineNumbers ? 'off' : 'on',
+					scrollbar: { verticalScrollbarSize: 8, horizontalSliderSize: 8, useShadows: false }
+				}}
+				value={value}
+				onChange={onChange}
+				editorDidMount={editorDidMount}
+			/>
+		</div>
 	)
 })
 

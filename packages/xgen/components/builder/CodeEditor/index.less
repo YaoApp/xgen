@@ -1,4 +1,25 @@
 ._local {
-	border-radius: var(--radius) !important;
-	overflow: hidden;
+	:global {
+		width: 100%;
+		position: relative;
+
+		.monaco-editor {
+			border-radius: var(--radius) !important;
+			overflow: hidden;
+			z-index: 99;
+		}
+
+		.monaco-placeholder {
+			position: absolute;
+			display: none;
+			white-space: pre-wrap;
+			top: 12px;
+			left: 24px;
+			font-size: 12px;
+			color: var(--color_placeholder);
+			z-index: 100;
+			pointer-events: none;
+			user-select: none;
+		}
+	}
 }
