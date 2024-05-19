@@ -18,6 +18,7 @@ interface IProps {
 	defaultIcon?: string
 	onClose: () => void
 	onChange?: (id: string, bind: string, value: any) => void
+	afterOpenChange?: (open: boolean) => void
 }
 
 const Index = (props: IProps) => {
@@ -47,6 +48,7 @@ const Index = (props: IProps) => {
 			closable={false}
 			maskClosable={true}
 			onClose={props.onClose}
+			afterOpenChange={props.afterOpenChange}
 			open={props.open}
 			getContainer={false}
 			className={clsx(styles._local)}
@@ -60,7 +62,6 @@ const Index = (props: IProps) => {
 						<Section id={id} key={index} section={section} onChange={onChange} data={data} />
 					))}
 				</Then>
-				<Else> Someting Error </Else>
 			</If>
 		</Drawer>
 	)
