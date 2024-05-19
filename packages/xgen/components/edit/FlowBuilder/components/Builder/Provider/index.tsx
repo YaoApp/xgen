@@ -40,6 +40,9 @@ interface BuilderContextType {
 
 	updateData: any | undefined
 	setUpdateData: Dispatch<SetStateAction<any | undefined>>
+
+	running: boolean
+	setRunning: Dispatch<SetStateAction<boolean>>
 }
 
 interface IProps {
@@ -125,6 +128,8 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	const [hideContextMenu, setHideContextMenu] = useState<boolean | undefined>(undefined)
 	const [nodes, setNodes, onNodesChange] = useNodesState(Nodes(value))
 	const [edges, setEdges, onEdgesChange] = useEdgesState([])
+	const [running, setRunning] = useState(false)
+
 	const [openPanel, setOpenPanel] = useState(false)
 	const [panelNode, setPanelNode] = useState<ReactFlowNode<any> | undefined>(undefined)
 	const [updateData, setUpdateData] = useState<any | undefined>(undefined)
@@ -215,7 +220,10 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				setOpenPanel,
 
 				updateData,
-				setUpdateData
+				setUpdateData,
+
+				running,
+				setRunning
 			}}
 		>
 			{props.children}

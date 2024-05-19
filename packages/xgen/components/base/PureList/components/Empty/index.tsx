@@ -4,9 +4,12 @@ import { PlusCircle } from 'phosphor-react'
 import styles from './index.lsss'
 
 import type { IPropsEmpty } from '../../types'
+import { getLocale } from '@umijs/max'
 
 const Index = (props: IPropsEmpty) => {
 	const { builder, onAdd } = props
+
+	const is_cn = getLocale() === 'zh-CN'
 
 	if (builder)
 		return (
@@ -20,7 +23,7 @@ const Index = (props: IPropsEmpty) => {
 					icon={<PlusCircle className='mr_6' size={14}></PlusCircle>}
 					onClick={() => onAdd([])}
 				>
-					{props.placeholder || '添加数据项'}
+					{props.placeholder || (is_cn ? '添加' : 'Add')}
 				</Button>
 			</div>
 		)
@@ -35,7 +38,7 @@ const Index = (props: IPropsEmpty) => {
 				icon={<PlusCircle className='mr_6' size={18}></PlusCircle>}
 				onClick={() => onAdd([])}
 			>
-				{props.placeholder || '添加数据项'}
+				{props.placeholder || (is_cn ? '添加' : 'Add')}
 			</Button>
 		</div>
 	)

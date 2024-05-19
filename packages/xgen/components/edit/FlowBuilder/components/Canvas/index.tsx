@@ -7,6 +7,9 @@ import { Node as ReactFlowNode } from 'reactflow'
 import { useBuilderContext } from '../Builder/Provider'
 import { useState } from 'react'
 
+import yaml from 'js-yaml'
+import { Button, message } from 'antd'
+
 interface IProps {
 	width: number
 	height: number
@@ -29,17 +32,29 @@ const Index = (props: IProps) => {
 		openPanel,
 		setOpenPanel,
 		setNodes,
-		setUpdateData
+		setUpdateData,
+		running,
+		setRunning
 	} = useBuilderContext()
-	const defaultLabel = is_cn ? '未命名' : 'Untitled'
-
 	const [openSettings, setOpenSettings] = useState(false)
+	const [openExecute, setOpenExecute] = useState(false)
+	const defaultLabel = is_cn ? '未命名' : 'Untitled'
 
 	const onPanelChange = (id: string, bind: string, value: any) => {
 		if (openSettings) {
 			setValue?.((val) => {
 				if (val?.flow) {
 					val.flow[bind] = value
+				}
+				return { ...val }
+			})
+			return
+		}
+
+		if (openExecute) {
+			setValue?.((val) => {
+				if (val?.execute) {
+					val.execute[bind] = value
 				}
 				return { ...val }
 			})
@@ -63,12 +78,15 @@ const Index = (props: IProps) => {
 	const afterOpenChange = (open: boolean) => {
 		if (!open) {
 			setOpenSettings(() => false)
+			setOpenExecute(() => false)
 			setPanelNode(() => undefined)
 		}
 	}
 
 	const getType = () => {
 		if (openSettings) return getSetting()
+		if (openExecute) return getExecute()
+
 		const node = panelNode
 		if (!node) return undefined
 		const type = setting?.types?.find((item) => item.name === node.data?.type)
@@ -109,8 +127,31 @@ const Index = (props: IProps) => {
 		} as Type
 	}
 
+	const getExecute = () => {
+		if (!setting) return undefined
+		if (!setting.execute) {
+			console.error('Execute not found')
+			return undefined
+		}
+
+		setting.execute.forEach((section) => {
+			section?.columns?.forEach((item) => {
+				const component = setting?.fields?.[item.name]
+				if (!component) return console.error('Component not found', item.name)
+				item.component = component
+			})
+		})
+
+		return {
+			name: is_cn ? '运行' : 'Execute',
+			icon: 'icon-play',
+			props: setting.execute
+		} as Type
+	}
+
 	const getLabel = () => {
 		if (openSettings) return is_cn ? '设置' : 'Settings'
+		if (openExecute) return is_cn ? '运行' : 'Execute'
 		return (
 			panelNode?.data?.props?.label ||
 			panelNode?.data?.props?.description ||
@@ -119,18 +160,53 @@ const Index = (props: IProps) => {
 		)
 	}
 
+	const doExecute = () => {
+		setRunning(() => true)
+		setTimeout(() => {
+			setRunning(() => false)
+			message.success(is_cn ? '运行完毕' : 'Run Complete')
+		}, 5000)
+		console.log('doExecute', value)
+	}
+
+	const getActions = () => {
+		if (!openExecute) return undefined
+		return [
+			<Button
+				key='run'
+				type='primary'
+				loading={running}
+				size='small'
+				onClick={() => doExecute()}
+				style={{ fontSize: 12 }}
+			>
+				<Icon name='icon-play' size={10} style={{ marginRight: 4 }} />
+				{is_cn ? '运行' : 'Run'}
+			</Button>
+		]
+	}
+
 	const getData = () => {
 		if (openSettings) return { ...(value?.flow || {}) }
+		if (openExecute) return { ...(value?.execute || {}) }
 		return { ...(panelNode?.data?.props || {}) }
 	}
 
 	const getID = () => {
 		if (openSettings) return '__settings'
+		if (openExecute) return '__execute'
 		return panelNode?.id
 	}
 
 	const showSettings = () => {
 		setOpenSettings(() => true)
+		setOpenExecute(() => false)
+		setOpenPanel(() => true)
+	}
+
+	const showExecute = () => {
+		setOpenExecute(() => true)
+		setOpenSettings(() => false)
 		setOpenPanel(() => true)
 	}
 
@@ -142,6 +218,7 @@ const Index = (props: IProps) => {
 				afterOpenChange={afterOpenChange}
 				onChange={onPanelChange}
 				id={getID()}
+				actions={getActions()}
 				label={getLabel()}
 				data={getData()}
 				type={getType()}
@@ -171,7 +248,7 @@ const Index = (props: IProps) => {
 						{props.value?.flow?.label || props.value?.flow?.name || defaultLabel}
 					</div>
 					<div className='actions'>
-						<a style={{ marginRight: 12, marginTop: 2 }}>
+						<a style={{ marginRight: 12, marginTop: 2 }} onClick={showExecute}>
 							<Icon name='icon-play' size={14} />
 						</a>
 						<a style={{ marginRight: 6, marginTop: 2 }} onClick={showSettings}>

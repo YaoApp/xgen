@@ -9,6 +9,7 @@ export type Remote = {
 
 export type Setting = {
 	flow?: PanelSection[]
+	execute?: PanelSection[]
 	types?: Type[]
 	fields?: Record<string, PanelColumnComponent>
 	defaultValue?: FlowValue | FlowValue[]
@@ -43,7 +44,13 @@ export type FlowValue = {
 		icon?: IconT // the icon of the flow
 		[key: string]: any // the other properties of the flow
 	}
-	mock?: any[] // the latest mock data of the flow
+
+	execute?: {
+		input?: any // the input of the flow
+		query?: Record<string, any> // the query of the execute
+		[key: string]: any // the other properties of the execute
+	}
+
 	data?: Data[] | Data
 	nodes?: FlowNode[]
 	edges?: FlowEdge[]

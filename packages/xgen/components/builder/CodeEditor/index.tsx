@@ -11,6 +11,10 @@ import type { Component } from '@/types'
 
 import { EditorDidMount, monaco } from 'react-monaco-editor'
 
+import yaml from 'js-yaml'
+import { message } from 'antd'
+import { getLocale } from '@umijs/max'
+
 interface ICustom {
 	value: string
 	disabled?: boolean
@@ -31,14 +35,37 @@ const Custom = window.$app.memo((props: IProps) => {
 	const { language = 'json', height = 210 } = props
 	const theme = useMemo(() => (global.theme === 'dark' ? 'x-dark' : 'x-light'), [global.theme])
 	const [namespace, setNamespace] = useState(props.__namespace)
+	const is_cn = getLocale() === 'zh-CN'
+
 	useEffect(() => setNamespace(props.__namespace), [props.__namespace])
 	useEffect(() => {
 		setShowPlaceholder(!props.value)
-		if (typeof props.value !== 'string') {
+		if (typeof props.value !== 'string' && props.value !== undefined && props.value !== null) {
+			// YAML stringify
+			if (language === 'yaml') {
+				try {
+					setValue(yaml.dump(props.value))
+				} catch (e) {
+					console.error(`CodeEditor: ${e}`)
+					message.error(
+						is_cn
+							? `YAML 格式错误 ${props.__name} (${props.__bind})`
+							: `YAML format error ${props.__name} (${props.__bind})`
+					)
+				}
+				return
+			}
+
+			// JSON stringify
 			try {
 				setValue(JSON.stringify(props.value, null, 2))
 			} catch (e) {
 				console.error(`CodeEditor: ${e}`)
+				message.error(
+					is_cn
+						? `JSON 格式错误 ${props.__name} (${props.__bind})`
+						: `JSON format error ${props.__name} (${props.__bind})`
+				)
 			}
 			return
 		}
