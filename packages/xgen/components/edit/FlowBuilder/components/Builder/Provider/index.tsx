@@ -170,12 +170,15 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 
 	const onSetting = useCallback((id: string) => {
 		setNodes((nds: any) => {
-			const node = nds.find((n: any) => n.id === id)
+			const node = nds.find((n: any) => {
+				n.selected = false // unselect all nodes
+				return n.id === id
+			})
 			if (!node) {
 				console.error(`[FlowBuilder] Node ${id} not found`)
 				return
 			}
-			node.selected = true
+			node.selected = true // select the node
 			setPanelNode(() => node)
 			setOpenPanel(() => true)
 			return nds
