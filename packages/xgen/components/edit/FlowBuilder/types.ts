@@ -1,4 +1,4 @@
-import { PanelType, PanelColumnComponent } from '@/widgets'
+import { PanelType, PanelSection, PanelColumnComponent } from '@/widgets'
 
 export type Type = PanelType
 
@@ -8,22 +8,25 @@ export type Remote = {
 }
 
 export type Setting = {
-	title?: string
+	flow?: PanelSection[]
 	types?: Type[]
-	defaultValue?: FlowValue | FlowValue[]
 	fields?: Record<string, PanelColumnComponent>
+	defaultValue?: FlowValue | FlowValue[]
 }
 
 export type FlowNode = {
 	id: string
 	position: { x: number; y: number }
 	type: string
-	description: string
-	props: Record<string, any>
-	output?: any
-
 	showTargetHandle?: boolean
 	showSourceHandle?: boolean
+	props: {
+		name?: string
+		label?: string
+		description?: string
+		output?: string
+		[key: string]: any
+	}
 }
 
 export type FlowEdge = {
@@ -34,9 +37,12 @@ export type FlowEdge = {
 
 export type FlowValue = {
 	key?: string
-	name?: string // the name of the flow
-	label?: string // the label of the flow
-	icon?: IconT // the icon of the flow
+	flow?: {
+		name?: string // the name of the flow
+		label?: string // the label of the flow
+		icon?: IconT // the icon of the flow
+		[key: string]: any // the other properties of the flow
+	}
 	mock?: any[] // the latest mock data of the flow
 	data?: Data[] | Data
 	nodes?: FlowNode[]

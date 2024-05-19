@@ -7,7 +7,7 @@ import styles from './index.less'
 import clsx from 'clsx'
 import { Else, If, Then } from 'react-if'
 import { Icon } from '@/widgets'
-import { FlowValue, IconT, Setting, Type } from './types'
+import { FlowValue, Setting } from './types'
 import { GetSetting, GetValues, IconName } from './utils'
 import { useGlobal } from '@/context/app'
 import Builder from './components/Builder'
@@ -159,10 +159,10 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	// Convert value to flow
 	const valueToFlow = (value: FlowValue, index: number) => {
 		const text = is_cn ? '<未命名>' : '<Untitled>'
-		const key = `${value.name || value.label || text}-${index}`
-
+		const flow = value.flow || { name: text, label: text }
+		const key = `${flow.name || flow.label || text}-${index}`
 		return {
-			label: <TabItemLabel text={value.label || value.name || ''} icon={IconName(value.icon)} />,
+			label: <TabItemLabel text={flow.label || flow.name || ''} icon={IconName(flow.icon)} />,
 			value: value,
 			key: key,
 			children: (
@@ -183,7 +183,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 
 	const blankFlow = () => {
 		const text = is_cn ? `<未命名-${flows.length + 1}>` : `<Untitled-${flows.length + 1}>`
-		const value = { label: text, key: text }
+		const flow: FlowValue = { flow: { name: text, label: text } }
 		const key = `blank-${Date.now().toString()}`
 		return {
 			label: <TabItemLabel text={text} icon={IconName()} />,
@@ -195,7 +195,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 					height={height}
 					fixed={isFixed}
 					offsetTop={offsetTop}
-					value={{ label: text, key: text }}
+					value={flow}
 					showSidebar={showSidebar}
 					setting={setting}
 					toggleSidebar={toggleSidebar}

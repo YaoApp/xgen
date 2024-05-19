@@ -25,6 +25,7 @@ const CustomNode: FC<NodeProps> = (props: IProps) => {
 
 	const update = () => {
 		const data = { ...props.data }
+		data.props = data.props || {}
 		data.showSourceHandle = data.showSourceHandle === undefined ? true : data.showSourceHandle
 		data.showTargetHandle = data.showTargetHandle === undefined ? true : data.showTargetHandle
 		data.toolbarVisible = data.toolbarVisible === undefined ? true : data.toolbarVisible
@@ -99,7 +100,7 @@ const CustomNode: FC<NodeProps> = (props: IProps) => {
 					/>
 				)}
 				<div className='description' style={{ textAlign: 'left' }}>
-					{data.label || data.description}
+					{data.props.label || data.props.description}
 				</div>
 			</div>
 

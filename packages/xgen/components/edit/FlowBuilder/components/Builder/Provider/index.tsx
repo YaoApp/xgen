@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from 'react'
-import { FlowValue, Setting } from '../../../types'
+import { FlowNode, FlowValue, Setting } from '../../../types'
 import { useEdgesState, useNodesState, Node as ReactFlowNode, OnNodesChange, OnEdgesChange } from 'reactflow'
 import { getLocale } from '@umijs/max'
 
@@ -52,12 +52,13 @@ const BuilderContext = createContext<BuilderContextType | undefined>(undefined)
 export const BuilderProvider: React.FC<IProps> = (props) => {
 	const Nodes = (value?: FlowValue) => {
 		const nodes: any[] = []
-		value?.nodes?.forEach((node) => {
+		value?.nodes?.forEach((node: FlowNode) => {
 			const nodeType = setting?.types?.find((type) => type.name === node.type)
 			if (!nodeType) {
 				console.error(`[FlowBuilder] Node type ${node.type} not found`)
 				return
 			}
+
 			const className = nodeType.background || 'default'
 			nodes.push({
 				id: ID(node.id),
@@ -65,14 +66,15 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				sourcePosition: 'right',
 				targetPosition: 'left',
 				className: className,
+				position: node.position,
 				data: {
-					...node,
+					props: node.props || {},
+					type: node.type,
 					icon: nodeType.icon,
 					color: nodeType.color,
 					background: className,
 					typeLabel: nodeType.label || nodeType.name
-				},
-				position: node.position
+				}
 			})
 		})
 
@@ -86,11 +88,11 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 			return
 		}
 
-		const node = {
+		const node: FlowNode = {
 			id: ID(),
 			type: typeName,
-			props: {},
-			description: description
+			props: { description: description },
+			position: position
 		}
 		const className = nodeType.background || 'default'
 		return {
@@ -100,7 +102,8 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 			targetPosition: 'left',
 			className: className,
 			data: {
-				...node,
+				props: node.props || {},
+				type: node.type,
 				icon: nodeType.icon,
 				color: nodeType.color,
 				background: className,
@@ -154,15 +157,11 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 			const data = node?.data || {}
 			const position = { x: (node?.position?.x || 0) + 400, y: node?.position?.y || 0 }
 			const newID = ID()
+			data.props = { ...data.props, description: `[${is_cn ? '复本' : 'Copy'}] ${data.props?.description}` }
 			const newNode = {
 				...node,
 				id: newID,
-				data: {
-					...node,
-					...data,
-					id: newID,
-					description: `[${is_cn ? '复本' : 'Copy'}] ${data.description}`
-				},
+				data: { ...data, id: newID },
 				position: position
 			}
 			return nds.concat(newNode as any)
@@ -176,12 +175,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				console.error(`[FlowBuilder] Node ${id} not found`)
 				return
 			}
-
-			node.data.props = {
-				...node.data.props,
-				description: node.data.description,
-				label: node.data.label
-			}
+			node.selected = true
 			setPanelNode(() => node)
 			setOpenPanel(() => true)
 			return nds

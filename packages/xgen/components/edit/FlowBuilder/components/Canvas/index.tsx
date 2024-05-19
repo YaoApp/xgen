@@ -26,8 +26,6 @@ const Index = (props: IProps) => {
 		setNodes((nds) => {
 			const node = nds.find((item) => item.id === id)
 			if (!node) return nds
-			if (bind === 'description') node.data.description = value
-			if (bind === 'label') node.data.label = value
 			node.data.props[bind] = value
 			return [...nds]
 		})
@@ -66,9 +64,9 @@ const Index = (props: IProps) => {
 				onChange={onPanelChange}
 				id={panelNode?.id}
 				label={
-					panelNode?.data?.label ||
-					panelNode?.data?.description ||
-					panelNode?.data?.name ||
+					panelNode?.data?.props?.label ||
+					panelNode?.data?.props?.description ||
+					panelNode?.data?.props?.name ||
 					defaultLabel
 				}
 				defaultIcon='material-trip_origin'
@@ -92,11 +90,11 @@ const Index = (props: IProps) => {
 							/>
 						</a>
 						<Icon
-							name={IconName(props.value?.icon)}
-							size={IconSize(props.value?.icon)}
+							name={IconName(props.value?.flow?.icon)}
+							size={IconSize(props.value?.flow?.icon)}
 							style={{ marginRight: 4 }}
 						/>
-						{props.value?.label || props.value?.name || defaultLabel}
+						{props.value?.flow?.label || props.value?.flow?.name || defaultLabel}
 					</div>
 					<div className='actions'>
 						<a style={{ marginRight: 12, marginTop: 2 }}>
