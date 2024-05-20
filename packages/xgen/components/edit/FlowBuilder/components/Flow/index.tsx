@@ -1,5 +1,12 @@
 import clsx from 'clsx'
-import ReactFlow, { Background, Controls, EdgeTypes, ReactFlowInstance, ReactFlowProvider } from 'reactflow'
+import ReactFlow, {
+	Background,
+	Controls,
+	EdgeTypes,
+	ReactFlowInstance,
+	ReactFlowProvider,
+	useOnSelectionChange
+} from 'reactflow'
 import { useCallback, useRef, useState } from 'react'
 import CustomEdge from './Edge'
 
@@ -64,6 +71,16 @@ const Flow = (props: IProps) => {
 		event.preventDefault()
 		event.dataTransfer.dropEffect = 'move'
 	}, [])
+
+	useOnSelectionChange({
+		// Open the connection settings panel when an edge is selected
+		onChange: ({ nodes, edges }) => {
+			console.log(
+				'selected edges:',
+				edges.map((edge) => edge.id)
+			)
+		}
+	})
 
 	return (
 		<div className='reactflow-wrapper' ref={reactFlowWrapper}>

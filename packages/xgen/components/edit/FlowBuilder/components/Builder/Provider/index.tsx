@@ -13,8 +13,7 @@ import {
 	OnConnectStartParams,
 	Connection,
 	MarkerType,
-	addEdge,
-	Edge
+	addEdge
 } from 'reactflow'
 import { getLocale } from '@umijs/max'
 import { message } from 'antd'
@@ -175,7 +174,9 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	const [panelNode, setPanelNode] = useState<ReactFlowNode<any> | undefined>(undefined)
 
 	const onDelete = useCallback((id: string) => {
-		setNodes((nds) => nds.filter((node) => node.id !== id))
+		setNodes((nds) => {
+			return nds.filter((node) => node.id !== id)
+		})
 	}, [])
 
 	const fixPosition = (position: { x: number; y: number }, nds: any): { x: number; y: number } => {
@@ -201,13 +202,33 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 			return nds.concat(newNode as any)
 		})
 
+		// connect to the new node
 		if (connecting.current) {
-			let source = nodes.find((node) => node.id === id)
-			const background = source?.data?.background
-			const style = EdgeStyle(background)
-			const connection = { source: id, target: connecting.current, sourceHandle: null, targetHandle: null }
-			const newEdge = { ...connection, ...style, type: 'custom', data: { label: '' } }
-			setEdges((eds) => addEdge(newEdge, eds))
+			setNodes((nds: any) => {
+				let source = nds.find((n: any) => n.id === id)
+				const background = source?.data?.background
+				const style = EdgeStyle(background)
+				const connection = {
+					source: source.id,
+					target: connecting.current,
+					sourceHandle: null,
+					targetHandle: null
+				}
+
+				const newEdge = { ...connection, ...style, type: 'custom', data: { label: '' } }
+				setEdges((eds) => {
+					eds.forEach((edge: any) => {
+						if (edge.source === connection.source) {
+							newEdge.data.label = is_cn ? '<条件>' : '<Condition>'
+							if (!edge.data?.label) {
+								edge.data = { ...edge.data, label: is_cn ? '<条件>' : '<Condition>' }
+							}
+						}
+					})
+					return addEdge(newEdge, eds)
+				})
+				return nds
+			})
 		}
 	}, [])
 

@@ -3,11 +3,19 @@
 		.label {
 			position: absolute;
 			padding: 4px 6px;
+			display: block;
 			border-radius: 5px;
 			font-size: 12px;
 			font-weight: 500;
 			color: var(--color_text);
 			background: var(--color_bg_menu);
+			max-width: 100px;
+			max-height: 26px;
+
+			// 省略号
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 	}
 }
