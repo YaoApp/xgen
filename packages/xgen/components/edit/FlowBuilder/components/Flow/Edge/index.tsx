@@ -44,14 +44,18 @@ const CustomEdge: FC<EdgeProps> = ({
 			/>
 
 			<EdgeLabelRenderer>
-				<div className={clsx(styles._local)}>
-					<a
-						style={{ transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)` }}
-						className='label nodrag nopan'
-					>
-						{data.label}
-					</a>
-				</div>
+				{data.label != '' && data.label != undefined && (
+					<div className={clsx(styles._local)}>
+						<a
+							style={{
+								transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`
+							}}
+							className='label nodrag nopan'
+						>
+							{data.label}
+						</a>
+					</div>
+				)}
 			</EdgeLabelRenderer>
 		</>
 	)

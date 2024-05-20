@@ -32,7 +32,6 @@ const Index = (props: IProps) => {
 		openPanel,
 		setOpenPanel,
 		setNodes,
-		setUpdateData,
 		running,
 		setRunning
 	} = useBuilderContext()
@@ -67,8 +66,6 @@ const Index = (props: IProps) => {
 			node.data.props[bind] = value
 			return [...nds]
 		})
-
-		setUpdateData((data: any) => ({ id, bind, value }))
 	}
 
 	const hidePanel = () => {

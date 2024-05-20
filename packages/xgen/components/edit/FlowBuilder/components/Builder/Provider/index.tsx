@@ -1,8 +1,23 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useRef, MouseEvent, TouchEvent } from 'react'
 import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from 'react'
 import { FlowNode, FlowValue, Setting } from '../../../types'
-import { useEdgesState, useNodesState, Node as ReactFlowNode, OnNodesChange, OnEdgesChange } from 'reactflow'
+import {
+	useEdgesState,
+	useNodesState,
+	Node as ReactFlowNode,
+	OnNodesChange,
+	OnEdgesChange,
+	OnConnect,
+	OnConnectStart,
+	OnConnectEnd,
+	OnConnectStartParams,
+	Connection,
+	MarkerType,
+	addEdge,
+	Edge
+} from 'reactflow'
 import { getLocale } from '@umijs/max'
+import { message } from 'antd'
 
 interface BuilderContextType {
 	setting?: Setting
@@ -26,6 +41,9 @@ interface BuilderContextType {
 	onAdd: (id: string, type: string) => void
 	onDuplicate: (id: string) => void
 	onSetting: (id: string) => void
+	onConnect: OnConnect
+	onConnectStart: OnConnectStart
+	onConnectEnd: OnConnectEnd
 
 	value?: FlowValue
 	setValue?: Dispatch<SetStateAction<FlowValue | undefined>>
@@ -37,9 +55,6 @@ interface BuilderContextType {
 
 	openPanel: boolean
 	setOpenPanel: Dispatch<SetStateAction<boolean>>
-
-	updateData: any | undefined
-	setUpdateData: Dispatch<SetStateAction<any | undefined>>
 
 	running: boolean
 	setRunning: Dispatch<SetStateAction<boolean>>
@@ -71,6 +86,9 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				className: className,
 				position: node.position,
 				data: {
+					showSourceHandle: node.showSourceHandle,
+					showTargetHandle: node.showTargetHandle,
+					deletable: node.deletable,
 					props: node.props || {},
 					type: node.type,
 					icon: nodeType.icon,
@@ -106,6 +124,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 			className: className,
 			data: {
 				props: node.props || {},
+				deletable: true,
 				type: node.type,
 				icon: nodeType.icon,
 				color: nodeType.color,
@@ -122,6 +141,28 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 		return id
 	}
 
+	const EdgeStyle = (theme: string) => {
+		let color = 'var(--color_title)'
+		switch (theme) {
+			case 'primary':
+				color = 'var(--color_main)'
+				break
+			case 'success':
+				color = 'var(--color_success)'
+				break
+			case 'warning':
+				color = 'var(--color_warning)'
+				break
+			case 'danger':
+				color = 'var(--color_danger)'
+				break
+		}
+		return {
+			style: { strokeWidth: 2, stroke: color },
+			markerEnd: { type: MarkerType.ArrowClosed, width: 12, color: color }
+		}
+	}
+
 	const is_cn = getLocale() === 'zh-CN'
 	const [value, setValue] = useState<FlowValue | undefined>(props.value)
 	const [setting, setSetting] = useState<Setting | undefined>(props.setting)
@@ -132,11 +173,19 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 
 	const [openPanel, setOpenPanel] = useState(false)
 	const [panelNode, setPanelNode] = useState<ReactFlowNode<any> | undefined>(undefined)
-	const [updateData, setUpdateData] = useState<any | undefined>(undefined)
 
 	const onDelete = useCallback((id: string) => {
 		setNodes((nds) => nds.filter((node) => node.id !== id))
 	}, [])
+
+	const fixPosition = (position: { x: number; y: number }, nds: any): { x: number; y: number } => {
+		const node = nds.find((n: any) => n.position.x === position.x && n.position.y === position.y)
+		if (node) {
+			position.y += 150
+			return fixPosition(position, nds)
+		}
+		return position
+	}
 
 	const onAdd = useCallback((id: string, type: string) => {
 		setNodes((nds: any) => {
@@ -145,11 +194,21 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				console.error(`[FlowBuilder] Node ${id} not found`)
 				return
 			}
-			const position = { x: (node?.position?.x || 0) + 400, y: node?.position?.y || 0 }
+			const position = fixPosition({ x: (node?.position?.x || 0) + 400, y: node?.position?.y || 0 }, nds)
 			const description = is_cn ? '<未命名>' : '<Unnamed>'
 			const newNode = CreateNode(type, description, { x: position?.x, y: position?.y })
+			if (newNode?.id) connecting.current = newNode.id
 			return nds.concat(newNode as any)
 		})
+
+		if (connecting.current) {
+			let source = nodes.find((node) => node.id === id)
+			const background = source?.data?.background
+			const style = EdgeStyle(background)
+			const connection = { source: id, target: connecting.current, sourceHandle: null, targetHandle: null }
+			const newEdge = { ...connection, ...style, type: 'custom', data: { label: '' } }
+			setEdges((eds) => addEdge(newEdge, eds))
+		}
 	}, [])
 
 	const onDuplicate = useCallback((id: string) => {
@@ -159,14 +218,14 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				console.error(`[FlowBuilder] Node ${id} not found`)
 				return
 			}
-			const data = node?.data || {}
+			const data = { ...(node?.data || {}) }
 			const position = { x: (node?.position?.x || 0) + 400, y: node?.position?.y || 0 }
 			const newID = ID()
 			data.props = { ...data.props, description: `[${is_cn ? '复本' : 'Copy'}] ${data.props?.description}` }
 			const newNode = {
-				...node,
+				...{ ...node },
 				id: newID,
-				data: { ...data, id: newID },
+				data: { ...data, deletable: true, showSourceHandle: true, showTargetHandle: true },
 				position: position
 			}
 			return nds.concat(newNode as any)
@@ -183,6 +242,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				console.error(`[FlowBuilder] Node ${id} not found`)
 				return
 			}
+
 			node.selected = true // select the node
 			setPanelNode(() => node)
 			setOpenPanel(() => true)
@@ -190,13 +250,58 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 		})
 	}, [])
 
+	// const connectingNodeId = useRef(null)
+	const connecting = useRef<string | null>(null)
+
+	const onConnect = useCallback(
+		(connection: Connection) => {
+			connecting.current = null
+			let source: any = null
+			setNodes((nds) => {
+				source = nds.find((node) => node.id === connection.source)
+				return nds
+			})
+
+			if (!source) {
+				console.error(`[FlowBuilder] Node ${connection.source} not found`)
+				message.error(
+					is_cn ? `节点 ${connection.source} 未找到` : `Node ${connection.source} not found`
+				)
+				return
+			}
+
+			// conecting to itself is not allowed
+			if (connection.source === connection.target) {
+				message.error(is_cn ? '不允许连接到自身' : 'Connecting to itself is not allowed')
+				return
+			}
+
+			console.log('connection', connection)
+
+			const background = source?.data?.background
+			const style = EdgeStyle(background)
+			const newEdge = { ...connection, ...style, type: 'custom', data: { label: '' } }
+			setEdges((eds) => addEdge(newEdge, eds))
+		},
+		[setEdges]
+	)
+
+	const onConnectStart = useCallback(
+		(event: MouseEvent | TouchEvent, params: OnConnectStartParams) => (connecting.current = params.nodeId),
+		[]
+	)
+
+	const onConnectEnd = useCallback(({ nodeId, handleType }: any) => {}, [])
+
 	return (
 		<BuilderContext.Provider
 			value={{
 				setting,
 				setSetting,
+
 				hideContextMenu,
 				setHideContextMenu,
+
 				nodes,
 				setNodes,
 				edges,
@@ -204,23 +309,25 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				onNodesChange,
 				onEdgesChange,
 
+				onConnect,
+				onConnectStart,
+				onConnectEnd,
+
 				onDelete,
 				onAdd,
 				onDuplicate,
 				onSetting,
-				is_cn,
 
+				is_cn,
 				value,
 				setValue,
+
 				CreateNode,
 
 				panelNode,
 				setPanelNode,
 				openPanel,
 				setOpenPanel,
-
-				updateData,
-				setUpdateData,
 
 				running,
 				setRunning

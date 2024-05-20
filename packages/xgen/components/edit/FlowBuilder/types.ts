@@ -21,6 +21,7 @@ export type FlowNode = {
 	type: string
 	showTargetHandle?: boolean
 	showSourceHandle?: boolean
+	deletable?: boolean
 	props: {
 		name?: string
 		label?: string
