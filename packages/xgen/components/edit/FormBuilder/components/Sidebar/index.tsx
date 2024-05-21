@@ -23,10 +23,10 @@ const Index = (props: IProps) => {
 				<div
 					className='content'
 					style={{
-						position: props.fixed ? 'fixed' : 'relative',
+						// position: props.fixed ? 'fixed' : 'relative',
 						width: 172,
-						zIndex: 99,
-						top: props.fixed ? props.offsetTop : 0
+						zIndex: 99
+						// top: props.fixed ? props.offsetTop : 0
 					}}
 				>
 					{props.types?.map((type, index) => (
@@ -44,7 +44,13 @@ const Index = (props: IProps) => {
 						>
 							<Icon
 								size={14}
-								name={type.icon ? type.icon : 'material-format_align_left'}
+								name={
+									type.icon
+										? typeof type.icon == 'string'
+											? type.icon
+											: type.icon.name
+										: 'material-format_align_left'
+								}
 								className='mr_6'
 							/>
 							{type.label ? type.label : type.name}

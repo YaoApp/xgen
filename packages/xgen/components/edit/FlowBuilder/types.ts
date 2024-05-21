@@ -43,6 +43,7 @@ export type FlowValue = {
 		name?: string // the name of the flow
 		label?: string // the label of the flow
 		icon?: IconT // the icon of the flow
+		closable?: boolean // the icon of the flow
 		[key: string]: any // the other properties of the flow
 	}
 

@@ -37,6 +37,9 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	const is_cn = getLocale() === 'zh-CN'
 	const ref = useRef<HTMLDivElement>(null)
 
+	const { __namespace, __bind } = props
+	const [initialized, setInitialized] = useState<boolean>(false)
+
 	const [loading, setLoading] = useState<boolean>(false)
 	const [setting, setSetting] = useState<Setting | undefined>(undefined)
 	const [flows, setFlows] = useState<any[]>([])
@@ -44,9 +47,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 
 	// Get the form value
 	const [value, setValue] = useState<any>()
-	useEffect(() => {
-		setValue(props.value)
-	}, [props.value])
+	useEffect(() => setValue(props.value), [props.value])
 
 	// Set the width of the grid layout
 	const offsetTop = 80
@@ -160,11 +161,12 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	const valueToFlow = (value: FlowValue, index: number) => {
 		const text = is_cn ? '<未命名>' : '<Untitled>'
 		const flow = value.flow || { name: text, label: text }
-		const key = `${flow.name || flow.label || text}-${index}`
+		const key = `${__namespace}-${__bind}-${flow.name || flow.label || text}-${index}`
 		return {
 			label: <TabItemLabel text={flow.label || flow.name || ''} icon={IconName(flow.icon)} />,
 			value: value,
 			key: key,
+			closable: flow.deletable === undefined || flow.deletable === true,
 			children: (
 				<Builder
 					width={width}
@@ -184,11 +186,12 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	const blankFlow = () => {
 		const text = is_cn ? `<未命名-${flows.length + 1}>` : `<Untitled-${flows.length + 1}>`
 		const flow: FlowValue = { flow: { name: text, label: text } }
-		const key = `blank-${Date.now().toString()}`
+		const key = `${__namespace}-${__bind}-blank_${Date.now().toString()}`
 		return {
 			label: <TabItemLabel text={text} icon={IconName()} />,
 			key: key,
 			value: value,
+			closable: true,
 			children: (
 				<Builder
 					width={width}
@@ -208,10 +211,13 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	// Update flows by setting (initialization or setting change)
 	const updateFlowsBySetting = (setting?: Setting) => {
 		if (!setting) return
+		if (initialized) return
+
+		setInitialized(true)
 		const values: FlowValue[] = GetValues(value || setting.defaultValue)
 		const flows = values.map(valueToFlow)
 		flows.length === 0 && flows.push(blankFlow())
-		setFlows([...flows])
+		setFlows(() => [...flows])
 	}
 
 	// Refresh flows (when the width, height, or sidebar status changes)
@@ -241,6 +247,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 
 	// Get setting
 	useEffect(() => {
+		if (props.setting === undefined) return
 		setLoading(true)
 		if (global.loading) return
 		if (loading) return
@@ -279,10 +286,10 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 })
 
 const Index = (props: IProps) => {
-	const { __bind, __name, itemProps, ...rest_props } = props
+	const { __namespace, __bind, __name, itemProps, ...rest_props } = props
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
-			<FlowBuilder {...rest_props} {...{ __bind, __name }}></FlowBuilder>
+			<FlowBuilder {...rest_props} {...{ __namespace, __bind, __name }}></FlowBuilder>
 		</Item>
 	)
 }
