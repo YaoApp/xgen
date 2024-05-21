@@ -21,6 +21,8 @@ interface IProps {
 	width: number
 	height: number
 	value?: FlowValue
+	__namespace?: string
+	__bind?: string
 }
 
 const edgeTypes: EdgeTypes = {
@@ -46,7 +48,7 @@ const Flow = (props: IProps) => {
 		onConnectStart,
 		onConnectEnd
 	} = useBuilderContext()
-
+	const { __namespace, __bind, name } = props
 	const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null)
 	const reactFlowWrapper = useRef(null)
 	const onDrop = useCallback(
@@ -103,7 +105,7 @@ const Flow = (props: IProps) => {
 				edgeTypes={edgeTypes}
 				nodeTypes={nodeTypes}
 			>
-				<Background gap={[14, 14]} />
+				<Background gap={[14, 14]} id={`${__namespace}.${__bind}.${name}`} />
 				<Controls />
 			</ReactFlow>
 		</div>

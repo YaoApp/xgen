@@ -32,6 +32,7 @@ export type FlowNode = {
 }
 
 export type FlowEdge = {
+	id?: string
 	source: string
 	target: string
 	condition?: string

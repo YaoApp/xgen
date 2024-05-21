@@ -17,6 +17,10 @@ interface IProps {
 	showSidebar: boolean
 	fixed: boolean
 	offsetTop: number
+
+	name?: string
+	__namespace?: string
+	__bind?: string
 	toggleSidebar: () => void
 }
 
@@ -255,7 +259,14 @@ const Index = (props: IProps) => {
 					</div>
 				</div>
 
-				<Flow width={props.width} height={props.height} value={props.value} />
+				<Flow
+					width={props.width}
+					height={props.height}
+					value={props.value}
+					name={props.name}
+					__namespace={props.__namespace}
+					__bind={props.__bind}
+				/>
 			</div>
 		</>
 	)

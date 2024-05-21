@@ -12,6 +12,7 @@ import { GetSetting, GetValues, IconName } from './utils'
 import { useGlobal } from '@/context/app'
 import Builder from './components/Builder'
 import { getLocale } from '@umijs/max'
+import { ID } from './components/Flow/utils'
 
 interface IFlowBuilderProps {
 	setting?: any
@@ -178,6 +179,9 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 					value={{ ...value, key: key }}
 					toggleSidebar={toggleSidebar}
 					onDataChange={onDataChange}
+					__namespace={__namespace}
+					__bind={__bind}
+					name={flow.name || ID()}
 				/>
 			)
 		}
@@ -203,6 +207,9 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 					setting={setting}
 					toggleSidebar={toggleSidebar}
 					onDataChange={onDataChange}
+					__namespace={__namespace}
+					__bind={__bind}
+					name={flow.flow?.name || ID()}
 				/>
 			)
 		}
@@ -236,6 +243,9 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 						setting={setting}
 						toggleSidebar={toggleSidebar}
 						onDataChange={onDataChange}
+						__namespace={__namespace}
+						__bind={__bind}
+						name={flow.value.flow?.name || ID()}
 					/>
 				)
 			}

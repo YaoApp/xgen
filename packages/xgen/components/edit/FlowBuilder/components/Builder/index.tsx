@@ -2,7 +2,6 @@ import { FlowValue, Setting } from '../../types'
 import Sidebar from '../Sidebar'
 import Canvas from '../Canvas'
 import { BuilderProvider } from '../Builder/Provider'
-import { getLocale } from '@umijs/max'
 
 interface IProps {
 	value?: FlowValue
@@ -12,8 +11,13 @@ interface IProps {
 	setting?: Setting
 	fixed: boolean
 	offsetTop: number
+
 	toggleSidebar: () => void
 	onDataChange?: (data: any) => void
+
+	name?: string
+	__namespace?: string
+	__bind?: string
 }
 
 const Index = (props: IProps) => {

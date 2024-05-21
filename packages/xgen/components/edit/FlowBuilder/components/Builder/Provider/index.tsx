@@ -108,6 +108,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 		value?.edges?.forEach((edge) => {
 			const source = ID(edge.source)
 			const target = ID(edge.target)
+			edge.id = ID(edge.id)
 			const sourceNode = nodes.find((node) => node.id === source)
 			const targetNode = nodes.find((node) => node.id === target)
 			if (!sourceNode || !targetNode) return
