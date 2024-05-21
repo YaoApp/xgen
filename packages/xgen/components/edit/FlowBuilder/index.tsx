@@ -7,7 +7,7 @@ import styles from './index.less'
 import clsx from 'clsx'
 import { Else, If, Then } from 'react-if'
 import { Icon } from '@/widgets'
-import { FlowValue, Setting } from './types'
+import { FlowNode, FlowValue, Setting } from './types'
 import { GetSetting, GetValues, IconName } from './utils'
 import { useGlobal } from '@/context/app'
 import Builder from './components/Builder'
@@ -47,8 +47,12 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	const [activeFlow, setActiveFlow] = useState<string>('')
 
 	// Get the form value
-	const [value, setValue] = useState<any>()
-	useEffect(() => setValue(props.value), [props.value])
+	const [value, setValue] = useState<any>(props.value)
+
+	// Trigger the onChange event
+	useEffect(() => {
+		props.onChange && props.onChange(value)
+	}, value)
 
 	// Set the width of the grid layout
 	const offsetTop = 80
@@ -116,8 +120,12 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 		setActiveFlow(key)
 	}
 
-	const onDataChange = (data: any) => {
-		console.log(data)
+	// When the data is updated in the flow
+	// Update the value of the form
+	// Type is: node, edge, flow
+	const onData = (id: string, type: string, value: any) => {
+		console.log('onData', id, type, value)
+		props.onChange && props.onChange([])
 	}
 
 	const onTabEdit = (targetKey: React.MouseEvent | React.KeyboardEvent | string, action: 'add' | 'remove') => {
@@ -162,7 +170,9 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	const valueToFlow = (value: FlowValue, index: number) => {
 		const text = is_cn ? '<未命名>' : '<Untitled>'
 		const flow = value.flow || { name: text, label: text }
-		const key = `${__namespace}-${__bind}-${flow.name || flow.label || text}-${index}`
+		const key = value.id || `${__namespace}-${__bind}-${flow.name || flow.label || text}-${index}`
+		value.id = value.id || key
+
 		return {
 			label: <TabItemLabel text={flow.label || flow.name || ''} icon={IconName(flow.icon)} />,
 			value: value,
@@ -170,6 +180,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 			closable: flow.deletable === undefined || flow.deletable === true,
 			children: (
 				<Builder
+					id={key}
 					width={width}
 					height={height}
 					fixed={isFixed}
@@ -178,7 +189,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 					setting={setting}
 					value={{ ...value, key: key }}
 					toggleSidebar={toggleSidebar}
-					onDataChange={onDataChange}
+					onData={onData}
 					__namespace={__namespace}
 					__bind={__bind}
 					name={flow.name || ID()}
@@ -189,8 +200,8 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 
 	const blankFlow = () => {
 		const text = is_cn ? `<未命名-${flows.length + 1}>` : `<Untitled-${flows.length + 1}>`
-		const flow: FlowValue = { flow: { name: text, label: text } }
 		const key = `${__namespace}-${__bind}-blank_${Date.now().toString()}`
+		const flow: FlowValue = { flow: { name: text, label: text }, id: key }
 		return {
 			label: <TabItemLabel text={text} icon={IconName()} />,
 			key: key,
@@ -198,6 +209,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 			closable: true,
 			children: (
 				<Builder
+					id={key}
 					width={width}
 					height={height}
 					fixed={isFixed}
@@ -206,7 +218,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 					showSidebar={showSidebar}
 					setting={setting}
 					toggleSidebar={toggleSidebar}
-					onDataChange={onDataChange}
+					onData={onData}
 					__namespace={__namespace}
 					__bind={__bind}
 					name={flow.flow?.name || ID()}
@@ -234,6 +246,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 				...flow,
 				children: (
 					<Builder
+						id={flow.key}
 						width={width}
 						height={height}
 						fixed={isFixed}
@@ -242,7 +255,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 						showSidebar={showSidebar}
 						setting={setting}
 						toggleSidebar={toggleSidebar}
-						onDataChange={onDataChange}
+						onData={onData}
 						__namespace={__namespace}
 						__bind={__bind}
 						name={flow.value.flow?.name || ID()}

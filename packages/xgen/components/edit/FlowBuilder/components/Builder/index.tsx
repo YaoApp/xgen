@@ -13,8 +13,9 @@ interface IProps {
 	offsetTop: number
 
 	toggleSidebar: () => void
-	onDataChange?: (data: any) => void
+	onData?: (id: string, type: string, value: any) => void
 
+	id: string
 	name?: string
 	__namespace?: string
 	__bind?: string
@@ -25,7 +26,15 @@ const Index = (props: IProps) => {
 	if (!props.setting) return null
 
 	return (
-		<BuilderProvider setting={props.setting} value={props.value}>
+		<BuilderProvider
+			setting={props.setting}
+			value={props.value}
+			onData={props.onData}
+			id={props.id}
+			name={props.name}
+			__bind={props.__bind}
+			__namespace={props.__namespace}
+		>
 			<div className='builder'>
 				<Sidebar height={props.height} visible={props.showSidebar} />
 				<Canvas {...props} />

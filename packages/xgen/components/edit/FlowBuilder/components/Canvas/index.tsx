@@ -18,6 +18,7 @@ interface IProps {
 	fixed: boolean
 	offsetTop: number
 
+	id: string
 	name?: string
 	__namespace?: string
 	__bind?: string
@@ -32,45 +33,18 @@ const Index = (props: IProps) => {
 		panelNode,
 		setPanelNode,
 		value,
-		setValue,
 		openPanel,
 		setOpenPanel,
 		setNodes,
 		running,
-		setRunning
+		setRunning,
+		openSettings,
+		setOpenSettings,
+		openExecute,
+		setOpenExecute,
+		onPanelChange
 	} = useBuilderContext()
-	const [openSettings, setOpenSettings] = useState(false)
-	const [openExecute, setOpenExecute] = useState(false)
 	const defaultLabel = is_cn ? '未命名' : 'Untitled'
-
-	const onPanelChange = (id: string, bind: string, value: any) => {
-		if (openSettings) {
-			setValue?.((val) => {
-				if (val?.flow) {
-					val.flow[bind] = value
-				}
-				return { ...val }
-			})
-			return
-		}
-
-		if (openExecute) {
-			setValue?.((val) => {
-				if (val?.execute) {
-					val.execute[bind] = value
-				}
-				return { ...val }
-			})
-			return
-		}
-
-		setNodes((nds) => {
-			const node = nds.find((item) => item.id === id)
-			if (!node) return nds
-			node.data.props[bind] = value
-			return [...nds]
-		})
-	}
 
 	const hidePanel = () => {
 		setOpenPanel(() => false)

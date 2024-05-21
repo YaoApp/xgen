@@ -1,6 +1,6 @@
-import React, { useCallback, useRef, MouseEvent, TouchEvent } from 'react'
+import React, { useCallback, useRef, MouseEvent, TouchEvent, useEffect } from 'react'
 import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from 'react'
-import { FlowNode, FlowValue, Setting } from '../../../types'
+import { FlowEdge, FlowNode, FlowValue, Setting } from '../../../types'
 import {
 	useEdgesState,
 	useNodesState,
@@ -44,6 +44,8 @@ interface BuilderContextType {
 	onConnectStart: OnConnectStart
 	onConnectEnd: OnConnectEnd
 
+	onPanelChange: (id: string, bind: string, value: any) => void
+
 	value?: FlowValue
 	setValue?: Dispatch<SetStateAction<FlowValue | undefined>>
 
@@ -57,12 +59,25 @@ interface BuilderContextType {
 
 	running: boolean
 	setRunning: Dispatch<SetStateAction<boolean>>
+
+	openSettings: boolean
+	setOpenSettings: Dispatch<SetStateAction<boolean>>
+
+	openExecute: boolean
+	setOpenExecute: Dispatch<SetStateAction<boolean>>
 }
 
 interface IProps {
 	children: ReactNode
 	setting?: Setting
+	name?: string
+	__namespace?: string
+	__bind?: string
+
+	id: string
+
 	value?: FlowValue
+	onData?: (id: string, type: string, value: any) => void
 }
 
 const BuilderContext = createContext<BuilderContextType | undefined>(undefined)
@@ -189,6 +204,8 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	const [hideContextMenu, setHideContextMenu] = useState<boolean | undefined>(undefined)
 	const [nodes, setNodes, onNodesChange] = useNodesState(Nodes(value))
 	const [edges, setEdges, onEdgesChange] = useEdgesState(Edges(value))
+	const [openSettings, setOpenSettings] = useState(false)
+	const [openExecute, setOpenExecute] = useState(false)
 	const [running, setRunning] = useState(false)
 
 	const [openPanel, setOpenPanel] = useState(false)
@@ -318,8 +335,6 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				return
 			}
 
-			console.log('connection', connection)
-
 			const background = source?.data?.background
 			const style = EdgeStyle(background)
 			const newEdge = { ...connection, ...style, type: 'custom', data: { label: '' } }
@@ -334,6 +349,69 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	)
 
 	const onConnectEnd = useCallback(({ nodeId, handleType }: any) => {}, [])
+
+	const onPanelChange = (id: string, bind: string, value: any) => {
+		if (openSettings) {
+			setValue?.((val) => {
+				if (val?.flow) {
+					val.flow[bind] = value
+				}
+				props.onData?.(props.id, 'flow', { ...val?.flow })
+				return { ...val }
+			})
+			return
+		}
+
+		if (openExecute) {
+			setValue?.((val) => {
+				if (val?.execute) {
+					val.execute[bind] = value
+				}
+				props.onData?.(props.id, 'execute', { ...val?.execute })
+				return { ...val }
+			})
+			return
+		}
+
+		setNodes((nds) => {
+			const node = nds.find((item) => item.id === id)
+			if (!node) return nds
+			node.data.props[bind] = value
+			return [...nds]
+		})
+	}
+
+	// Trigger the onData event
+	useEffect(() => {
+		const newEdges: FlowEdge[] = []
+		edges.forEach((edge) => {
+			const data = { ...edge.data }
+			newEdges.push({
+				source: edge.source,
+				target: edge.target,
+				condition: data.condition
+			})
+		})
+
+		props.onData?.(props.id, 'edges', newEdges)
+	}, [edges])
+
+	useEffect(() => {
+		const newNodes: FlowNode[] = []
+		nodes.forEach((node) => {
+			const data = { ...node.data }
+			newNodes.push({
+				id: node.id,
+				type: data.type,
+				position: node.position,
+				showTargetHandle: data.showTargetHandle,
+				showSourceHandle: data.showSourceHandle,
+				deletable: data.deletable,
+				props: data.props
+			})
+			props.onData?.(props.id, 'nodes', newNodes)
+		})
+	}, [nodes])
 
 	return (
 		<BuilderContext.Provider
@@ -372,7 +450,14 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				setOpenPanel,
 
 				running,
-				setRunning
+				setRunning,
+
+				openSettings,
+				setOpenSettings,
+				openExecute,
+				setOpenExecute,
+
+				onPanelChange
 			}}
 		>
 			{props.children}

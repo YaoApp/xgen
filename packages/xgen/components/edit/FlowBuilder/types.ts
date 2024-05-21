@@ -39,6 +39,7 @@ export type FlowEdge = {
 }
 
 export type FlowValue = {
+	id?: string
 	key?: string
 	flow?: {
 		name?: string // the name of the flow
