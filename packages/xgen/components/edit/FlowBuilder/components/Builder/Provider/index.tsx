@@ -67,6 +67,7 @@ interface IProps {
 
 const BuilderContext = createContext<BuilderContextType | undefined>(undefined)
 export const BuilderProvider: React.FC<IProps> = (props) => {
+	// Initialize the nodes
 	const Nodes = (value?: FlowValue) => {
 		const nodes: any[] = []
 		value?.nodes?.forEach((node: FlowNode) => {
@@ -99,6 +100,25 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 		})
 
 		return nodes
+	}
+
+	// Initialize the edges
+	const Edges = (value?: FlowValue) => {
+		const edges: any[] = []
+		value?.edges?.forEach((edge) => {
+			const source = ID(edge.source)
+			const target = ID(edge.target)
+			const sourceNode = nodes.find((node) => node.id === source)
+			const targetNode = nodes.find((node) => node.id === target)
+			if (!sourceNode || !targetNode) return
+
+			const background = sourceNode?.data?.background
+			const style = EdgeStyle(background)
+			const newEdge = { ...edge, ...style, type: 'custom', data: { label: '' } }
+			edges.push(newEdge)
+		})
+
+		return edges
 	}
 
 	const CreateNode = (typeName: string, description: string, position: { x: number; y: number }) => {
@@ -167,7 +187,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	const [setting, setSetting] = useState<Setting | undefined>(props.setting)
 	const [hideContextMenu, setHideContextMenu] = useState<boolean | undefined>(undefined)
 	const [nodes, setNodes, onNodesChange] = useNodesState(Nodes(value))
-	const [edges, setEdges, onEdgesChange] = useEdgesState([])
+	const [edges, setEdges, onEdgesChange] = useEdgesState(Edges(value))
 	const [running, setRunning] = useState(false)
 
 	const [openPanel, setOpenPanel] = useState(false)

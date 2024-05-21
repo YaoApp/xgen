@@ -248,11 +248,11 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	// Get setting
 	useEffect(() => {
 		if (props.setting === undefined) return
-		setLoading(true)
 		if (global.loading) return
 		if (loading) return
 		if (!props.setting) return
 
+		setLoading(true)
 		GetSetting(props.setting)
 			.then((setting) => {
 				setLoading(false)
