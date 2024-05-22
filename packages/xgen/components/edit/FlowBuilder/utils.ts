@@ -30,7 +30,7 @@ export const IconSize = (icon?: IconT, defaultSize: number = 14): number => {
 }
 
 export const GetValues = (value?: FlowValue | FlowValue[]): FlowValue[] => {
-	if (value === undefined) return []
+	if (value === undefined || value === null) return []
 	if (Array.isArray(value)) return value
 	return [value]
 }
