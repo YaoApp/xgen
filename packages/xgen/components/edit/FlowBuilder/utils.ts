@@ -34,3 +34,5 @@ export const GetValues = (value?: FlowValue | FlowValue[]): FlowValue[] => {
 	if (Array.isArray(value)) return value
 	return [value]
 }
+
+export const valueToData = (value?: FlowValue | FlowValue[], defaultValue?: FlowValue | FlowValue[]): any => {}

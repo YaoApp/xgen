@@ -6,13 +6,11 @@ import { useEffect, useRef, useState } from 'react'
 import styles from './index.less'
 import clsx from 'clsx'
 import { Else, If, Then } from 'react-if'
-import { Icon } from '@/widgets'
-import { FlowNode, FlowValue, Setting } from './types'
+import { FlowTab, FlowValue, Setting } from './types'
 import { GetSetting, GetValues, IconName } from './utils'
 import { useGlobal } from '@/context/app'
-import Builder from './components/Builder'
 import { getLocale } from '@umijs/max'
-import { ID } from './components/Flow/utils'
+import Tab from './components/Tab'
 
 interface IFlowBuilderProps {
 	setting?: any
@@ -43,16 +41,80 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 
 	const [loading, setLoading] = useState<boolean>(false)
 	const [setting, setSetting] = useState<Setting | undefined>(undefined)
-	const [flows, setFlows] = useState<any[]>([])
+	const [flowTabs, setFlowTabs] = useState<any[]>([])
 	const [activeFlow, setActiveFlow] = useState<string>('')
+	const [data, setData] = useState<FlowValue[]>(GetValues(props.value))
 
-	// Get the form value
-	const [value, setValue] = useState<any>(props.value)
+	// When the data is updated in the flow
+	// Update the value of the form
+	// Type is: nodes, edges, flow, execute
+	const onData = (id: string, type: string, value: any) => {
+		// console.log('onData', id, type, value)
+
+		// Update Data
+		setData((data) => {
+			// Find the index of the data
+			const index = data.findIndex((value: FlowValue) => value.id === id)
+			if (index === -1) return data
+
+			switch (type) {
+				case 'nodes':
+					data[index].nodes = value
+					break
+
+				case 'edges':
+					data[index].edges = value
+					break
+
+				case 'flow':
+					data[index].flow = value
+
+					// Update Tab
+					if (props.multiple === true) {
+						setFlowTabs((flowTabs: any) => {
+							const values: FlowValue[] = []
+							flowTabs.forEach((flow: any) => {
+								let updateValue = flow?.value || {}
+								if (updateValue.id === id) {
+									updateValue.flow = value
+								}
+								updateValue && values.push(updateValue)
+							})
+
+							const newFlowTabs = values.map((flowValue: FlowValue, index: number) =>
+								Tab({
+									...props,
+									flowValue,
+									is_cn,
+									index,
+									width,
+									height,
+									isFixed,
+									offsetTop,
+									showSidebar,
+									setting,
+									onData,
+									toggleSidebar
+								})
+							)
+
+							return newFlowTabs
+						})
+					}
+
+					break
+
+				case 'execute':
+					data[index].execute = value
+					break
+			}
+
+			return [...data]
+		})
+	}
 
 	// Trigger the onChange event
-	useEffect(() => {
-		props.onChange && props.onChange(value)
-	}, value)
+	useEffect(() => props.onChange && props.onChange(data), [data])
 
 	// Set the width of the grid layout
 	const offsetTop = 80
@@ -100,170 +162,154 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 		setShowSidebar(!showSidebar)
 	}
 
-	const TabItemLabel = (props: { text: string; icon: string }) => {
-		return (
-			<div
-				className='flex'
-				style={{
-					alignItems: 'center',
-					justifyContent: 'center',
-					fontSize: 14
-				}}
-			>
-				<Icon size={16} name={props.icon} />
-				<div style={{ marginLeft: 4 }}>{props.text}</div>
-			</div>
-		)
-	}
-
 	const onTabChange = (key: string) => {
 		setActiveFlow(key)
-	}
-
-	// When the data is updated in the flow
-	// Update the value of the form
-	// Type is: node, edge, flow
-	const onData = (id: string, type: string, value: any) => {
-		console.log('onData', id, type, value)
-		props.onChange && props.onChange([])
 	}
 
 	const onTabEdit = (targetKey: React.MouseEvent | React.KeyboardEvent | string, action: 'add' | 'remove') => {
 		// Add a new tab
 		if (action === 'add') {
-			const newFlow = blankFlow()
-			setFlows([...flows, newFlow])
-			setActiveFlow(newFlow.key)
+			setFlowTabs((flowTabs) => {
+				const newFlowTabs = [...flowTabs, blankFlowTab(flowTabs.length)]
+				setActiveFlow(() => newFlowTabs[newFlowTabs.length - 1].id)
+
+				// Update data
+				setData(() => {
+					const data: FlowValue[] = []
+					newFlowTabs.forEach((flow) => {
+						flow?.value && data.push(flow.value)
+					})
+					return data
+				})
+
+				return newFlowTabs
+			})
 			return
 		}
 
 		// Remove the tab
-		let newActiveKey = activeFlow
-		let lastIndex = -1
-		flows.forEach((flow, i) => {
-			if (flow.key === targetKey) {
-				lastIndex = i - 1
+		setFlowTabs((flowTabs: any) => {
+			let newActiveKey = activeFlow
+			let lastIndex = -1
+			flowTabs.forEach((flow: any, i: number) => {
+				if (flow.id === targetKey) {
+					lastIndex = i - 1
+				}
+			})
+			const newFlows = flowTabs.filter((flow: any) => flow.id !== targetKey)
+			if (newFlows.length === 0) {
+				// Notifies the parent component to remove the component
+				message.error(is_cn ? '至少保留一个流程' : 'At least one flow must be retained')
+				return flowTabs
 			}
-		})
-		const newFlows = flows.filter((flow) => flow.key !== targetKey)
-		if (newFlows.length === 0) {
-			// Notifies the parent component to remove the component
-			message.error(is_cn ? '至少保留一个流程' : 'At least one flow must be retained')
-			return
-		}
-		if (newFlows.length && newActiveKey === targetKey) {
-			if (lastIndex >= 0) {
-				newActiveKey = newFlows[lastIndex].key
-			} else {
-				newActiveKey = newFlows[0].key
-			}
-		}
 
-		setFlows([...newFlows])
-		setActiveFlow(newActiveKey)
+			if (newFlows.length && newActiveKey === targetKey) {
+				if (lastIndex >= 0) {
+					newActiveKey = newFlows[lastIndex].key
+				} else {
+					newActiveKey = newFlows[0].key
+				}
+			}
+
+			// Update data
+			setData(() => {
+				const data: FlowValue[] = []
+				newFlows.forEach((flow: any) => {
+					flow?.value && data.push(flow.value)
+				})
+				return data
+			})
+
+			setActiveFlow(() => newActiveKey)
+			return newFlows
+		})
 	}
 
 	const cardType = props.multiple === true ? 'editable-card' : 'card'
 	const hideTabs = props.multiple === true ? '' : 'hideTabs'
 
-	// Convert value to flow
-	const valueToFlow = (value: FlowValue, index: number) => {
-		const text = is_cn ? '<未命名>' : '<Untitled>'
-		const flow = value.flow || { name: text, label: text }
-		const key = value.id || `${__namespace}-${__bind}-${flow.name || flow.label || text}-${index}`
-		value.id = value.id || key
-
-		return {
-			label: <TabItemLabel text={flow.label || flow.name || ''} icon={IconName(flow.icon)} />,
-			value: value,
-			key: key,
-			closable: flow.deletable === undefined || flow.deletable === true,
-			children: (
-				<Builder
-					id={key}
-					width={width}
-					height={height}
-					fixed={isFixed}
-					offsetTop={offsetTop}
-					showSidebar={showSidebar}
-					setting={setting}
-					value={{ ...value, key: key }}
-					toggleSidebar={toggleSidebar}
-					onData={onData}
-					__namespace={__namespace}
-					__bind={__bind}
-					name={flow.name || ID()}
-				/>
-			)
-		}
-	}
-
-	const blankFlow = () => {
-		const text = is_cn ? `<未命名-${flows.length + 1}>` : `<Untitled-${flows.length + 1}>`
+	const blankFlowTab = (index: number) => {
+		const text = is_cn ? `<未命名-${flowTabs.length + 1}>` : `<Untitled-${flowTabs.length + 1}>`
 		const key = `${__namespace}-${__bind}-blank_${Date.now().toString()}`
-		const flow: FlowValue = { flow: { name: text, label: text }, id: key }
-		return {
-			label: <TabItemLabel text={text} icon={IconName()} />,
-			key: key,
-			value: value,
-			closable: true,
-			children: (
-				<Builder
-					id={key}
-					width={width}
-					height={height}
-					fixed={isFixed}
-					offsetTop={offsetTop}
-					value={flow}
-					showSidebar={showSidebar}
-					setting={setting}
-					toggleSidebar={toggleSidebar}
-					onData={onData}
-					__namespace={__namespace}
-					__bind={__bind}
-					name={flow.flow?.name || ID()}
-				/>
-			)
-		}
+		const flowValue: FlowValue = { flow: { name: text, label: text }, id: key }
+		return Tab({
+			...props,
+			flowValue,
+			is_cn,
+			index,
+			width,
+			height,
+			isFixed,
+			offsetTop,
+			showSidebar,
+			setting,
+			onData,
+			toggleSidebar
+		})
 	}
 
-	// Update flows by setting (initialization or setting change)
+	// Update flowTabs by setting (initialization or setting change)
 	const updateFlowsBySetting = (setting?: Setting) => {
 		if (!setting) return
 		if (initialized) return
 
 		setInitialized(true)
-		const values: FlowValue[] = GetValues(value || setting.defaultValue)
-		const flows = values.map(valueToFlow)
-		flows.length === 0 && flows.push(blankFlow())
-		setFlows(() => [...flows])
+		const values: FlowValue[] =
+			GetValues(props.value).length == 0 ? GetValues(setting.defaultValue) : GetValues(props.value)
+		const flowTabs = values.map((flowValue: FlowValue, index: number) =>
+			Tab({
+				...props,
+				flowValue,
+				is_cn,
+				index,
+				width,
+				height,
+				isFixed,
+				offsetTop,
+				showSidebar,
+				setting,
+				onData,
+				toggleSidebar
+			})
+		)
+		if (flowTabs.length === 0) {
+			const tab = blankFlowTab(0)
+			flowTabs.push(tab)
+		}
+
+		setFlowTabs(() => [...flowTabs])
+		setData(() => {
+			const data: FlowValue[] = []
+			flowTabs.forEach((flow) => {
+				flow?.value && data.push(flow.value)
+			})
+			return data
+		})
 	}
 
-	// Refresh flows (when the width, height, or sidebar status changes)
+	// Refresh flowTabs (when the width, height, or sidebar status changes)
 	const refreshFlows = () => {
-		const newFlows = flows.map((flow) => {
-			return {
-				...flow,
-				children: (
-					<Builder
-						id={flow.key}
-						width={width}
-						height={height}
-						fixed={isFixed}
-						value={{ ...flow.value }}
-						offsetTop={offsetTop}
-						showSidebar={showSidebar}
-						setting={setting}
-						toggleSidebar={toggleSidebar}
-						onData={onData}
-						__namespace={__namespace}
-						__bind={__bind}
-						name={flow.value.flow?.name || ID()}
-					/>
-				)
-			}
+		setFlowTabs((flowTabs) => {
+			const newFlows: FlowTab[] = []
+			flowTabs.forEach((flow, index) => {
+				const tab = Tab({
+					...props,
+					flowValue: flow.value,
+					is_cn,
+					index,
+					width,
+					height,
+					isFixed,
+					offsetTop,
+					showSidebar,
+					setting,
+					onData,
+					toggleSidebar
+				})
+				if (tab) newFlows.push(tab)
+			})
+			return [...newFlows]
 		})
-		setFlows([...newFlows])
 	}
 	useEffect(() => updateFlowsBySetting(setting), [setting])
 	useEffect(() => refreshFlows(), [width, showSidebar, height, isFixed])
@@ -294,10 +340,10 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 				</Then>
 				<Else>
 					<Tabs
-						items={flows}
+						items={flowTabs}
 						className={hideTabs}
 						onChange={onTabChange}
-						activeKey={activeFlow == '' && flows.length > 0 ? flows[0].key : activeFlow}
+						activeKey={activeFlow == '' && flowTabs?.length > 0 ? flowTabs[0].key : activeFlow}
 						type={cardType}
 						onEdit={onTabEdit}
 						style={{ width: '100%' }}

@@ -1,4 +1,6 @@
 import { PanelType, PanelSection, PanelColumnComponent } from '@/widgets'
+import { TabPaneProps } from 'antd'
+import { ReactNode } from 'react'
 
 export type Type = PanelType
 
@@ -13,6 +15,16 @@ export type Setting = {
 	types?: Type[]
 	fields?: Record<string, PanelColumnComponent>
 	defaultValue?: FlowValue | FlowValue[]
+}
+
+export type FlowTab = Omit<TabPaneProps, 'tab'> & {
+	label: ReactNode
+	value: FlowValue
+	key: string
+	width?: number
+	height?: number
+	isFixed?: boolean
+	showSidebar?: boolean
 }
 
 export type FlowNode = {
