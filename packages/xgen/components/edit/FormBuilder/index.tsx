@@ -107,8 +107,24 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 			})
 	}, [props.setting])
 
+	// for full screen
+	const fullScreenStyle: React.CSSProperties = {
+		bottom: 0,
+		display: 'flex',
+		height: '100vh',
+		left: 0,
+		margin: 0,
+		padding: 0,
+		position: 'fixed',
+		right: 0,
+		top: 0,
+		width: '100%',
+		overflowY: 'auto',
+		zIndex: 1000
+	}
+
 	return (
-		<div className={clsx(styles._local)} ref={ref}>
+		<div className={clsx([styles._local])} ref={ref}>
 			<If condition={loading}>
 				<Then>
 					<div className='loading'>

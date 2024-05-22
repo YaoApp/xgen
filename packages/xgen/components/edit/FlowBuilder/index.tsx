@@ -45,6 +45,23 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	const [activeFlow, setActiveFlow] = useState<string>('')
 	const [data, setData] = useState<FlowValue[]>(GetValues(props.value))
 
+	// for full screen
+	const fullScreenStyle: React.CSSProperties = {
+		bottom: 0,
+		display: 'flex',
+		height: '100%',
+		background: '#f0f2f5',
+		left: 0,
+		margin: 0,
+		padding: 0,
+		position: 'fixed',
+		right: 0,
+		top: 0,
+		width: '100%',
+		overflowY: 'auto',
+		zIndex: 1000
+	}
+
 	// When the data is updated in the flow
 	// Update the value of the form
 	// Type is: nodes, edges, flow, execute
