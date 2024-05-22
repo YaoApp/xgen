@@ -113,7 +113,8 @@ const Index = (props: IPropsFormItem) => {
 					__primary: primary,
 					__type: type,
 					__bind: item.bind,
-					__name: item.name
+					__name: item.name,
+					__hidelabel: item.edit.hideLabel || item.hideLabel || undefined
 				}}
 			></X>
 		</Col>

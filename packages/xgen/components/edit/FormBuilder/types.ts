@@ -1,6 +1,11 @@
 import GridLayout from 'react-grid-layout'
 import { PanelType, PanelColumnComponent } from '@/widgets'
 
+export type Data = {
+	columns: Field[]
+	form?: Record<string, any>
+}
+
 export type Type = PanelType
 
 export type Field = {
@@ -19,7 +24,7 @@ export type Remote = {
 
 export type Setting = {
 	title?: string
-	defaultValue?: Field[]
+	defaultValue?: Data
 	types?: Type[]
 	fields?: Record<string, PanelColumnComponent>
 }

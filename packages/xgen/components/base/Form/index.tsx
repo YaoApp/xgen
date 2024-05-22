@@ -58,8 +58,7 @@ const Index = (props: Component.FormComponent) => {
 		window.$app.Event.on(`${x.namespace.value}/fullscreen`, toggleFullscreen)
 
 		return () => {
-			x.off(onFormBack)
-
+			x.off()
 			window.$app.Event.off(`${x.namespace.value}/fullscreen`, toggleFullscreen)
 		}
 	}, [parent, parentNamespace, model, id, form, onFormBack])

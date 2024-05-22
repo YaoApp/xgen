@@ -9,12 +9,13 @@ import { useEffect, useRef, useState } from 'react'
 import 'react-grid-layout/css/styles.css'
 import styles from './index.less'
 import clsx from 'clsx'
-import { Presets, Remote, Setting } from './types'
+import { Data, Presets, Remote, Setting } from './types'
 import Sidebar from './components/Sidebar'
 import Canvas from './components/Canvas'
 import { Else, If, Then } from 'react-if'
 import { GetSetting } from './utils'
 import { useGlobal } from '@/context/app'
+import { set } from 'lodash-es'
 
 interface IFormBuilderProps {
 	setting?: Remote | Setting
@@ -38,6 +39,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 	const [height, setHeight] = useState(props.height && props.height >= 300 ? props.height : 300)
 	const [isFixed, setIsFixed] = useState(false)
 	const [value, setValue] = useState<any>()
+	const [data, setData] = useState<Data>()
 	const [loading, setLoading] = useState<boolean>(false)
 	const [setting, setSetting] = useState<Setting | undefined>(undefined)
 	const ref = useRef<HTMLDivElement>(null)
@@ -65,15 +67,25 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 
 	useEffect(() => {
 		if (!props.value) return
-		setValue(props.value)
+		if (!props.value.columns) return
+		setValue(props.value?.columns || [])
+		setData(props.value)
 	}, [props.value])
+
+	useEffect(() => {
+		props.onChange && props.onChange(data)
+	}, [data])
 
 	// Canvas setting
 	const onCanvasChange = (value: any, height: number) => {
 		height = height + 24
 		const h = height > (props.height || 300) ? height : props.height || 300
 		setHeight(h)
-		props.onChange && props.onChange(value)
+		setData((data: any) => {
+			const newData = { ...data }
+			newData.columns = value
+			return newData
+		})
 	}
 
 	useEffect(() => {

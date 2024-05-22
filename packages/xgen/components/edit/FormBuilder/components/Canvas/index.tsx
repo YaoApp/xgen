@@ -70,7 +70,7 @@ const Index = (props: IProps) => {
 
 	useEffect(() => {
 		if (props.value || props.setting?.defaultValue) {
-			const res = ValueToLayout(props.value, props.setting?.defaultValue)
+			const res = ValueToLayout(props.value, props.setting?.defaultValue?.columns || [])
 			setLayout(res.layout)
 			setFieldMap(res.mapping)
 			setValue(props.value || props.setting?.defaultValue)

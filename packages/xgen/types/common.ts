@@ -27,18 +27,22 @@ export declare namespace Common {
 
 	interface AIConfig {
 		placeholder?: string
+		params?: Record<string, any>
 	}
 
 	interface FieldDetail {
 		id: string
 		bind: string
+		hideLabel?: boolean
 		view: {
 			bind?: string
+			hideLabel?: boolean
 			type: string
 			props: any & { components?: ViewComponents }
 		}
 		edit: {
 			bind?: string
+			hideLabel?: boolean
 			type: string
 			props: any & { ai?: AIConfig }
 		}

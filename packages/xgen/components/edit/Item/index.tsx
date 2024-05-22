@@ -21,7 +21,7 @@ const Index = (props: IProps) => {
 	)
 
 	const real_props = {
-		label: hideLabel ? '' : Title,
+		label: hideLabel || props.children?.props?.__hidelabel === true ? '' : Title,
 		name: __bind,
 		noStyle: !__name
 	}
