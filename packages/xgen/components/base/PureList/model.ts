@@ -18,6 +18,10 @@ export default class Model {
 	}
 
 	init(initial_value: Array<any>, setting: Array<Common.EditColumn>, onChangeForm: IProps['onChangeForm']) {
+		// Add id to each item in the list if it doesn't exist
+		initial_value.forEach((v) => {
+			if (!v.id) v.id = createId()
+		})
 		this.list = initial_value
 		this.setting = setting
 		this.onChangeForm = onChangeForm
