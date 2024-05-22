@@ -73,6 +73,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 	}, [props.value])
 
 	useEffect(() => {
+		if (!data) return
 		props.onChange && props.onChange(data)
 	}, [data])
 
