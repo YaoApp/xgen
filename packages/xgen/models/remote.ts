@@ -91,11 +91,11 @@ export default class Index {
 				} else if (Array.isArray(option)) {
 					optionsFixed.push({ label: option[0], value: option[1] })
 				} else if (typeof option === 'object') {
-					if (option.label && option.value) {
+					if (option.label && option.value !== undefined) {
 						optionsFixed.push(option)
 					} else if (option.label) {
 						optionsFixed.push({ ...option, label: option.label, value: option.label })
-					} else if (option.value) {
+					} else if (option.value !== undefined) {
 						optionsFixed.push({ ...option, label: option.value, value: option.value })
 					}
 				}

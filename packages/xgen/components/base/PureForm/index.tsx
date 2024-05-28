@@ -29,6 +29,7 @@ const Index = (props: IPropsPureForm) => {
 		hooks,
 		title,
 		disabledActionsAffix,
+		initialValues,
 		frame,
 		props: form_props = {},
 		setData,
@@ -142,6 +143,7 @@ const Index = (props: IPropsPureForm) => {
 							name={namespace}
 							disabled={disabled}
 							layout='vertical'
+							initialValues={initialValues}
 							onValuesChange={onValuesChange}
 							style={form_styles}
 						>

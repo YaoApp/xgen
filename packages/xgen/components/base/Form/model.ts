@@ -23,6 +23,7 @@ export default class Model {
 	__data = {} as Global.AnyObject
 	sections = [] as Array<FormType.SectionResult>
 	frame = {} as FormType.Frame
+	initialValues = {} as Global.AnyObject
 	rendered = false
 	form_name = ''
 	parent_namespace = '' as Component.FormComponent['parentNamespace']
@@ -55,6 +56,19 @@ export default class Model {
 		}
 
 		if (this.id === 0) this.global.loading = false
+
+		// get form default values
+		for (const k in target.fields?.form) {
+			const field = target.fields.form[k]
+			if (field) {
+				const bind = field.edit?.bind || field.bind
+				const props = field.edit?.props || {}
+				if (props.defaultValue !== undefined) {
+					this.initialValues[bind] = props.defaultValue
+					delete target.fields.form[k].edit.props.defaultValue
+				}
+			}
+		}
 
 		this.rendered = true
 		this.setting = target

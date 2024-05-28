@@ -16,6 +16,7 @@ export interface IPropsPureForm {
 	props: Model['setting']['form']['props']
 	disabledActionsAffix?: boolean
 	frame?: Model['frame']
+	initialValues?: Global.AnyObject
 	setData: (v: Global.AnyObject) => void
 	setSetting: (v: FormType.Setting) => void
 	onSave: (v: Global.AnyObject) => Promise<void>

@@ -99,6 +99,7 @@ const Index = (props: Component.FormComponent) => {
 		hooks,
 		title,
 		props: toJS(x.setting.form?.props),
+		initialValues: toJS(x.initialValues),
 		disabledActionsAffix: parent === 'Dashboard',
 		setData,
 		setSetting,
