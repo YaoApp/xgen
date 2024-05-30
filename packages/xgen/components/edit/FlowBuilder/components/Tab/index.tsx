@@ -64,7 +64,6 @@ export const Tab = (props: IProps): FlowTab | null => {
 
 	const text = is_cn ? '<未命名>' : '<Untitled>'
 	if (!flow.id) flow.id = `${__namespace}-${__bind}-${flow.name || flow.label || text}-${index}`
-
 	return {
 		id: flow.id,
 		key: flow.id,
@@ -93,6 +92,7 @@ export const Tab = (props: IProps): FlowTab | null => {
 				__bind={__bind}
 				fullscreen={props.fullscreen}
 				setFullscreen={props.setFullscreen}
+				removeAttribution={props.removeAttribution}
 			/>
 		)
 	}

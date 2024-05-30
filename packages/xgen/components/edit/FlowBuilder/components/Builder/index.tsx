@@ -14,6 +14,7 @@ interface IProps {
 	fullscreen: boolean
 	setFullscreen: (value: boolean) => void
 	offsetTop: number
+	removeAttribution?: boolean
 
 	execute?: Component.Request
 	toggleSidebar: () => void
@@ -41,6 +42,7 @@ const Index = (props: IProps) => {
 			__namespace={props.__namespace}
 			fullscreen={props.fullscreen}
 			setFullscreen={props.setFullscreen}
+			removeAttribution={props.removeAttribution}
 		>
 			<div className='builder'>
 				<Sidebar height={props.height} visible={props.showSidebar} />

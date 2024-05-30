@@ -19,7 +19,6 @@ import {
 import { getLocale } from '@umijs/max'
 import { message } from 'antd'
 import { Component } from '@/types'
-import { fullscreen } from '@/actions/Form'
 
 interface BuilderContextType {
 	setting?: Setting
@@ -80,9 +79,15 @@ interface BuilderContextType {
 
 	fullscreen: boolean
 	setFullscreen: (value: boolean) => void
+
+	removeAttribution?: boolean
 }
 
 interface IProps {
+	id: string
+	value?: FlowValue
+	onData?: (id: string, type: string, value: any) => void
+
 	children: ReactNode
 	setting?: Setting
 	execute?: Component.Request
@@ -93,10 +98,7 @@ interface IProps {
 	fullscreen: boolean
 	setFullscreen: (value: boolean) => void
 
-	id: string
-
-	value?: FlowValue
-	onData?: (id: string, type: string, value: any) => void
+	removeAttribution?: boolean
 }
 
 const BuilderContext = createContext<BuilderContextType | undefined>(undefined)
@@ -530,7 +532,9 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				execute: props.execute,
 
 				fullscreen,
-				setFullscreen: onSetFullscreen
+				setFullscreen: onSetFullscreen,
+
+				removeAttribution: props.removeAttribution
 			}}
 		>
 			{props.children}

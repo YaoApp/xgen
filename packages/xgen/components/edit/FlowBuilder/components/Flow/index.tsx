@@ -98,8 +98,14 @@ const Flow = (props: IProps) => {
 }
 
 const Index = (props: IProps) => {
+	const { removeAttribution } = useBuilderContext()
 	return (
-		<div className={clsx(styles._local)} style={{ height: props.height - 24, width: props.width }}>
+		<div
+			className={clsx(
+				...(removeAttribution ? [styles._local, styles._removeAttribution] : [styles._local])
+			)}
+			style={{ height: props.height - 24, width: props.width }}
+		>
 			<div className='providerflow'>
 				<ReactFlowProvider>
 					<Flow {...props} />

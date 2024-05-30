@@ -51,7 +51,6 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 		bottom: 0,
 		display: 'flex',
 		height: '100%',
-		background: '#f0f2f5',
 		left: 0,
 		margin: 0,
 		padding: 0,
@@ -114,7 +113,8 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 									showSidebar,
 									setting,
 									onData,
-									toggleSidebar
+									toggleSidebar,
+									removeAttribution: props.removeAttribution
 								})
 							)
 
@@ -276,7 +276,8 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 			showSidebar,
 			setting,
 			onData,
-			toggleSidebar
+			toggleSidebar,
+			removeAttribution: props.removeAttribution
 		})
 	}
 
@@ -303,7 +304,8 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 				showSidebar,
 				setting,
 				onData,
-				toggleSidebar
+				toggleSidebar,
+				removeAttribution: props.removeAttribution
 			})
 		)
 		if (flowTabs.length === 0) {
@@ -340,7 +342,8 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 					showSidebar,
 					setting,
 					onData,
-					toggleSidebar
+					toggleSidebar,
+					removeAttribution: props.removeAttribution
 				})
 				if (tab) newFlows.push(tab)
 			})
