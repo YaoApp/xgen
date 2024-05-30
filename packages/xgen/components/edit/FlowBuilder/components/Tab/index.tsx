@@ -10,6 +10,8 @@ interface ITabProps {
 	width?: number
 	height?: number
 	isFixed?: boolean
+	fullscreen: boolean
+	setFullscreen: (value: boolean) => void
 	showSidebar?: boolean
 	offsetTop?: number
 	index: number
@@ -89,6 +91,8 @@ export const Tab = (props: IProps): FlowTab | null => {
 				onData={onData}
 				__namespace={__namespace}
 				__bind={__bind}
+				fullscreen={props.fullscreen}
+				setFullscreen={props.setFullscreen}
 			/>
 		)
 	}

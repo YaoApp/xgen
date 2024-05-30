@@ -7,6 +7,8 @@ import { Node as ReactFlowNode } from 'reactflow'
 import { useBuilderContext } from '../Builder/Provider'
 
 import { Button, Tooltip, message } from 'antd'
+import { fullscreen } from '@/actions/Form'
+import { useEffect } from 'react'
 
 interface IProps {
 	width: number
@@ -47,7 +49,9 @@ const Index = (props: IProps) => {
 		setOpenExecute,
 		openEdge,
 		setOpenEdge,
-		onPanelChange
+		onPanelChange,
+		fullscreen,
+		setFullscreen
 	} = useBuilderContext()
 
 	const defaultLabel = is_cn ? '未命名' : 'Untitled'
@@ -335,8 +339,6 @@ const Index = (props: IProps) => {
 		setOpenPanel(() => true)
 	}
 
-	const toggleFullScreenMode = () => {}
-
 	return (
 		<>
 			<Panel
@@ -375,26 +377,46 @@ const Index = (props: IProps) => {
 						{props.value?.flow?.label || props.value?.flow?.name || defaultLabel}
 					</div>
 					<div className='actions'>
-						<Tooltip title={is_cn ? '运行' : 'Execute'}>
+						<Tooltip
+							title={is_cn ? '运行' : 'Execute'}
+							placement={fullscreen ? 'bottom' : 'top'}
+						>
 							<a style={{ marginRight: 12, marginTop: 2 }} onClick={showExecute}>
 								<Icon name='icon-play' size={16} />
 							</a>
 						</Tooltip>
 
-						<Tooltip title={is_cn ? '设置' : 'Settings'}>
+						<Tooltip
+							title={is_cn ? '设置' : 'Settings'}
+							placement={fullscreen ? 'bottom' : 'top'}
+						>
 							<a style={{ marginRight: 12, marginTop: 2 }} onClick={showSettings}>
 								<Icon name='icon-sliders' size={16} />
 							</a>
 						</Tooltip>
 
-						<Tooltip title={is_cn ? '全屏' : 'Full Screen'}>
-							<a
-								style={{ marginRight: 6, marginTop: 2 }}
-								onClick={() => toggleFullScreenMode}
+						{!fullscreen ? (
+							<Tooltip
+								title={is_cn ? '全屏' : 'Full Screen'}
+								placement={fullscreen ? 'bottom' : 'top'}
 							>
-								<Icon name='icon-maximize' size={16} />
-							</a>
-						</Tooltip>
+								<a
+									style={{ marginRight: 6, marginTop: 2 }}
+									onClick={() => setFullscreen(true)}
+								>
+									<Icon name='icon-maximize' size={16} />
+								</a>
+							</Tooltip>
+						) : (
+							<Tooltip title={is_cn ? '退出全屏' : 'Exit Full Screen'} placement='bottom'>
+								<a
+									style={{ marginRight: 6, marginTop: 2 }}
+									onClick={() => setFullscreen(false)}
+								>
+									<Icon name='icon-minimize' size={16} />
+								</a>
+							</Tooltip>
+						)}
 
 						<Preset />
 					</div>

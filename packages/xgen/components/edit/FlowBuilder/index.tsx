@@ -108,6 +108,8 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 									width,
 									height,
 									isFixed,
+									fullscreen,
+									setFullscreen,
 									offsetTop,
 									showSidebar,
 									setting,
@@ -137,6 +139,8 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	// Set the width of the grid layout
 	const offsetTop = 80
 	const [isFixed, setIsFixed] = useState(false)
+	const [fullscreen, setFullscreen] = useState(false)
+
 	// Fixed sidebar, canvas and toolbar
 	useEffect(() => {
 		const handleScroll = () => {
@@ -174,6 +178,14 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 			observer.disconnect()
 		}
 	}, [showSidebar])
+
+	useEffect(() => {
+		if (fullscreen) {
+			setHeight(window.innerHeight - (props.multiple ? 72 : 38))
+			return
+		}
+		setHeight(props.height && props.height >= 300 ? props.height : 300)
+	}, [fullscreen])
 
 	// Toggle the sidebar
 	const toggleSidebar = () => {
@@ -258,6 +270,8 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 			width,
 			height,
 			isFixed,
+			fullscreen,
+			setFullscreen,
 			offsetTop,
 			showSidebar,
 			setting,
@@ -283,6 +297,8 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 				width,
 				height,
 				isFixed,
+				fullscreen,
+				setFullscreen,
 				offsetTop,
 				showSidebar,
 				setting,
@@ -318,6 +334,8 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 					width,
 					height,
 					isFixed,
+					fullscreen,
+					setFullscreen,
 					offsetTop,
 					showSidebar,
 					setting,
@@ -349,7 +367,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	}, [props.setting])
 
 	return (
-		<div className={clsx(styles._local)} ref={ref}>
+		<div className={clsx(styles._local)} ref={ref} style={fullscreen ? fullScreenStyle : {}}>
 			<If condition={loading}>
 				<Then>
 					<div className='loading' style={{ height: height }}>

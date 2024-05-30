@@ -11,6 +11,8 @@ interface IProps {
 	showSidebar: boolean
 	setting?: Setting
 	fixed: boolean
+	fullscreen: boolean
+	setFullscreen: (value: boolean) => void
 	offsetTop: number
 
 	execute?: Component.Request
@@ -37,6 +39,8 @@ const Index = (props: IProps) => {
 			name={props.name}
 			__bind={props.__bind}
 			__namespace={props.__namespace}
+			fullscreen={props.fullscreen}
+			setFullscreen={props.setFullscreen}
 		>
 			<div className='builder'>
 				<Sidebar height={props.height} visible={props.showSidebar} />

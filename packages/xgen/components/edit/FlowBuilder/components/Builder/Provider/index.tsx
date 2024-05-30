@@ -19,6 +19,7 @@ import {
 import { getLocale } from '@umijs/max'
 import { message } from 'antd'
 import { Component } from '@/types'
+import { fullscreen } from '@/actions/Form'
 
 interface BuilderContextType {
 	setting?: Setting
@@ -76,6 +77,9 @@ interface BuilderContextType {
 	setOpenEdge: Dispatch<SetStateAction<boolean>>
 
 	execute?: Component.Request
+
+	fullscreen: boolean
+	setFullscreen: (value: boolean) => void
 }
 
 interface IProps {
@@ -85,6 +89,9 @@ interface IProps {
 	name?: string
 	__namespace?: string
 	__bind?: string
+
+	fullscreen: boolean
+	setFullscreen: (value: boolean) => void
 
 	id: string
 
@@ -224,6 +231,8 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	const [openPanel, setOpenPanel] = useState(false)
 	const [panelNode, setPanelNode] = useState<ReactFlowNode<any> | undefined>(undefined)
 	const [panelEdge, setPanelEdge] = useState<Edge | undefined>(undefined)
+
+	const [fullscreen, setFullscreen] = useState<boolean>(props.fullscreen)
 
 	const onData = (id: string, type: string, value: any) => {
 		// Set the value of the form
@@ -388,6 +397,11 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 
 	const onConnectEnd = useCallback(({ nodeId, handleType }: any) => {}, [])
 
+	const onSetFullscreen = (value: boolean) => {
+		setFullscreen(() => value)
+		props.setFullscreen(value)
+	}
+
 	const onPanelChange = (id: string, bind: string, value: any) => {
 		if (openSettings) {
 			setValue?.((val) => {
@@ -513,7 +527,10 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 
 				onPanelChange,
 
-				execute: props.execute
+				execute: props.execute,
+
+				fullscreen,
+				setFullscreen: onSetFullscreen
 			}}
 		>
 			{props.children}
