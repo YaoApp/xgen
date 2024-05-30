@@ -35,7 +35,7 @@ const CustomEdge: FC<EdgeProps> = ({
 			/>
 
 			<EdgeLabelRenderer>
-				{data.label != '' && data.label != undefined && (
+				{data?.label != '' && data?.label != undefined && (
 					<div className={clsx(styles._local)}>
 						<a
 							style={{
