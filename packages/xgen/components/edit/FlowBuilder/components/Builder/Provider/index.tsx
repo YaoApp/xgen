@@ -231,8 +231,8 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 			if (!val) return
 			if (type === 'nodes') val.nodes = value
 			if (type === 'edges') val.edges = value
-			if (type === 'flow') val.flow = value
 			if (type === 'execute') val.execute = value
+			// if (type === 'flow') val.flow = { ...value }
 			return { ...val }
 		})
 
