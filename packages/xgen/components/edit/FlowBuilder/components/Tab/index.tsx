@@ -16,6 +16,7 @@ interface ITabProps {
 	is_cn?: boolean
 
 	removeAttribution?: boolean
+	execute?: Component.Request
 	flowValue: FlowValue
 	onData: (id: string, type: string, value: any) => void
 	toggleSidebar: () => void
@@ -76,6 +77,7 @@ export const Tab = (props: IProps): FlowTab | null => {
 			<Builder
 				id={flow.id}
 				name={flow.name}
+				execute={props.execute}
 				width={width || 0}
 				height={height || 0}
 				fixed={isFixed === undefined ? false : isFixed}

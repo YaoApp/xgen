@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { FlowValue, IconT, Remote, Setting } from './types'
+import { Component } from '@/types'
 
 export const GetSetting = async (setting?: Remote | Setting): Promise<Setting> => {
 	if (setting && 'api' in setting) {
@@ -36,3 +37,24 @@ export const GetValues = (value?: FlowValue | FlowValue[]): FlowValue[] => {
 }
 
 export const valueToData = (value?: FlowValue | FlowValue[], defaultValue?: FlowValue | FlowValue[]): any => {}
+
+export const Execute = async (
+	execute: Component.Request,
+	value: FlowValue,
+	withs: Record<string, any>
+): Promise<any> => {
+	if (!execute) return Promise.resolve(undefined)
+	const { api, params } = execute
+	try {
+		const res = await axios.request<any>({
+			url: api,
+			method: 'post',
+			params,
+			data: { flow: value, params: { ...params, ...withs } }
+		})
+		return Promise.resolve(res)
+	} catch (err) {
+		console.error('[FlowBuilder] Execute Error ', err)
+		return Promise.reject(err)
+	}
+}

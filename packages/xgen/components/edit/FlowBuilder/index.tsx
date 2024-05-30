@@ -26,6 +26,7 @@ interface IFlowBuilderProps {
 	namespace?: string
 	type?: string
 	removeAttribution?: boolean
+	execute?: Component.Request
 	onChange?: (v: any) => void
 }
 

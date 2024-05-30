@@ -18,6 +18,7 @@ import {
 } from 'reactflow'
 import { getLocale } from '@umijs/max'
 import { message } from 'antd'
+import { Component } from '@/types'
 
 interface BuilderContextType {
 	setting?: Setting
@@ -73,11 +74,14 @@ interface BuilderContextType {
 
 	openEdge: boolean
 	setOpenEdge: Dispatch<SetStateAction<boolean>>
+
+	execute?: Component.Request
 }
 
 interface IProps {
 	children: ReactNode
 	setting?: Setting
+	execute?: Component.Request
 	name?: string
 	__namespace?: string
 	__bind?: string
@@ -493,7 +497,9 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				openEdge,
 				setOpenEdge,
 
-				onPanelChange
+				onPanelChange,
+
+				execute: props.execute
 			}}
 		>
 			{props.children}

@@ -2,6 +2,7 @@ import { FlowValue, Setting } from '../../types'
 import Sidebar from '../Sidebar'
 import Canvas from '../Canvas'
 import { BuilderProvider } from '../Builder/Provider'
+import { Component } from '@/types'
 
 interface IProps {
 	value?: FlowValue
@@ -12,6 +13,7 @@ interface IProps {
 	fixed: boolean
 	offsetTop: number
 
+	execute?: Component.Request
 	toggleSidebar: () => void
 	onData?: (id: string, type: string, value: any) => void
 
@@ -31,6 +33,7 @@ const Index = (props: IProps) => {
 			value={props.value}
 			onData={props.onData}
 			id={props.id}
+			execute={props.execute}
 			name={props.name}
 			__bind={props.__bind}
 			__namespace={props.__namespace}

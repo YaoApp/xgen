@@ -2,13 +2,14 @@ import Preset from '@/components/edit/FormBuilder/components/Preset'
 import { Icon, Panel } from '@/widgets'
 import Flow from '../Flow'
 import { FlowValue, Type } from '../../types'
-import { IconName, IconSize } from '../../utils'
+import { Execute, IconName, IconSize } from '../../utils'
 import { Node as ReactFlowNode } from 'reactflow'
 import { useBuilderContext } from '../Builder/Provider'
 import { useState } from 'react'
 
 import yaml from 'js-yaml'
 import { Button, message } from 'antd'
+import { m } from 'framer-motion'
 
 interface IProps {
 	width: number
@@ -34,9 +35,11 @@ const Index = (props: IProps) => {
 		setPanelNode,
 		panelEdge,
 		setPanelEdge,
+		execute,
 
 		value,
 		nodes,
+		setNodes,
 		openPanel,
 		setOpenPanel,
 		running,
@@ -242,12 +245,46 @@ const Index = (props: IProps) => {
 	}
 
 	const doExecute = () => {
+		if (!execute) return undefined
+		if (value === undefined) return undefined
+
 		setRunning(() => true)
-		setTimeout(() => {
-			setRunning(() => false)
-			message.success(is_cn ? '运行完毕' : 'Run Complete')
-		}, 5000)
-		console.log('doExecute', value)
+		Execute(execute, value, { __namespace: props.__namespace, __bind: props.__bind })
+			.then((res) => {
+				if (res.code != 200) {
+					const msg = res.message || (is_cn ? '运行失败' : 'Run Failed')
+					if (res.errors) {
+						setNodes((nodes) => {
+							return nodes.map((node) => {
+								if (res.errors[node.id]) {
+									node.data.error = res.errors[node.id]
+								}
+								return node
+							})
+						})
+					}
+					message.error(msg)
+					return
+				}
+
+				// Remove Error
+				setNodes((nodes) => {
+					return nodes.map((node) => {
+						node.data.error = undefined
+						return node
+					})
+				})
+
+				// @Todo: Display Result
+				const msg = res.message || (is_cn ? '运行成功' : 'Run Success')
+				message.success(msg)
+			})
+			.catch((err) => {
+				message.error(is_cn ? '运行失败' : 'Run Failed')
+			})
+			.finally(() => {
+				setRunning(() => false)
+			})
 	}
 
 	const getActions = () => {
