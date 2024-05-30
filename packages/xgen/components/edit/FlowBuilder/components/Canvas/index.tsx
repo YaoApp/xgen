@@ -36,6 +36,7 @@ const Index = (props: IProps) => {
 		setPanelEdge,
 
 		value,
+		nodes,
 		openPanel,
 		setOpenPanel,
 		running,
@@ -105,31 +106,31 @@ const Index = (props: IProps) => {
 		})
 
 		return {
-			name: getEdgeName(),
 			icon: 'material-conversion_path',
 			props: setting.edge
 		} as Type
 	}
 
 	const getEdgeName = () => {
-		if (!panelEdge) return defaultLabel
-
+		if (!panelEdge) return { name: defaultLabel }
 		const sourceId = panelEdge?.source
 		const targetId = panelEdge?.target
-		const source = value?.nodes?.find((node) => node.id === sourceId)
-		const target = value?.nodes?.find((node) => node.id === targetId)
+		const source = nodes?.find((node) => node.id === sourceId)
+		const target = nodes?.find((node) => node.id === targetId)
+		const sourceProps = source?.data?.props || {}
+		const targetProps = target?.data?.props || {}
 
-		const sourceType = setting?.types?.find((item) => item.name === source?.type)
-		const targetType = setting?.types?.find((item) => item.name === target?.type)
+		const sourceType = setting?.types?.find((item) => item.name === source?.data.type)
+		const targetType = setting?.types?.find((item) => item.name === target?.data.type)
 
-		const sourceName =
-			source?.props?.label || source?.props?.description || source?.props?.name || sourceType?.name
-		const targetName =
-			target?.props?.label || target?.props?.description || target?.props?.name || targetType?.name
+		const sourceName = sourceProps.label || sourceProps.description || sourceProps.name || sourceType?.name
+		const targetName = targetProps.label || targetProps.description || targetProps.name || targetType?.name
 
-		const name = `${is_cn ? '条件设定' : 'Condition Setting'} (${sourceName} -> ${targetName})`
-
-		return name
+		return {
+			name: is_cn ? '条件设定' : 'Condition Setting',
+			source: { name: sourceName, type: sourceType },
+			target: { name: targetName, type: targetType }
+		}
 	}
 
 	const getSetting = () => {
@@ -179,12 +180,64 @@ const Index = (props: IProps) => {
 	const getLabel = () => {
 		if (openSettings) return is_cn ? '设置' : 'Settings'
 		if (openExecute) return is_cn ? '运行' : 'Execute'
-		if (openEdge) return getEdgeName()
+		if (openEdge) return getEdgeLabel()
 		return (
 			panelNode?.data?.props?.label ||
 			panelNode?.data?.props?.description ||
 			panelNode?.data?.props?.name ||
 			defaultLabel
+		)
+	}
+
+	function getEdgeLabel() {
+		const edge = getEdgeName()
+		if (!edge) return defaultLabel
+		const size = 12
+
+		let sourceIcon = <Icon name='material-trip_origin' size={size} style={{ marginRight: 2 }} />
+		if (typeof edge.source?.type?.icon === 'string') {
+			sourceIcon = <Icon name={edge.source?.type?.icon} size={size} style={{ marginRight: 2 }} />
+		}
+		if (typeof edge.source?.type?.icon == 'object') {
+			sourceIcon = (
+				<Icon
+					name={edge.source?.type?.icon?.name || 'material-trip_origin'}
+					size={12}
+					style={{ marginRight: 4 }}
+				/>
+			)
+		}
+
+		let targetIcon = <Icon name='material-trip_origin' size={size} style={{ marginRight: 2 }} />
+		if (typeof edge.target?.type?.icon === 'string') {
+			targetIcon = <Icon name={edge.target?.type?.icon} size={size} style={{ marginRight: 2 }} />
+		}
+		if (typeof edge.target?.type?.icon == 'object') {
+			targetIcon = (
+				<Icon
+					name={edge.target?.type?.icon?.name || 'material-trip_origin'}
+					size={size}
+					style={{ marginRight: 4 }}
+				/>
+			)
+		}
+
+		return (
+			<div
+				style={{
+					justifyContent: 'center',
+					justifyItems: 'center',
+					alignItems: 'center',
+					display: 'flex'
+				}}
+			>
+				<span className='mr_8'>{edge.name}</span>
+				{sourceIcon}
+				<span style={{ fontSize: size }}>{edge.source?.name}</span>
+				<Icon name='material-arrow_forward' size={size} style={{ margin: '0 4px' }} />
+				{targetIcon}
+				<span style={{ fontSize: size }}>{edge.target?.name}</span>
+			</div>
 		)
 	}
 
