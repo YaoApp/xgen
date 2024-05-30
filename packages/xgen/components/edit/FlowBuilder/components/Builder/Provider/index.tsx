@@ -225,6 +225,20 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	const [panelNode, setPanelNode] = useState<ReactFlowNode<any> | undefined>(undefined)
 	const [panelEdge, setPanelEdge] = useState<Edge | undefined>(undefined)
 
+	const onData = (id: string, type: string, value: any) => {
+		// Set the value of the form
+		setValue?.((val) => {
+			if (!val) return
+			if (type === 'nodes') val.nodes = value
+			if (type === 'edges') val.edges = value
+			if (type === 'flow') val.flow = value
+			if (type === 'execute') val.execute = value
+			return { ...val }
+		})
+
+		props.onData?.(id, type, value)
+	}
+
 	const onDelete = useCallback((id: string) => {
 		setNodes((nds) => {
 			return nds.filter((node) => node.id !== id)
@@ -380,7 +394,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				if (val?.flow) {
 					val.flow[bind] = value
 				}
-				props.onData?.(props.id, 'flow', { ...val?.flow })
+				onData(props.id, 'flow', { ...val?.flow })
 				return { ...val }
 			})
 			return
@@ -391,7 +405,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				if (val?.execute) {
 					val.execute[bind] = value
 				}
-				props.onData?.(props.id, 'execute', { ...val?.execute })
+				onData(props.id, 'execute', { ...val?.execute })
 				return { ...val }
 			})
 			return
@@ -427,7 +441,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 			})
 		})
 
-		props.onData?.(props.id, 'edges', newEdges)
+		onData(props.id, 'edges', newEdges)
 	}, [edges])
 
 	useEffect(() => {
@@ -443,7 +457,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				deletable: data.deletable,
 				props: data.props
 			})
-			props.onData?.(props.id, 'nodes', newNodes)
+			onData(props.id, 'nodes', newNodes)
 		})
 	}, [nodes])
 

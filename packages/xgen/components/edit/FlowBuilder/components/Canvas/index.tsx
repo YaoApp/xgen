@@ -5,11 +5,8 @@ import { FlowValue, Type } from '../../types'
 import { Execute, IconName, IconSize } from '../../utils'
 import { Node as ReactFlowNode } from 'reactflow'
 import { useBuilderContext } from '../Builder/Provider'
-import { useState } from 'react'
 
-import yaml from 'js-yaml'
-import { Button, message } from 'antd'
-import { m } from 'framer-motion'
+import { Button, Tooltip, message } from 'antd'
 
 interface IProps {
 	width: number
@@ -153,7 +150,7 @@ const Index = (props: IProps) => {
 
 		return {
 			name: is_cn ? '设置' : 'Settings',
-			icon: 'icon-settings',
+			icon: 'icon-sliders',
 			props: setting.flow
 		} as Type
 	}
@@ -338,6 +335,8 @@ const Index = (props: IProps) => {
 		setOpenPanel(() => true)
 	}
 
+	const toggleFullScreenMode = () => {}
+
 	return (
 		<>
 			<Panel
@@ -376,12 +375,27 @@ const Index = (props: IProps) => {
 						{props.value?.flow?.label || props.value?.flow?.name || defaultLabel}
 					</div>
 					<div className='actions'>
-						<a style={{ marginRight: 12, marginTop: 2 }} onClick={showExecute}>
-							<Icon name='icon-play' size={14} />
-						</a>
-						<a style={{ marginRight: 6, marginTop: 2 }} onClick={showSettings}>
-							<Icon name='icon-settings' size={14} />
-						</a>
+						<Tooltip title={is_cn ? '运行' : 'Execute'}>
+							<a style={{ marginRight: 12, marginTop: 2 }} onClick={showExecute}>
+								<Icon name='icon-play' size={16} />
+							</a>
+						</Tooltip>
+
+						<Tooltip title={is_cn ? '设置' : 'Settings'}>
+							<a style={{ marginRight: 12, marginTop: 2 }} onClick={showSettings}>
+								<Icon name='icon-sliders' size={16} />
+							</a>
+						</Tooltip>
+
+						<Tooltip title={is_cn ? '全屏' : 'Full Screen'}>
+							<a
+								style={{ marginRight: 6, marginTop: 2 }}
+								onClick={() => toggleFullScreenMode}
+							>
+								<Icon name='icon-maximize' size={16} />
+							</a>
+						</Tooltip>
+
 						<Preset />
 					</div>
 				</div>
