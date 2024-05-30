@@ -13,7 +13,8 @@ import {
 	OnConnectStartParams,
 	Connection,
 	MarkerType,
-	addEdge
+	addEdge,
+	Edge
 } from 'reactflow'
 import { getLocale } from '@umijs/max'
 import { message } from 'antd'
@@ -39,7 +40,8 @@ interface BuilderContextType {
 	onDelete: (id: string) => void
 	onAdd: (id: string, type: string) => void
 	onDuplicate: (id: string) => void
-	onSetting: (id: string) => void
+	onSettingNode: (id: string) => void
+	onSettingEdge: (edge: Edge) => void
 	onConnect: OnConnect
 	onConnectStart: OnConnectStart
 	onConnectEnd: OnConnectEnd
@@ -54,6 +56,9 @@ interface BuilderContextType {
 	panelNode: ReactFlowNode<any> | undefined
 	setPanelNode: Dispatch<SetStateAction<ReactFlowNode<any> | undefined>>
 
+	panelEdge: Edge | undefined
+	setPanelEdge: Dispatch<SetStateAction<Edge | undefined>>
+
 	openPanel: boolean
 	setOpenPanel: Dispatch<SetStateAction<boolean>>
 
@@ -65,6 +70,9 @@ interface BuilderContextType {
 
 	openExecute: boolean
 	setOpenExecute: Dispatch<SetStateAction<boolean>>
+
+	openEdge: boolean
+	setOpenEdge: Dispatch<SetStateAction<boolean>>
 }
 
 interface IProps {
@@ -130,7 +138,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 
 			const background = sourceNode?.data?.background
 			const style = EdgeStyle(background)
-			const newEdge = { ...edge, ...style, type: 'custom', data: { label: '' } }
+			const newEdge = { ...edge, ...style, type: 'custom' }
 			edges.push(newEdge)
 		})
 
@@ -206,10 +214,12 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	const [edges, setEdges, onEdgesChange] = useEdgesState(Edges(value))
 	const [openSettings, setOpenSettings] = useState(false)
 	const [openExecute, setOpenExecute] = useState(false)
+	const [openEdge, setOpenEdge] = useState(false)
 	const [running, setRunning] = useState(false)
 
 	const [openPanel, setOpenPanel] = useState(false)
 	const [panelNode, setPanelNode] = useState<ReactFlowNode<any> | undefined>(undefined)
+	const [panelEdge, setPanelEdge] = useState<Edge | undefined>(undefined)
 
 	const onDelete = useCallback((id: string) => {
 		setNodes((nds) => {
@@ -291,7 +301,8 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 		})
 	}, [])
 
-	const onSetting = useCallback((id: string) => {
+	// Open Node Setting Panel
+	const onSettingNode = useCallback((id: string) => {
 		setNodes((nds: any) => {
 			const node = nds.find((n: any) => {
 				n.selected = false // unselect all nodes
@@ -307,6 +318,15 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 			setOpenPanel(() => true)
 			return nds
 		})
+	}, [])
+
+	// Open Edge Setting Panel
+	const onSettingEdge = useCallback((edge: Edge) => {
+		setPanelEdge(() => edge)
+		setOpenEdge(() => true)
+		setOpenExecute(() => false)
+		setOpenSettings(() => false)
+		setOpenPanel(() => true)
 	}, [])
 
 	// const connectingNodeId = useRef(null)
@@ -373,6 +393,17 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 			return
 		}
 
+		if (openEdge) {
+			setEdges((eds) => {
+				const edge = eds.find((item) => item.id === id)
+				if (!edge) return eds
+				if (!edge.data) edge.data = {}
+				edge.data[bind] = value
+				return [...eds]
+			})
+			return
+		}
+
 		setNodes((nds) => {
 			const node = nds.find((item) => item.id === id)
 			if (!node) return nds
@@ -385,11 +416,10 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	useEffect(() => {
 		const newEdges: FlowEdge[] = []
 		edges.forEach((edge) => {
-			const data = { ...edge.data }
 			newEdges.push({
 				source: edge.source,
 				target: edge.target,
-				condition: data.condition
+				data: { ...edge.data }
 			})
 		})
 
@@ -436,7 +466,8 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				onDelete,
 				onAdd,
 				onDuplicate,
-				onSetting,
+				onSettingNode,
+				onSettingEdge,
 
 				is_cn,
 				value,
@@ -446,6 +477,9 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 
 				panelNode,
 				setPanelNode,
+				panelEdge,
+				setPanelEdge,
+
 				openPanel,
 				setOpenPanel,
 
@@ -456,6 +490,8 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				setOpenSettings,
 				openExecute,
 				setOpenExecute,
+				openEdge,
+				setOpenEdge,
 
 				onPanelChange
 			}}

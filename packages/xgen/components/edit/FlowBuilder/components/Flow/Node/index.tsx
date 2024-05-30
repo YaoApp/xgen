@@ -17,7 +17,7 @@ type IProps = {
 }
 
 const CustomNode: FC<NodeProps> = ({ id, data }: IProps) => {
-	const { onDelete, onAdd, onDuplicate, onSetting, running } = useBuilderContext()
+	const { onDelete, onAdd, onDuplicate, onSettingNode, running } = useBuilderContext()
 
 	data.showSourceHandle = data.showSourceHandle === undefined ? true : data.showSourceHandle
 	data.showTargetHandle = data.showTargetHandle === undefined ? true : data.showTargetHandle
@@ -41,7 +41,7 @@ const CustomNode: FC<NodeProps> = ({ id, data }: IProps) => {
 					<a className='item' onClick={() => onDuplicate(id)}>
 						<Icon name='material-content_copy' size={16} />
 					</a>
-					<a className='item' onClick={() => onSetting(id)}>
+					<a className='item' onClick={() => onSettingNode(id)}>
 						<Icon name='material-settings' size={16} />
 					</a>
 

@@ -12,6 +12,7 @@ export type Remote = {
 export type Setting = {
 	flow?: PanelSection[]
 	execute?: PanelSection[]
+	edge?: PanelSection[]
 	types?: Type[]
 	fields?: Record<string, PanelColumnComponent>
 	defaultValue?: FlowValue | FlowValue[]
@@ -47,7 +48,7 @@ export type FlowEdge = {
 	id?: string
 	source: string
 	target: string
-	condition?: string
+	data?: Data
 }
 
 export type FlowValue = {

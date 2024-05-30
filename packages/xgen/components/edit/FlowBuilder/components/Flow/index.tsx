@@ -34,6 +34,7 @@ const Flow = (props: IProps) => {
 		setNodes,
 		onNodesChange,
 		onEdgesChange,
+		onSettingEdge,
 
 		CreateNode,
 		setHideContextMenu,
@@ -81,6 +82,7 @@ const Flow = (props: IProps) => {
 				onConnect={onConnect}
 				onConnectStart={onConnectStart}
 				onConnectEnd={onConnectEnd}
+				onEdgeClick={(event, edge) => onSettingEdge(edge)}
 				fitView
 				fitViewOptions={{ maxZoom: 1 }}
 				nodeOrigin={[0.5, 0]}

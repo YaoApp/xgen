@@ -32,18 +32,23 @@ const Index = (props: IProps) => {
 		setting,
 		panelNode,
 		setPanelNode,
+		panelEdge,
+		setPanelEdge,
+
 		value,
 		openPanel,
 		setOpenPanel,
-		setNodes,
 		running,
 		setRunning,
 		openSettings,
 		setOpenSettings,
 		openExecute,
 		setOpenExecute,
+		openEdge,
+		setOpenEdge,
 		onPanelChange
 	} = useBuilderContext()
+
 	const defaultLabel = is_cn ? '未命名' : 'Untitled'
 
 	const hidePanel = () => {
@@ -54,13 +59,16 @@ const Index = (props: IProps) => {
 		if (!open) {
 			setOpenSettings(() => false)
 			setOpenExecute(() => false)
+			setOpenEdge(() => false)
 			setPanelNode(() => undefined)
+			setPanelEdge(() => undefined)
 		}
 	}
 
 	const getType = () => {
 		if (openSettings) return getSetting()
 		if (openExecute) return getExecute()
+		if (openEdge) return getEdge()
 
 		const node = panelNode
 		if (!node) return undefined
@@ -80,10 +88,54 @@ const Index = (props: IProps) => {
 		return type
 	}
 
+	const getEdge = () => {
+		if (!openEdge) return undefined
+		if (!setting) return undefined
+		if (!setting.edge) {
+			console.error('setting.edge not found')
+			return undefined
+		}
+
+		setting.edge.forEach((section) => {
+			section?.columns?.forEach((item) => {
+				const component = setting?.fields?.[item.name]
+				if (!component) return console.error('Component not found', item.name)
+				item.component = component
+			})
+		})
+
+		return {
+			name: getEdgeName(),
+			icon: 'material-conversion_path',
+			props: setting.edge
+		} as Type
+	}
+
+	const getEdgeName = () => {
+		if (!panelEdge) return defaultLabel
+
+		const sourceId = panelEdge?.source
+		const targetId = panelEdge?.target
+		const source = value?.nodes?.find((node) => node.id === sourceId)
+		const target = value?.nodes?.find((node) => node.id === targetId)
+
+		const sourceType = setting?.types?.find((item) => item.name === source?.type)
+		const targetType = setting?.types?.find((item) => item.name === target?.type)
+
+		const sourceName =
+			source?.props?.label || source?.props?.description || source?.props?.name || sourceType?.name
+		const targetName =
+			target?.props?.label || target?.props?.description || target?.props?.name || targetType?.name
+
+		const name = `${is_cn ? '条件设定' : 'Condition Setting'} (${sourceName} -> ${targetName})`
+
+		return name
+	}
+
 	const getSetting = () => {
 		if (!setting) return undefined
 		if (!setting.flow) {
-			console.error('Flow not found')
+			console.error('setting.flow not found')
 			return undefined
 		}
 
@@ -105,7 +157,7 @@ const Index = (props: IProps) => {
 	const getExecute = () => {
 		if (!setting) return undefined
 		if (!setting.execute) {
-			console.error('Execute not found')
+			console.error('setting.execute not found')
 			return undefined
 		}
 
@@ -127,6 +179,7 @@ const Index = (props: IProps) => {
 	const getLabel = () => {
 		if (openSettings) return is_cn ? '设置' : 'Settings'
 		if (openExecute) return is_cn ? '运行' : 'Execute'
+		if (openEdge) return getEdgeName()
 		return (
 			panelNode?.data?.props?.label ||
 			panelNode?.data?.props?.description ||
@@ -164,24 +217,34 @@ const Index = (props: IProps) => {
 	const getData = () => {
 		if (openSettings) return { ...(value?.flow || {}) }
 		if (openExecute) return { ...(value?.execute || {}) }
+		if (openEdge) {
+			const edge = panelEdge
+			if (!edge) return {}
+			return { ...(edge?.data || {}) }
+		}
+
 		return { ...(panelNode?.data?.props || {}) }
 	}
 
 	const getID = () => {
 		if (openSettings) return '__settings'
 		if (openExecute) return '__execute'
+		if (openEdge) return panelEdge?.id
+
 		return panelNode?.id
 	}
 
 	const showSettings = () => {
 		setOpenSettings(() => true)
 		setOpenExecute(() => false)
+		setOpenEdge(() => false)
 		setOpenPanel(() => true)
 	}
 
 	const showExecute = () => {
 		setOpenExecute(() => true)
 		setOpenSettings(() => false)
+		setOpenEdge(() => false)
 		setOpenPanel(() => true)
 	}
 
