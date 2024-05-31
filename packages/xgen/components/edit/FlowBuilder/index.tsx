@@ -46,22 +46,6 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	const [activeFlow, setActiveFlow] = useState<string>('')
 	const [data, setData] = useState<FlowValue[]>(GetValues(props.value))
 
-	// for full screen
-	const fullScreenStyle: React.CSSProperties = {
-		bottom: 0,
-		display: 'flex',
-		height: '100%',
-		left: 0,
-		margin: 0,
-		padding: 0,
-		position: 'fixed',
-		right: 0,
-		top: 0,
-		width: '100%',
-		overflowY: 'auto',
-		zIndex: 1000
-	}
-
 	// When the data is updated in the flow
 	// Update the value of the form
 	// Type is: nodes, edges, flow, execute
@@ -181,7 +165,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 
 	useEffect(() => {
 		if (fullscreen) {
-			setHeight(window.innerHeight - (props.multiple ? 72 : 38))
+			setHeight(window.innerHeight - (props.multiple ? 80 : 38))
 			return
 		}
 		setHeight(props.height && props.height >= 300 ? props.height : 300)
@@ -369,8 +353,28 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 			.catch(() => setLoading(false))
 	}, [props.setting])
 
+	// for full screen
+	const fullScreenStyle: React.CSSProperties = {
+		bottom: 0,
+		display: 'flex',
+		height: '100%',
+		left: 0,
+		margin: 0,
+		padding: 0,
+		position: 'fixed',
+		right: 0,
+		top: 0,
+		width: '100%',
+		overflowY: 'auto',
+		zIndex: 1000
+	}
+
 	return (
-		<div className={clsx(styles._local)} ref={ref} style={fullscreen ? fullScreenStyle : {}}>
+		<div
+			className={clsx(fullscreen ? [styles._local, styles._fullscreen] : [styles._local])}
+			ref={ref}
+			style={fullscreen ? fullScreenStyle : {}}
+		>
 			<If condition={loading}>
 				<Then>
 					<div className='loading' style={{ height: height }}>

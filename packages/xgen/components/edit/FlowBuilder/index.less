@@ -38,6 +38,15 @@
 			}
 		}
 
+		.xgen-tabs-nav-wrap {
+			border-bottom: 1px solid var(--color_border_soft);
+			height: 42px;
+
+			.xgen-tabs-nav-add {
+				border: none;
+			}
+		}
+
 		background-color: var(--color_bg_menu);
 		min-height: 300px;
 		border-radius: var(--radius);
@@ -128,6 +137,21 @@
 					color: var(--color_main);
 				}
 			}
+		}
+	}
+}
+
+._fullscreen {
+	:global {
+		background: var(--color_bg_menu) !important;
+
+		.xgen-tabs-card.xgen-tabs-top > .xgen-tabs-nav .xgen-tabs-tab,
+		.xgen-tabs-card.xgen-tabs-top > div > .xgen-tabs-nav .xgen-tabs-tab,
+		.xgen-tabs-card.xgen-tabs-top > .xgen-tabs-nav .xgen-tabs-tab-active,
+		.xgen-tabs > .xgen-tabs-nav .xgen-tabs-nav-add,
+		.xgen-tabs > div > .xgen-tabs-nav .xgen-tabs-nav-add,
+		.xgen-tabs-card.xgen-tabs-top > div > .xgen-tabs-nav .xgen-tabs-tab-active {
+			border-radius: 0 !important;
 		}
 	}
 }
