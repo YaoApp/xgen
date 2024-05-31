@@ -378,6 +378,14 @@ const Index = (props: IProps) => {
 					</div>
 					<div className='actions'>
 						<Tooltip
+							title={is_cn ? '插入' : 'Insert'}
+							placement={fullscreen ? 'bottom' : 'top'}
+						>
+							<a style={{ marginRight: 24, marginTop: 2 }}>
+								<Icon name='icon-plus-circle' size={16} />
+							</a>
+						</Tooltip>
+						<Tooltip
 							title={is_cn ? '运行' : 'Execute'}
 							placement={fullscreen ? 'bottom' : 'top'}
 						>
@@ -401,7 +409,7 @@ const Index = (props: IProps) => {
 								placement={fullscreen ? 'bottom' : 'top'}
 							>
 								<a
-									style={{ marginRight: 6, marginTop: 2 }}
+									style={{ marginRight: 12, marginTop: 2 }}
 									onClick={() => setFullscreen(true)}
 								>
 									<Icon name='icon-maximize' size={16} />
@@ -410,15 +418,13 @@ const Index = (props: IProps) => {
 						) : (
 							<Tooltip title={is_cn ? '退出全屏' : 'Exit Full Screen'} placement='bottom'>
 								<a
-									style={{ marginRight: 6, marginTop: 2 }}
+									style={{ marginRight: 16, marginTop: 2 }}
 									onClick={() => setFullscreen(false)}
 								>
 									<Icon name='icon-minimize' size={16} />
 								</a>
 							</Tooltip>
 						)}
-
-						<Preset />
 					</div>
 				</div>
 
