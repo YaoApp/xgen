@@ -9,6 +9,7 @@ import { useBuilderContext } from '../Builder/Provider'
 
 import 'reactflow/dist/style.css'
 import styles from './index.less'
+import { CreateID } from '../../utils'
 interface IProps {
 	name?: string
 	width: number
@@ -90,7 +91,7 @@ const Flow = (props: IProps) => {
 				edgeTypes={edgeTypes}
 				nodeTypes={nodeTypes}
 			>
-				<Background gap={[14, 14]} id={`${__namespace}.${__bind}.${name}`} />
+				<Background gap={[14, 14]} id={CreateID()} />
 				<Controls />
 			</ReactFlow>
 		</div>

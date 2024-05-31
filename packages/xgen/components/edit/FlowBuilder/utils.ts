@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { FlowValue, IconT, Remote, Setting } from './types'
 import { Component } from '@/types'
+import { nanoid } from 'nanoid/non-secure'
 
 export const GetSetting = async (setting?: Remote | Setting): Promise<Setting> => {
 	if (setting && 'api' in setting) {
@@ -58,3 +59,5 @@ export const Execute = async (
 		return Promise.reject(err)
 	}
 }
+
+export const CreateID = () => '_' + nanoid() + new Date().valueOf()

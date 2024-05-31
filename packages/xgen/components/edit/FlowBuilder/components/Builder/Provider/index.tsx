@@ -19,6 +19,7 @@ import {
 import { getLocale } from '@umijs/max'
 import { message } from 'antd'
 import { Component } from '@/types'
+import { CreateID } from '../../../utils'
 
 interface BuilderContextType {
 	setting?: Setting
@@ -192,7 +193,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	}
 
 	const ID = (id?: string | number): string => {
-		if (id === undefined) return `${Date.now()}${Math.random()}`
+		if (id === undefined) return CreateID()
 		if (typeof id === 'number') return `${id}`
 		return id
 	}
