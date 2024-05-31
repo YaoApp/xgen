@@ -123,7 +123,10 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	// Set the width of the grid layout
 	const offsetTop = 80
 	const [isFixed, setIsFixed] = useState(false)
-	const [fullscreen, setFullscreen] = useState(false)
+	const [fullscreen, _setFullscreen] = useState(false)
+	const setFullscreen = (value: boolean) => {
+		_setFullscreen(() => value)
+	}
 
 	// Fixed sidebar, canvas and toolbar
 	useEffect(() => {
