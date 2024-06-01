@@ -26,7 +26,7 @@ const Index = (props: IProps) => {
 
 	return (
 		<div className={clsx([styles._local])}>
-			<div className='flex justify_center items_center'>
+			<div className='categories'>
 				<Segmented
 					options={options}
 					value={kind}
@@ -36,8 +36,9 @@ const Index = (props: IProps) => {
 				/>
 			</div>
 			<div className='items mt_16 pl_8 pr_8'>
-				{[1, 2, 3, 4, 5, 6].map((item, index) => (
+				{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => (
 					<div
+						key={index}
 						className='item'
 						draggable
 						unselectable='on'

@@ -92,7 +92,6 @@ const Flow = (props: IProps) => {
 				snapToGrid
 				edgeTypes={edgeTypes}
 				nodeTypes={nodeTypes}
-				onClick={props.onClick}
 			>
 				<Background gap={[14, 14]} id={CreateID()} />
 				<Controls />

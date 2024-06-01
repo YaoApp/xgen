@@ -37,32 +37,29 @@ const Index = (props: IProps) => {
 		icon = { name: props.icon }
 	}
 	const getTitle = () => {
-		if (props.actions && props.actions.length > 0) {
-			return (
-				<div className='flex' style={{ alignItems: 'center', justifyContent: 'space-between' }}>
-					<div>
-						<Icon size={14} {...icon} className='mr_6' />
-						{label}
-					</div>
-					<div className='flex' style={{ alignItems: 'center', justifyContent: 'end' }}>
-						{props.actions.map((action, index) => (
-							<div
-								className='flex'
-								style={{ alignItems: 'center', justifyContent: 'space-between' }}
-								key={index}
-							>
-								{action}
-							</div>
-						))}
-					</div>
-				</div>
-			)
-		}
-
 		return (
-			<div className='flex' style={{ alignItems: 'center' }}>
-				<Icon size={14} {...icon} className='mr_6' />
-				{label}
+			<div className='flex' style={{ alignItems: 'center', justifyContent: 'space-between' }}>
+				<div className='flex' style={{ alignItems: 'center' }}>
+					<Icon size={14} {...icon} className='mr_6' />
+					{label}
+				</div>
+				<div className='flex' style={{ alignItems: 'center', justifyContent: 'end' }}>
+					{props.actions?.map((action, index) => (
+						<div
+							className='flex'
+							style={{ alignItems: 'center', justifyContent: 'space-between' }}
+							key={index}
+						>
+							{action}
+						</div>
+					))}
+
+					{!props.mask && (
+						<a className='flex' style={{ cursor: 'pointer' }} onClick={props.onClose}>
+							<Icon size={18} name='icon-x' className='ml_12' />
+						</a>
+					)}
+				</div>
 			</div>
 		)
 	}
@@ -77,7 +74,7 @@ const Index = (props: IProps) => {
 			placement='right'
 			closable={false}
 			maskClosable={true}
-			mask={props.mask === undefined || props.mask ? true : false}
+			mask={!props.mask ? false : true}
 			onClose={props.onClose}
 			afterOpenChange={props.afterOpenChange}
 			open={props.open}

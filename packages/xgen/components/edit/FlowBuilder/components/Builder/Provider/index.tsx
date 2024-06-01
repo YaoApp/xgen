@@ -65,6 +65,9 @@ interface BuilderContextType {
 	openPanel: boolean
 	setOpenPanel: Dispatch<SetStateAction<boolean>>
 
+	showMask: boolean
+	setShowMask: Dispatch<SetStateAction<boolean>>
+
 	running: boolean
 	setRunning: Dispatch<SetStateAction<boolean>>
 
@@ -238,6 +241,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	const [running, setRunning] = useState(false)
 
 	const [openPanel, setOpenPanel] = useState(false)
+	const [showMask, setShowMask] = useState(true)
 	const [panelNode, setPanelNode] = useState<ReactFlowNode<any> | undefined>(undefined)
 	const [panelEdge, setPanelEdge] = useState<Edge | undefined>(undefined)
 
@@ -340,17 +344,19 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	// Open Node Setting Panel
 	const onSettingNode = useCallback((id: string) => {
 		setNodes((nds: any) => {
-			const node = nds.find((n: any) => {
-				n.selected = false // unselect all nodes
-				return n.id === id
-			})
+			const node = nds.find((n: any) => n.id === id)
 			if (!node) {
 				console.error(`[FlowBuilder] Node ${id} not found`)
 				return
 			}
 
-			node.selected = true // select the node
 			setPanelNode(() => node)
+			setOpenExecute(() => false)
+			setOpenSettings(() => false)
+			setOpenPresets(() => false)
+			setOpenEdge(() => false)
+
+			setShowMask(() => true)
 			setOpenPanel(() => true)
 			return nds
 		})
@@ -363,6 +369,8 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 		setOpenExecute(() => false)
 		setOpenSettings(() => false)
 		setOpenPresets(() => false)
+
+		setShowMask(() => true)
 		setOpenPanel(() => true)
 	}, [])
 
@@ -524,6 +532,8 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 
 				openPanel,
 				setOpenPanel,
+				showMask,
+				setShowMask,
 
 				running,
 				setRunning,

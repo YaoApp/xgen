@@ -40,6 +40,9 @@ const Index = (props: IProps) => {
 		setNodes,
 		openPanel,
 		setOpenPanel,
+		showMask,
+		setShowMask,
+
 		running,
 		setRunning,
 		openSettings,
@@ -346,6 +349,7 @@ const Index = (props: IProps) => {
 		setOpenEdge(() => false)
 		setOpenPresets(() => false)
 
+		setShowMask(() => true)
 		setOpenPanel(() => true)
 	}
 
@@ -355,6 +359,7 @@ const Index = (props: IProps) => {
 		setOpenEdge(() => false)
 		setOpenPresets(() => false)
 
+		setShowMask(() => false)
 		setOpenPanel(() => true)
 	}
 
@@ -364,6 +369,7 @@ const Index = (props: IProps) => {
 		setOpenExecute(() => false)
 		setOpenEdge(() => false)
 
+		setShowMask(() => false)
 		setOpenPanel(() => true)
 	}
 
@@ -382,7 +388,7 @@ const Index = (props: IProps) => {
 				fixed={props.fixed}
 				offsetTop={props.offsetTop}
 				width={460}
-				mask={false}
+				mask={showMask}
 				defaultIcon='material-trip_origin'
 				icon={openPresets ? 'icon-plus-circle' : undefined}
 				children={openPresets ? <Presets keywords={keywords} /> : undefined}
