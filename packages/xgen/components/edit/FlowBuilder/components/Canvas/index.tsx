@@ -1,14 +1,13 @@
-import Preset from '@/components/edit/FormBuilder/components/Preset'
 import { Icon, Panel } from '@/widgets'
 import Flow from '../Flow'
 import { FlowValue, Type } from '../../types'
 import { Execute, IconName, IconSize } from '../../utils'
-import { Node as ReactFlowNode } from 'reactflow'
 import { useBuilderContext } from '../Builder/Provider'
 
 import { Button, Tooltip, message } from 'antd'
-import { fullscreen } from '@/actions/Form'
-import { useEffect } from 'react'
+import Presets from '../Presets'
+import { useState } from 'react'
+import Filter from '../Presets/Filter'
 
 interface IProps {
 	width: number
@@ -49,10 +48,15 @@ const Index = (props: IProps) => {
 		setOpenExecute,
 		openEdge,
 		setOpenEdge,
+		openPresets,
+		setOpenPresets,
+
 		onPanelChange,
 		fullscreen,
 		setFullscreen
 	} = useBuilderContext()
+
+	const [keywords, setKeywords] = useState<string>('')
 
 	const defaultLabel = is_cn ? '未命名' : 'Untitled'
 
@@ -65,6 +69,7 @@ const Index = (props: IProps) => {
 			setOpenSettings(() => false)
 			setOpenExecute(() => false)
 			setOpenEdge(() => false)
+			setOpenPresets(() => false)
 			setPanelNode(() => undefined)
 			setPanelEdge(() => undefined)
 		}
@@ -74,6 +79,7 @@ const Index = (props: IProps) => {
 		if (openSettings) return getSetting()
 		if (openExecute) return getExecute()
 		if (openEdge) return getEdge()
+		if (openPresets) return undefined
 
 		const node = panelNode
 		if (!node) return undefined
@@ -184,6 +190,7 @@ const Index = (props: IProps) => {
 	const getLabel = () => {
 		if (openSettings) return is_cn ? '设置' : 'Settings'
 		if (openExecute) return is_cn ? '运行' : 'Execute'
+		if (openPresets) return is_cn ? '插入' : 'Insert'
 		if (openEdge) return getEdgeLabel()
 		return (
 			panelNode?.data?.props?.label ||
@@ -289,20 +296,27 @@ const Index = (props: IProps) => {
 	}
 
 	const getActions = () => {
-		if (!openExecute) return undefined
-		return [
-			<Button
-				key='run'
-				type='primary'
-				loading={running}
-				size='small'
-				onClick={() => doExecute()}
-				style={{ fontSize: 12 }}
-			>
-				<Icon name='icon-play' size={10} style={{ marginRight: 4 }} />
-				{is_cn ? '运行' : 'Run'}
-			</Button>
-		]
+		if (openExecute) {
+			return [
+				<Button
+					key='run'
+					type='primary'
+					loading={running}
+					size='small'
+					onClick={() => doExecute()}
+					style={{ fontSize: 12 }}
+				>
+					<Icon name='icon-play' size={10} style={{ marginRight: 4 }} />
+					{is_cn ? '运行' : 'Run'}
+				</Button>
+			]
+		}
+
+		if (openPresets) {
+			return [<Filter key='filter' onChange={(value) => setKeywords(value)} />]
+		}
+
+		return undefined
 	}
 
 	const getData = () => {
@@ -313,6 +327,7 @@ const Index = (props: IProps) => {
 			if (!edge) return {}
 			return { ...(edge?.data || {}) }
 		}
+		if (openPresets) return {}
 
 		return { ...(panelNode?.data?.props || {}) }
 	}
@@ -329,6 +344,8 @@ const Index = (props: IProps) => {
 		setOpenSettings(() => true)
 		setOpenExecute(() => false)
 		setOpenEdge(() => false)
+		setOpenPresets(() => false)
+
 		setOpenPanel(() => true)
 	}
 
@@ -336,6 +353,17 @@ const Index = (props: IProps) => {
 		setOpenExecute(() => true)
 		setOpenSettings(() => false)
 		setOpenEdge(() => false)
+		setOpenPresets(() => false)
+
+		setOpenPanel(() => true)
+	}
+
+	const showPresets = () => {
+		setOpenPresets(() => true)
+		setOpenSettings(() => false)
+		setOpenExecute(() => false)
+		setOpenEdge(() => false)
+
 		setOpenPanel(() => true)
 	}
 
@@ -354,7 +382,10 @@ const Index = (props: IProps) => {
 				fixed={props.fixed}
 				offsetTop={props.offsetTop}
 				width={460}
+				mask={false}
 				defaultIcon='material-trip_origin'
+				icon={openPresets ? 'icon-plus-circle' : undefined}
+				children={openPresets ? <Presets keywords={keywords} /> : undefined}
 			/>
 			<div style={{ width: props.width }}>
 				<div className='head'>
@@ -381,7 +412,7 @@ const Index = (props: IProps) => {
 							title={is_cn ? '插入' : 'Insert'}
 							placement={fullscreen ? 'bottom' : 'top'}
 						>
-							<a style={{ marginRight: 24, marginTop: 2 }}>
+							<a style={{ marginRight: 24, marginTop: 2 }} onClick={showPresets}>
 								<Icon name='icon-plus-circle' size={16} />
 							</a>
 						</Tooltip>
@@ -435,6 +466,11 @@ const Index = (props: IProps) => {
 					name={props.name}
 					__namespace={props.__namespace}
 					__bind={props.__bind}
+					onClick={(event) => {
+						if (openPanel) {
+							setOpenPanel(() => false)
+						}
+					}}
 				/>
 			</div>
 		</>

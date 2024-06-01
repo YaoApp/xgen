@@ -17,6 +17,8 @@ interface IProps {
 	value?: FlowValue
 	__namespace?: string
 	__bind?: string
+
+	onClick?: (event: any) => void
 }
 
 const edgeTypes: EdgeTypes = {
@@ -90,6 +92,7 @@ const Flow = (props: IProps) => {
 				snapToGrid
 				edgeTypes={edgeTypes}
 				nodeTypes={nodeTypes}
+				onClick={props.onClick}
 			>
 				<Background gap={[14, 14]} id={CreateID()} />
 				<Controls />

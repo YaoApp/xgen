@@ -88,15 +88,28 @@ const Index = (props: IPropsFormItem) => {
 	const Content = (
 		<Col className='form_col_wrap relative' span={item.width}>
 			{show_ai && (
-				<span
-					className={clsx([
-						'mark_ai absolute flex justify_center align_center clickable',
-						visible && 'visible'
-					])}
-					onClick={showAI}
+				<Popover
+					overlayClassName={styles.popover}
+					placement='topRight'
+					trigger='click'
+					getPopupContainer={(n) => n.parentElement!}
+					destroyTooltipOnHide
+					content={Ask}
+					open={visible}
+					onOpenChange={(v) => {
+						if (!v) setVisible(v)
+					}}
 				>
-					AI
-				</span>
+					<span
+						className={clsx([
+							'mark_ai absolute flex justify_center align_center clickable',
+							visible && 'visible'
+						])}
+						onClick={showAI}
+					>
+						AI
+					</span>
+				</Popover>
 			)}
 			{loading && (
 				<Button className='ai_loading' type='ghost' size='small' loading>
@@ -120,24 +133,7 @@ const Index = (props: IPropsFormItem) => {
 		</Col>
 	)
 
-	return show_ai ? (
-		<Popover
-			overlayClassName={styles.popover}
-			placement='topRight'
-			trigger='click'
-			getPopupContainer={(n) => n.parentElement!}
-			destroyTooltipOnHide
-			content={Ask}
-			open={visible}
-			onOpenChange={(v) => {
-				if (!v) setVisible(v)
-			}}
-		>
-			{Content}
-		</Popover>
-	) : (
-		Content
-	)
+	return Content
 }
 
 export default new window.$app.Handle(Index).by(observer).by(window.$app.memo).get()

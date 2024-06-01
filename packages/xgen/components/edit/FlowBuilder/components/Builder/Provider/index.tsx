@@ -20,6 +20,7 @@ import { getLocale } from '@umijs/max'
 import { message } from 'antd'
 import { Component } from '@/types'
 import { CreateID } from '../../../utils'
+import { set } from 'lodash-es'
 
 interface BuilderContextType {
 	setting?: Setting
@@ -72,6 +73,9 @@ interface BuilderContextType {
 
 	openExecute: boolean
 	setOpenExecute: Dispatch<SetStateAction<boolean>>
+
+	openPresets: boolean
+	setOpenPresets: Dispatch<SetStateAction<boolean>>
 
 	openEdge: boolean
 	setOpenEdge: Dispatch<SetStateAction<boolean>>
@@ -228,6 +232,8 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	const [edges, setEdges, onEdgesChange] = useEdgesState(Edges(value))
 	const [openSettings, setOpenSettings] = useState(false)
 	const [openExecute, setOpenExecute] = useState(false)
+	const [openPresets, setOpenPresets] = useState(false)
+
 	const [openEdge, setOpenEdge] = useState(false)
 	const [running, setRunning] = useState(false)
 
@@ -356,6 +362,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 		setOpenEdge(() => true)
 		setOpenExecute(() => false)
 		setOpenSettings(() => false)
+		setOpenPresets(() => false)
 		setOpenPanel(() => true)
 	}, [])
 
@@ -527,6 +534,8 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				setOpenExecute,
 				openEdge,
 				setOpenEdge,
+				openPresets,
+				setOpenPresets,
 
 				onPanelChange,
 

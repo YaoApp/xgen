@@ -18,20 +18,24 @@ interface IProps {
 	fixed: boolean
 	offsetTop: number
 	defaultIcon?: string
+	icon?: string
+	mask?: boolean
 	onClose: () => void
 	onChange?: (id: string, bind: string, value: any) => void
 	afterOpenChange?: (open: boolean) => void
+	children?: ReactNode
 }
 
 const Index = (props: IProps) => {
 	const { id, label, data, type } = props
-	const icon =
-		typeof type?.icon === 'string'
-			? { name: type.icon }
-			: typeof type?.icon == 'object'
-			? type.icon
-			: { name: props.defaultIcon || 'material-format_align_left' }
+	let icon = { name: props.defaultIcon || 'material-format_align_left' }
+	if (type?.icon) {
+		icon = typeof type.icon === 'string' ? { name: type.icon } : type.icon
+	}
 
+	if (props.icon) {
+		icon = { name: props.icon }
+	}
 	const getTitle = () => {
 		if (props.actions && props.actions.length > 0) {
 			return (
@@ -73,6 +77,7 @@ const Index = (props: IProps) => {
 			placement='right'
 			closable={false}
 			maskClosable={true}
+			mask={props.mask === undefined || props.mask ? true : false}
 			onClose={props.onClose}
 			afterOpenChange={props.afterOpenChange}
 			open={props.open}
@@ -82,6 +87,9 @@ const Index = (props: IProps) => {
 			width={props.width || '36%'}
 			style={{ position: props.fixed ? 'fixed' : 'absolute', zIndex: props.fixed ? 101 : 99 }}
 		>
+			<If condition={props.children != undefined}>
+				<Then>{props.children}</Then>
+			</If>
 			<If condition={type != undefined}>
 				<Then>
 					{type?.props?.map((section, index) => (
