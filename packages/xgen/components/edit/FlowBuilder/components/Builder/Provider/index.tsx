@@ -84,6 +84,7 @@ interface BuilderContextType {
 	setOpenEdge: Dispatch<SetStateAction<boolean>>
 
 	execute?: Component.Request
+	presets?: Component.Request
 
 	fullscreen: boolean
 	setFullscreen: (value: boolean) => void
@@ -99,6 +100,7 @@ interface IProps {
 	children: ReactNode
 	setting?: Setting
 	execute?: Component.Request
+	presets?: Component.Request
 	name?: string
 	__namespace?: string
 	__bind?: string
@@ -550,6 +552,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				onPanelChange,
 
 				execute: props.execute,
+				presets: props.presets,
 
 				fullscreen,
 				setFullscreen: onSetFullscreen,

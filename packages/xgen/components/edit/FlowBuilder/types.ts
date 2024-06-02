@@ -18,6 +18,29 @@ export type Setting = {
 	defaultValue?: FlowValue | FlowValue[]
 }
 
+export type PresetItem = {
+	name: string
+	icon?: IconT
+	image?: string
+	description: string
+	category?: string | number
+	nodes: FlowNode[]
+	edges?: FlowEdge[]
+}
+
+export type Category = {
+	value?: string | number
+	label: string
+}
+
+export type PresetsResult = PresetItem[] | { categories: Category[]; presets: PresetItem[] }
+
+export type PresetsQuery = {
+	keywords?: string
+	category?: string | number
+	withCategories?: boolean
+}
+
 export type FlowTab = Omit<TabPaneProps, 'tab'> & {
 	label: ReactNode
 	value: FlowValue

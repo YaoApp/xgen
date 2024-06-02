@@ -14,7 +14,7 @@ import Tab from './components/Tab'
 
 interface IFlowBuilderProps {
 	setting?: any
-	presets?: any
+
 	height?: number
 	multiple?: boolean
 
@@ -27,6 +27,7 @@ interface IFlowBuilderProps {
 	type?: string
 	removeAttribution?: boolean
 	execute?: Component.Request
+	presets?: Component.Request
 	onChange?: (v: any) => void
 }
 

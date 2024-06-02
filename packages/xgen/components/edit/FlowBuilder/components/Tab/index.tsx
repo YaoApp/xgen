@@ -6,7 +6,6 @@ import { FlowTab, FlowValue } from '../../types'
 
 interface ITabProps {
 	setting?: any
-	presets?: any
 	width?: number
 	height?: number
 	isFixed?: boolean
@@ -19,6 +18,7 @@ interface ITabProps {
 
 	removeAttribution?: boolean
 	execute?: Component.Request
+	presets?: Component.Request
 	flowValue: FlowValue
 	onData: (id: string, type: string, value: any) => void
 	toggleSidebar: () => void
@@ -79,6 +79,7 @@ export const Tab = (props: IProps): FlowTab | null => {
 				id={flow.id}
 				name={flow.name}
 				execute={props.execute}
+				presets={props.presets}
 				width={width || 0}
 				height={height || 0}
 				fixed={isFixed === undefined ? false : isFixed}

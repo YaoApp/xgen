@@ -17,6 +17,7 @@ interface IProps {
 	removeAttribution?: boolean
 
 	execute?: Component.Request
+	presets?: Component.Request
 	toggleSidebar: () => void
 	onData?: (id: string, type: string, value: any) => void
 
@@ -37,6 +38,7 @@ const Index = (props: IProps) => {
 			onData={props.onData}
 			id={props.id}
 			execute={props.execute}
+			presets={props.presets}
 			name={props.name}
 			__bind={props.__bind}
 			__namespace={props.__namespace}
