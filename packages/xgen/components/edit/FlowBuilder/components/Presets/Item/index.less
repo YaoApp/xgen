@@ -1,0 +1,64 @@
+._local {
+	:global {
+		.item {
+			display: flex;
+			align-items: start;
+			justify-content: start;
+
+			background: var(--color_bg);
+			border-radius: var(--radius);
+			height: 64px;
+			cursor: move;
+
+			.icon {
+				margin: 6px;
+				width: 52px;
+				height: 52px;
+				padding: 0;
+				background: var(--color_bg_nav);
+				border-radius: var(--radius);
+				color: var(--color_main);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.cover {
+				height: 64px;
+				background: var(--color_bg) center center no-repeat;
+				width: 100%;
+				background-size: cover;
+				border-radius: var(--radius);
+			}
+
+			.cover:hover {
+				filter: brightness(1.2);
+			}
+
+			.intro {
+				padding: 12px 8px;
+				width: calc(100% - 64px);
+				font-size: 14px;
+				.name {
+					color: var(--color_text);
+					font-weight: 500;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+
+				.description {
+					color: var(--color_title_grey);
+					font-size: 12px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+			}
+		}
+
+		.item:hover {
+			background: var(--color_bg_menu);
+		}
+	}
+}

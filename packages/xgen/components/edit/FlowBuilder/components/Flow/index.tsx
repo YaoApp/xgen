@@ -4,12 +4,13 @@ import { useCallback, useRef, useState } from 'react'
 import CustomEdge from './Edge'
 
 import CustomNode from './Node'
-import { FlowValue } from '../../types'
+import { FlowNode, FlowValue, PresetItem } from '../../types'
 import { useBuilderContext } from '../Builder/Provider'
 
 import 'reactflow/dist/style.css'
 import styles from './index.less'
 import { CreateID } from '../../utils'
+import { message } from 'antd'
 interface IProps {
 	name?: string
 	width: number
@@ -35,6 +36,8 @@ const Flow = (props: IProps) => {
 		edges,
 		nodes,
 		setNodes,
+		setEdges,
+		EdgeStyle,
 		onNodesChange,
 		onEdgesChange,
 		onSettingEdge,
@@ -51,6 +54,19 @@ const Flow = (props: IProps) => {
 	const onDrop = useCallback(
 		(event: any) => {
 			event.preventDefault()
+			// Preset
+			const preset = event.dataTransfer.getData('application/reactflow/preset')
+			if (preset) {
+				try {
+					const presetObj = JSON.parse(preset)
+					dropPreset(event, presetObj)
+				} catch (error: any) {
+					message.error(' Error: ' + error?.message || 'Unknown error')
+				}
+				return
+			}
+
+			// Type of Node
 			const type = event.dataTransfer.getData('application/reactflow')
 			const position = reactFlowInstance?.screenToFlowPosition({
 				x: event.clientX,
@@ -65,6 +81,48 @@ const Flow = (props: IProps) => {
 		},
 		[reactFlowInstance]
 	)
+
+	const dropPreset = (event: any, preset: PresetItem) => {
+		const offset = reactFlowInstance?.screenToFlowPosition({
+			x: event.clientX,
+			y: event.clientY
+		})
+		if (!offset) return
+
+		const nameMappping: { [key: string]: any } = {}
+
+		// Add Nodes to Flow
+		const nodes: any[] = preset.nodes.map((node) => {
+			const newNode = CreateNode(
+				node.type,
+				node.props?.description || node.type,
+				{
+					x: offset.x + node.position.x,
+					y: offset.y + node.position.y
+				},
+				node.props
+			)
+			if (node.props?.name) {
+				nameMappping[node.props?.name] = newNode
+			}
+			return newNode
+		})
+
+		// Add Edges to Flow
+		const edges = preset.edges?.map((edge) => {
+			const source = nameMappping[edge.source]
+			const target = nameMappping[edge.target]
+
+			if (!source || !target) return null
+			const background = source?.data?.background
+			const style = EdgeStyle(background)
+
+			return { id: CreateID(), source: source.id, ...style, target: target.id, type: 'custom' }
+		})
+
+		setNodes((nds) => nds.concat(nodes))
+		if (edges) setEdges((eds) => eds.concat(edges))
+	}
 
 	const onDragOver = useCallback((event: any) => {
 		event.preventDefault()

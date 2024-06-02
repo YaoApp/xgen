@@ -10,6 +10,7 @@ import { Else, If, Then } from 'react-if'
 import { useGlobal } from '@/context/app'
 import { PresetItem } from '../../types'
 import { LoadingOutlined } from '@ant-design/icons'
+import Item from './Item'
 
 interface IProps {
 	keywords?: string
@@ -17,7 +18,7 @@ interface IProps {
 
 const Index = (props: IProps) => {
 	const global = useGlobal()
-	const { is_cn, presets } = useBuilderContext()
+	const { is_cn, presets, __namespace, __bind } = useBuilderContext()
 	const [presetsData, setPresetsData] = useState<PresetItem[]>([])
 	const [categories, setCategories] = useState<any>([])
 	const [category, setCategory] = useState<string | number | undefined>(undefined)
@@ -38,7 +39,13 @@ const Index = (props: IProps) => {
 
 		withCategories && setLoading(true)
 		setLoadingData(true)
-		GetPresets(presets, { withCategories: withCategories, category, keywords: props.keywords })
+		GetPresets(presets, {
+			withCategories: withCategories,
+			category,
+			keywords: props.keywords,
+			__namespace,
+			__bind
+		})
 			.then((res) => {
 				if (!res) return
 				if (Array.isArray(res)) {
@@ -109,20 +116,7 @@ const Index = (props: IProps) => {
 								<Else>
 									<div className='items mt_16 pl_8 pr_8'>
 										{presetsData?.map((item, index) => (
-											<div
-												key={index}
-												className='item'
-												draggable
-												unselectable='on'
-												onDragStart={(e) =>
-													e.dataTransfer.setData(
-														'application/reactflow',
-														'AI-Data'
-													)
-												}
-											>
-												Preset Item
-											</div>
+											<Item key={index} item={item} />
 										))}
 									</div>
 								</Else>

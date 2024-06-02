@@ -20,7 +20,6 @@ import { getLocale } from '@umijs/max'
 import { message } from 'antd'
 import { Component } from '@/types'
 import { CreateID } from '../../../utils'
-import { set } from 'lodash-es'
 
 interface BuilderContextType {
 	setting?: Setting
@@ -54,7 +53,12 @@ interface BuilderContextType {
 	value?: FlowValue
 	setValue?: Dispatch<SetStateAction<FlowValue | undefined>>
 
-	CreateNode: (typeName: string, description: string, position: { x: number; y: number }) => any
+	CreateNode: (
+		typeName: string,
+		description: string,
+		position: { x: number; y: number },
+		props?: Record<string, any>
+	) => any
 
 	panelNode: ReactFlowNode<any> | undefined
 	setPanelNode: Dispatch<SetStateAction<ReactFlowNode<any> | undefined>>
@@ -90,6 +94,11 @@ interface BuilderContextType {
 	setFullscreen: (value: boolean) => void
 
 	removeAttribution?: boolean
+
+	__namespace?: string
+	__bind?: string
+
+	EdgeStyle: (theme: string) => any
 }
 
 interface IProps {
@@ -168,7 +177,12 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 		return edges
 	}
 
-	const CreateNode = (typeName: string, description: string, position: { x: number; y: number }) => {
+	const CreateNode = (
+		typeName: string,
+		description: string,
+		position: { x: number; y: number },
+		props?: Record<string, any>
+	) => {
 		const nodeType = setting?.types?.find((type) => type.name === typeName)
 		if (!nodeType) {
 			console.error(`[FlowBuilder] Node type ${typeName} not found`)
@@ -178,7 +192,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 		const node: FlowNode = {
 			id: ID(),
 			type: typeName,
-			props: { description: description },
+			props: { description: description, ...props },
 			position: position
 		}
 		const className = nodeType.background || 'default'
@@ -507,6 +521,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				nodes,
 				setNodes,
 				edges,
+				EdgeStyle,
 				setEdges,
 				onNodesChange,
 				onEdgesChange,
@@ -557,7 +572,10 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 				fullscreen,
 				setFullscreen: onSetFullscreen,
 
-				removeAttribution: props.removeAttribution
+				removeAttribution: props.removeAttribution,
+
+				__namespace: props.__namespace,
+				__bind: props.__bind
 			}}
 		>
 			{props.children}

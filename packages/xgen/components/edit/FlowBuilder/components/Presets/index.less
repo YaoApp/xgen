@@ -62,23 +62,7 @@
 		.items {
 			display: grid;
 			grid-gap: 10px;
-			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-
-			.item {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-
-				background: var(--color_bg);
-				border-radius: var(--radius);
-				min-height: 100px;
-				cursor: move;
-			}
-
-			.item:hover {
-				background: var(--color_bg_menu);
-			}
+			grid-template-columns: repeat(12, 1fr);
 		}
 	}
 }

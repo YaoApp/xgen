@@ -67,7 +67,7 @@ export const GetPresets = async (
 	if (!remote) return Promise.resolve(undefined)
 	const { keywords, category, withCategories } = query
 	const { api, params } = remote
-	const data = { params, keywords, category, withCategories }
+	const data = { params, ...query }
 	try {
 		const res = await axios.post<any, PresetsResult>(api, data)
 		return Promise.resolve(res)
