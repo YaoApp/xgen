@@ -117,7 +117,14 @@ const Flow = (props: IProps) => {
 			const background = source?.data?.background
 			const style = EdgeStyle(background)
 
-			return { id: CreateID(), source: source.id, ...style, target: target.id, type: 'custom' }
+			return {
+				id: CreateID(),
+				source: source.id,
+				data: edge.data,
+				...style,
+				target: target.id,
+				type: 'custom'
+			}
 		})
 
 		setNodes((nds) => nds.concat(nodes))

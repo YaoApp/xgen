@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { FC } from 'react'
-import { EdgeProps, EdgeLabelRenderer, StepEdge } from 'reactflow'
+import { EdgeProps, EdgeLabelRenderer, StepEdge, getBezierPath } from 'reactflow'
 import styles from './index.less'
 
 const CustomEdge: FC<EdgeProps> = ({
@@ -17,6 +17,15 @@ const CustomEdge: FC<EdgeProps> = ({
 	style,
 	markerEnd
 }) => {
+	const [edgePath, labelX, labelY] = getBezierPath({
+		sourceX,
+		sourceY,
+		sourcePosition,
+		targetX,
+		targetY,
+		targetPosition
+	})
+
 	return (
 		<>
 			<StepEdge
@@ -39,9 +48,7 @@ const CustomEdge: FC<EdgeProps> = ({
 					<div className={clsx(styles._local)}>
 						<a
 							style={{
-								transform: `translate(-50%, -50%) translate(${targetX - 60}px,${
-									targetY - 20
-								}px)`
+								transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`
 							}}
 							className='label nodrag nopan'
 						>
