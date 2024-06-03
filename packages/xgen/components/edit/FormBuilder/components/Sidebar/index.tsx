@@ -34,7 +34,7 @@ const Index = (props: IProps) => {
 								unselectable='on'
 								onDragStart={(e) =>
 									e.dataTransfer.setData(
-										'text/plain',
+										'application/form/type',
 										JSON.stringify({ type: type.name })
 									)
 								}

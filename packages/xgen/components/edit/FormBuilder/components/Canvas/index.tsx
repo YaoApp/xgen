@@ -1,22 +1,22 @@
-import { Panel, Icon } from '@/widgets'
+import { Panel, Icon, PanelPresets as Presets, PanelFilter as Filter } from '@/widgets'
 import GridLayout from 'react-grid-layout'
-import { Field, Layout, Presets, Setting, Type, Remote, Data } from '../../types'
+import { Field, Layout, Setting, Type, Data } from '../../types'
 import { useEffect, useState } from 'react'
 import { GenerateID, LayoutToColumns, TypeMappping, UpdatePosition, ValueToLayout } from '../../utils'
 import clsx from 'clsx'
-import Preset from '../Preset'
+import type { Component } from '@/types'
 import { IconName, IconSize } from '@/components/edit/FlowBuilder/utils'
 import { getLocale } from '@umijs/max'
 import { Tooltip } from 'antd'
-import { Background } from 'reactflow'
 import Ruler from '../Ruler'
+import { CodeSandboxCircleFilled } from '@ant-design/icons'
 
 interface IProps {
 	width?: number
 	height?: number
 	contentHeight?: number
 	setting?: Setting
-	presets?: Presets | Remote
+	presets?: Component.Request
 	value?: Data // initial value
 	fixed: boolean
 	offsetTop: number
@@ -26,6 +26,9 @@ interface IProps {
 	showSidebar: boolean
 	fullscreen: boolean
 	setFullscreen: (v: boolean) => void
+
+	__namespace: string
+	__bind: string
 }
 
 const Index = (props: IProps) => {
@@ -47,6 +50,8 @@ const Index = (props: IProps) => {
 	const [isPreset, setIsPreset] = useState(false)
 	const [isSetting, setIsSetting] = useState(false)
 
+	const [keywords, setKeywords] = useState<string>('')
+
 	const onPanelChange = (id: string, bind: string, value: any) => {
 		if (isSetting) {
 			updateForm(bind, value)
@@ -67,22 +72,33 @@ const Index = (props: IProps) => {
 	}
 
 	const showPanel = (id: string, field: Field, type: Type) => {
-		if (isSetting) return showSettings()
-
+		setIsPreset(false)
+		setIsSetting(false)
 		setField(field)
 		setType(type)
 		setActive(id)
+		setMask(true)
 		setOpen(true)
 	}
 
-	const showPresets = () => {}
+	const showPresets = () => {
+		setIsPreset(true)
+		setIsSetting(false)
+		setActive(undefined)
+		setMask(false)
+		setOpen(true)
+	}
 	const showSettings = () => {
 		setIsSetting(true)
+		setMask(true)
+		setIsPreset(false)
+		setActive(undefined)
 		setOpen(true)
 	}
 
 	const hidePanel = () => {
 		setOpen(false)
+		setMask(true)
 		setActive(undefined)
 		setIsSetting(false)
 		setIsPreset(false)
@@ -95,6 +111,8 @@ const Index = (props: IProps) => {
 
 	const getLabel = () => {
 		if (isSetting) return is_cn ? '设置' : 'Settings'
+		if (isPreset) return is_cn ? '插入' : 'Insert'
+
 		return field?.props?.label || field?.props?.name || type?.label || (is_cn ? '未命名' : 'Untitled')
 	}
 
@@ -103,9 +121,42 @@ const Index = (props: IProps) => {
 		return field?.props || {}
 	}
 
+	const getActions = () => {
+		if (isPreset) {
+			return [<Filter key='filter' onChange={(value) => setKeywords(value)} />]
+		}
+
+		return undefined
+	}
+
 	const getType = () => {
 		if (isSetting) return getSetting()
+		if (isPreset) return undefined
 		return type
+	}
+
+	// add addColumn to the layout
+	const addColumn = (field: Field) => {
+		const maxY = Math.max(...layout.map((item) => item.y))
+		const copyField = { ...field }
+		copyField.id = GenerateID()
+		copyField.x = 0
+		copyField.y = maxY + 1
+
+		const newCloumns = [...(value?.columns || []), copyField]
+		setValue((value) => ({ ...value, columns: newCloumns }))
+		setLayout([
+			...layout,
+			{
+				i: copyField.id,
+				x: copyField.x,
+				y: copyField.y,
+				w: copyField.width || 4,
+				h: 1,
+				resizeHandles: ['w', 'e']
+			}
+		])
+		setFieldMap({ ...fieldMap, [copyField.id]: copyField })
 	}
 
 	const getSetting = () => {
@@ -188,31 +239,6 @@ const Index = (props: IProps) => {
 		setFieldMap(mapping)
 	}
 
-	// add from the preset
-	const onAdd = (field: Field) => {
-		const maxY = Math.max(...layout.map((item) => item.y))
-		const copyField = { ...field }
-		copyField.id = GenerateID()
-		copyField.x = 0
-		copyField.y = maxY + 1
-
-		const newCloumns = [...(value?.columns || []), copyField]
-		setValue((value) => ({ ...value, columns: newCloumns }))
-		setLayout([
-			...layout,
-			{
-				i: copyField.id,
-				x: copyField.x,
-				y: copyField.y,
-				w: copyField.width || 4,
-				h: 1,
-				resizeHandles: ['w', 'e']
-			}
-		])
-		setFieldMap({ ...fieldMap, [copyField.id]: copyField })
-		showPanel(copyField.id, copyField, typeMap[copyField.type])
-	}
-
 	// Clone the item
 	const onClone = (key: string) => {
 		const layoutItem = layout.find((item) => item.i === key)
@@ -244,31 +270,52 @@ const Index = (props: IProps) => {
 
 	// Drop the item add the item to the layout
 	const onDrop = (layout: Layout[], layoutItem: GridLayout.Layout, e: any) => {
-		const raw = e.dataTransfer.getData('text') || ''
+		// Drop from preset
+		const payload = e.dataTransfer.getData('application/form/preset')
+		if (payload) {
+			let data: Record<string, any> = {}
+			try {
+				data = JSON.parse(payload)
+			} catch (e: any) {
+				console.error(`Error parsing JSON data: ${e.message}`)
+				return
+			}
+
+			if (!data.columns) {
+				console.error('Columns not found in payload')
+				return
+			}
+
+			setValue((value) => {
+				value = value || { columns: [], form: {} }
+				const newColumns = [...value.columns, ...data.columns]
+				const res = ValueToLayout(newColumns, [], { x: layoutItem.x, y: layoutItem.y })
+				setLayout(res.layout)
+				setFieldMap(res.mapping)
+				return { ...value, columns: newColumns }
+			})
+			return
+		}
+
+		// Drop from type
+		const raw = e.dataTransfer.getData('application/form/type') || ''
 		let data: Record<string, any> = {}
 		try {
 			data = JSON.parse(raw)
 		} catch (e: any) {
 			console.error(`Error parsing JSON data: ${e.message}`)
+			return
 		}
 
-		const field = {
+		addColumn({
 			id: GenerateID(),
 			type: data.type,
 			x: layoutItem.x,
 			y: layoutItem.y,
 			width: data.width || 4,
 			props: data.props || {}
-		}
-
-		const newCloumns = [...(value?.columns || []), field]
-		setValue((value) => ({ ...value, columns: newCloumns }))
-		setLayout([
-			...layout,
-			{ i: field.id, x: field.x, y: field.y, w: field.width, h: 1, resizeHandles: ['w', 'e'] }
-		])
-		setFieldMap({ ...fieldMap, [field.id]: field })
-		showPanel(field.id, field, typeMap[field.type])
+		})
+		// showPanel(field.id, field, typeMap[field.type])
 	}
 
 	// Remove the item
@@ -297,10 +344,23 @@ const Index = (props: IProps) => {
 				label={getLabel()}
 				data={getData()}
 				type={getType()}
+				actions={getActions()}
 				fixed={props.fixed}
 				mask={mask}
 				width={420}
 				offsetTop={props.offsetTop}
+				icon={isPreset ? 'icon-plus-circle' : undefined}
+				children={
+					isPreset ? (
+						<Presets
+							keywords={keywords}
+							transfer='application/form/preset'
+							__namespace={props.__namespace}
+							__bind={props.__bind}
+							presets={props.presets}
+						/>
+					) : undefined
+				}
 			/>
 			<div className='title-bar' style={{ width: props.width }}>
 				<div className='head'>

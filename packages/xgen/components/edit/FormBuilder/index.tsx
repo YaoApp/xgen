@@ -9,17 +9,16 @@ import { useEffect, useRef, useState } from 'react'
 import 'react-grid-layout/css/styles.css'
 import styles from './index.less'
 import clsx from 'clsx'
-import { Data, Presets, Remote, Setting } from './types'
+import { Data, Setting } from './types'
 import Sidebar from './components/Sidebar'
 import Canvas from './components/Canvas'
 import { Else, If, Then } from 'react-if'
 import { GetSetting } from './utils'
 import { useGlobal } from '@/context/app'
-import Ruler from './components/Ruler'
 
 interface IFormBuilderProps {
-	setting?: Remote | Setting
-	presets?: Remote | Presets
+	setting?: Component.Request
+	presets?: Component.Request
 	height?: number
 
 	value?: Data
@@ -27,7 +26,6 @@ interface IFormBuilderProps {
 
 	label?: string
 	bind?: string
-	namespace?: string
 	type?: string
 	onChange?: (v: any) => void
 }
@@ -195,6 +193,8 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 						setFullscreen={setFullscreen}
 						showSidebar={showSidebar}
 						toggleSidebar={toggleSidebar}
+						__namespace={props.__namespace}
+						__bind={props.__bind}
 					/>
 				</Else>
 			</If>
@@ -203,10 +203,10 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 })
 
 const Index = (props: IProps) => {
-	const { __bind, __name, itemProps, ...rest_props } = props
+	const { __bind, __namespace, __name, itemProps, ...rest_props } = props
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
-			<FormBuilder {...rest_props} {...{ __bind, __name }}></FormBuilder>
+			<FormBuilder {...rest_props} {...{ __bind, __namespace, __name }}></FormBuilder>
 		</Item>
 	)
 }
