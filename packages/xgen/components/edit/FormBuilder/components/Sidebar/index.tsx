@@ -13,7 +13,6 @@ interface IProps {
 
 const Index = (props: IProps) => {
 	const className = 'sidebar' + (!props.showSidebar ? ' collapsed' : '')
-
 	return (
 		<div className={className}>
 			<div
@@ -23,7 +22,14 @@ const Index = (props: IProps) => {
 					width: 200
 				}}
 			>
-				<div className='content' style={{ width: 200, zIndex: 99 }}>
+				<div
+					className='content'
+					style={{
+						width: 200,
+						zIndex: 99,
+						minHeight: (props.height || 300) + (props.fullscreen ? 42 : 60)
+					}}
+				>
 					{props.types?.map((type, index) => (
 						<div
 							key={`${type.name}|${index}`}

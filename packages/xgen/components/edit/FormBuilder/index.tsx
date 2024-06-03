@@ -111,7 +111,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 			setHeight(window.innerHeight - 64)
 			return
 		}
-		setHeight(props.height && props.height >= 300 ? props.height - 96 : 300)
+		setHeight(props.height && props.height >= 300 ? props.height - 64 : 300)
 	}, [fullscreen])
 
 	useEffect(() => {
