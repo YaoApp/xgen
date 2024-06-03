@@ -22,7 +22,7 @@ interface IFormBuilderProps {
 	presets?: Remote | Presets
 	height?: number
 
-	value: any
+	value?: Data
 	disabled?: boolean
 
 	label?: string
@@ -39,7 +39,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 	const [height, setHeight] = useState(props.height && props.height >= 300 ? props.height : 300)
 	const [contentHeight, setContentHeight] = useState(props.height && props.height >= 300 ? props.height : 300)
 	const [isFixed, setIsFixed] = useState(false)
-	const [value, setValue] = useState<any>()
+	const [value, setValue] = useState<Data | undefined>()
 	const [data, setData] = useState<Data>()
 	const [loading, setLoading] = useState<boolean>(false)
 	const [setting, setSetting] = useState<Setting | undefined>(undefined)
@@ -116,24 +116,20 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 
 	useEffect(() => {
 		if (!props.value) return
-		if (!props.value.columns) return
-		setValue(props.value?.columns || [])
+		setValue(props.value)
 		setData(props.value)
 	}, [props.value])
 
+	// Update value
 	useEffect(() => {
 		if (!data) return
 		props.onChange && props.onChange(data)
 	}, [data])
 
 	// Canvas setting
-	const onCanvasChange = (value: any, height: number) => {
+	const onCanvasChange = (value: Data, height: number) => {
 		setContentHeight(height)
-		setData((data: any) => {
-			const newData = { ...data }
-			newData.columns = value
-			return newData
-		})
+		setData(() => value)
 	}
 
 	// Get setting

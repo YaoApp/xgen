@@ -1,8 +1,8 @@
 import { Panel, Icon } from '@/widgets'
 import GridLayout from 'react-grid-layout'
-import { Field, Layout, Presets, Setting, Type, Remote } from '../../types'
+import { Field, Layout, Presets, Setting, Type, Remote, Data } from '../../types'
 import { useEffect, useState } from 'react'
-import { GenerateID, LayoutToValue, TypeMappping, UpdatePosition, ValueToLayout } from '../../utils'
+import { GenerateID, LayoutToColumns, TypeMappping, UpdatePosition, ValueToLayout } from '../../utils'
 import clsx from 'clsx'
 import Preset from '../Preset'
 import { IconName, IconSize } from '@/components/edit/FlowBuilder/utils'
@@ -17,7 +17,7 @@ interface IProps {
 	contentHeight?: number
 	setting?: Setting
 	presets?: Presets | Remote
-	value: any // initial value
+	value?: Data // initial value
 	fixed: boolean
 	offsetTop: number
 	onChange?: (v: any, height: number) => void
@@ -33,18 +33,26 @@ const Index = (props: IProps) => {
 	const [layout, setLayout] = useState<Layout[]>([])
 	const [fieldMap, setFieldMap] = useState<Record<string, Field>>({})
 	const [typeMap, setTypeMap] = useState<Record<string, Type>>({})
-	const [value, setValue] = useState<Field[]>([props.value])
+	const [value, setValue] = useState<Data | undefined>(props.value)
 
 	// Panel setting
 	const [open, setOpen] = useState(false)
 	const [type, setType] = useState<Type | undefined>(undefined)
 	const [active, setActive] = useState<string | undefined>(undefined)
 	const [field, setField] = useState<Field | undefined>(undefined)
-	const hidePanel = () => {
-		setOpen(false)
-		setActive(undefined)
-	}
+
+	const is_cn = getLocale() === 'zh-CN'
+	const defaultLabel = is_cn ? '未命名' : 'Untitled'
+	const [mask, setMask] = useState(true)
+	const [isPreset, setIsPreset] = useState(false)
+	const [isSetting, setIsSetting] = useState(false)
+
 	const onPanelChange = (id: string, bind: string, value: any) => {
+		if (isSetting) {
+			updateForm(bind, value)
+			return
+		}
+
 		if (field) {
 			const props = { ...field.props }
 			props[bind] = value
@@ -54,23 +62,94 @@ const Index = (props: IProps) => {
 			const mapping = { ...fieldMap }
 			mapping[id] = { ...field, props }
 			setFieldMap(mapping)
-
-			updateValue(LayoutToValue(layout, mapping))
+			updateColumns(LayoutToColumns(layout, mapping))
 		}
 	}
+
 	const showPanel = (id: string, field: Field, type: Type) => {
+		if (isSetting) return showSettings()
+
 		setField(field)
 		setType(type)
 		setActive(id)
 		setOpen(true)
 	}
 
+	const showPresets = () => {}
+	const showSettings = () => {
+		setIsSetting(true)
+		setOpen(true)
+	}
+
+	const hidePanel = () => {
+		setOpen(false)
+		setActive(undefined)
+		setIsSetting(false)
+		setIsPreset(false)
+	}
+
+	const getID = () => {
+		if (isSetting) return '__settings'
+		return active
+	}
+
+	const getLabel = () => {
+		if (isSetting) return is_cn ? '设置' : 'Settings'
+		return field?.props?.label || field?.props?.name || type?.label || (is_cn ? '未命名' : 'Untitled')
+	}
+
+	const getData = () => {
+		if (isSetting) return { ...(value?.form || {}) }
+		return field?.props || {}
+	}
+
+	const getType = () => {
+		if (isSetting) return getSetting()
+		return type
+	}
+
+	const getSetting = () => {
+		if (!props.setting) return undefined
+		if (!props.setting.form) {
+			console.error('setting.form not found')
+			return undefined
+		}
+
+		props.setting.form.forEach((section) => {
+			section?.columns?.forEach((item) => {
+				const component = props.setting?.fields?.[item.name]
+				if (!component) return console.error('Component not found', item.name)
+				item.component = component
+			})
+		})
+
+		return {
+			name: is_cn ? '设置' : 'Settings',
+			icon: 'icon-sliders',
+			props: props.setting.form
+		} as Type
+	}
+
 	// Update the value
-	const updateValue = (value: Field[]) => {
+	const updateColumns = (columns: Data['columns']) => {
+		setValue((value) => ({ ...value, columns: [...columns] }))
+	}
+
+	// Update form setting
+	const updateForm = (bind: string, value: any) => {
+		setValue((v) => {
+			v = v || { columns: [], form: {} }
+			const form = { ...(v.form || {}) }
+			form[bind] = value
+			return { ...v, form }
+		})
+	}
+
+	useEffect(() => {
 		const maxY = Math.max(...layout.map((item) => item.y))
 		const height = (maxY + 1) * (42 + 10)
 		props.onChange && props.onChange(value, height)
-	}
+	}, [value])
 
 	// Update value when set from outside
 	useEffect(() => {
@@ -82,7 +161,7 @@ const Index = (props: IProps) => {
 
 	useEffect(() => {
 		if (props.value || props.setting?.defaultValue) {
-			const res = ValueToLayout(props.value, props.setting?.defaultValue?.columns || [])
+			const res = ValueToLayout(props.value?.columns, props.setting?.defaultValue?.columns || [])
 			setLayout(res.layout)
 			setFieldMap(res.mapping)
 			setValue(props.value || props.setting?.defaultValue)
@@ -95,8 +174,8 @@ const Index = (props: IProps) => {
 		const mapping = UpdatePosition(fieldMap, layout)
 		setFieldMap(mapping)
 		setLayout(layout)
-		const value = LayoutToValue(layout, mapping)
-		updateValue(value)
+		const columns = LayoutToColumns(layout, mapping)
+		updateColumns(columns)
 	}
 
 	const onDrag = (layout: Layout[], layoutItem: GridLayout.Layout, e: any) => {
@@ -117,8 +196,8 @@ const Index = (props: IProps) => {
 		copyField.x = 0
 		copyField.y = maxY + 1
 
-		const newValue = [...value, copyField]
-		setValue(newValue)
+		const newCloumns = [...(value?.columns || []), copyField]
+		setValue((value) => ({ ...value, columns: newCloumns }))
 		setLayout([
 			...layout,
 			{
@@ -145,8 +224,8 @@ const Index = (props: IProps) => {
 			copyField.x = 0
 			copyField.y = maxY + 1
 
-			const newValue = [...value, copyField]
-			setValue(newValue)
+			const newCloumns = [...(value?.columns || []), copyField]
+			setValue((value) => ({ ...value, columns: newCloumns }))
 			setLayout([
 				...layout,
 				{
@@ -182,8 +261,8 @@ const Index = (props: IProps) => {
 			props: data.props || {}
 		}
 
-		const newValue = [...value, field]
-		setValue(newValue)
+		const newCloumns = [...(value?.columns || []), field]
+		setValue((value) => ({ ...value, columns: newCloumns }))
 		setLayout([
 			...layout,
 			{ i: field.id, x: field.x, y: field.y, w: field.width, h: 1, resizeHandles: ['w', 'e'] }
@@ -201,21 +280,12 @@ const Index = (props: IProps) => {
 		delete mapping[key]
 
 		// Update Value
-		const newValue = Object.values(mapping)
-		setValue(newValue)
+		const newCloumns = Object.values(mapping)
+		setValue((value) => ({ ...value, columns: newCloumns }))
 	}
 
 	// onDropDragOver: (e: DragOverEvent) => Layout
-	const onDropDragOver = (e: any) => {
-		return { w: 4, h: 1 }
-	}
-
-	const is_cn = getLocale() === 'zh-CN'
-	const defaultLabel = is_cn ? '未命名' : 'Untitled'
-	const [mask, setMask] = useState(true)
-
-	const showPresets = () => {}
-	const showSettings = () => {}
+	const onDropDragOver = (e: any) => ({ w: 4, h: 1 })
 
 	return (
 		<>
@@ -223,10 +293,10 @@ const Index = (props: IProps) => {
 				open={open}
 				onClose={hidePanel}
 				onChange={onPanelChange}
-				id={active}
-				label={field?.props?.label || field?.props?.name || type?.label || 'Untitled'}
-				data={field?.props}
-				type={type}
+				id={getID()}
+				label={getLabel()}
+				data={getData()}
+				type={getType()}
 				fixed={props.fixed}
 				mask={mask}
 				width={420}
@@ -236,8 +306,8 @@ const Index = (props: IProps) => {
 				<div className='head'>
 					<div className='title'>
 						<Icon
-							name={IconName(props.value?.flow?.icon)}
-							size={IconSize(props.value?.flow?.icon)}
+							name={IconName(props.value?.form?.icon)}
+							size={IconSize(props.value?.form?.icon)}
 							style={{ marginRight: 4 }}
 						/>
 						{props.value?.form?.label || props.value?.form?.name || defaultLabel}

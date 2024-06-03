@@ -65,7 +65,11 @@ export const TypeMappping = (setting: Setting): Record<string, Type> => {
 	return mapping
 }
 
-export const LayoutToValue = (layout: Layout[], mapping: Record<string, Field>, layoutWidth: number = 12): Field[] => {
+export const LayoutToColumns = (
+	layout: Layout[],
+	mapping: Record<string, Field>,
+	layoutWidth: number = 12
+): Field[] => {
 	const value: Field[] = []
 	const lines: Layout[][] = []
 	layout.forEach((item) => {
