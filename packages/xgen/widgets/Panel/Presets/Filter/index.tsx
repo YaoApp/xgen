@@ -1,9 +1,8 @@
 import { Icon } from '@/widgets'
-import { IconName, IconSize } from '../../../utils'
-import { useBuilderContext } from '../../Builder/Provider'
 import { Input } from 'antd'
 import styles from './index.less'
 import clsx from 'clsx'
+import { getLocale } from '@umijs/max'
 
 interface IProps {
 	onChange: (value: string) => void
@@ -12,7 +11,7 @@ interface IProps {
 const { Search } = Input
 
 const Index = (props: IProps) => {
-	const { is_cn, setting } = useBuilderContext()
+	const is_cn = getLocale() === 'zh-CN'
 	const placeholder = is_cn ? '搜索' : 'Search'
 	return (
 		<div className={clsx([styles._local])}>

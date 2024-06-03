@@ -1,13 +1,11 @@
-import { Icon, Panel } from '@/widgets'
+import { Icon, Panel, PanelPresets as Presets, PanelFilter as Filter } from '@/widgets'
 import Flow from '../Flow'
 import { FlowValue, Type } from '../../types'
 import { Execute, IconName, IconSize } from '../../utils'
 import { useBuilderContext } from '../Builder/Provider'
 
 import { Button, Tooltip, message } from 'antd'
-import Presets from '../Presets'
 import { useState } from 'react'
-import Filter from '../Presets/Filter'
 
 interface IProps {
 	width: number
@@ -32,6 +30,7 @@ const Index = (props: IProps) => {
 		panelEdge,
 		setPanelEdge,
 		execute,
+		presets,
 
 		value,
 		nodes,
@@ -389,7 +388,17 @@ const Index = (props: IProps) => {
 				mask={showMask}
 				defaultIcon='material-trip_origin'
 				icon={openPresets ? 'icon-plus-circle' : undefined}
-				children={openPresets ? <Presets keywords={keywords} /> : undefined}
+				children={
+					openPresets ? (
+						<Presets
+							keywords={keywords}
+							transfer='application/reactflow/preset'
+							__namespace={props.__namespace}
+							__bind={props.__bind}
+							presets={presets}
+						/>
+					) : undefined
+				}
 			/>
 			<div className='title-bar' style={{ width: props.width }}>
 				<div className='head'>

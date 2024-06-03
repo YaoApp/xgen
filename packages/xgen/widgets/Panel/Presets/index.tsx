@@ -1,25 +1,29 @@
-import { Icon } from '@/widgets'
-import { GetPresets, IconName, IconSize } from '../../utils'
-import { useBuilderContext } from '../Builder/Provider'
+import { GetPresets } from './uitls'
 import { useEffect, useState } from 'react'
 import { Empty, Segmented, Skeleton, Spin, message } from 'antd'
-
+import { Component } from '@/types'
 import styles from './index.less'
 import clsx from 'clsx'
 import { Else, If, Then } from 'react-if'
 import { useGlobal } from '@/context/app'
-import { PresetItem } from '../../types'
+import { PresetItem } from '../types'
 import { LoadingOutlined } from '@ant-design/icons'
 import Item from './Item'
+import { getLocale } from '@umijs/max'
 
-interface IProps {
+interface IProps<T> {
 	keywords?: string
+	presets?: Component.Request
+	__namespace?: string
+	__bind?: string
+	transfer: string
 }
 
-const Index = (props: IProps) => {
+const Index = <T,>(props: IProps<T>) => {
 	const global = useGlobal()
-	const { is_cn, presets, __namespace, __bind } = useBuilderContext()
-	const [presetsData, setPresetsData] = useState<PresetItem[]>([])
+	const is_cn = getLocale() === 'zh-CN'
+	const { presets, __namespace, __bind } = props
+	const [presetsData, setPresetsData] = useState<PresetItem<T>[]>([])
 	const [categories, setCategories] = useState<any>([])
 	const [category, setCategory] = useState<string | number | undefined>(undefined)
 	const [loading, setLoading] = useState<boolean>(false)
@@ -39,7 +43,7 @@ const Index = (props: IProps) => {
 
 		withCategories && setLoading(true)
 		setLoadingData(true)
-		GetPresets(presets, {
+		GetPresets<T>(presets, {
 			withCategories: withCategories,
 			category,
 			keywords: props.keywords,
@@ -116,7 +120,11 @@ const Index = (props: IProps) => {
 								<Else>
 									<div className='items mt_16 pl_8 pr_8'>
 										{presetsData?.map((item, index) => (
-											<Item key={index} item={item} />
+											<Item
+												key={index}
+												item={item}
+												transfer={props.transfer}
+											/>
 										))}
 									</div>
 								</Else>
@@ -129,4 +137,4 @@ const Index = (props: IProps) => {
 	)
 }
 
-export default window.$app.memo(Index)
+export default window.$app.memo(Index) as <T>(props: IProps<T>) => JSX.Element

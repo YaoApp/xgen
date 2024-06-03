@@ -1,18 +1,17 @@
 import { Icon } from '@/widgets'
-import { IconName, IconSize } from '../../../utils'
-import { useBuilderContext } from '../../Builder/Provider'
-import { Input, Image, Popover } from 'antd'
+import { IconName, IconSize } from '../uitls'
+import { Image, Popover } from 'antd'
 import styles from './index.less'
 import clsx from 'clsx'
-import { PresetItem } from '../../../types'
+import { PresetItem } from '../../types'
 import { Else, If, Then } from 'react-if'
 
-interface IProps {
-	item: PresetItem
+interface IProps<T> {
+	item: PresetItem<T>
+	transfer: string
 }
 
-const Index = (props: IProps) => {
-	const { is_cn, setting } = useBuilderContext()
+const Index = <T,>(props: IProps<T>) => {
 	const it = props.item
 	return (
 		<div
@@ -20,7 +19,7 @@ const Index = (props: IProps) => {
 			style={{ gridColumn: `span ${it.width || 6}` }}
 			draggable
 			unselectable='on'
-			onDragStart={(e) => e.dataTransfer.setData('application/reactflow/preset', JSON.stringify(it))}
+			onDragStart={(e) => e.dataTransfer.setData(props.transfer, JSON.stringify(it.payload))}
 		>
 			<Popover content={it.description} placement='topLeft' className='popover'>
 				<div className='item'>
@@ -60,4 +59,4 @@ const Index = (props: IProps) => {
 	)
 }
 
-export default window.$app.memo(Index)
+export default window.$app.memo(Index) as <T>(props: IProps<T>) => JSX.Element
