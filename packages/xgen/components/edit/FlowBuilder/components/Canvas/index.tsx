@@ -13,7 +13,6 @@ interface IProps {
 	width: number
 	height: number
 	value?: FlowValue
-	showSidebar: boolean
 	fixed: boolean
 	offsetTop: number
 
@@ -21,7 +20,6 @@ interface IProps {
 	name?: string
 	__namespace?: string
 	__bind?: string
-	toggleSidebar: () => void
 }
 
 const Index = (props: IProps) => {
@@ -393,19 +391,9 @@ const Index = (props: IProps) => {
 				icon={openPresets ? 'icon-plus-circle' : undefined}
 				children={openPresets ? <Presets keywords={keywords} /> : undefined}
 			/>
-			<div style={{ width: props.width }}>
+			<div className='title-bar' style={{ width: props.width }}>
 				<div className='head'>
 					<div className='title'>
-						<a
-							onClick={props.toggleSidebar}
-							style={{ marginRight: 6 }}
-							className='flex align_center'
-						>
-							<Icon
-								name={props.showSidebar ? 'material-first_page' : 'material-last_page'}
-								size={18}
-							/>
-						</a>
 						<Icon
 							name={IconName(props.value?.flow?.icon)}
 							size={IconSize(props.value?.flow?.icon)}

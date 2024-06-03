@@ -47,7 +47,11 @@ const Index = (props: IProps) => {
 			removeAttribution={props.removeAttribution}
 		>
 			<div className='builder'>
-				<Sidebar height={props.height} visible={props.showSidebar} />
+				<Sidebar
+					height={props.height}
+					visible={props.showSidebar}
+					toggleSidebar={props.toggleSidebar}
+				/>
 				<Canvas {...props} />
 			</div>
 		</BuilderProvider>

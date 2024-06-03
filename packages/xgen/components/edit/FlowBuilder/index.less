@@ -71,9 +71,11 @@
 
 		.head {
 			display: flex;
-			justify-content: 'between';
+			justify-content: space-between;
 			align-items: center;
-			padding: 12px;
+			margin: 12px;
+			background: var(--color_bg);
+			border-radius: var(--radius);
 
 			.title {
 				font-size: 14px;
@@ -81,6 +83,7 @@
 				width: 100%;
 				height: 38px;
 				display: flex;
+				margin-left: 12px;
 				align-items: center;
 			}
 
@@ -92,15 +95,44 @@
 			}
 		}
 
+		.title-bar {
+			transition: width 0.3s ease;
+		}
+
+		.toggle-sidebar {
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			background: var(--color_bg);
+			border-top-right-radius: var(--radius);
+			border-bottom-right-radius: var(--radius);
+			height: 32px;
+			width: 24px;
+			transition: background-color 0.3s;
+			right: -24px;
+			z-index: 1;
+
+			&:hover {
+				background: var(--color_bg_menu);
+			}
+		}
+
 		.sidebar {
 			display: flex;
 			flex-direction: column;
 			width: 200px;
 			border-right: 1px solid var(--color_border_soft);
 			margin: 12px 0;
+			overflow: hidden;
+			transition: width 0.3s ease;
+
 			&.collapsed {
-				display: none;
+				width: 0;
+				border-right: none;
 			}
+
 			.content {
 				overflow-y: auto;
 				flex: 1;
@@ -131,6 +163,12 @@
 				font-weight: 500;
 				display: flex;
 				align-items: center;
+				overflow: hidden;
+
+				.label {
+					white-space: nowrap;
+					overflow: hidden;
+				}
 
 				&:hover {
 					background-color: var(--color_bg_menu);
