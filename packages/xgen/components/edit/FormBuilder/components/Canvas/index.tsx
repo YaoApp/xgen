@@ -14,6 +14,7 @@ import Ruler from '../Ruler'
 interface IProps {
 	width?: number
 	height?: number
+	contentHeight?: number
 	setting?: Setting
 	presets?: Presets | Remote
 	value: any // initial value
@@ -294,8 +295,12 @@ const Index = (props: IProps) => {
 						)}
 					</div>
 				</div>
-				<div className='relative'>
-					<Ruler width={12} />
+				<div className='relative canvas'>
+					<Ruler
+						fullscreen={props.fullscreen}
+						height={props.height}
+						contentHeight={props.contentHeight}
+					/>
 					<GridLayout
 						className='layout'
 						layout={layout}

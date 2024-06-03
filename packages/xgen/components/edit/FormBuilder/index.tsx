@@ -37,6 +37,7 @@ interface IProps extends Component.PropsEditComponent, IFormBuilderProps {}
 const FormBuilder = window.$app.memo((props: IProps) => {
 	const [width, setWidth] = useState(0)
 	const [height, setHeight] = useState(props.height && props.height >= 300 ? props.height : 300)
+	const [contentHeight, setContentHeight] = useState(props.height && props.height >= 300 ? props.height : 300)
 	const [isFixed, setIsFixed] = useState(false)
 	const [value, setValue] = useState<any>()
 	const [data, setData] = useState<Data>()
@@ -58,7 +59,6 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 		const handleScroll = () => {
 			const top = ref.current?.getBoundingClientRect().top || 0
 			const height = ref.current?.offsetHeight || 0
-			// console.log(top, height, top + height)
 			if (top <= offsetTop && top + height > offsetTop) {
 				setIsFixed(true)
 			} else {
@@ -128,9 +128,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 
 	// Canvas setting
 	const onCanvasChange = (value: any, height: number) => {
-		height = height + 24
-		const h = height > (props.height || 300) ? height : props.height || 300
-		setHeight(h)
+		setContentHeight(height)
 		setData((data: any) => {
 			const newData = { ...data }
 			newData.columns = value
@@ -191,6 +189,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 						fixed={isFixed}
 						width={width}
 						height={height}
+						contentHeight={contentHeight}
 						setting={setting}
 						presets={props.presets}
 						onChange={onCanvasChange}
