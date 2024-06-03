@@ -232,19 +232,9 @@ const Index = (props: IProps) => {
 				width={420}
 				offsetTop={props.offsetTop}
 			/>
-			<div style={{ paddingLeft: 12 }}>
+			<div className='title-bar' style={{ width: props.width }}>
 				<div className='head'>
 					<div className='title'>
-						<a
-							onClick={props.toggleSidebar}
-							style={{ marginRight: 6 }}
-							className='flex align_center'
-						>
-							<Icon
-								name={props.showSidebar ? 'material-first_page' : 'material-last_page'}
-								size={18}
-							/>
-						</a>
 						<Icon
 							name={IconName(props.value?.flow?.icon)}
 							size={IconSize(props.value?.flow?.icon)}
@@ -302,7 +292,7 @@ const Index = (props: IProps) => {
 						layout={layout}
 						cols={12}
 						rowHeight={42}
-						width={width}
+						width={(width || 300) - 32}
 						onDrop={onDrop}
 						onDropDragOver={onDropDragOver}
 						onLayoutChange={onLayoutChange}
@@ -310,7 +300,7 @@ const Index = (props: IProps) => {
 						onDrag={onDrag}
 						onResize={onResize}
 						draggableHandle='.drag-handle'
-						style={{ minWidth: width, minHeight: 300, height: props.height }}
+						style={{ minWidth: (width || 300) - 32, minHeight: 300, height: props.height }}
 					>
 						{layout.map((item) => {
 							const { i: id } = item

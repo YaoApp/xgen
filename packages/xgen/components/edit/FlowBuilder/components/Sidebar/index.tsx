@@ -18,7 +18,7 @@ const Index = (props: IProps) => {
 				className='toggle-sidebar'
 				style={{ top: (props.height || 300 - 32) / 2 }}
 			>
-				<Icon name={props.visible ? 'material-first_page' : 'material-last_page'} size={18} />
+				<Icon name={props.visible ? 'material-first_page' : 'material-last_page'} size={14} />
 			</a>
 			<div className={className}>
 				<div className='content' style={{ maxHeight: props.height, minHeight: props.height }}>

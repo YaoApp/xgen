@@ -7,57 +7,54 @@ interface IProps {
 	height?: number
 	fixed: boolean
 	offsetTop: number
-	showSidebar: boolean
+	visible?: boolean
+	toggleSidebar: () => void
 	fullscreen: boolean
 }
 
 const Index = (props: IProps) => {
-	const className = 'sidebar' + (!props.showSidebar ? ' collapsed' : '')
+	const className = 'sidebar' + (!props.visible ? ' collapsed' : '')
 	return (
-		<div className={className}>
-			<div
-				style={{
-					minHeight: props.height,
-					zIndex: 99,
-					width: 200
-				}}
+		<div className='relative'>
+			<a
+				onClick={props.toggleSidebar}
+				className='toggle-sidebar'
+				style={{ top: (props.height || 300 - 32) / 2 }}
 			>
-				<div
-					className='content'
-					style={{
-						width: 200,
-						zIndex: 99,
-						minHeight: (props.height || 300) + (props.fullscreen ? 42 : 60)
-					}}
-				>
-					{props.types?.map((type, index) => (
-						<div
-							key={`${type.name}|${index}`}
-							className='item'
-							draggable={true}
-							unselectable='on'
-							onDragStart={(e) =>
-								e.dataTransfer.setData(
-									'text/plain',
-									JSON.stringify({ type: type.name })
-								)
-							}
-						>
-							<Icon
-								size={14}
-								name={
-									type.icon
-										? typeof type.icon == 'string'
-											? type.icon
-											: type.icon.name
-										: 'material-format_align_left'
+				<Icon name={props.visible ? 'material-first_page' : 'material-last_page'} size={14} />
+			</a>
+			<div className={className}>
+				<div style={{ zIndex: 99, minHeight: (props.height || 300) + (props.fullscreen ? 42 : 60) }}>
+					<div className='content' style={{ zIndex: 99 }}>
+						{props.types?.map((type, index) => (
+							<div
+								key={`${type.name}|${index}`}
+								className='item'
+								draggable={true}
+								unselectable='on'
+								onDragStart={(e) =>
+									e.dataTransfer.setData(
+										'text/plain',
+										JSON.stringify({ type: type.name })
+									)
 								}
-								color={type.color}
-								className='mr_6'
-							/>
-							{type.label ? type.label : type.name}
-						</div>
-					))}
+							>
+								<Icon
+									size={14}
+									name={
+										type.icon
+											? typeof type.icon == 'string'
+												? type.icon
+												: type.icon.name
+											: 'material-format_align_left'
+									}
+									color={type.color}
+									className='mr_6'
+								/>
+								<span className='label'>{type.label ? type.label : type.name}</span>
+							</div>
+						))}
+					</div>
 				</div>
 			</div>
 		</div>

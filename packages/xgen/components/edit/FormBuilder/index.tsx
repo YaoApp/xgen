@@ -72,7 +72,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 		}
 	}, [])
 
-	const widthPadding = 24
+	const widthPadding = 0
 	useEffect(() => {
 		const offsetWidth = showSidebar ? 200 + widthPadding : widthPadding
 		const observer = new ResizeObserver((entries) => {
@@ -111,7 +111,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 			setHeight(window.innerHeight - 64)
 			return
 		}
-		setHeight(props.height && props.height >= 300 ? props.height - 64 : 300)
+		setHeight(props.height && props.height >= 300 ? props.height : 300)
 	}, [fullscreen])
 
 	useEffect(() => {
@@ -181,7 +181,8 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 						height={height}
 						offsetTop={offsetTop}
 						fixed={isFixed}
-						showSidebar={showSidebar}
+						visible={showSidebar}
+						toggleSidebar={toggleSidebar}
 						fullscreen={fullscreen}
 					/>
 					<Canvas
