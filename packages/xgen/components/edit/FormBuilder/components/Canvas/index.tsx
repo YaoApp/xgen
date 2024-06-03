@@ -5,15 +5,26 @@ import { useEffect, useState } from 'react'
 import { GenerateID, LayoutToValue, TypeMappping, UpdatePosition, ValueToLayout } from '../../utils'
 import clsx from 'clsx'
 import Preset from '../Preset'
+import { IconName, IconSize } from '@/components/edit/FlowBuilder/utils'
+import { getLocale } from '@umijs/max'
+import { Tooltip } from 'antd'
+import { Background } from 'reactflow'
+import Ruler from '../Ruler'
 
 interface IProps {
 	width?: number
+	height?: number
 	setting?: Setting
 	presets?: Presets | Remote
 	value: any // initial value
 	fixed: boolean
 	offsetTop: number
 	onChange?: (v: any, height: number) => void
+
+	toggleSidebar: () => void
+	showSidebar: boolean
+	fullscreen: boolean
+	setFullscreen: (v: boolean) => void
 }
 
 const Index = (props: IProps) => {
@@ -198,6 +209,13 @@ const Index = (props: IProps) => {
 		return { w: 4, h: 1 }
 	}
 
+	const is_cn = getLocale() === 'zh-CN'
+	const defaultLabel = is_cn ? '未命名' : 'Untitled'
+	const [mask, setMask] = useState(true)
+
+	const showPresets = () => {}
+	const showSettings = () => {}
+
 	return (
 		<>
 			<Panel
@@ -209,21 +227,75 @@ const Index = (props: IProps) => {
 				data={field?.props}
 				type={type}
 				fixed={props.fixed}
+				mask={mask}
 				width={420}
 				offsetTop={props.offsetTop}
 			/>
 			<div style={{ padding: 12 }}>
-				{(props.presets || props.setting?.title) && (
-					<div className='head'>
-						<div className='title'>{props.setting?.title}</div>
-						{props.presets && (
-							<div className='actions'>
-								<Preset data={props.presets} onAdd={onAdd} />
-							</div>
+				<div className='head'>
+					<div className='title'>
+						<a
+							onClick={props.toggleSidebar}
+							style={{ marginRight: 6 }}
+							className='flex align_center'
+						>
+							<Icon
+								name={props.showSidebar ? 'material-first_page' : 'material-last_page'}
+								size={18}
+							/>
+						</a>
+						<Icon
+							name={IconName(props.value?.flow?.icon)}
+							size={IconSize(props.value?.flow?.icon)}
+							style={{ marginRight: 4 }}
+						/>
+						{props.value?.form?.label || props.value?.form?.name || defaultLabel}
+					</div>
+					<div className='actions'>
+						<Tooltip
+							title={is_cn ? '插入' : 'Insert'}
+							placement={props.fullscreen ? 'bottom' : 'top'}
+						>
+							<a style={{ marginRight: 24, marginTop: 2 }} onClick={showPresets}>
+								<Icon name='icon-plus-circle' size={16} />
+							</a>
+						</Tooltip>
+
+						<Tooltip
+							title={is_cn ? '设置' : 'Settings'}
+							placement={props.fullscreen ? 'bottom' : 'top'}
+						>
+							<a style={{ marginRight: 12, marginTop: 2 }} onClick={showSettings}>
+								<Icon name='icon-sliders' size={16} />
+							</a>
+						</Tooltip>
+
+						{!props.fullscreen ? (
+							<Tooltip
+								title={is_cn ? '全屏' : 'Full Screen'}
+								placement={props.fullscreen ? 'bottom' : 'top'}
+							>
+								<a
+									style={{ marginRight: 12, marginTop: 2 }}
+									onClick={() => props.setFullscreen(true)}
+								>
+									<Icon name='icon-maximize' size={16} />
+								</a>
+							</Tooltip>
+						) : (
+							<Tooltip title={is_cn ? '退出全屏' : 'Exit Full Screen'} placement='bottom'>
+								<a
+									style={{ marginRight: 16, marginTop: 2 }}
+									onClick={() => props.setFullscreen(false)}
+								>
+									<Icon name='icon-minimize' size={16} />
+								</a>
+							</Tooltip>
 						)}
 					</div>
-				)}
+				</div>
 				<div className='relative'>
+					<Ruler width={12} />
 					<GridLayout
 						className='layout'
 						layout={layout}
@@ -237,7 +309,7 @@ const Index = (props: IProps) => {
 						onDrag={onDrag}
 						onResize={onResize}
 						draggableHandle='.drag-handle'
-						style={{ minWidth: width, minHeight: 300 }}
+						style={{ minWidth: width, minHeight: 300, height: props.height }}
 					>
 						{layout.map((item) => {
 							const { i: id } = item
@@ -269,6 +341,7 @@ const Index = (props: IProps) => {
 									<div className='drag-handle'>
 										<Icon
 											size={14}
+											color={type.color}
 											name={
 												type.icon && typeof type.icon == 'string'
 													? type.icon

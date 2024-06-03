@@ -15,7 +15,7 @@ import Canvas from './components/Canvas'
 import { Else, If, Then } from 'react-if'
 import { GetSetting } from './utils'
 import { useGlobal } from '@/context/app'
-import { set } from 'lodash-es'
+import Ruler from './components/Ruler'
 
 interface IFormBuilderProps {
 	setting?: Remote | Setting
@@ -42,8 +42,15 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 	const [data, setData] = useState<Data>()
 	const [loading, setLoading] = useState<boolean>(false)
 	const [setting, setSetting] = useState<Setting | undefined>(undefined)
+	const [showSidebar, setShowSidebar] = useState<boolean>(true)
+	const [fullscreen, setFullscreen] = useState<boolean>(false)
+
 	const ref = useRef<HTMLDivElement>(null)
 	const global = useGlobal()
+
+	const toggleSidebar = () => {
+		setShowSidebar(!showSidebar)
+	}
 
 	// Fixed sidebar, canvas and toolbar
 	const offsetTop = 80
@@ -64,6 +71,48 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 			window.removeEventListener('scroll', handleScroll)
 		}
 	}, [])
+
+	const widthPadding = 24
+	useEffect(() => {
+		const offsetWidth = showSidebar ? 200 + widthPadding : widthPadding
+		const observer = new ResizeObserver((entries) => {
+			for (let entry of entries) {
+				if (entry.target === ref.current) {
+					setWidth(ref.current.offsetWidth - offsetWidth)
+				}
+			}
+		})
+		if (ref.current) {
+			observer.observe(ref.current)
+		}
+		return () => {
+			observer.disconnect()
+		}
+	}, [showSidebar])
+
+	useEffect(() => {
+		const observer = new ResizeObserver((entries) => {
+			for (let entry of entries) {
+				if (entry.target === ref.current) {
+					setWidth(ref.current.offsetWidth - 200 - widthPadding)
+				}
+			}
+		})
+		if (ref.current) {
+			observer.observe(ref.current)
+		}
+		return () => {
+			observer.disconnect()
+		}
+	}, [])
+
+	useEffect(() => {
+		if (fullscreen) {
+			setHeight(window.innerHeight - 38)
+			return
+		}
+		setHeight(props.height && props.height >= 300 ? props.height : 300)
+	}, [fullscreen])
 
 	useEffect(() => {
 		if (!props.value) return
@@ -89,22 +138,6 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 		})
 	}
 
-	useEffect(() => {
-		const observer = new ResizeObserver((entries) => {
-			for (let entry of entries) {
-				if (entry.target === ref.current) {
-					setWidth(ref.current.offsetWidth - 200)
-				}
-			}
-		})
-		if (ref.current) {
-			observer.observe(ref.current)
-		}
-		return () => {
-			observer.disconnect()
-		}
-	}, [])
-
 	// Get setting
 	useEffect(() => {
 		setLoading(true)
@@ -124,7 +157,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 	const fullScreenStyle: React.CSSProperties = {
 		bottom: 0,
 		display: 'flex',
-		height: '100vh',
+		height: '100%',
 		left: 0,
 		margin: 0,
 		padding: 0,
@@ -137,7 +170,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 	}
 
 	return (
-		<div className={clsx([styles._local])} ref={ref}>
+		<div className={clsx([styles._local])} ref={ref} style={fullscreen ? fullScreenStyle : {}}>
 			<If condition={loading}>
 				<Then>
 					<div className='loading'>
@@ -145,15 +178,27 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 					</div>
 				</Then>
 				<Else>
-					<Sidebar types={setting?.types} height={height} offsetTop={offsetTop} fixed={isFixed} />
+					<Sidebar
+						types={setting?.types}
+						height={height}
+						offsetTop={offsetTop}
+						fixed={isFixed}
+						showSidebar={showSidebar}
+						fullscreen={fullscreen}
+					/>
 					<Canvas
 						offsetTop={offsetTop}
 						fixed={isFixed}
 						width={width}
+						height={height}
 						setting={setting}
 						presets={props.presets}
 						onChange={onCanvasChange}
 						value={value}
+						fullscreen={fullscreen}
+						setFullscreen={setFullscreen}
+						showSidebar={showSidebar}
+						toggleSidebar={toggleSidebar}
 					/>
 				</Else>
 			</If>

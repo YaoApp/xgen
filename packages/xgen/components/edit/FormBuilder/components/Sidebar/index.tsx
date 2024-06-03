@@ -7,28 +7,24 @@ interface IProps {
 	height?: number
 	fixed: boolean
 	offsetTop: number
+	showSidebar: boolean
+	fullscreen: boolean
 }
 
 const Index = (props: IProps) => {
+	const className = 'sidebar' + (!props.showSidebar ? ' collapsed' : '')
+
 	return (
-		<div className='sidebar' style={{}}>
+		<div className={className}>
 			<div
 				style={{
 					maxHeight: props.height,
 					minHeight: props.height,
 					zIndex: 99,
-					width: 172
+					width: 200
 				}}
 			>
-				<div
-					className='content'
-					style={{
-						// position: props.fixed ? 'fixed' : 'relative',
-						width: 172,
-						zIndex: 99
-						// top: props.fixed ? props.offsetTop : 0
-					}}
-				>
+				<div className='content' style={{ width: 200, zIndex: 99 }}>
 					{props.types?.map((type, index) => (
 						<div
 							key={`${type.name}|${index}`}
@@ -51,6 +47,7 @@ const Index = (props: IProps) => {
 											: type.icon.name
 										: 'material-format_align_left'
 								}
+								color={type.color}
 								className='mr_6'
 							/>
 							{type.label ? type.label : type.name}
