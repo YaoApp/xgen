@@ -108,10 +108,10 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 
 	useEffect(() => {
 		if (fullscreen) {
-			setHeight(window.innerHeight - 38)
+			setHeight(window.innerHeight - 64)
 			return
 		}
-		setHeight(props.height && props.height >= 300 ? props.height : 300)
+		setHeight(props.height && props.height >= 300 ? props.height - 96 : 300)
 	}, [fullscreen])
 
 	useEffect(() => {
@@ -155,7 +155,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 	const fullScreenStyle: React.CSSProperties = {
 		bottom: 0,
 		display: 'flex',
-		height: '100%',
+		height: '100vh',
 		left: 0,
 		margin: 0,
 		padding: 0,
@@ -163,7 +163,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 		right: 0,
 		top: 0,
 		width: '100%',
-		overflowY: 'auto',
+		overflowY: 'hidden',
 		zIndex: 1000
 	}
 

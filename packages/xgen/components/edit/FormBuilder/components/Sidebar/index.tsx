@@ -18,7 +18,6 @@ const Index = (props: IProps) => {
 		<div className={className}>
 			<div
 				style={{
-					maxHeight: props.height,
 					minHeight: props.height,
 					zIndex: 99,
 					width: 200

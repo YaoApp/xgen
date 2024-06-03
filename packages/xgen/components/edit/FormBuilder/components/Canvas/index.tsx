@@ -232,7 +232,7 @@ const Index = (props: IProps) => {
 				width={420}
 				offsetTop={props.offsetTop}
 			/>
-			<div style={{ padding: 12 }}>
+			<div style={{ paddingLeft: 12 }}>
 				<div className='head'>
 					<div className='title'>
 						<a
@@ -296,11 +296,7 @@ const Index = (props: IProps) => {
 					</div>
 				</div>
 				<div className='relative canvas'>
-					<Ruler
-						fullscreen={props.fullscreen}
-						height={props.height}
-						contentHeight={props.contentHeight}
-					/>
+					<Ruler height={props.height} contentHeight={props.contentHeight} />
 					<GridLayout
 						className='layout'
 						layout={layout}
