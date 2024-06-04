@@ -42,6 +42,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	const [initialized, setInitialized] = useState<boolean>(false)
 
 	const [loading, setLoading] = useState<boolean>(false)
+	const [showMask, setShowMask] = useState(true)
 	const [setting, setSetting] = useState<Setting | undefined>(undefined)
 	const [flowTabs, setFlowTabs] = useState<any[]>([])
 	const [activeFlow, setActiveFlow] = useState<string>('')
@@ -99,7 +100,9 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 									setting,
 									onData,
 									toggleSidebar,
-									removeAttribution: props.removeAttribution
+									removeAttribution: props.removeAttribution,
+									showMask,
+									setShowMask
 								})
 							)
 
@@ -151,11 +154,15 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 	const [width, setWidth] = useState(0)
 	const [height, setHeight] = useState(props.height && props.height >= 300 ? props.height : 300)
 	useEffect(() => {
-		const offsetWidth = showSidebar ? 200 : 0
+		let offsetWidth = showSidebar ? 200 : 0
+		if (!showMask) {
+			offsetWidth = offsetWidth + 460
+		}
 		const observer = new ResizeObserver((entries) => {
 			for (let entry of entries) {
 				if (entry.target === ref.current) {
-					setWidth(ref.current.offsetWidth - offsetWidth)
+					const w = ref.current.offsetWidth - offsetWidth
+					setWidth(w > 0 ? w : 200)
 				}
 			}
 		})
@@ -165,7 +172,7 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 		return () => {
 			observer.disconnect()
 		}
-	}, [showSidebar])
+	}, [showSidebar, showMask])
 
 	useEffect(() => {
 		if (fullscreen) {
@@ -265,7 +272,9 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 			setting,
 			onData,
 			toggleSidebar,
-			removeAttribution: props.removeAttribution
+			removeAttribution: props.removeAttribution,
+			showMask,
+			setShowMask
 		})
 	}
 
@@ -293,7 +302,9 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 				setting,
 				onData,
 				toggleSidebar,
-				removeAttribution: props.removeAttribution
+				removeAttribution: props.removeAttribution,
+				showMask,
+				setShowMask
 			})
 		)
 		if (flowTabs.length === 0) {
@@ -331,7 +342,9 @@ const FlowBuilder = window.$app.memo((props: IProps) => {
 					setting,
 					onData,
 					toggleSidebar,
-					removeAttribution: props.removeAttribution
+					removeAttribution: props.removeAttribution,
+					showMask,
+					setShowMask
 				})
 				if (tab) newFlows.push(tab)
 			})

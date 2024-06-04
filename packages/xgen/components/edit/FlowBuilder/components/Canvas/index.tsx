@@ -5,7 +5,7 @@ import { Execute, IconName, IconSize } from '../../utils'
 import { useBuilderContext } from '../Builder/Provider'
 
 import { Button, Tooltip, message } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface IProps {
 	width: number
@@ -62,6 +62,7 @@ const Index = (props: IProps) => {
 
 	const hidePanel = () => {
 		setOpenPanel(() => false)
+		setShowMask(() => true)
 	}
 
 	const afterOpenChange = (open: boolean) => {

@@ -117,6 +117,9 @@ interface IProps {
 	fullscreen: boolean
 	setFullscreen: (value: boolean) => void
 
+	showMask: boolean
+	setShowMask: Dispatch<SetStateAction<boolean>>
+
 	removeAttribution?: boolean
 }
 
@@ -252,16 +255,21 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 	const [openSettings, setOpenSettings] = useState(false)
 	const [openExecute, setOpenExecute] = useState(false)
 	const [openPresets, setOpenPresets] = useState(false)
+	const [mask, setMask] = useState(true)
 
 	const [openEdge, setOpenEdge] = useState(false)
 	const [running, setRunning] = useState(false)
 
 	const [openPanel, setOpenPanel] = useState(false)
-	const [showMask, setShowMask] = useState(true)
 	const [panelNode, setPanelNode] = useState<ReactFlowNode<any> | undefined>(undefined)
 	const [panelEdge, setPanelEdge] = useState<Edge | undefined>(undefined)
 
 	const [fullscreen, setFullscreen] = useState<boolean>(props.fullscreen)
+
+	const setShowMask: Dispatch<SetStateAction<boolean>> = (mask) => {
+		setMask(mask)
+		props.setShowMask(mask)
+	}
 
 	const onData = (id: string, type: string, value: any) => {
 		// Set the value of the form
@@ -372,7 +380,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 			setOpenPresets(() => false)
 			setOpenEdge(() => false)
 
-			setShowMask(() => true)
+			setShowMask(true)
 			setOpenPanel(() => true)
 			return nds
 		})
@@ -386,7 +394,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 		setOpenSettings(() => false)
 		setOpenPresets(() => false)
 
-		setShowMask(() => true)
+		setShowMask(true)
 		setOpenPanel(() => true)
 	}, [])
 
@@ -549,7 +557,7 @@ export const BuilderProvider: React.FC<IProps> = (props) => {
 
 				openPanel,
 				setOpenPanel,
-				showMask,
+				showMask: mask,
 				setShowMask,
 
 				running,

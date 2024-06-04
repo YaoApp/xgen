@@ -1,7 +1,7 @@
 import { Panel, Icon, PanelPresets as Presets, PanelFilter as Filter } from '@/widgets'
 import GridLayout from 'react-grid-layout'
 import { Field, Layout, Setting, Type, Data } from '../../types'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { GenerateID, LayoutToColumns, TypeMappping, UpdatePosition, ValueToLayout } from '../../utils'
 import clsx from 'clsx'
 import type { Component } from '@/types'
@@ -26,6 +26,8 @@ interface IProps {
 	showSidebar: boolean
 	fullscreen: boolean
 	setFullscreen: (v: boolean) => void
+	mask: boolean
+	setMask: Dispatch<SetStateAction<boolean>>
 
 	__namespace: string
 	__bind: string
@@ -46,7 +48,6 @@ const Index = (props: IProps) => {
 
 	const is_cn = getLocale() === 'zh-CN'
 	const defaultLabel = is_cn ? '未命名' : 'Untitled'
-	const [mask, setMask] = useState(true)
 	const [isPreset, setIsPreset] = useState(false)
 	const [isSetting, setIsSetting] = useState(false)
 
@@ -73,7 +74,7 @@ const Index = (props: IProps) => {
 
 	const afterPanelOpenChange = (open: boolean) => {
 		if (!open) {
-			setMask(true)
+			props.setMask(true)
 			setActive(undefined)
 			setIsSetting(false)
 			setIsPreset(false)
@@ -86,7 +87,7 @@ const Index = (props: IProps) => {
 		setField(field)
 		setType(type)
 		setActive(id)
-		setMask(true)
+		props.setMask(true)
 		setOpen(true)
 	}
 
@@ -94,12 +95,12 @@ const Index = (props: IProps) => {
 		setIsPreset(true)
 		setIsSetting(false)
 		setActive(undefined)
-		setMask(false)
+		props.setMask(false)
 		setOpen(true)
 	}
 	const showSettings = () => {
 		setIsSetting(true)
-		setMask(true)
+		props.setMask(true)
 		setIsPreset(false)
 		setActive(undefined)
 		setOpen(true)
@@ -352,7 +353,7 @@ const Index = (props: IProps) => {
 				type={getType()}
 				actions={getActions()}
 				fixed={props.fixed}
-				mask={mask}
+				mask={props.mask}
 				width={420}
 				offsetTop={props.offsetTop}
 				icon={isPreset ? 'icon-plus-circle' : undefined}

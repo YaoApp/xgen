@@ -3,6 +3,7 @@ import { IconName } from '../../utils'
 import type { Component } from '@/types'
 import Builder from '../Builder'
 import { FlowTab, FlowValue } from '../../types'
+import { Dispatch, SetStateAction } from 'react'
 
 interface ITabProps {
 	setting?: any
@@ -22,6 +23,9 @@ interface ITabProps {
 	flowValue: FlowValue
 	onData: (id: string, type: string, value: any) => void
 	toggleSidebar: () => void
+
+	showMask: boolean
+	setShowMask: Dispatch<SetStateAction<boolean>>
 }
 
 interface IProps extends Component.PropsEditComponent, ITabProps {}
@@ -94,6 +98,8 @@ export const Tab = (props: IProps): FlowTab | null => {
 				fullscreen={props.fullscreen}
 				setFullscreen={props.setFullscreen}
 				removeAttribution={props.removeAttribution}
+				showMask={props.showMask}
+				setShowMask={props.setShowMask}
 			/>
 		)
 	}

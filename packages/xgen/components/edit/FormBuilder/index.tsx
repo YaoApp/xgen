@@ -43,6 +43,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 	const [setting, setSetting] = useState<Setting | undefined>(undefined)
 	const [showSidebar, setShowSidebar] = useState<boolean>(true)
 	const [fullscreen, setFullscreen] = useState<boolean>(false)
+	const [mask, setMask] = useState(true)
 
 	const ref = useRef<HTMLDivElement>(null)
 	const global = useGlobal()
@@ -72,11 +73,15 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 
 	const widthPadding = 0
 	useEffect(() => {
-		const offsetWidth = showSidebar ? 200 + widthPadding : widthPadding
+		let offsetWidth = showSidebar ? 200 + widthPadding : widthPadding
+		if (!mask) {
+			offsetWidth = offsetWidth + 420
+		}
 		const observer = new ResizeObserver((entries) => {
 			for (let entry of entries) {
 				if (entry.target === ref.current) {
-					setWidth(ref.current.offsetWidth - offsetWidth)
+					const w = ref.current.offsetWidth - offsetWidth
+					setWidth(w > 0 ? w : 200)
 				}
 			}
 		})
@@ -86,7 +91,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 		return () => {
 			observer.disconnect()
 		}
-	}, [showSidebar])
+	}, [showSidebar, mask])
 
 	useEffect(() => {
 		const observer = new ResizeObserver((entries) => {
@@ -193,6 +198,8 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 						setFullscreen={setFullscreen}
 						showSidebar={showSidebar}
 						toggleSidebar={toggleSidebar}
+						mask={mask}
+						setMask={setMask}
 						__namespace={props.__namespace}
 						__bind={props.__bind}
 					/>
