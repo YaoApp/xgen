@@ -30,6 +30,8 @@ export default class GlobalModel {
 	loading: boolean = false
 	visible_menu: boolean = true
 
+	dataCache: Record<string, any> = {}
+
 	constructor(private service: Service, public stack: Stack) {
 		makeAutoObservable(this, {}, { autoBind: true })
 

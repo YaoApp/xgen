@@ -22,6 +22,7 @@ interface ICustom {
 	height?: number | string
 
 	__name: string
+	__namespace: string
 	__bind: string
 	onChange?: (v: any) => void
 }
@@ -36,8 +37,11 @@ const Custom = window.$app.memo((props: ICustom) => {
 
 	const theme = useMemo(() => (global.theme === 'dark' ? 'x-dark' : 'x-light'), [global.theme])
 	const is_cn = getLocale() === 'zh-CN'
+	const key = `${props.__namespace}.${props.__bind}`
+	const { dataCache } = global
 
 	useEffect(() => {
+		if (dataCache[key] === props.value) return
 		if (!props.value) return
 		if (typeof props.value !== 'string' && props.value !== undefined && props.value !== null) {
 			// YAML stringify
@@ -74,7 +78,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 	const onChange = (v: any) => {
 		if (!props.onChange) return
 		props.onChange(v)
-		setValue(v)
+		dataCache[key] = v
 	}
 
 	const editorDidMount: EditorDidMount = (editor, monaco) => {
@@ -109,6 +113,10 @@ const Custom = window.$app.memo((props: ICustom) => {
 		})
 	}
 
+	const editorWillUnmount = () => {
+		dataCache[key] && delete dataCache[key]
+	}
+
 	return (
 		<Editor
 			className={styles._local}
@@ -132,6 +140,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 			value={value}
 			onChange={onChange}
 			editorDidMount={editorDidMount}
+			editorWillUnmount={editorWillUnmount}
 		></Editor>
 	)
 })
