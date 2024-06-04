@@ -75,6 +75,7 @@ const Custom = window.$app.memo((props: IProps) => {
 	const onChange = (v: any) => {
 		if (!props.onChange) return
 		props.onChange(v)
+		setValue(v)
 	}
 
 	const editorDidMount: EditorDidMount = (editor, monaco) => {
@@ -99,6 +100,13 @@ const Custom = window.$app.memo((props: IProps) => {
 		})
 
 		monaco.editor.setTheme(theme)
+
+		editor.onDidChangeModelContent(() => {
+			const position = editor.getPosition()
+			if (position && editor.getModel()?.getValue() != '') {
+				editor.setPosition(position)
+			}
+		})
 	}
 
 	return (

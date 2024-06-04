@@ -9,7 +9,10 @@ import styles from './index.less'
 
 import type { Component } from '@/types'
 
+import yaml from 'js-yaml'
 import type { EditorDidMount, monaco } from 'react-monaco-editor'
+import { message } from 'antd'
+import { getLocale } from '@umijs/max'
 
 interface ICustom {
 	value: string
@@ -17,6 +20,9 @@ interface ICustom {
 	language?: 'json' | 'javascript' | 'typescript' | 'yaml' | 'html' | 'css' | 'sql' | 'markdown'
 	hideLineNumbers?: boolean
 	height?: number | string
+
+	__name: string
+	__bind: string
 	onChange?: (v: any) => void
 }
 
@@ -29,14 +35,36 @@ const Custom = window.$app.memo((props: ICustom) => {
 	const { language = 'json', height = 360 } = props
 
 	const theme = useMemo(() => (global.theme === 'dark' ? 'x-dark' : 'x-light'), [global.theme])
+	const is_cn = getLocale() === 'zh-CN'
 
 	useEffect(() => {
 		if (!props.value) return
-		if (typeof props.value !== 'string') {
+		if (typeof props.value !== 'string' && props.value !== undefined && props.value !== null) {
+			// YAML stringify
+			if (language === 'yaml') {
+				try {
+					setValue(yaml.dump(props.value))
+				} catch (e) {
+					console.error(`CodeEditor: ${e}`)
+					message.error(
+						is_cn
+							? `YAML 格式错误 ${props.__name} (${props.__bind})`
+							: `YAML format error ${props.__name} (${props.__bind})`
+					)
+				}
+				return
+			}
+
+			// JSON stringify
 			try {
 				setValue(JSON.stringify(props.value, null, 2))
 			} catch (e) {
 				console.error(`CodeEditor: ${e}`)
+				message.error(
+					is_cn
+						? `JSON 格式错误 ${props.__name} (${props.__bind})`
+						: `JSON format error ${props.__name} (${props.__bind})`
+				)
 			}
 			return
 		}
@@ -71,6 +99,14 @@ const Custom = window.$app.memo((props: ICustom) => {
 		})
 
 		monaco.editor.setTheme(theme)
+
+		// fix select all when the editor is loaded
+		editor.onDidChangeModelContent(() => {
+			const position = editor.getPosition()
+			if (position && editor.getModel()?.getValue() != '') {
+				editor.setPosition(position)
+			}
+		})
 	}
 
 	return (
@@ -105,7 +141,7 @@ const Index = (props: IProps) => {
 
 	return (
 		<Item {...itemProps} {...{ __bind, __name }}>
-			<Custom {...rest_props}></Custom>
+			<Custom {...{ __bind, __name }} {...rest_props}></Custom>
 		</Item>
 	)
 }
