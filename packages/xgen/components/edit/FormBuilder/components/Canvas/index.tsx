@@ -384,7 +384,7 @@ const Index = (props: IProps) => {
 							title={is_cn ? '插入' : 'Insert'}
 							placement={props.fullscreen ? 'bottom' : 'top'}
 						>
-							<a style={{ marginRight: 24, marginTop: 2 }} onClick={showPresets}>
+							<a style={{ marginRight: 12, marginTop: 2 }} onClick={showPresets}>
 								<Icon name='icon-plus-circle' size={16} />
 							</a>
 						</Tooltip>
@@ -413,7 +413,7 @@ const Index = (props: IProps) => {
 						) : (
 							<Tooltip title={is_cn ? '退出全屏' : 'Exit Full Screen'} placement='bottom'>
 								<a
-									style={{ marginRight: 16, marginTop: 2 }}
+									style={{ marginRight: 12, marginTop: 2 }}
 									onClick={() => props.setFullscreen(false)}
 								>
 									<Icon name='icon-minimize' size={16} />
