@@ -76,20 +76,8 @@ const CustomNode: FC<NodeProps> = ({ id, data }: IProps) => {
 					<div className='message'>{data.error}</div>
 				</div>
 			)}
-			<div className={clsx([styles._type, 'item-drag-handle'])}>
-				{data.icon && (
-					<Icon
-						name={data.icon?.name ? data.icon?.name : data.icon}
-						style={{ marginRight: 4 }}
-						color={color}
-						size={data.icon?.size ? data.icon?.size : 16}
-					/>
-				)}
-				<div style={{ color: color }}>{data.typeLabel || data.type}</div>
-			</div>
-
 			<div
-				className={clsx([styles._label, 'flex align_center label'])}
+				className={clsx([styles._type])}
 				onMouseDown={(event) => {
 					event.stopPropagation()
 					setNodes((nodes) => {
@@ -103,6 +91,18 @@ const CustomNode: FC<NodeProps> = ({ id, data }: IProps) => {
 					onSettingNode(id)
 				}}
 			>
+				{data.icon && (
+					<Icon
+						name={data.icon?.name ? data.icon?.name : data.icon}
+						style={{ marginRight: 4 }}
+						color={color}
+						size={data.icon?.size ? data.icon?.size : 16}
+					/>
+				)}
+				<div style={{ color: color }}>{data.typeLabel || data.type}</div>
+			</div>
+
+			<div className={clsx([styles._label, 'flex align_center label item-drag-handle'])}>
 				{data.icon && data.running !== true && (
 					<Icon
 						name={data.icon?.name ? data.icon?.name : data.icon}
