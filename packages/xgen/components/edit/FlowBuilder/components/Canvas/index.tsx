@@ -35,6 +35,7 @@ const Index = (props: IProps) => {
 		value,
 		nodes,
 		setNodes,
+		setEdges,
 		openPanel,
 		setOpenPanel,
 		showMask,
@@ -63,6 +64,28 @@ const Index = (props: IProps) => {
 	const hidePanel = () => {
 		setOpenPanel(() => false)
 		setShowMask(() => true)
+
+		if (panelNode) {
+			setNodes((nodes) => {
+				return nodes.map((node) => {
+					if (node.id === panelNode.id) {
+						node.selected = false
+					}
+					return node
+				})
+			})
+		}
+
+		if (panelEdge) {
+			setEdges((edges) => {
+				return edges.map((edge) => {
+					if (edge.id === panelEdge.id) {
+						edge.selected = false
+					}
+					return edge
+				})
+			})
+		}
 	}
 
 	const afterOpenChange = (open: boolean) => {

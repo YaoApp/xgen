@@ -17,7 +17,7 @@ type IProps = {
 }
 
 const CustomNode: FC<NodeProps> = ({ id, data }: IProps) => {
-	const { onDelete, onAdd, onDuplicate, onSettingNode, running } = useBuilderContext()
+	const { onDelete, onAdd, onDuplicate, onSettingNode, running, setNodes } = useBuilderContext()
 
 	data.showSourceHandle = data.showSourceHandle === undefined ? true : data.showSourceHandle
 	data.showTargetHandle = data.showTargetHandle === undefined ? true : data.showTargetHandle
@@ -41,7 +41,20 @@ const CustomNode: FC<NodeProps> = ({ id, data }: IProps) => {
 					<a className='item' onClick={() => onDuplicate(id)}>
 						<Icon name='material-content_copy' size={16} />
 					</a>
-					<a className='item' onClick={() => onSettingNode(id)}>
+					<a
+						className='item'
+						onClick={() => {
+							setNodes((nodes) => {
+								return nodes.map((node) => {
+									if (node.id === id) {
+										node.selected = true
+									}
+									return node
+								})
+							})
+							onSettingNode(id)
+						}}
+					>
 						<Icon name='material-settings' size={16} />
 					</a>
 
@@ -63,7 +76,7 @@ const CustomNode: FC<NodeProps> = ({ id, data }: IProps) => {
 					<div className='message'>{data.error}</div>
 				</div>
 			)}
-			<div className={clsx([styles._type])}>
+			<div className={clsx([styles._type, 'item-drag-handle'])}>
 				{data.icon && (
 					<Icon
 						name={data.icon?.name ? data.icon?.name : data.icon}
@@ -75,7 +88,21 @@ const CustomNode: FC<NodeProps> = ({ id, data }: IProps) => {
 				<div style={{ color: color }}>{data.typeLabel || data.type}</div>
 			</div>
 
-			<div className={clsx([styles._label, 'flex align_center label'])}>
+			<div
+				className={clsx([styles._label, 'flex align_center label'])}
+				onMouseDown={(event) => {
+					event.stopPropagation()
+					setNodes((nodes) => {
+						return nodes.map((node) => {
+							if (node.id === id) {
+								node.selected = true
+							}
+							return node
+						})
+					})
+					onSettingNode(id)
+				}}
+			>
 				{data.icon && data.running !== true && (
 					<Icon
 						name={data.icon?.name ? data.icon?.name : data.icon}

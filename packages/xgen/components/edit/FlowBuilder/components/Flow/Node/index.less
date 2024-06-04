@@ -8,6 +8,7 @@
 			text-overflow: ellipsis;
 			white-space: nowrap;
 		}
+		cursor: pointer;
 	}
 }
 
@@ -75,5 +76,12 @@
 		font-size: 12px;
 		border-radius: 24px;
 		background: var(--color_border_soft);
+		cursor: move;
+	}
+}
+
+._type:hover {
+	:global {
+		background: var(--color_bg_menu);
 	}
 }

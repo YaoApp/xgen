@@ -139,7 +139,11 @@ const Flow = (props: IProps) => {
 	return (
 		<div className='reactflow-wrapper' ref={reactFlowWrapper}>
 			<ReactFlow
-				nodes={nodes}
+				nodes={nodes?.map((node) => {
+					if (!node.data) return node
+					node.dragHandle = '.item-drag-handle'
+					return node
+				})}
 				edges={edges}
 				onInit={setReactFlowInstance}
 				onPaneClick={() => setHideContextMenu && setHideContextMenu(true)}
