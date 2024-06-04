@@ -10,6 +10,7 @@ import { getLocale } from '@umijs/max'
 import { Tooltip } from 'antd'
 import Ruler from '../Ruler'
 import { CodeSandboxCircleFilled } from '@ant-design/icons'
+import { event } from '@/.umi/plugin-locale/localeExports'
 
 interface IProps {
 	width?: number
@@ -480,7 +481,14 @@ const Index = (props: IProps) => {
 											}
 											className='mr_6'
 										/>
-										{label}
+										<a
+											onMouseDown={(event) => {
+												event.stopPropagation()
+												showPanel(id, field, type)
+											}}
+										>
+											{label}
+										</a>
 									</div>
 									<div className='setting'>
 										<Icon
