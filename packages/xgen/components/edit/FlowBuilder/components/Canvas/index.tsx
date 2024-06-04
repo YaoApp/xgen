@@ -402,7 +402,7 @@ const Index = (props: IProps) => {
 			/>
 			<div className='title-bar' style={{ width: props.width }}>
 				<div className='head'>
-					<div className='title'>
+					<div className='title' onClick={showSettings}>
 						<Icon
 							name={IconName(props.value?.flow?.icon)}
 							size={IconSize(props.value?.flow?.icon)}

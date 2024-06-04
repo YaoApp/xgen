@@ -71,6 +71,15 @@ const Index = (props: IProps) => {
 		}
 	}
 
+	const afterPanelOpenChange = (open: boolean) => {
+		if (!open) {
+			setMask(true)
+			setActive(undefined)
+			setIsSetting(false)
+			setIsPreset(false)
+		}
+	}
+
 	const showPanel = (id: string, field: Field, type: Type) => {
 		setIsPreset(false)
 		setIsSetting(false)
@@ -98,10 +107,6 @@ const Index = (props: IProps) => {
 
 	const hidePanel = () => {
 		setOpen(false)
-		setMask(true)
-		setActive(undefined)
-		setIsSetting(false)
-		setIsPreset(false)
 	}
 
 	const getID = () => {
@@ -340,6 +345,7 @@ const Index = (props: IProps) => {
 				open={open}
 				onClose={hidePanel}
 				onChange={onPanelChange}
+				afterOpenChange={afterPanelOpenChange}
 				id={getID()}
 				label={getLabel()}
 				data={getData()}
@@ -364,7 +370,7 @@ const Index = (props: IProps) => {
 			/>
 			<div className='title-bar' style={{ width: props.width }}>
 				<div className='head'>
-					<div className='title'>
+					<div className='title' onClick={showSettings}>
 						<Icon
 							name={IconName(props.value?.form?.icon)}
 							size={IconSize(props.value?.form?.icon)}
