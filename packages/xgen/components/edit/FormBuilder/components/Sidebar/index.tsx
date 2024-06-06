@@ -31,7 +31,13 @@ const Index = (props: IProps) => {
 				<Icon name={props.visible ? 'material-first_page' : 'material-last_page'} size={14} />
 			</a>
 			<div className={className}>
-				<div style={{ zIndex: 99, minHeight: (props.height || 300) + (props.fullscreen ? 42 : 60) }}>
+				<div
+					style={{
+						zIndex: 99,
+						minHeight: props.height || 300,
+						height: (props.height || 300) + (props.fullscreen ? 42 : 60)
+					}}
+				>
 					<div className='content' style={{ zIndex: 99 }}>
 						{props.types?.map((type, index) => (
 							<div

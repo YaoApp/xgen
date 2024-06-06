@@ -28,7 +28,10 @@ const Index = (props: IProps) => {
 				<Icon name={props.visible ? 'material-first_page' : 'material-last_page'} size={14} />
 			</a>
 			<div className={className}>
-				<div className='content' style={{ maxHeight: props.height, minHeight: props.height }}>
+				<div
+					className='content'
+					style={{ maxHeight: props.height, minHeight: props.height, height: props.height }}
+				>
 					{setting?.types?.map((type, index) => (
 						<div
 							key={`${type.name}|${index}`}
