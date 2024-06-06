@@ -9,8 +9,8 @@ import { IconName, IconSize } from '@/components/edit/FlowBuilder/utils'
 import { getLocale } from '@umijs/max'
 import { Tooltip } from 'antd'
 import Ruler from '../Ruler'
-import { CodeSandboxCircleFilled } from '@ant-design/icons'
-import { event } from '@/.umi/plugin-locale/localeExports'
+import { useGlobal } from '@/context/app'
+import { Color } from '@/utils'
 
 interface IProps {
 	width?: number
@@ -341,6 +341,12 @@ const Index = (props: IProps) => {
 	// onDropDragOver: (e: DragOverEvent) => Layout
 	const onDropDragOver = (e: any) => ({ w: 4, h: 1 })
 
+	// Get the text color
+	const global = useGlobal()
+	const TextColor = (color?: string) => {
+		return color && color != '' ? Color(color, global.theme) : Color('text', global.theme)
+	}
+
 	return (
 		<>
 			<Panel
@@ -486,6 +492,7 @@ const Index = (props: IProps) => {
 												event.stopPropagation()
 												showPanel(id, field, type)
 											}}
+											style={{ color: TextColor(type.color) }}
 										>
 											{label}
 										</a>

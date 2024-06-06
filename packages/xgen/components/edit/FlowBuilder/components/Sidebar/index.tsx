@@ -1,6 +1,8 @@
 import { Icon } from '@/widgets'
 import { IconName, IconSize } from '../../utils'
 import { useBuilderContext } from '../Builder/Provider'
+import { useGlobal } from '@/context/app'
+import { Color } from '@/utils'
 
 interface IProps {
 	height?: number
@@ -11,6 +13,11 @@ interface IProps {
 const Index = (props: IProps) => {
 	const className = 'sidebar' + (!props.visible ? ' collapsed' : '')
 	const { setting } = useBuilderContext()
+	const global = useGlobal()
+	const TextColor = (color?: string) => {
+		return color && color != '' ? Color(color, global.theme) : Color('text', global.theme)
+	}
+
 	return (
 		<div className='relative'>
 			<a
@@ -38,7 +45,9 @@ const Index = (props: IProps) => {
 								color={type.color}
 								className='mr_6'
 							/>
-							<span className='label'>{type.label ? type.label : type.name}</span>
+							<span className='label' style={{ color: TextColor(type.color) }}>
+								{type.label ? type.label : type.name}
+							</span>
 						</div>
 					))}
 				</div>

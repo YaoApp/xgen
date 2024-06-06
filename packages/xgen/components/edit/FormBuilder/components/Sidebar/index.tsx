@@ -1,6 +1,7 @@
 import { Icon } from '@/widgets'
 import { Type } from '../../types'
-import { useEffect, useState } from 'react'
+import { useGlobal } from '@/context/app'
+import { Color } from '@/utils'
 
 interface IProps {
 	types?: Type[]
@@ -14,6 +15,12 @@ interface IProps {
 
 const Index = (props: IProps) => {
 	const className = 'sidebar' + (!props.visible ? ' collapsed' : '')
+	// Get the text color
+	const global = useGlobal()
+	const TextColor = (color?: string) => {
+		return color && color != '' ? Color(color, global.theme) : Color('text', global.theme)
+	}
+
 	return (
 		<div className='relative'>
 			<a
@@ -51,7 +58,9 @@ const Index = (props: IProps) => {
 									color={type.color}
 									className='mr_6'
 								/>
-								<span className='label'>{type.label ? type.label : type.name}</span>
+								<span className='label' style={{ color: TextColor(type.color) }}>
+									{type.label ? type.label : type.name}
+								</span>
 							</div>
 						))}
 					</div>
