@@ -48,9 +48,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 	}
 
 	useEffect(() => {
-		if (__value === undefined || __value === null) {
-			return
-		}
+		if (__value === undefined || __value === null) return
 		setValue(__value)
 	}, [props.mode, __value])
 
@@ -96,10 +94,10 @@ const Custom = window.$app.memo((props: ICustom) => {
 			placeholder={`${is_cn ? '请选择' : 'Please select '}${__name}`}
 			getPopupContainer={(node) => node.parentNode}
 			value={value}
-			onChange={onChange}
 			onClear={onClear}
 			{...rest_props}
 			options={options}
+			onChange={onChange}
 		></Select>
 	)
 })

@@ -5,7 +5,7 @@ import { Else, If, Then } from 'react-if'
 import Section from './Section'
 import styles from './index.less'
 import clsx from 'clsx'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 interface IProps {
 	open: boolean
@@ -27,7 +27,8 @@ interface IProps {
 }
 
 const Index = (props: IProps) => {
-	const { id, label, data, type } = props
+	const { id, label, type } = props
+	const [data, setData] = useState(props.data)
 	let icon = { name: props.defaultIcon || 'material-format_align_left' }
 	if (type?.icon) {
 		icon = typeof type.icon === 'string' ? { name: type.icon } : type.icon
@@ -67,6 +68,27 @@ const Index = (props: IProps) => {
 	const onChange = (id: string, bind: string, value: any) => {
 		props.onChange && props.onChange(id, bind, value)
 	}
+
+	useEffect(() => {
+		if (props.data === undefined) return
+
+		const data = { ...props.data }
+		type?.props?.forEach((section) => {
+			section.columns.forEach((column) => {
+				const bind = column.component?.bind
+				if (
+					bind &&
+					props.data?.[bind] === undefined &&
+					column.component?.edit?.props?.defaultValue !== undefined
+				) {
+					data[bind] = column.component?.edit?.props?.defaultValue
+					props.onChange && props.onChange(id || '', bind, data[bind])
+				}
+			})
+		})
+
+		setData(props.data)
+	}, [props.data])
 
 	return (
 		<Drawer
