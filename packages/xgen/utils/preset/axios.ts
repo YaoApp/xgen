@@ -28,7 +28,7 @@ axios.interceptors.response.use(
 			if (res.status && res.statusText) message.error(`${res.status} : ${res.statusText}`)
 		}
 
-		if (data?.code === 401 || data?.code === 403) {
+		if (data?.code === 401) {
 			if (
 				getPath(history.location.pathname) === '' ||
 				getPath(history.location.pathname) === '/' ||
