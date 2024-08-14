@@ -3,7 +3,6 @@ import { Input } from 'antd'
 import Item from '../Item'
 import type { InputProps } from 'antd'
 import type { Component } from '@/types'
-import { useEffect, useState } from 'react'
 
 interface IProps extends InputProps, Component.PropsEditComponent {}
 

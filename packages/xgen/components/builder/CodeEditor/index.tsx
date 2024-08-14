@@ -43,7 +43,10 @@ const Custom = window.$app.memo((props: IProps) => {
 	useEffect(() => setNamespace(props.__namespace), [props.__namespace])
 	useEffect(() => {
 		setShowPlaceholder(!props.value)
-		if (dataCache[key] === props.value) return
+		if (dataCache[key] === props.value) {
+			setValue(props.value)
+			return
+		}
 
 		if (typeof props.value !== 'string' && props.value !== undefined && props.value !== null) {
 			// YAML stringify
@@ -79,8 +82,8 @@ const Custom = window.$app.memo((props: IProps) => {
 
 	const onChange = (v: any) => {
 		if (!props.onChange) return
-		props.onChange(v)
 		dataCache[key] = v
+		props.onChange(v)
 	}
 
 	const editorDidMount: EditorDidMount = (editor, monaco) => {

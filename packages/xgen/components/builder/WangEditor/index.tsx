@@ -4,14 +4,13 @@ import { useState, useEffect } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor'
 
-import { Item } from '@/components'
+import Item from '../Item'
 import { getLocale } from '@umijs/max'
 import Upload from './upload'
 
 import type { Component } from '@/types'
 import clsx from 'clsx'
 import styles from './index.less'
-import { Else, If, Then } from 'react-if'
 
 export interface IWangEditor {
 	value: any
@@ -23,7 +22,6 @@ export interface IWangEditor {
 	videoUpload?: string
 	videoUrl?: string
 	placeholder?: string
-	type: 'view' | 'edit'
 	onChange?: (v: any) => void
 }
 
@@ -86,13 +84,7 @@ const WangEditor = window.$app.memo((props: IWangEditor) => {
 	}, [editor])
 
 	return (
-		<div
-			className={clsx([styles._local])}
-			style={{
-				paddingLeft: props.type == 'view' ? 0 : 12,
-				paddingRight: props.type == 'view' ? 0 : 12
-			}}
-		>
+		<div className={clsx([styles._local])} style={{ paddingLeft: 12, paddingRight: 12 }}>
 			<Toolbar
 				className={clsx([styles._toolbar])}
 				editor={editor}
@@ -117,10 +109,10 @@ const WangEditor = window.$app.memo((props: IWangEditor) => {
 })
 
 const Index = (props: IProps) => {
-	const { __bind, __name, __type, itemProps, ...rest_props } = props
+	const { __bind, __name, onChange, ...rest_props } = props
 	return (
-		<Item {...itemProps} {...{ __bind, __name }}>
-			<WangEditor {...rest_props} type={__type}></WangEditor>
+		<Item {...{ __bind, __name }}>
+			<WangEditor {...rest_props}></WangEditor>
 		</Item>
 	)
 }

@@ -41,7 +41,10 @@ const Custom = window.$app.memo((props: ICustom) => {
 	const { dataCache } = global
 
 	useEffect(() => {
-		if (dataCache[key] === props.value) return
+		if (dataCache[key] === props.value) {
+			setValue(props.value)
+			return
+		}
 		if (!props.value) return
 		if (typeof props.value !== 'string' && props.value !== undefined && props.value !== null) {
 			// YAML stringify
