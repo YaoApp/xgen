@@ -109,7 +109,7 @@ const WangEditor = window.$app.memo((props: IWangEditor) => {
 })
 
 const Index = (props: IProps) => {
-	const { __bind, __name, onChange, ...rest_props } = props
+	const { __bind, __name, ...rest_props } = props
 	return (
 		<Item {...{ __bind, __name }}>
 			<WangEditor {...rest_props}></WangEditor>
