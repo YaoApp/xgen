@@ -20,6 +20,7 @@ interface IFormBuilderProps {
 	setting?: Component.Request
 	presets?: Component.Request
 	height?: number
+	panelWidth?: number
 
 	value?: Data
 	disabled?: boolean
@@ -188,6 +189,7 @@ const FormBuilder = window.$app.memo((props: IProps) => {
 						offsetTop={offsetTop}
 						fixed={isFixed}
 						width={width}
+						panelWidth={props.panelWidth || 420}
 						height={height}
 						contentHeight={contentHeight}
 						setting={setting}

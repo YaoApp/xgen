@@ -203,7 +203,8 @@ const _valueToLayout = (
 			y: item.y || 0,
 			w: item.width || 4,
 			h: 1,
-			resizeHandles: ['w', 'e']
+			resizeHandles: ['w', 'e'],
+			isResizable: item.resizable === undefined ? true : item.resizable
 		})
 	})
 	return { layout, mapping }

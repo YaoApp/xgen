@@ -48,7 +48,11 @@ const Index = (props: IProps) => {
 								onDragStart={(e) =>
 									e.dataTransfer.setData(
 										'application/form/type',
-										JSON.stringify({ type: type.name })
+										JSON.stringify({
+											type: type.name,
+											width: type.width || 4,
+											resizable: type.resizable
+										})
 									)
 								}
 							>

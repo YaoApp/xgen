@@ -21,6 +21,8 @@ interface IProps {
 	value?: Data // initial value
 	fixed: boolean
 	offsetTop: number
+	panelWidth?: number
+
 	onChange?: (v: any, height: number) => void
 
 	toggleSidebar: () => void
@@ -160,7 +162,8 @@ const Index = (props: IProps) => {
 				y: copyField.y,
 				w: copyField.width || 4,
 				h: 1,
-				resizeHandles: ['w', 'e']
+				resizeHandles: ['w', 'e'],
+				isResizable: field.resizable === undefined ? true : field.resizable
 			}
 		])
 		setFieldMap({ ...fieldMap, [copyField.id]: copyField })
@@ -267,7 +270,8 @@ const Index = (props: IProps) => {
 					y: copyField.y,
 					w: copyField.width || 4,
 					h: 1,
-					resizeHandles: ['w', 'e']
+					resizeHandles: ['w', 'e'],
+					isResizable: copyField.resizable === undefined ? true : copyField.resizable
 				}
 			])
 			setFieldMap({ ...fieldMap, [copyField.id]: copyField })
@@ -319,6 +323,7 @@ const Index = (props: IProps) => {
 			type: data.type,
 			x: layoutItem.x,
 			y: layoutItem.y,
+			resizable: data.resizable === undefined ? true : data.resizable,
 			width: data.width || 4,
 			props: data.props || {}
 		})
@@ -361,7 +366,7 @@ const Index = (props: IProps) => {
 				actions={getActions()}
 				fixed={props.fixed}
 				mask={props.mask}
-				width={420}
+				width={props.panelWidth || 420}
 				offsetTop={props.offsetTop}
 				icon={isPreset ? 'icon-plus-circle' : undefined}
 				children={

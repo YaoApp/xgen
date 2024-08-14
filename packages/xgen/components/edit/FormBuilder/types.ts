@@ -12,6 +12,7 @@ export type Field = {
 	id?: string
 	type: string
 	width?: number
+	resizable?: boolean // default true
 	x?: number
 	y?: number
 	props?: Record<string, any>

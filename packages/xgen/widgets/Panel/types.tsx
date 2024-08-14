@@ -3,6 +3,8 @@ export type Type = {
 	label?: string
 	icon?: string | { name: string; size?: number; color?: string }
 	color?: string
+	width?: number
+	resizable?: boolean // default true
 	background?: string
 	props?: Section[]
 }
