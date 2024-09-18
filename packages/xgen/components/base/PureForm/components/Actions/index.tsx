@@ -40,7 +40,7 @@ const Index = (props: IPropsActions) => {
 		if (when_add) return handle_actions.filter((item) => item.showWhenAdd)
 		if (when_view) return handle_actions.filter((item) => item.showWhenView)
 
-		return handle_actions.filter((item) => !item.hideWhenEdit)
+		return handle_actions?.filter((item) => !item.hideWhenEdit)
 	}, [actions, data, id, type])
 
 	return (
