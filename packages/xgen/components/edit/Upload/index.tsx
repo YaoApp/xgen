@@ -65,8 +65,21 @@ const Custom = window.$app.memo((props: CustomProps) => {
 		if (!imageSize.width && !imageSize.height) {
 			imageSize.height = '92px'
 		}
+
+		// If the ratio is set, the width will be 100% and the height will be calculated based on the ratio
+		if (imageSize.ratio) {
+			imageSize.width = `100%`
+			imageSize.height = `calc(100% / ${imageSize.ratio})`
+		}
+
 		props_upload['itemRender'] = (_, file, _fileList, { remove }) => (
-			<Image file={file} imageSize={imageSize} remove={remove}></Image>
+			<Image
+				file={file}
+				imageSize={imageSize}
+				storage={props.storage}
+				appRoot={props.appRoot}
+				remove={remove}
+			></Image>
 		)
 	}
 

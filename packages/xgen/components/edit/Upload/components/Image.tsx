@@ -12,7 +12,7 @@ const Index = (props: IPropsCustomImage) => {
 
 	useEffect(() => {
 		if (file.response) {
-			setUrl(getFileSrc(file.response))
+			setUrl(getFileSrc(file.response, props.appRoot))
 			setLoading(false)
 		}
 	}, [file.response])
@@ -31,7 +31,7 @@ const Index = (props: IPropsCustomImage) => {
 			>
 				<img
 					className='image'
-					src={getFileSrc(url)}
+					src={getFileSrc(url, props.appRoot)}
 					style={{ borderRadius: 6, objectFit: 'cover', ...imageSize }}
 				></img>
 			</Skeleton>
