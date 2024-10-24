@@ -4,9 +4,10 @@ import type { Component } from '@/types'
 
 interface CommonProps {
 	value: Array<string>
-	filetype: 'image' | 'file' | 'video'
+	filetype: 'image' | 'file' | 'video' | 'audio'
 	desc?: string
-	imageSize?: { width: string; height: string; ratio?: number }
+	imageSize?: { width?: string | number; height?: string | number; ratio?: number } // will be deprecated, use previewSize instead
+	previewSize?: { width?: string | number; height?: string | number; ratio?: number }
 }
 
 export interface Storage {
@@ -23,6 +24,12 @@ export interface IProps extends UploadProps, Component.PropsEditComponent, Commo
 
 export interface CustomProps extends UploadProps, CommonProps {
 	api: string | { api: string; params: any }
+	placeholder?: string // the placeholder for the upload
+	placeholderIcon?: string | { name: string; size: number } // the placeholder icon for the upload
+	height?: number | string // the height for the upload
+	rows?: number // the rows for the upload. if set, height will be ignored
+	chunkSize?: number | string // the chunk size for the upload, if set, will use the chunk upload
+	previewURL?: string // the url for the preview image, if set, will use the preview image or video
 	appRoot?: boolean // if false, use the data root, else use the app root, default is false
 	storage?: Storage // storage option for the upload to the storage server directly (e.g. firebase, s3, etc)
 	aigc?: AIGC // aigc option for the upload. if set, will use the ai generated image
@@ -32,8 +39,9 @@ export interface FileType {
 	[key: string]: {
 		listType: UploadProps<string>['listType']
 		className: string
-		desc: { [key: string]: string }
-		render?: UploadProps['itemRender']
+		placeholder: { [key: string]: CustomProps['placeholder'] }
+		placeholderIcon: CustomProps['placeholderIcon']
+		preview: (props: PreviewProps, file: UploadFile<string>, remove: () => void) => JSX.Element
 	}
 }
 
@@ -52,5 +60,10 @@ export interface IPropsUploadBtn {
 	length: number
 	filetype: IProps['filetype']
 	maxCount: IProps['maxCount']
-	desc: IProps['desc']
+	placeholder: CustomProps['placeholder']
+	placeholderIcon: CustomProps['placeholderIcon']
+}
+
+export interface PreviewProps {
+	size?: CommonProps['previewSize']
 }

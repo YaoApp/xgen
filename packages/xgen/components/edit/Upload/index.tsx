@@ -13,12 +13,14 @@ import useList from './hooks/useList'
 import useVisibleBtn from './hooks/useVisibleBtn'
 import styles from './index.less'
 import handleFileList from './utils/handleFileList'
+import { getLocale } from '@umijs/max'
 
 import type { UploadProps } from 'antd'
-import type { IProps, CustomProps, IPropsUploadBtn } from './types'
+import type { IProps, CustomProps, IPropsUploadBtn, PreviewProps } from './types'
 
 const Custom = window.$app.memo((props: CustomProps) => {
-	const { api, maxCount, desc, imageSize, onChange: trigger } = props
+	const locale = getLocale()
+	const { api, maxCount, desc, previewSize, imageSize, onChange: trigger } = props
 	const { list, setList } = useList(props.value)
 	const visible_btn = useVisibleBtn(list.length, maxCount || 1)
 	const filetype = filemap[props.filetype] ? props.filetype : 'image'
@@ -37,7 +39,7 @@ const Custom = window.$app.memo((props: CustomProps) => {
 
 	const action = useMemo(() => {
 		if (typeof api === 'string') return api
-
+		if (typeof api === 'undefined') return ''
 		return `${api.api}?${new URLSearchParams(api.params).toString()}`
 	}, [api])
 
@@ -45,11 +47,7 @@ const Custom = window.$app.memo((props: CustomProps) => {
 		...props,
 		name: 'file',
 		listType: filemap[filetype].listType,
-		className: clsx([
-			'form_item_upload_wrap',
-			filemap[filetype].className,
-			filetype === 'image' && imageSize && 'custom'
-		]),
+		className: clsx(['form_item_upload_wrap', filemap[filetype].className]),
 		action,
 		headers: { authorization: getToken() },
 		fileList: list,
@@ -57,41 +55,23 @@ const Custom = window.$app.memo((props: CustomProps) => {
 		onChange
 	}
 
-	if (filemap[filetype]?.render) {
-		props_upload['itemRender'] = filemap[filetype].render
-	}
-
-	if (filetype === 'image' && imageSize) {
-		if (!imageSize.width && !imageSize.height) {
-			imageSize.height = '92px'
-		}
-
-		// If the ratio is set, the width will be 100% and the height will be calculated based on the ratio
-		if (imageSize.ratio) {
-			imageSize.width = `100%`
-			imageSize.height = `calc(100% / ${imageSize.ratio})`
-		}
-
-		props_upload['itemRender'] = (_, file, _fileList, { remove }) => (
-			<Image
-				file={file}
-				imageSize={imageSize}
-				storage={props.storage}
-				appRoot={props.appRoot}
-				remove={remove}
-			></Image>
-		)
+	const preview_props: PreviewProps = { size: previewSize || imageSize || undefined }
+	props_upload['itemRender'] = (_, file, fileList, { remove }) => {
+		return filemap[filetype].preview(preview_props, file, remove)
 	}
 
 	const props_upload_btn: IPropsUploadBtn = {
 		length: list.length,
 		filetype,
 		maxCount,
-		desc
+		placeholder:
+			props.placeholder || filemap[filetype].placeholder[locale] || filemap['file'].placeholder['en-US'],
+		placeholderIcon:
+			props.placeholderIcon || filemap[filetype].placeholderIcon || filemap['file'].placeholderIcon
 	}
 
 	return (
-		<div className={clsx([styles._local, styles[filetype]])}>
+		<div className={clsx([styles._local, styles[filetype]], maxCount && maxCount > 1 && 'multiple')}>
 			<Upload {...props_upload}>{visible_btn && <UploadBtn {...props_upload_btn}></UploadBtn>}</Upload>
 		</div>
 	)
