@@ -1,3 +1,4 @@
+import File from './components/File'
 import Video from './components/Video'
 import Audio from './components/Audio'
 import Image from './components/Image'
@@ -41,7 +42,7 @@ export default {
 		},
 		placeholderIcon: 'icon-upload',
 		preview: (props: PreviewProps, file: UploadFile<string>, remove: () => void) => {
-			return <div>File</div>
+			return <File file={file} preivewSize={props.size} remove={remove} />
 		}
 	},
 

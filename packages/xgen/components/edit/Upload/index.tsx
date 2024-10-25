@@ -89,8 +89,8 @@ const fmtSize = (size: PreviewProps['size'], filetype: AllowedFileType): Preview
 	const defaultSizes: Record<AllowedFileType, PreviewProps['size']> = {
 		image: { width: '90px', height: '90px', ratio: 1 },
 		video: { width: '288px', height: '162px', ratio: 1 },
-		file: { width: '288px', height: '52px', ratio: 1 },
-		audio: { width: '288px', height: '52px', ratio: 1 }
+		file: { width: '288px', height: '60px', ratio: 1 },
+		audio: { width: '288px', height: '60px', ratio: 1 }
 	}
 
 	const defaultSize: PreviewProps['size'] = {
