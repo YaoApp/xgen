@@ -6,7 +6,6 @@ import { useMemo } from 'react'
 import { Item } from '@/components'
 import { getToken } from '@/knife'
 
-import Image from './components/Image'
 import UploadBtn from './components/UploadBtn'
 import filemap from './filemap'
 import useList from './hooks/useList'
@@ -16,7 +15,7 @@ import handleFileList from './utils/handleFileList'
 import { getLocale } from '@umijs/max'
 
 import type { UploadProps } from 'antd'
-import type { IProps, CustomProps, IPropsUploadBtn, PreviewProps } from './types'
+import type { IProps, CustomProps, IPropsUploadBtn, PreviewProps, AllowedFileType } from './types'
 
 const Custom = window.$app.memo((props: CustomProps) => {
 	const locale = getLocale()
@@ -55,15 +54,19 @@ const Custom = window.$app.memo((props: CustomProps) => {
 		onChange
 	}
 
-	const preview_props: PreviewProps = { size: previewSize || imageSize || undefined }
+	// The preview props for the custom render
+	const size = fmtSize(previewSize || imageSize, filetype)
+	const preview_props: PreviewProps = { size: size }
 	props_upload['itemRender'] = (_, file, fileList, { remove }) => {
 		return filemap[filetype].preview(preview_props, file, remove)
 	}
 
+	// Compute the props for the upload button
 	const props_upload_btn: IPropsUploadBtn = {
 		length: list.length,
 		filetype,
 		maxCount,
+		size: size,
 		placeholder:
 			props.placeholder || filemap[filetype].placeholder[locale] || filemap['file'].placeholder['en-US'],
 		placeholderIcon:
@@ -76,6 +79,44 @@ const Custom = window.$app.memo((props: CustomProps) => {
 		</div>
 	)
 })
+
+/**
+ * Parse the size for the preview
+ * @param size
+ * @returns
+ */
+const fmtSize = (size: PreviewProps['size'], filetype: AllowedFileType): PreviewProps['size'] => {
+	const defaultSizes: Record<AllowedFileType, PreviewProps['size']> = {
+		image: { width: '90px', height: '90px', ratio: 1 },
+		video: { width: '240px', height: '135px', ratio: 1 },
+		file: { width: '240px', height: '52px', ratio: 1 },
+		audio: { width: '240px', height: '52px', ratio: 1 }
+	}
+
+	const defaultSize: PreviewProps['size'] = {
+		width: size?.width || defaultSizes[filetype]?.width || '90px',
+		height: size?.height || defaultSizes[filetype]?.height || '90px',
+		ratio: size?.ratio || defaultSizes[filetype]?.ratio || 1
+	}
+
+	if (defaultSize.ratio && defaultSize.ratio != 1) {
+		const width = parseInt(defaultSize.width as string)
+		const height = parseInt(defaultSize.height as string)
+		if (!width && !height) {
+			defaultSize.width = '100%'
+			defaultSize.height = `${100 * defaultSize.ratio}%`
+		}
+		if (width) {
+			defaultSize.width = `${width * defaultSize.ratio}px`
+		} else if (height) defaultSize.height = `${width * defaultSize.ratio}px`
+	}
+
+	return {
+		width: typeof defaultSize.width == 'number' ? `${defaultSize.width}px` : defaultSize.width,
+		height: typeof defaultSize.height == 'number' ? `${defaultSize.height}px` : defaultSize.height,
+		ratio: defaultSize.ratio
+	}
+}
 
 const Index = (props: IProps) => {
 	const { __bind, __name, itemProps, ...rest_props } = props

@@ -4,11 +4,13 @@ import type { Component } from '@/types'
 
 interface CommonProps {
 	value: Array<string>
-	filetype: 'image' | 'file' | 'video' | 'audio'
+	filetype: AllowedFileType
 	desc?: string
 	imageSize?: { width?: string | number; height?: string | number; ratio?: number } // will be deprecated, use previewSize instead
 	previewSize?: { width?: string | number; height?: string | number; ratio?: number }
 }
+
+export type AllowedFileType = 'image' | 'file' | 'video' | 'audio'
 
 export interface Storage {
 	[key: string]: any
@@ -47,13 +49,10 @@ export interface FileType {
 
 export interface IPropsCustomRender {
 	file: UploadFile<string>
-	remove: () => void
-}
-
-export interface IPropsCustomImage extends IPropsCustomRender {
-	imageSize: CommonProps['imageSize']
 	appRoot?: boolean
 	storage?: Storage // storage option for the upload to the storage server directly (e.g. firebase, s3, etc)
+	preivewSize: CommonProps['previewSize']
+	remove: () => void
 }
 
 export interface IPropsUploadBtn {
@@ -62,6 +61,7 @@ export interface IPropsUploadBtn {
 	maxCount: IProps['maxCount']
 	placeholder: CustomProps['placeholder']
 	placeholderIcon: CustomProps['placeholderIcon']
+	size: CommonProps['previewSize']
 }
 
 export interface PreviewProps {

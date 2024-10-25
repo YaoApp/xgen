@@ -15,7 +15,8 @@
 
 				.xgen-upload-select-picture-card {
 					min-height: @min_height;
-					width: @width;
+					min-width: @min_width;
+					width: auto;
 					height: auto;
 					display: inline-flex;
 					align-items: center;
@@ -38,43 +39,35 @@
 
 	&.video {
 		:global {
-			@min_width: 160px;
-			@min_height: 90px;
-			@width: 160px;
-			@height: 100px;
+			@min_width: 240px;
+			@min_height: 135px;
+			@width: 240px;
+			@height: 135px;
 
 			.form_item_upload_wrap {
 				padding-top: 11px;
 				padding-left: 10px;
-
-				&.custom {
-					@image_size: unset;
-					.xgen-upload-select-picture-card {
-						min-width: @min_width;
-						min-height: @min_height;
-						width: @width;
-						height: @height;
-					}
-
-					.xgen-upload-list-picture-card-container {
-						min-width: @min_width;
-						min-height: @min_height;
-						width: @image_size;
-						height: @height;
-					}
-				}
+				padding-right: 10px;
 
 				.xgen-upload-select-picture-card {
-					width: @width;
-					height: @height;
+					min-height: @min_height;
+					min-width: @min_width;
+					width: auto;
+					height: auto;
 					display: inline-flex;
 					align-items: center;
 					justify-content: center;
 				}
 
 				.xgen-upload-list-picture-card-container {
-					width: @width;
-					height: @height;
+					min-height: @min_height;
+					min-width: @min_width;
+					width: auto;
+					height: auto;
+					.image {
+						max-width: 100%;
+						object-fit: cover;
+					}
 				}
 			}
 		}
@@ -83,45 +76,34 @@
 	&.file,
 	&.audio {
 		:global {
-			@min_width: 160px;
-			@min_height: 36px;
-			@width: 150px;
-			@height: 36px;
-
+			@min_width: 240px;
+			@min_height: 52px;
+			@width: 240px;
+			@height: 52px;
 			.form_item_upload_wrap {
 				padding-top: 11px;
 				padding-left: 10px;
-
-				&.custom {
-					@image_size: unset;
-					@min_image_size: 100px;
-
-					.xgen-upload-select-picture-card {
-						min-width: @min_width;
-						min-height: @min_height;
-						width: @width;
-						height: @height;
-					}
-
-					.xgen-upload-list-picture-card-container {
-						min-width: @min_width;
-						min-height: @min_height;
-						width: @width;
-						height: @height;
-					}
-				}
+				padding-right: 10px;
 
 				.xgen-upload-select-picture-card {
-					width: @width;
-					height: @height;
+					min-height: @min_height;
+					min-width: @min_width;
+					width: auto;
+					height: auto;
 					display: inline-flex;
 					align-items: center;
 					justify-content: center;
 				}
 
 				.xgen-upload-list-picture-card-container {
-					width: @width;
-					height: @height;
+					min-height: @min_height;
+					min-width: @min_width;
+					width: auto;
+					height: auto;
+					.image {
+						max-width: 100%;
+						object-fit: cover;
+					}
 				}
 			}
 		}
@@ -129,8 +111,44 @@
 
 	:global {
 		.upload_custom_wrap {
+			.toolbar {
+				position: absolute;
+				display: none;
+				right: 0px;
+				bottom: -40px;
+				align-items: center;
+				justify-content: end;
+				height: 40px;
+				padding: 0 6px;
+				width: auto;
+				color: var(--color_title);
+				background: var(--color_bg_nav);
+				border-bottom-right-radius: 6px;
+				border-bottom-left-radius: 6px;
+
+				.toolbar-button {
+					cursor: pointer;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					color: var(--color_title);
+					width: 30px;
+					height: 40px;
+
+					&:hover {
+						color: var(--color_main);
+						transform: scale(1.05);
+						transition: transform 0.2s ease-in;
+					}
+				}
+			}
+
 			&:hover {
 				.icon_delete {
+					display: flex;
+				}
+
+				.icon_preview {
 					display: flex;
 				}
 			}
@@ -140,6 +158,32 @@
 				height: 160px;
 				border-radius: 6px;
 				object-fit: fill;
+			}
+
+			.icon_preview {
+				left: calc(50% - 13.5px);
+				top: calc(50% - 13.5px);
+				z-index: 1;
+				display: none;
+				width: 27px;
+				height: 27px;
+				border-radius: 6px;
+				background-color: white;
+				color: black;
+				cursor: pointer;
+
+				&:hover {
+					background-color: var(--color_title);
+
+					.icon {
+						color: white;
+					}
+				}
+
+				.icon {
+					color: var(--color_title);
+					font-size: 15px;
+				}
 			}
 
 			.icon_delete {
@@ -184,6 +228,7 @@
 			.btn_upload_wrap {
 				display: flex;
 				flex-direction: column;
+				color: var(--color_placeholder);
 
 				.desc {
 					margin-top: 6px;
@@ -202,6 +247,10 @@
 					flex-direction: row;
 					align-items: center;
 				}
+			}
+
+			.btn_upload_wrap:hover {
+				color: var(--color_title);
 			}
 
 			.xgen-upload-list-picture .xgen-upload-list-item,

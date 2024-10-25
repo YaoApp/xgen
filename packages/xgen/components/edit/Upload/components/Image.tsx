@@ -1,14 +1,20 @@
 import { getFileSrc } from '@/knife'
 import { DeleteOutlined } from '@ant-design/icons'
 
-import type { IPropsCustomImage } from '../types'
+import type { IPropsCustomRender } from '../types'
 import { useEffect, useState } from 'react'
 import { Skeleton } from 'antd'
+import { Icon } from '@/widgets'
 
-const Index = (props: IPropsCustomImage) => {
-	const { file, imageSize, remove } = props
+import styles from './Image.less'
+import clsx from 'clsx'
+
+const Index = (props: IPropsCustomRender) => {
+	const { file, preivewSize, remove } = props
 	const [loading, setLoading] = useState<boolean>(true)
 	const [url, setUrl] = useState<string>(file.response || '')
+	const [showOpration, setShowOpration] = useState<boolean>(false)
+	const src = getFileSrc(url, props.appRoot)
 
 	useEffect(() => {
 		if (file.response) {
@@ -17,23 +23,48 @@ const Index = (props: IPropsCustomImage) => {
 		}
 	}, [file.response])
 
+	const preview = () => {
+		window.open(src)
+	}
+
 	return (
-		<div className='upload_custom_wrap flex relative'>
-			<div className='icon_delete absolute justify_center align_center transition_normal' onClick={remove}>
-				<DeleteOutlined className='icon'></DeleteOutlined>
+		<div
+			className={clsx([styles._local, 'upload_custom_wrap', 'flex', 'relative'])}
+			onMouseEnter={() => setShowOpration(true)}
+			onMouseLeave={() => setShowOpration(false)}
+		>
+			<div className='toolbar' style={{ display: showOpration ? 'flex' : 'none' }}>
+				<div className='toolbar-button' onClick={preview}>
+					<Icon name='icon-download' size={16}></Icon>
+				</div>
+				<div className='toolbar-button' onClick={remove}>
+					<Icon name='icon-trash' size={16}></Icon>
+				</div>
 			</div>
+
 			<Skeleton
 				loading={loading || url == ''}
 				active
 				paragraph={{
-					width: imageSize?.width || '100%'
+					width: preivewSize?.width || '100%'
 				}}
 			>
-				<img
-					className='image'
-					src={getFileSrc(url, props.appRoot)}
-					style={{ borderRadius: 6, objectFit: 'cover', ...imageSize }}
-				></img>
+				<div
+					style={{
+						filter: 'var(--audio-filter,drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06)))'
+					}}
+					className='image_wrap'
+				>
+					<img
+						className='image'
+						src={src}
+						style={{
+							borderRadius: 6,
+							objectFit: 'cover',
+							...preivewSize
+						}}
+					></img>
+				</div>
 			</Skeleton>
 		</div>
 	)

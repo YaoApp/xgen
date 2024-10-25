@@ -15,7 +15,7 @@ export default {
 		},
 		placeholderIcon: 'icon-upload',
 		preview: (props: PreviewProps, file: UploadFile<string>, remove: () => void) => {
-			return <Image file={file} imageSize={getSize(props.size)} remove={remove} />
+			return <Image file={file} preivewSize={props.size} remove={remove} />
 		}
 	},
 
@@ -28,7 +28,7 @@ export default {
 		},
 		placeholderIcon: 'icon-upload',
 		preview: (props: PreviewProps, file: UploadFile<string>, remove: () => void) => {
-			return <div>Image</div>
+			return <Audio file={file} preivewSize={props.size} remove={remove} />
 		}
 	},
 
@@ -58,25 +58,3 @@ export default {
 		}
 	}
 } as FileType
-
-function getSize(size: PreviewProps['size']): PreviewProps['size'] {
-	const defaultSize: PreviewProps['size'] = {
-		width: size?.width || '90px',
-		height: size?.height || '90px',
-		ratio: size?.ratio || 1
-	}
-
-	if (defaultSize.ratio && defaultSize.ratio != 1) {
-		const width = parseInt(defaultSize.width as string)
-		const height = parseInt(defaultSize.height as string)
-		if (!width && !height) {
-			defaultSize.width = '100%'
-			defaultSize.height = `${100 * defaultSize.ratio}%`
-		}
-		if (width) {
-			defaultSize.width = `${width * defaultSize.ratio}px`
-		} else if (height) defaultSize.height = `${width * defaultSize.ratio}px`
-	}
-
-	return defaultSize
-}
