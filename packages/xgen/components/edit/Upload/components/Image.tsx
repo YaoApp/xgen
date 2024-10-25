@@ -49,12 +49,7 @@ const Index = (props: IPropsCustomRender) => {
 					width: preivewSize?.width || '100%'
 				}}
 			>
-				<div
-					style={{
-						filter: 'var(--audio-filter,drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06)))'
-					}}
-					className='image_wrap'
-				>
+				<div className={clsx(['image_wrap'])}>
 					<img
 						className='image'
 						src={src}

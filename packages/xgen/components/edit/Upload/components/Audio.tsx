@@ -1,8 +1,7 @@
 import { getFileSrc } from '@/knife'
-import { DeleteOutlined } from '@ant-design/icons'
 
 import type { IPropsCustomRender } from '../types'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Skeleton } from 'antd'
 import { Icon } from '@/widgets'
 import { MediaPlayer, MediaProvider } from '@vidstack/react'
@@ -26,9 +25,8 @@ const Index = (props: IPropsCustomRender) => {
 		if (file.response) {
 			const url = getFileSrc(file.response, props.appRoot)
 			const title = url.split('name=/')[1]?.split('&')[0] || file.name
-			console.log('title', title)
 			setUrl(url)
-			setTitle(title)
+			setTitle(title.split('/').pop() || file.name)
 			setLoading(false)
 		}
 	}, [file.response])

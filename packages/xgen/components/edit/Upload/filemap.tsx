@@ -54,7 +54,7 @@ export default {
 		},
 		placeholderIcon: 'icon-upload',
 		preview: (props: PreviewProps, file: UploadFile<string>, remove: () => void) => {
-			return <div>Video</div>
+			return <Video file={file} preivewSize={props.size} remove={remove} />
 		}
 	}
 } as FileType
