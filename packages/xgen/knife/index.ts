@@ -11,7 +11,6 @@ export { default as fuzzyQuery } from './filter/fuzzyQuery'
 export { default as getDeepValue } from './filter/getDeepValue'
 export { default as filterEmpty } from './filter/filterEmpty'
 
-export { default as getFileSrc } from './yao/getFileSrc'
 export { default as getToken } from './yao/getToken'
 export { default as getStudio } from './yao/getStudio'
 

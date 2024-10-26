@@ -1,6 +1,3 @@
-import { getFileSrc } from '@/knife'
-import { DeleteOutlined } from '@ant-design/icons'
-
 import type { IPropsCustomRender } from '../types'
 import { useEffect, useState } from 'react'
 import { Skeleton } from 'antd'
@@ -8,23 +5,24 @@ import { Icon } from '@/widgets'
 
 import styles from './Image.less'
 import clsx from 'clsx'
+import { GetPreviewURL } from '../utils/handleFileList'
 
 const Index = (props: IPropsCustomRender) => {
-	const { file, preivewSize, remove } = props
+	const { file, remove, ...rest_props } = props
+	const size = rest_props.size
 	const [loading, setLoading] = useState<boolean>(true)
-	const [url, setUrl] = useState<string>(file.response || '')
+	const [url, setUrl] = useState<string>(GetPreviewURL(file.response))
 	const [showOpration, setShowOpration] = useState<boolean>(false)
-	const src = getFileSrc(url, props.appRoot)
 
 	useEffect(() => {
 		if (file.response) {
-			setUrl(getFileSrc(file.response, props.appRoot))
+			setUrl(GetPreviewURL(file.response))
 			setLoading(false)
 		}
 	}, [file.response])
 
 	const preview = () => {
-		window.open(src)
+		window.open(url)
 	}
 
 	return (
@@ -46,17 +44,17 @@ const Index = (props: IPropsCustomRender) => {
 				loading={loading || url == ''}
 				active
 				paragraph={{
-					width: preivewSize?.width || '100%'
+					width: size?.width || '100%'
 				}}
 			>
 				<div className={clsx(['image_wrap'])}>
 					<img
 						className='image'
-						src={src}
+						src={url}
 						style={{
 							borderRadius: 6,
 							objectFit: 'cover',
-							...preivewSize
+							...size
 						}}
 					></img>
 				</div>

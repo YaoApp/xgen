@@ -1,5 +1,3 @@
-import { getFileSrc } from '@/knife'
-
 import type { IPropsCustomRender } from '../types'
 import { useEffect, useState } from 'react'
 import { Skeleton } from 'antd'
@@ -13,18 +11,19 @@ import '@vidstack/react/player/styles/default/layouts/video.css'
 
 import styles from './Video.less'
 import clsx from 'clsx'
+import { GetPreviewURL } from '../utils/handleFileList'
 
 const Index = (props: IPropsCustomRender) => {
-	const { file, preivewSize, remove } = props
+	const { file, remove, ...rest_props } = props
+	const size = rest_props.size
 	const [loading, setLoading] = useState<boolean>(true)
-	const [url, setUrl] = useState<string>(file.response || '')
+	const [url, setUrl] = useState<string>(GetPreviewURL(file.response))
 	const [title, setTitle] = useState<string>(file.name)
 	const [showOpration, setShowOpration] = useState<boolean>(false)
 
-	const src = getFileSrc(url, props.appRoot)
 	useEffect(() => {
 		if (file.response) {
-			const url = getFileSrc(file.response, props.appRoot)
+			const url = GetPreviewURL(file.response)
 			const title = url.split('name=/')[1]?.split('&')[0] || file.name
 			setUrl(url)
 			setTitle(title.split('/').pop() || file.name)
@@ -33,7 +32,7 @@ const Index = (props: IPropsCustomRender) => {
 	}, [file.response])
 
 	const preview = () => {
-		window.open(src)
+		window.open(url)
 	}
 
 	const global = useGlobal()
@@ -62,18 +61,18 @@ const Index = (props: IPropsCustomRender) => {
 				loading={loading || url == ''}
 				active
 				paragraph={{
-					width: preivewSize?.width || '100%'
+					width: size?.width || '100%'
 				}}
 			>
 				<div className='video_wrap'>
 					<MediaPlayer
 						style={{
-							height: preivewSize?.height || '162px',
-							width: preivewSize?.width
+							height: size?.height || '162px',
+							width: size?.width
 						}}
 						className={clsx([styles._local])}
 						title={title}
-						src={src + `&${file.name}`}
+						src={url + `&${file.name}`}
 					>
 						<MediaProvider />
 						<DefaultVideoLayout

@@ -1,15 +1,17 @@
 import type { UploadProps } from 'antd'
 import type { UploadFile } from 'antd/lib/upload/interface'
 import type { Component } from '@/types'
+import { UploadResponse } from './request/types'
 
 interface CommonProps {
-	value: Array<string>
+	value: Array<ValueType>
 	filetype: AllowedFileType
 	desc?: string
 	imageSize?: { width?: string | number; height?: string | number; ratio?: number } // will be deprecated, use previewSize instead
 	previewSize?: { width?: string | number; height?: string | number; ratio?: number }
 }
 
+export type ValueType = string | UploadResponse
 export type AllowedFileType = 'image' | 'file' | 'video' | 'audio'
 
 export interface Storage {
@@ -32,7 +34,7 @@ export interface CustomProps extends UploadProps, CommonProps {
 	rows?: number // the rows for the upload. if set, height will be ignored
 	chunkSize?: number | string // the chunk size for the upload, if set, will use the chunk upload
 	previewURL?: string // the url for the preview image, if set, will use the preview image or video
-	appRoot?: boolean // if false, use the data root, else use the app root, default is false
+	useAppRoot?: boolean // if false, use the data root, else use the app root, default is false
 	storage?: Storage // storage option for the upload to the storage server directly (e.g. firebase, s3, etc)
 	aigc?: AIGC // aigc option for the upload. if set, will use the ai generated image
 }
@@ -43,17 +45,14 @@ export interface FileType {
 		className: string
 		placeholder: { [key: string]: CustomProps['placeholder'] }
 		placeholderIcon: CustomProps['placeholderIcon']
-		preview: (props: PreviewProps, file: UploadFile<string>, remove: () => void) => JSX.Element
+		preview: (props: PreviewProps, file: UploadFile<ValueType>, remove: () => void) => JSX.Element
 	}
 }
 
-export interface IPropsCustomRender {
-	file: UploadFile<string>
-	appRoot?: boolean
-	storage?: Storage // storage option for the upload to the storage server directly (e.g. firebase, s3, etc)
-	preivewSize: CommonProps['previewSize']
+export type IPropsCustomRender = {
+	file: UploadFile<ValueType>
 	remove: () => void
-}
+} & PreviewProps
 
 export interface IPropsUploadBtn {
 	length: number
@@ -64,6 +63,9 @@ export interface IPropsUploadBtn {
 	size: CommonProps['previewSize']
 }
 
-export interface PreviewProps {
+export type PreviewProps = {
 	size?: CommonProps['previewSize']
+	url?: string // the url for the download or preview
+	useAppRoot?: boolean // if false, use the data root, else use the app root, default is false
+	storage?: Storage // storage option for the upload to the storage server directly (e.g. firebase, s3, etc)
 }

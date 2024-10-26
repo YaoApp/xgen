@@ -1,19 +1,41 @@
 import { Image } from 'antd'
-import clsx from 'clsx'
-
-import { getFileSrc } from '@/knife'
-
 import styles from './index.less'
 
 import type { Component } from '@/types'
 import type { ImageProps } from 'antd'
+import { GetPreviewURL } from '@/components/edit/Upload/request/storages/utils'
+import { getToken } from '@/knife'
+import { useMemo, useState } from 'react'
+import clsx from 'clsx'
 
-interface IProps extends Component.PropsViewComponent, ImageProps {}
+interface IProps extends Component.PropsViewComponent, ImageProps {
+	previewURL?: string
+	useAppRoot?: boolean
+	api?: string | { api: string; params: string }
+}
 
 const Index = (props: IProps) => {
-	const { __value, onSave, ...rest_props } = props
+	const { __value, onSave, api, useAppRoot, previewURL, ...rest_props } = props
 
-	if (!__value) return <span>-</span>
+	const [urls, setUrls] = useState<string[]>([])
+
+	const token = getToken()
+	useMemo(() => {
+		if (!api) return
+		const values = Array.isArray(__value) ? __value : [__value]
+		values.forEach((item) => {
+			const url = GetPreviewURL({
+				response: { path: item },
+				previewURL,
+				useAppRoot,
+				token,
+				api
+			})
+			setUrls((urls) => [...urls, url])
+		})
+	}, [api, previewURL, useAppRoot])
+
+	if (!__value || (Array.isArray(__value) && __value.length == 0)) return <span>-</span>
 
 	const props_image: ImageProps = {
 		width: 48,
@@ -22,20 +44,11 @@ const Index = (props: IProps) => {
 		...rest_props
 	}
 
-	if (Array.isArray(__value)) {
-		if (__value.length === 0) return <span>-</span>
-		return (
-			<div className={styles._local}>
-				{__value.map((item: string, index: number) => (
-					<Image {...props_image} src={getFileSrc(item)} key={index}></Image>
-				))}
-			</div>
-		)
-	}
-
 	return (
-		<div className={styles._local}>
-			<Image {...props_image} src={getFileSrc(__value)}></Image>
+		<div className={clsx([styles._local, 'xgen-image'])}>
+			{urls.map((url: string, index: number) => (
+				<Image {...props_image} src={url} key={index}></Image>
+			))}
 		</div>
 	)
 }

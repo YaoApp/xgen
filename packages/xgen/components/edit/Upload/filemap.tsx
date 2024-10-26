@@ -3,7 +3,7 @@ import Video from './components/Video'
 import Audio from './components/Audio'
 import Image from './components/Image'
 
-import type { FileType, PreviewProps } from './types'
+import type { FileType, PreviewProps, ValueType } from './types'
 import { UploadFile } from 'antd'
 
 export default {
@@ -15,8 +15,8 @@ export default {
 			'en-US': 'Upload Image'
 		},
 		placeholderIcon: 'icon-upload',
-		preview: (props: PreviewProps, file: UploadFile<string>, remove: () => void) => {
-			return <Image file={file} preivewSize={props.size} remove={remove} />
+		preview: (props: PreviewProps, file: UploadFile<ValueType>, remove: () => void) => {
+			return <Image file={file} remove={remove} {...props} />
 		}
 	},
 
@@ -28,8 +28,8 @@ export default {
 			'en-US': 'Upload Audio'
 		},
 		placeholderIcon: 'icon-upload',
-		preview: (props: PreviewProps, file: UploadFile<string>, remove: () => void) => {
-			return <Audio file={file} preivewSize={props.size} remove={remove} />
+		preview: (props: PreviewProps, file: UploadFile<ValueType>, remove: () => void) => {
+			return <Audio file={file} remove={remove} {...props} />
 		}
 	},
 
@@ -41,8 +41,8 @@ export default {
 			'en-US': 'Upload File'
 		},
 		placeholderIcon: 'icon-upload',
-		preview: (props: PreviewProps, file: UploadFile<string>, remove: () => void) => {
-			return <File file={file} preivewSize={props.size} remove={remove} />
+		preview: (props: PreviewProps, file: UploadFile<ValueType>, remove: () => void) => {
+			return <File file={file} remove={remove} {...props} />
 		}
 	},
 
@@ -54,8 +54,8 @@ export default {
 			'en-US': 'Upload Video'
 		},
 		placeholderIcon: 'icon-upload',
-		preview: (props: PreviewProps, file: UploadFile<string>, remove: () => void) => {
-			return <Video file={file} preivewSize={props.size} remove={remove} />
+		preview: (props: PreviewProps, file: UploadFile<ValueType>, remove: () => void) => {
+			return <Video file={file} remove={remove} {...props} />
 		}
 	}
 } as FileType
