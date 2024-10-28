@@ -1,3 +1,4 @@
+import { RcFile } from 'antd/lib/upload'
 import { PreviewParams, UploadResponse } from '../types'
 
 export function GetData(xhr: XMLHttpRequest, customPreviewURL: boolean = false): UploadResponse {
@@ -114,4 +115,22 @@ export function FixPath(path: string, replace: boolean): string {
 		return path.split('name=')[1]
 	}
 	return path
+}
+
+export function ParseChunkSize(chunkSize: string | number | undefined): number {
+	if (chunkSize === undefined) return 1024 * 1024 // 1MB
+	if (typeof chunkSize === 'number') return chunkSize
+
+	const unit = chunkSize.slice(-1).toUpperCase()
+	const size = parseInt(chunkSize.slice(0, -1), 10)
+	if (isNaN(size)) throw new Error('Invalid chunk size')
+
+	switch (unit) {
+		case 'M':
+			return size * 1024 * 1024 // MB
+		case 'K':
+			return size * 1024 // KB
+		default:
+			return size // bytes
+	}
 }

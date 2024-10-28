@@ -1,5 +1,7 @@
 import { UploadProps } from 'antd'
 import { Storage } from '../types'
+import { boolean } from 'ts-pattern/dist/patterns'
+import { number } from 'echarts/core'
 
 export interface IRequest {
 	props: LocalRequestProps | S3RequestProps
@@ -23,6 +25,12 @@ export type UploadResponse = {
 	path?: string
 	code?: number
 	message?: string
+	progress?: {
+		total: number
+		uploaded: number
+		completed: boolean
+	}
+	uid?: string
 	[key: string]: any
 }
 
@@ -33,3 +41,19 @@ export type PreviewParams = {
 	useAppRoot?: boolean
 	api?: string | { api: string; params: any }
 }
+
+export type ChunkRequestParams = {
+	uid: string
+	api: string
+	token: string
+	formData: FormData
+	onProgress?: (event: ProgressEvent) => void
+	onError?: (event: ProgressEvent | Error) => void
+	start: number
+	end: number
+	fileSize: number
+	chunkIndex: number
+	totalChunks: number
+}
+
+export type ChunkRequestResponse = UploadResponse | string | { code: number; message: string }
