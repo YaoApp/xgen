@@ -1,14 +1,14 @@
 import type { IPropsCustomRender } from '../types'
 import { useEffect, useState } from 'react'
-import { Skeleton } from 'antd'
-import { Icon } from '@/widgets'
 
 import styles from './Image.less'
 import clsx from 'clsx'
 import { GetPreviewURL } from '../utils/handleFileList'
+import Loader from './Loader'
+import Toolbar from './Toolbar'
 
 const Index = (props: IPropsCustomRender) => {
-	const { file, remove, ...rest_props } = props
+	const { file, remove, abort, events, ...rest_props } = props
 	const size = rest_props.size
 	const [loading, setLoading] = useState<boolean>(true)
 	const [url, setUrl] = useState<string>(GetPreviewURL(file.response))
@@ -31,15 +31,36 @@ const Index = (props: IPropsCustomRender) => {
 			onMouseEnter={() => setShowOpration(true)}
 			onMouseLeave={() => setShowOpration(false)}
 		>
-			<div className='toolbar' style={{ display: showOpration ? 'flex' : 'none' }}>
-				<div className='toolbar-button' onClick={preview}>
-					<Icon name='icon-download' size={16}></Icon>
-				</div>
-				<div className='toolbar-button' onClick={remove}>
-					<Icon name='icon-trash' size={16}></Icon>
-				</div>
-			</div>
+			<Toolbar
+				loading={loading}
+				events={events}
+				remove={remove}
+				abort={abort}
+				preview={preview}
+				showOpration={showOpration}
+			/>
 
+			<Loader
+				loading={loading || url == ''}
+				size={size}
+				url={url}
+				response={file.response}
+				events={events}
+				remove={remove}
+			>
+				<div className={clsx(['image_wrap'])}>
+					<img
+						className='image'
+						src={url}
+						style={{
+							borderRadius: 6,
+							objectFit: 'cover',
+							...size
+						}}
+					></img>
+				</div>
+			</Loader>
+			{/* 
 			<Skeleton
 				loading={loading || url == ''}
 				active
@@ -58,7 +79,7 @@ const Index = (props: IPropsCustomRender) => {
 						}}
 					></img>
 				</div>
-			</Skeleton>
+			</Skeleton> */}
 		</div>
 	)
 }

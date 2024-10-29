@@ -67,6 +67,7 @@
             "nanoid": "^4.0.0",
             "nice-try": "^3.0.1",
             "phosphor-react": "^1.4.1",
+            "rc-upload": "4.3.6",
             "react": "^18.2.0",
             "react-activation": "^0.12.2",
             "react-color-palette": "^6.2.0",

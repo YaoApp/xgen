@@ -1,7 +1,8 @@
 import type { UploadProps } from 'antd'
 import type { UploadFile } from 'antd/lib/upload/interface'
 import type { Component } from '@/types'
-import { UploadResponse } from './request/types'
+import type { UploadProgressEvent } from 'rc-upload/lib/interface'
+import { UploadError, UploadResponse } from './request/types'
 
 interface CommonProps {
 	value: Array<ValueType>
@@ -45,17 +46,49 @@ export interface FileType {
 		className: string
 		placeholder: { [key: string]: CustomProps['placeholder'] }
 		placeholderIcon: CustomProps['placeholderIcon']
-		preview: (props: PreviewProps, file: UploadFile<ValueType>, remove: () => void) => JSX.Element
+		preview: (
+			props: PreviewProps,
+			file: UploadFile<ValueType>,
+			remove: () => void,
+			abort: () => void,
+			events?: FileTypeEvents
+		) => JSX.Element
 	}
+}
+
+export interface FileTypeEvents {
+	progress?: UploadProgressEvent
+	error?: UploadError
 }
 
 export type IPropsCustomRender = {
 	file: UploadFile<ValueType>
 	remove: () => void
+	abort: () => void
+	events?: FileTypeEvents
 } & PreviewProps
 
+export type IPropsTooolbar = {
+	loading: boolean
+	events?: FileTypeEvents
+	remove: () => void
+	abort: () => void
+	preview: () => void
+	showOpration: boolean
+	[key: string]: any
+}
+
+export interface IPropsLoader {
+	loading: boolean
+	url?: string
+	size?: CommonProps['previewSize']
+	events?: FileTypeEvents
+	response?: ValueType
+	children: JSX.Element
+	remove: () => void
+}
+
 export interface IPropsUploadBtn {
-	length: number
 	filetype: IProps['filetype']
 	maxCount: IProps['maxCount']
 	placeholder: CustomProps['placeholder']

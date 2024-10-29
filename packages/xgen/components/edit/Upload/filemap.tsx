@@ -3,7 +3,7 @@ import Video from './components/Video'
 import Audio from './components/Audio'
 import Image from './components/Image'
 
-import type { FileType, PreviewProps, ValueType } from './types'
+import type { FileType, FileTypeEvents, PreviewProps, ValueType } from './types'
 import { UploadFile } from 'antd'
 
 export default {
@@ -15,8 +15,14 @@ export default {
 			'en-US': 'Upload Image'
 		},
 		placeholderIcon: 'icon-upload',
-		preview: (props: PreviewProps, file: UploadFile<ValueType>, remove: () => void) => {
-			return <Image file={file} remove={remove} {...props} />
+		preview: (
+			props: PreviewProps,
+			file: UploadFile<ValueType>,
+			remove: () => void,
+			abort: () => void,
+			events: FileTypeEvents
+		) => {
+			return <Image file={file} abort={abort} remove={remove} events={events} {...props} />
 		}
 	},
 
@@ -28,8 +34,14 @@ export default {
 			'en-US': 'Upload Audio'
 		},
 		placeholderIcon: 'icon-upload',
-		preview: (props: PreviewProps, file: UploadFile<ValueType>, remove: () => void) => {
-			return <Audio file={file} remove={remove} {...props} />
+		preview: (
+			props: PreviewProps,
+			file: UploadFile<ValueType>,
+			remove: () => void,
+			abort: () => void,
+			events: FileTypeEvents
+		) => {
+			return <Audio file={file} remove={remove} abort={abort} events={events} {...props} />
 		}
 	},
 
@@ -41,8 +53,14 @@ export default {
 			'en-US': 'Upload File'
 		},
 		placeholderIcon: 'icon-upload',
-		preview: (props: PreviewProps, file: UploadFile<ValueType>, remove: () => void) => {
-			return <File file={file} remove={remove} {...props} />
+		preview: (
+			props: PreviewProps,
+			file: UploadFile<ValueType>,
+			remove: () => void,
+			abort: () => void,
+			events: FileTypeEvents
+		) => {
+			return <File file={file} remove={remove} abort={abort} events={events} {...props} />
 		}
 	},
 
@@ -54,8 +72,14 @@ export default {
 			'en-US': 'Upload Video'
 		},
 		placeholderIcon: 'icon-upload',
-		preview: (props: PreviewProps, file: UploadFile<ValueType>, remove: () => void) => {
-			return <Video file={file} remove={remove} {...props} />
+		preview: (
+			props: PreviewProps,
+			file: UploadFile<ValueType>,
+			remove: () => void,
+			abort: () => void,
+			events: FileTypeEvents
+		) => {
+			return <Video file={file} remove={remove} abort={abort} events={events} {...props} />
 		}
 	}
 } as FileType

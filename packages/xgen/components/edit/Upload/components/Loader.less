@@ -1,0 +1,70 @@
+._local {
+	border: 1px dashed var(--color_warning) !important;
+	border-top: none !important;
+	color: var(--color_placeholder) !important;
+
+	&.has_error {
+		border-color: var(--color_danger) !important;
+	}
+
+	.progress_wrap {
+		width: 100%;
+		height: 100%;
+		max-width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		.progress {
+			width: 100%;
+			height: 6px;
+			min-height: 6px;
+			// border-radius: 6px;
+			border-top-left-radius: 6px;
+			border-top-right-radius: 6px;
+			background-color: var(--color_warning);
+
+			.bar {
+				height: 100%;
+				// border-radius: 6px;
+				border-top-left-radius: 6px;
+				border-top-right-radius: 6px;
+				background-color: var(--color_success);
+			}
+		}
+		.text {
+			display: flex;
+			flex-direction: column;
+			font-size: 12px;
+			height: 100%;
+			align-items: center;
+			justify-content: center;
+			padding-bottom: 12px;
+			color: var(--color_placeholder);
+			padding-left: 12px;
+			padding-right: 12px;
+			.percent {
+				color: var(--color_text);
+				font-size: 20px;
+				margin-top: 6px;
+			}
+		}
+	}
+
+	.has_error {
+		color: var(--color_danger) !important;
+		.progress {
+			background-color: var(--color_danger);
+			.bar {
+				background-color: var(--color_danger);
+			}
+		}
+
+		.text {
+			color: var(--color_danger);
+			.percent {
+				color: var(--color_danger);
+			}
+		}
+	}
+}

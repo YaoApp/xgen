@@ -4,6 +4,11 @@ import clsx from 'clsx'
 
 import { Item } from '@/components'
 import { getToken } from '@/knife'
+import type {
+	UploadProgressEvent,
+	UploadRequestOption as RcCustomRequestOptions,
+	UploadRequestError
+} from 'rc-upload/lib/interface'
 
 import UploadBtn from './components/UploadBtn'
 import filemap from './filemap'
@@ -13,10 +18,12 @@ import styles from './index.less'
 import { ExportValue } from './utils/handleFileList'
 import { getLocale } from '@umijs/max'
 import { LocalRequest, S3Request } from './request'
-import type { UploadProps } from 'antd'
+import type { UploadFile, UploadProps } from 'antd'
 import type { IProps, CustomProps, IPropsUploadBtn, PreviewProps, AllowedFileType } from './types'
-import { IRequest } from './request/types'
-import { useEffect } from 'react'
+import { IRequest, UploadError } from './request/types'
+import { useState } from 'react'
+import to from 'await-to-js'
+import { abort } from 'process'
 
 const Custom = window.$app.memo((props: CustomProps) => {
 	const locale = getLocale()
@@ -35,6 +42,11 @@ const Custom = window.$app.memo((props: CustomProps) => {
 	const { list, setList } = useList(props.value, previewURL, useAppRoot, api)
 	const visible_btn = useVisibleBtn(list.length, maxCount || 1)
 	const filetype = filemap[props.filetype] ? props.filetype : 'image'
+	const [error, setError] = useState<UploadError | undefined>(undefined)
+	const [progress, setProgress] = useState<UploadProgressEvent>(
+		new ProgressEvent('progress', { loaded: 0, total: 0 })
+	)
+	const [request, setRequest] = useState<IRequest | undefined>(undefined)
 
 	const onChange: UploadProps['onChange'] = useMemoizedFn(({ file, fileList }) => {
 		const { status } = file
@@ -46,8 +58,44 @@ const Custom = window.$app.memo((props: CustomProps) => {
 		setList(fileList)
 	})
 
-	const customRequest: UploadProps['customRequest'] = useMemoizedFn(function (options) {
-		const { onError } = options
+	const abort = () => {
+		if (request) {
+			request.Abort()
+			setError({ code: 499, message: 'Upload aborted' })
+		}
+	}
+
+	const customRequest: UploadProps['customRequest'] = useMemoizedFn(function (options: RcCustomRequestOptions) {
+		// const { onError } = options
+
+		options.onProgress = (event: UploadProgressEvent) => {
+			setProgress(event)
+		}
+
+		options.onError = (event: UploadRequestError | ProgressEvent, body: any) => {
+			let code = event instanceof ProgressEvent ? 500 : event.status || 500
+
+			if (body) {
+				if (typeof body === 'string') {
+					setError({ code: code, message: body })
+					return
+				}
+
+				if (body.code && body.message) {
+					setError(body)
+					return
+				}
+
+				if (body.message) {
+					setError({ code: code, message: body.message })
+					return
+				}
+
+				return
+			}
+
+			setError({ code: code, message: 'Upload failed' })
+		}
 
 		// If storage is provided, then it should be a s3 request
 		if (storage) {
@@ -62,16 +110,18 @@ const Custom = window.$app.memo((props: CustomProps) => {
 			if (typeof api === 'string') {
 				const request = new LocalRequest({ chunkSize, previewURL, useAppRoot, api })
 				request.Upload && request.Upload(options)
+				setRequest(request)
 				return
 			}
 
 			// if api is object, then it should be a local request
 			const request = new LocalRequest({ chunkSize, previewURL, useAppRoot, ...api })
 			request.Upload && request.Upload(options)
+			setRequest(request)
 		}
 
 		// Return error if no storage or api provided
-		onError && onError(new Error('No storage or api provided'), {}, options.file)
+		setError({ code: 400, message: 'No storage or api provided' })
 	})
 
 	const props_upload: UploadProps = {
@@ -95,13 +145,17 @@ const Custom = window.$app.memo((props: CustomProps) => {
 		storage: props.storage
 	}
 
-	props_upload['itemRender'] = (_, file, fileList, { remove }) => {
-		return filemap[filetype].preview(preview_props, file, remove)
+	props_upload['itemRender'] = (_, file: UploadFile, fileList, { remove }) => {
+		const removeFile = async () => {
+			setError(undefined)
+			setProgress(new ProgressEvent('progress', { loaded: 0, total: 0 }))
+			remove()
+		}
+		return filemap[filetype].preview(preview_props, file, removeFile, abort, { progress, error })
 	}
 
 	// Compute the props for the upload button
 	const props_upload_btn: IPropsUploadBtn = {
-		length: list.length,
 		filetype,
 		maxCount,
 		size: size,
