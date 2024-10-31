@@ -1,0 +1,212 @@
+.xgen-edit-upload {
+  padding-bottom: 0;
+}
+.xgen-edit-upload.image  .form_item_upload_wrap {
+  padding-top: 11px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.xgen-edit-upload.image  .form_item_upload_wrap .xgen-upload-select-picture-card {
+  min-height: 90px;
+  min-width: 90px;
+  width: auto;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.xgen-edit-upload.image  .form_item_upload_wrap .xgen-upload-list-picture-card-container {
+  min-height: 90px;
+  min-width: 90px;
+  width: auto;
+  height: auto;
+}
+.xgen-edit-upload.image  .form_item_upload_wrap .xgen-upload-list-picture-card-container .image {
+  max-width: 100%;
+  object-fit: cover;
+}
+.xgen-edit-upload.video  .form_item_upload_wrap {
+  padding-top: 11px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.xgen-edit-upload.video  .form_item_upload_wrap .xgen-upload-select-picture-card {
+  min-height: 162px;
+  min-width: 288px;
+  width: auto;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.xgen-edit-upload.video  .form_item_upload_wrap .xgen-upload-list-picture-card-container {
+  min-height: 162px;
+  min-width: 288px;
+  width: auto;
+  height: auto;
+}
+.xgen-edit-upload.video  .form_item_upload_wrap .xgen-upload-list-picture-card-container .image {
+  max-width: 100%;
+  object-fit: cover;
+}
+.xgen-edit-upload.file  .form_item_upload_wrap,
+.xgen-edit-upload.audio  .form_item_upload_wrap {
+  padding-top: 11px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.xgen-edit-upload.file  .form_item_upload_wrap .xgen-upload-select-picture-card,
+.xgen-edit-upload.audio  .form_item_upload_wrap .xgen-upload-select-picture-card {
+  min-height: 52px;
+  min-width: 288px;
+  width: auto;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.xgen-edit-upload.file  .form_item_upload_wrap .xgen-upload-list-picture-card-container,
+.xgen-edit-upload.audio  .form_item_upload_wrap .xgen-upload-list-picture-card-container {
+  min-height: 52px;
+  min-width: 288px;
+  width: auto;
+  height: auto;
+}
+.xgen-edit-upload.file  .form_item_upload_wrap .xgen-upload-list-picture-card-container .image,
+.xgen-edit-upload.audio  .form_item_upload_wrap .xgen-upload-list-picture-card-container .image {
+  max-width: 100%;
+  object-fit: cover;
+}
+.xgen-edit-upload  .upload_custom_wrap .toolbar {
+  position: absolute;
+  display: none;
+  right: 0px;
+  bottom: -40px;
+  align-items: center;
+  justify-content: end;
+  height: 40px;
+  padding: 0 6px;
+  width: auto;
+  color: var(--color_title);
+  background: var(--color_bg_nav);
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+.xgen-edit-upload  .upload_custom_wrap .toolbar .toolbar-button {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color_title);
+  width: 30px;
+  height: 40px;
+}
+.xgen-edit-upload  .upload_custom_wrap .toolbar .toolbar-button:hover {
+  color: var(--color_main);
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in;
+}
+.xgen-edit-upload  .upload_custom_wrap:hover .icon_delete {
+  display: flex;
+}
+.xgen-edit-upload  .upload_custom_wrap:hover .icon_preview {
+  display: flex;
+}
+.xgen-edit-upload  .upload_custom_wrap .video {
+  width: 100%;
+  height: 160px;
+  border-radius: 6px;
+  object-fit: fill;
+}
+.xgen-edit-upload  .upload_custom_wrap .icon_preview {
+  left: calc(50% - 13.5px);
+  top: calc(50% - 13.5px);
+  z-index: 1;
+  display: none;
+  width: 27px;
+  height: 27px;
+  border-radius: 6px;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+.xgen-edit-upload  .upload_custom_wrap .icon_preview:hover {
+  background-color: var(--color_title);
+}
+.xgen-edit-upload  .upload_custom_wrap .icon_preview:hover .icon {
+  color: white;
+}
+.xgen-edit-upload  .upload_custom_wrap .icon_preview .icon {
+  color: var(--color_title);
+  font-size: 15px;
+}
+.xgen-edit-upload  .upload_custom_wrap .icon_delete {
+  right: -1px;
+  bottom: -1px;
+  z-index: 1;
+  display: none;
+  width: 27px;
+  height: 27px;
+  border-top-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+.xgen-edit-upload  .upload_custom_wrap .icon_delete:hover {
+  background-color: var(--color_danger);
+}
+.xgen-edit-upload  .upload_custom_wrap .icon_delete:hover .icon {
+  color: white;
+}
+.xgen-edit-upload  .upload_custom_wrap .icon_delete .icon {
+  color: var(--color_danger);
+  font-size: 15px;
+}
+.xgen-edit-upload  .xgen-upload.xgen-upload-select-picture-card {
+  margin-right: 11px;
+  margin-bottom: 11px;
+}
+.xgen-edit-upload  .xgen-upload-list-picture-card-container {
+  margin-right: 11px;
+  margin-bottom: 11px;
+}
+.xgen-edit-upload  .form_item_upload_wrap .btn_upload_wrap {
+  display: flex;
+  flex-direction: column;
+  color: var(--color_placeholder);
+}
+.xgen-edit-upload  .form_item_upload_wrap .btn_upload_wrap .desc {
+  margin-top: 6px;
+  font-size: 12px;
+}
+.xgen-edit-upload  .form_item_upload_wrap .btn_upload_wrap.file,
+.xgen-edit-upload  .form_item_upload_wrap .btn_upload_wrap.audio {
+  margin-top: 0;
+  flex-direction: row;
+  align-items: center;
+}
+.xgen-edit-upload  .form_item_upload_wrap .btn_upload_wrap.file .desc,
+.xgen-edit-upload  .form_item_upload_wrap .btn_upload_wrap.audio .desc {
+  margin-left: 6px;
+  margin-top: 0px;
+}
+.xgen-edit-upload  .form_item_upload_wrap .btn_upload_wrap:hover {
+  color: var(--color_title);
+}
+.xgen-edit-upload  .form_item_upload_wrap .xgen-upload-list-picture .xgen-upload-list-item,
+.xgen-edit-upload  .form_item_upload_wrap .xgen-upload-list-picture-card .xgen-upload-list-item {
+  overflow: hidden;
+  padding: 0;
+  border-color: var(--color_border);
+}
+.xgen-edit-upload  .form_item_upload_wrap .xgen-upload-list-picture-card .xgen-upload-list-item-thumbnail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.xgen-edit-upload  .form_item_upload_wrap .xgen-upload-list-picture-card .xgen-upload-list-item-thumbnail,
+.xgen-edit-upload  .form_item_upload_wrap .xgen-upload-list-picture-card .xgen-upload-list-item-thumbnail img {
+  opacity: 1;
+  object-fit: cover;
+}

@@ -2,6 +2,7 @@ import { message } from 'antd'
 import { lazy, Suspense, useEffect, useMemo } from 'react'
 
 import type { Global } from '@/types'
+import { ExportComponents } from '@/components/exports' // Import the components for shadow dom and dynamic import
 
 type ComponentsType = 'base' | 'edit' | 'view' | 'chart' | 'group' | 'optional'
 
@@ -39,7 +40,7 @@ const Index = ({ type, name, props, __shadow, __shadow_host_ref }: IProps) => {
 			})
 			.catch(() => {})
 	}
-	__shadow && useEffect(() => importStyles(), [__shadow_host_ref])
+	ExportComponents[`${type}/${name}`] && __shadow && useEffect(() => importStyles(), [__shadow_host_ref])
 
 	// Dynamically import the component
 	const Component = useMemo(() => {

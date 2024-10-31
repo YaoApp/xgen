@@ -27,7 +27,13 @@ const Index = (props: IPropsCustomRender) => {
 
 	return (
 		<div
-			className={clsx([styles._local, 'upload_custom_wrap', 'flex', 'relative'])}
+			className={clsx([
+				styles['xgen-edit-upload-image'],
+				'xgen-edit-upload-image',
+				'upload_custom_wrap',
+				'flex',
+				'relative'
+			])}
 			onMouseEnter={() => setShowOpration(true)}
 			onMouseLeave={() => setShowOpration(false)}
 		>
@@ -60,26 +66,6 @@ const Index = (props: IPropsCustomRender) => {
 					></img>
 				</div>
 			</Loader>
-			{/* 
-			<Skeleton
-				loading={loading || url == ''}
-				active
-				paragraph={{
-					width: size?.width || '100%'
-				}}
-			>
-				<div className={clsx(['image_wrap'])}>
-					<img
-						className='image'
-						src={url}
-						style={{
-							borderRadius: 6,
-							objectFit: 'cover',
-							...size
-						}}
-					></img>
-				</div>
-			</Skeleton> */}
 		</div>
 	)
 }

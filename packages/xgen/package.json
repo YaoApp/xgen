@@ -16,8 +16,9 @@
       "scripts": {
             "dev": "max dev",
             "local": "max preview --port 8000",
-            "build": "max setup && pnpm run build:theme && max build && pnpm run build:after",
+            "build": "max setup && pnpm run build:theme && build:components && max build && pnpm run build:after",
             "build:theme": "tsx ./build/theme.ts",
+            "build:components": "tsx ./build/components.ts",
             "build:after": "tsx ./build/after.ts"
       },
       "optionalDependencies": {

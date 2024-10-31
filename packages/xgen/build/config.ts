@@ -16,7 +16,6 @@ export const proxy = {
 	'/api': { target: 'http://127.0.0.1:5099', changeOrigin: true },
 	'/components': { target: 'http://127.0.0.1:5099', changeOrigin: true },
 	'/assets': { target: 'http://127.0.0.1:5099', changeOrigin: true },
-	'/000205099/assets': { target: 'http://127.0.0.1:5099', changeOrigin: true },
 	'/iframe': { target: 'http://127.0.0.1:5099', changeOrigin: true }
 }
 
