@@ -33,6 +33,7 @@ export interface IPropsList {
 	onSort: Model['onSort']
 	onAction: Model['onAction']
 	onChange: Model['onChange']
+	__shadow_host_ref?: React.RefObject<HTMLDivElement>
 }
 
 export interface IPropsRow {
@@ -45,6 +46,7 @@ export interface IPropsRow {
 	builder?: boolean
 	onAction: Model['onAction']
 	onChange: Model['onChange']
+	__shadow_host_ref?: React.RefObject<HTMLDivElement>
 }
 
 export interface IPropsActions {
@@ -63,9 +65,11 @@ export interface IPropsFields {
 	dataItem: IPropsRow['dataItem']
 	parentIds: ParentIds
 	onChange: Model['onChange']
+	__shadow_host_ref?: React.RefObject<HTMLDivElement>
 }
 
 export interface IPropsFormItem {
 	showLabel: IProps['showLabel']
 	item: Common.EditColumn
+	__shadow_host_ref?: React.RefObject<HTMLDivElement>
 }

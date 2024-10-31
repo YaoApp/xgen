@@ -8,7 +8,7 @@ import { X } from '@/components'
 import type { IPropsFormItem } from '../../types'
 
 const Index = (props: IPropsFormItem) => {
-	const { showLabel, item } = props
+	const { showLabel, item, __shadow_host_ref } = props
 	const ref = useRef(null)
 	const focus = useFocusWithin(ref)
 
@@ -20,6 +20,8 @@ const Index = (props: IPropsFormItem) => {
 			<X
 				type='edit'
 				name={item.edit.type}
+				__shadow={true}
+				__shadow_host_ref={__shadow_host_ref}
 				props={{
 					...item.edit.props,
 					__namespace: '',

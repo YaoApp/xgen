@@ -33,6 +33,7 @@ export declare namespace Component {
 		__type: FormType
 		__bind: string
 		__name: string
+		__shadow?: boolean // is a shadow dom
 	}
 
 	interface PropsEditComponent extends Props {

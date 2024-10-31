@@ -1,7 +1,7 @@
 import { useMemoizedFn } from 'ahooks'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useLayoutEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { AliveScope } from 'react-activation'
 import { Else, If, Then } from 'react-if'
 import root from 'react-shadow'
@@ -13,10 +13,12 @@ import { Empty, List, Styles } from './components'
 import Model from './model'
 
 import type { IProps, IPropsList, IPropsEmpty } from './types'
+import { use } from 'echarts'
 
 const Index = (props: IProps) => {
 	const { setting, list, showLabel, hasChildren, builder, onChangeForm } = props
 	const [x] = useState(() => container.resolve(Model))
+	const shadowHostRef = useRef<HTMLDivElement>(null)
 
 	useLayoutEffect(() => x.init(list, setting, onChangeForm), [list])
 
@@ -43,13 +45,13 @@ const Index = (props: IProps) => {
 	}
 
 	return (
-		<root.div>
+		<root.div ref={shadowHostRef}>
 			<ShadowTheme></ShadowTheme>
 			<Styles showLabel={showLabel} builder={builder}></Styles>
 			<If condition={x.list.length}>
 				<Then>
 					<AliveScope>
-						<List {...props_list}></List>
+						<List __shadow_host_ref={shadowHostRef} {...props_list}></List>
 					</AliveScope>
 				</Then>
 				<Else>

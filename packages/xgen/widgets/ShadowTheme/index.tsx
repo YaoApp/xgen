@@ -12,10 +12,10 @@ const Index = () => {
 	return (
 		<If condition={(global?.theme || window.$global?.theme) === 'dark'}>
 			<Then>
-				<style>{dark_theme}</style>
+				<style id='xgen-theme'>{dark_theme}</style>
 			</Then>
 			<Else>
-				<style>{light_theme}</style>
+				<style id='xgen-theme'>{light_theme}</style>
 			</Else>
 		</If>
 	)
