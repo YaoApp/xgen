@@ -25,7 +25,7 @@ const Index = (props: IProps) => {
 		const values = Array.isArray(__value) ? __value : [__value]
 		values.forEach((item) => {
 			const url = GetPreviewURL({
-				response: { path: item },
+				response: { path: item || '' },
 				previewURL,
 				useAppRoot,
 				token,
