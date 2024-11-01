@@ -20,7 +20,7 @@ const Index = (props: IPropsFormItem) => {
 			<X
 				type='edit'
 				name={item.edit.type}
-				__shadow={true}
+				__shadow='pure-list'
 				__shadow_host_ref={__shadow_host_ref}
 				props={{
 					...item.edit.props,

@@ -37,6 +37,7 @@ export interface CustomProps extends UploadProps, CommonProps {
 	previewURL?: string // the url for the preview image, if set, will use the preview image or video
 	useAppRoot?: boolean // if false, use the data root, else use the app root, default is false
 	storage?: Storage // storage option for the upload to the storage server directly (e.g. firebase, s3, etc)
+	__shadow?: string // if the component in the shadow dom, the value is the shadow dom name
 	aigc?: AIGC // aigc option for the upload. if set, will use the ai generated image
 }
 

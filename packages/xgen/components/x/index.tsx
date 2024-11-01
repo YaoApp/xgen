@@ -9,9 +9,33 @@ type ComponentsType = 'base' | 'edit' | 'view' | 'chart' | 'group' | 'optional'
 interface IProps {
 	type: ComponentsType
 	name: string
-	__shadow?: boolean // is a shadow dom
-	__shadow_host_ref?: React.RefObject<HTMLDivElement> // the shadow dom host ref, only for shadow dom
 	props: Global.AnyObject
+
+	/**
+	 * if the component in the shadow dom, the value is the shadow dom name
+	 *
+	 * name rules:
+	 * 	1. The name of the shadow dom is the same as the component name
+	 *  2. Must be lowercase, CamelCase should be converted to <kebab-case>
+	 *
+	 * example:
+	 * 	1. Modal => modal
+	 * 	2. PureList => pure-list
+	 *  3. PureTable => pure-table
+	 *  4. PureChart => pure-chart
+	 *
+	 * 	@see /components/base/PureList/components/FormItem/index.tsx
+	 */
+	__shadow?: string
+
+	/**
+	 * the shadow dom host ref, only for shadow dom
+	 *
+	 * example:
+	 * 	@see /components/base/PureList/components/index.tsx
+	 * 	@see /components/base/PureList/components/FormItem/index.tsx
+	 */
+	__shadow_host_ref?: React.RefObject<HTMLDivElement>
 }
 
 const Index = ({ type, name, props, __shadow, __shadow_host_ref }: IProps) => {
@@ -40,7 +64,7 @@ const Index = ({ type, name, props, __shadow, __shadow_host_ref }: IProps) => {
 			})
 			.catch(() => {})
 	}
-	ExportComponents[`${type}/${name}`] && __shadow && useEffect(() => importStyles(), [__shadow_host_ref])
+	__shadow && ExportComponents[`${type}/${name}`] && useEffect(() => importStyles(), [__shadow_host_ref])
 
 	// Dynamically import the component
 	const Component = useMemo(() => {

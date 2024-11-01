@@ -8,6 +8,7 @@ interface IProps extends FormItemProps {
 	children: JSX.Element
 	__bind: string
 	__name: string
+	__shadow?: string
 	hideLabel?: boolean
 }
 
