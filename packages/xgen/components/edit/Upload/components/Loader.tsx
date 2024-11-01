@@ -1,9 +1,8 @@
 import clsx from 'clsx'
 import type { IPropsLoader } from '../types'
-import styles from './Loader.less'
 
 const Index = (props: IPropsLoader) => {
-	const { size, events, remove } = props
+	const { size, events } = props
 	const ProgressBar = () => {
 		const percent = events?.progress?.total
 			? Math.floor(((events?.progress?.loaded || 0) / events?.progress?.total) * 100)
@@ -14,14 +13,12 @@ const Index = (props: IPropsLoader) => {
 		const humanReadable = `${percent}%`
 
 		return (
-			<div className={clsx([styles.progress_wrap, events?.error && styles.has_error])}>
-				<div className={styles.progress}>
-					<div className={styles.bar} style={{ width: humanReadable }}></div>
+			<div className={clsx(['progress_wrap', events?.error && 'has_error'])}>
+				<div className={'progress'}>
+					<div className={'bar'} style={{ width: humanReadable }}></div>
 				</div>
-				<div className={styles.text}>
-					<span className={styles.percent}>
-						{events?.error ? events?.error.message : humanReadable}
-					</span>
+				<div className={'text'}>
+					<span className={'percent'}>{events?.error ? events?.error.message : humanReadable}</span>
 					{(events?.progress?.total || 0) > 0 && !events?.error && (
 						<span>
 							{loadedMB}MB / {totalMB}MB
@@ -35,9 +32,9 @@ const Index = (props: IPropsLoader) => {
 	const Loading = (
 		<div
 			className={clsx([
-				styles._local,
-				events?.error && styles.has_error,
-				'xgen-upload xgen-upload-select xgen-upload-select-picture-card'
+				'xgen-edit-upload-preview-loader',
+				'xgen-upload xgen-upload-select xgen-upload-select-picture-card',
+				events?.error && 'has_error'
 			])}
 			style={{
 				width: size?.width || '90px',

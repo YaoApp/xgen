@@ -8,7 +8,6 @@ import { useGlobal } from '@/context/app'
 import '@vidstack/react/player/styles/default/theme.css'
 import '@vidstack/react/player/styles/default/layouts/video.css'
 
-import styles from './Video.less'
 import clsx from 'clsx'
 import { GetPreviewURL } from '../utils/handleFileList'
 import Loader from './Loader'
@@ -45,7 +44,7 @@ const Index = (props: IPropsCustomRender) => {
 
 	return (
 		<div
-			className={clsx([styles._local, 'upload_custom_wrap', 'flex', 'relative'])}
+			className={clsx(['xgen-edit-upload-preview-wrap', 'preview-video', 'flex', 'relative'])}
 			onMouseEnter={() => setShowOpration(true)}
 			onMouseLeave={() => setShowOpration(false)}
 		>
@@ -72,7 +71,7 @@ const Index = (props: IPropsCustomRender) => {
 							height: size?.height || '162px',
 							width: size?.width
 						}}
-						className={clsx([styles._local])}
+						className={clsx(['mediaplayer_wrap'])}
 						title={title}
 						src={url + `&${file.name}`}
 					>

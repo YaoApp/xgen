@@ -1,7 +1,6 @@
 import type { IPropsCustomRender } from '../types'
 import { useEffect, useState } from 'react'
 
-import styles from './Image.less'
 import clsx from 'clsx'
 import { GetPreviewURL } from '../utils/handleFileList'
 import Loader from './Loader'
@@ -27,13 +26,7 @@ const Index = (props: IPropsCustomRender) => {
 
 	return (
 		<div
-			className={clsx([
-				styles['xgen-edit-upload-image'],
-				'xgen-edit-upload-image',
-				'upload_custom_wrap',
-				'flex',
-				'relative'
-			])}
+			className={clsx(['xgen-edit-upload-preview-wrap', 'preview-image', 'flex', 'relative'])}
 			onMouseEnter={() => setShowOpration(true)}
 			onMouseLeave={() => setShowOpration(false)}
 		>

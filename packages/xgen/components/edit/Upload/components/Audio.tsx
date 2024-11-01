@@ -6,7 +6,6 @@ import { DefaultAudioLayout, DefaultLayoutIcons, defaultLayoutIcons } from '@vid
 import { useGlobal } from '@/context/app'
 import '@vidstack/react/player/styles/default/theme.css'
 import '@vidstack/react/player/styles/default/layouts/audio.css'
-import styles from './Audio.less'
 import clsx from 'clsx'
 import { GetPreviewURL } from '../utils/handleFileList'
 import Toolbar from './Toolbar'
@@ -43,7 +42,7 @@ const Index = (props: IPropsCustomRender) => {
 
 	return (
 		<div
-			className={clsx([styles._local, 'upload_custom_wrap', 'flex', 'relative'])}
+			className={clsx(['xgen-edit-upload-preview-wrap', 'preview-audio', 'flex', 'relative'])}
 			onMouseEnter={() => setShowOpration(true)}
 			onMouseLeave={() => setShowOpration(false)}
 		>
@@ -66,7 +65,7 @@ const Index = (props: IPropsCustomRender) => {
 			>
 				<MediaPlayer
 					style={{ height: '52px', width: size?.width || '100%' }}
-					className={clsx([styles._local])}
+					className={clsx(['mediaplayer_wrap'])}
 					title={title}
 					src={url + `&${file.name}`}
 				>

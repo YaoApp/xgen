@@ -4,7 +4,6 @@ import { Icon } from '@/widgets'
 
 import '@vidstack/react/player/styles/default/theme.css'
 import '@vidstack/react/player/styles/default/layouts/audio.css'
-import styles from './File.less'
 import clsx from 'clsx'
 import { GetPreviewURL } from '../utils/handleFileList'
 import Toolbar from './Toolbar'
@@ -36,7 +35,7 @@ const Index = (props: IPropsCustomRender) => {
 
 	return (
 		<div
-			className={clsx([styles._local, 'upload_custom_wrap', 'flex', 'relative'])}
+			className={clsx(['xgen-edit-upload-preview-wrap', 'preview-file', 'flex', 'relative'])}
 			onMouseEnter={() => setShowOpration(true)}
 			onMouseLeave={() => setShowOpration(false)}
 		>

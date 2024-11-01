@@ -13,18 +13,23 @@ const target_root = path.join(cwd, `/public/components`)
 // Generate the sss files for the components
 const compile = (name: string, component: ExportComponent) => {
 	const output = path.join(target_root, `${name}`)
-	const input = path.join(cwd, `__main.less`)
+
+	// Clean the output directory
+	if (fs.existsSync(output)) {
+		fs.rmSync(output, { recursive: true })
+	}
 
 	// Generate the main.less file import the component styles
 	const imports: string[] = []
-	component.styles.forEach((style, index) => {
+	let chunkIndex = 0
+	component.styles.forEach((style) => {
 		if (style.startsWith('@/')) {
 			imports.push(`@import url('/__yao_admin_root/${style.substring(2, style.length)}');`)
 			return
 		}
-		// fs.appendFileSync(input, `@import ".${style}";\n`)
+		chunkIndex++
 		const lessFile = path.join(cwd, style)
-		const targetName = `chunk.${index}.css`
+		const targetName = `chunk.${chunkIndex}.css`
 		const targetPath = path.join(output, targetName)
 		imports.push(`@import url('/__yao_admin_root/components/${name}/${targetName}');`)
 

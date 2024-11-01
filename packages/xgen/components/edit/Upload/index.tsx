@@ -170,8 +170,8 @@ const Custom = window.$app.memo((props: CustomProps) => {
 			className={clsx([
 				__shadow ? 'xgen-edit-upload' : styles['xgen-edit-upload'],
 				__shadow ? filetype : styles[filetype],
-				__shadow,
-				maxCount && maxCount > 1 && 'multiple'
+				maxCount && maxCount > 1 && 'multiple',
+				__shadow
 			])}
 		>
 			<Upload {...props_upload}>{visible_btn && <UploadBtn {...props_upload_btn}></UploadBtn>}</Upload>
