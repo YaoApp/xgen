@@ -56,9 +56,9 @@ export function GetPreviewURL(params: PreviewParams): string {
 	// Default preview URL
 	if (!response.path?.startsWith('http') && !response.url && !previewURL && params.api) {
 		let url = typeof params.api === 'string' ? params.api : params.api.api
-		if (url && url.startsWith('/api/__yao') && url.includes('/upload/')) {
+		if (url && url.startsWith('/api/__yao') && url.includes('/upload/fields.')) {
 			url = url
-				.replace('/upload/', '/download/')
+				.replace('/upload/fields.', '/download/fields.')
 				.replace('.edit.props/api', '')
 				.replace('.view.props/api', '')
 			previewURL = `${url}?name=[[ $PATH ]]&token=[[ $TOKEN ]]`
