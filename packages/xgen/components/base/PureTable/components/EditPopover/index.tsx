@@ -59,7 +59,7 @@ const Index = (props: IProps) => {
 	)
 
 	const view_content = (
-		<div className={clsx(['line_clamp_2', field_detail?.edit?.type && 'edit_text'])}>
+		<div className={clsx(['line_clamp_2', field_detail?.view?.type, field_detail?.edit?.type && 'edit_text'])}>
 			<ViewContent {...{ namespace, primary, field_detail, onSave, ...view_bind_value }}></ViewContent>
 		</div>
 	)

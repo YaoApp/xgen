@@ -16,7 +16,7 @@ export default class Index {
 		makeAutoObservable(this, {}, { autoBind: true })
 	}
 
-	async getOptions() {
+	async getOptions(selected?: any) {
 		const remote = this.raw_props.xProps?.remote
 
 		if (!remote) return
@@ -25,6 +25,10 @@ export default class Index {
 		const { __namespace, __bind: bind, __name: name } = this.raw_props
 		const ns = __namespace || 'default'
 		const params = remote.params!
+		if (selected) {
+			params.selected = Array.isArray(selected) ? selected : [selected]
+		}
+
 		const ts = parseInt(`${new Date().getTime() / 1000}`)
 		const cache_key =
 			ns && bind && name ? `${ns}|${bind}|${name}|${new URLSearchParams(params).toString()}` : undefined
@@ -105,8 +109,8 @@ export default class Index {
 		return []
 	}
 
-	init() {
+	init(selected?: any) {
 		if (this.raw_props.options) this.options = this.fixOptions(this.raw_props.options)
-		if (this.raw_props.xProps?.remote) this.getOptions()
+		if (this.raw_props.xProps?.remote) this.getOptions(selected)
 	}
 }
