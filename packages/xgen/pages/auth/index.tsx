@@ -8,8 +8,9 @@ import Model from '@/pages/login/model'
 import styles from './index.less'
 import { useGlobal } from '@/context/app'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useLocation } from '@umijs/max'
+import { useLocation, history } from '@umijs/max'
 import { ResLogin } from '../login/types'
+import { local } from '@yaoapp/storex'
 
 const Index = () => {
 	const global = useGlobal()
@@ -29,7 +30,16 @@ const Index = () => {
 			const data = JSON.parse(text) as ResLogin
 			auth.afterLogin(data, undefined)
 		} catch (err: any) {
-			setError(err?.message || 'Invalid data')
+			const errStr = err?.message || 'Invalid data'
+			if (!local.logout_redirect) {
+				const locPath = local.login_url || '/'
+				history.push(`${locPath}?error=${errStr}`)
+			}
+			// Redirect to the custom logout page
+			if (local.logout_redirect) {
+				window.location = local.logout_redirect + `?error=${errStr}`
+				return
+			}
 		}
 	}, [])
 
