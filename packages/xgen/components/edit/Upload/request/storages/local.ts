@@ -1,7 +1,7 @@
 import { UploadProps } from 'antd'
 import { LocalRequestProps, IRequest, ChunkRequestParams, ChunkRequestResponse, UploadResponse } from '../types'
 import { getToken } from '@/knife'
-import { GetData, GetPreviewURL, ParseChunkSize } from './utils'
+import { GetData, GetPreviewURL, ParseSize } from './utils'
 import { RcFile } from 'antd/lib/upload'
 
 import type { UploadRequestOption as RcCustomRequestOptions } from 'rc-upload/lib/interface'
@@ -113,7 +113,7 @@ export class LocalRequest implements IRequest {
 
 		const token = getToken()
 		const file = options.file as RcFile
-		const chunkSize = ParseChunkSize(this.props.chunkSize)
+		const chunkSize = ParseSize(this.props.chunkSize)
 		const totalChunks = Math.ceil(file.size / chunkSize)
 
 		// Upload each chunk

@@ -23,6 +23,7 @@ import { IRequest, UploadError } from './request/types'
 import { useState } from 'react'
 
 import styles from './index.less'
+import { ParseSize } from './request/storages/utils'
 
 const Custom = window.$app.memo((props: CustomProps) => {
 	const locale = getLocale()
@@ -64,6 +65,18 @@ const Custom = window.$app.memo((props: CustomProps) => {
 			setError({ code: 499, message: 'Upload aborted' })
 		}
 	}
+
+	const beforeUpload: UploadProps['beforeUpload'] = useMemoizedFn((file, fileList) => {
+		const { maxFilesize } = props
+		if (maxFilesize) {
+			const maxsize = ParseSize(maxFilesize)
+			if (file.size > maxsize) {
+				setError({ code: 413, message: `File size too large, max size is ${maxFilesize}` })
+				return false
+			}
+		}
+		return true
+	})
 
 	const customRequest: UploadProps['customRequest'] = useMemoizedFn(function (options: RcCustomRequestOptions) {
 		// const { onError } = options
@@ -133,6 +146,7 @@ const Custom = window.$app.memo((props: CustomProps) => {
 		fileList: list,
 		isImageUrl: () => filetype === 'image',
 		customRequest,
+		beforeUpload,
 		onChange
 	}
 

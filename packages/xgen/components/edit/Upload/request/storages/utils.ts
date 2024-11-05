@@ -122,12 +122,12 @@ export function FixPath(path: string, replace: boolean): string {
 	return path
 }
 
-export function ParseChunkSize(chunkSize: string | number | undefined): number {
-	if (chunkSize === undefined) return 1024 * 1024 // 1MB
-	if (typeof chunkSize === 'number') return chunkSize
+export function ParseSize(hmSize: string | number | undefined): number {
+	if (hmSize === undefined) return 1024 * 1024 // 1MB
+	if (typeof hmSize === 'number') return hmSize
 
-	const unit = chunkSize.slice(-1).toUpperCase()
-	const size = parseInt(chunkSize.slice(0, -1), 10)
+	const unit = hmSize.slice(-1).toUpperCase()
+	const size = parseInt(hmSize.slice(0, -1), 10)
 	if (isNaN(size)) throw new Error('Invalid chunk size')
 
 	switch (unit) {
