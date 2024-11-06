@@ -217,7 +217,7 @@ const Index = (props: IPropsNeo) => {
 								{cmd?.name && (
 									<div className='title flex flex_column'>
 										<span className='cmd_title'>
-											{is_cn ? '命令模式：' : 'Command mode:'}
+											{is_cn ? '命令模式：' : 'Command Mode:'}
 										</span>
 										<span className='cmd_name'>{cmd?.name}</span>
 									</div>
@@ -225,11 +225,9 @@ const Index = (props: IPropsNeo) => {
 								{field.name && (
 									<div className='title flex flex_column'>
 										<span className='cmd_title'>
-											{is_cn ? '字段模式：' : 'Field mode:'}
+											{is_cn ? 'AI 输入模式：' : 'AI Input Mode:'}
 										</span>
-										<span className='cmd_name'>
-											{field.name}-{field.bind}
-										</span>
+										<span className='cmd_name'>{field.name || field.bind}</span>
 									</div>
 								)}
 								<span className='btn_exit_cmd cursor_point' onClick={exit}>
