@@ -7,7 +7,16 @@ type FunctionType = <T>(template: Template & T, data: Record<string, any>) => T
 
 const Index: FunctionType = (template, data) => {
 	if (typeof template === 'string') {
-		return decodeURIComponent(Mustache.render(template.replaceAll('[[', '{{').replaceAll(']]', '}}'), data))
+		return decodeURIComponent(
+			Mustache.render(
+				template
+					.replaceAll('[[[', '{{{')
+					.replaceAll(']]]', '}}}')
+					.replaceAll('[[', '{{')
+					.replaceAll(']]', '}}'),
+				data
+			)
+		)
 	}
 
 	if (typeof template === 'boolean' || typeof template === 'number') {

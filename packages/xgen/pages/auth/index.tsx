@@ -26,7 +26,7 @@ const Index = () => {
 		await window.$app.Event.emit('app/getAppInfo')
 		// Parse data
 		try {
-			const text = decodeURIComponent(atob(base64 || ''))
+			const text = decodeURIComponent(Buffer.from(base64 || '', 'base64').toString())
 			const data = JSON.parse(text) as ResLogin
 			auth.afterLogin(data, undefined)
 		} catch (err: any) {
@@ -37,7 +37,7 @@ const Index = () => {
 			}
 			// Redirect to the custom logout page
 			if (local.logout_redirect) {
-				window.location = local.logout_redirect + `?error=${errStr}`
+				window.location.href = local.logout_redirect + `?error=${errStr}`
 				return
 			}
 		}

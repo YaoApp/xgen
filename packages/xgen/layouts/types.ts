@@ -88,6 +88,7 @@ export interface IPropsContainer {
 	visible_menu: GlobalModel['visible_menu']
 	menu_layout: '1-column' | '2-columns'
 	show_name?: boolean
+	hide_nav?: boolean
 }
 
 export interface IPropsSettingModalContent {

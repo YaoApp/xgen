@@ -29,6 +29,7 @@ export default class GlobalModel {
 	menu_selected_keys: Array<string> = (local.menu_key_path || []) as Array<string>
 	loading: boolean = false
 	visible_menu: boolean = true
+	hide_nav: boolean = false
 
 	dataCache: Record<string, any> = {}
 

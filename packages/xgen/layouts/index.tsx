@@ -38,7 +38,8 @@ import type {
 const Index = () => {
 	const messages = useIntl()
 	const [global] = useState(() => container.resolve(GlobalModel))
-	const { pathname } = useLocation()
+	const { pathname, search } = useLocation()
+	const [hide_nav, setHideNav] = useState(false)
 	const menu = toJS(global.menu)
 	const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
 	const is_auth = pathname === '/auth'
@@ -58,7 +59,8 @@ const Index = () => {
 
 	useLayoutEffect(() => {
 		global.visible_menu = true
-
+		global.hide_nav = search.indexOf('__hidemenu=1') !== -1
+		setHideNav(global.hide_nav)
 		global.stack.reset()
 	}, [pathname])
 
@@ -114,7 +116,8 @@ const Index = () => {
 		menu: menu_items,
 		visible_menu: global.visible_menu,
 		menu_layout: layout,
-		show_name: show_name
+		show_name: show_name,
+		hide_nav: hide_nav
 	}
 
 	return (
@@ -141,7 +144,15 @@ const Index = () => {
 					<If condition={!is_auth && !is_login}>
 						<Then>
 							<Fragment>
-								<If condition={layout === '2-columns'}>
+								<If condition={hide_nav}>
+									<Then>
+										<Loading {...props_loading}></Loading>
+										<Container {...props_container}>
+											<Outlet />
+										</Container>
+									</Then>
+								</If>
+								<If condition={!hide_nav && layout === '2-columns'}>
 									<Then>
 										<Loading {...props_loading}></Loading>
 										<Nav {...props_nav}></Nav>
@@ -152,7 +163,7 @@ const Index = () => {
 									</Then>
 								</If>
 
-								<If condition={layout === '1-column'}>
+								<If condition={!hide_nav && layout === '1-column'}>
 									<Then>
 										<Loading {...props_loading}></Loading>
 										<MenuColumnOne

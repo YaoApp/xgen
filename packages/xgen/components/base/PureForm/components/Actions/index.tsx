@@ -37,8 +37,8 @@ const Index = (props: IPropsActions) => {
 		const when_add = id === 0
 		const when_view = type === 'view'
 		const handle_actions = getTemplateValue(actions!, data || {})
-		if (when_add) return handle_actions.filter((item) => item.showWhenAdd)
-		if (when_view) return handle_actions.filter((item) => item.showWhenView)
+		if (when_add) return handle_actions?.filter((item) => item.showWhenAdd)
+		if (when_view) return handle_actions?.filter((item) => item.showWhenView)
 
 		return handle_actions?.filter((item) => !item.hideWhenEdit)
 	}, [actions, data, id, type])

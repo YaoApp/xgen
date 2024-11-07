@@ -66,13 +66,20 @@ const Index = (props: IPropsPureForm) => {
 		Object.keys(data).map((key) => onValuesChange({ [key]: data[key] }), true)
 	}, [data, onLoadSync])
 
+	// Set fields value and trigger ${namespace}/setFieldsValue event
+	const onSetFieldsValue = useMemoizedFn((values: Record<string, any>) => {
+		setFieldsValue(values)
+		if (!Object.keys(values).length) return
+		Object.keys(values).map((key) => onValuesChange({ [key]: values[key] }), true)
+	})
+
 	useLayoutEffect(() => {
 		window.$app.Event.on(`${namespace}/submit`, submit)
-		window.$app.Event.on(`${namespace}/setFieldsValue`, setFieldsValue)
+		window.$app.Event.on(`${namespace}/setFieldsValue`, onSetFieldsValue)
 
 		return () => {
 			window.$app.Event.off(`${namespace}/submit`, submit)
-			window.$app.Event.off(`${namespace}/setFieldsValue`, setFieldsValue)
+			window.$app.Event.off(`${namespace}/setFieldsValue`, onSetFieldsValue)
 		}
 	}, [namespace])
 

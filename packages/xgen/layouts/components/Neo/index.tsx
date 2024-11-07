@@ -45,7 +45,7 @@ const Index = (props: IPropsNeo) => {
 	const { messages, cmd, commands, loading, setMessages, stop, exitCmd } = useEventStream({ api, studio })
 	const is_cn = locale === 'zh-CN'
 
-	useKeyPress('enter', () => submit())
+	useKeyPress('enter', (event) => !event.shiftKey && submit())
 
 	useEffect(() => {
 		local.neo_max = max
@@ -156,7 +156,7 @@ const Index = (props: IPropsNeo) => {
 		return (
 			<div
 				className={clsx('border_box', styles.commands)}
-				style={{ width: `calc(${max ? 900 : 360}px - 9px * 2)`, maxHeight: max ? 720 : 360 }}
+				style={{ width: `calc(${max ? '80vw' : '360px'} - 9px * 2)`, maxHeight: max ? 720 : 360 }}
 			>
 				{(search_commands.length ? search_commands : commands).map((item) => (
 					<div
@@ -201,7 +201,7 @@ const Index = (props: IPropsNeo) => {
 					visible
 						? {
 								opacity: 1,
-								width: max ? 900 : 360,
+								width: max ? '80vw' : '360px',
 								height: max
 									? 'min(1200px,calc(100vh - 30px - 48px - 18px - 60px))'
 									: 480
