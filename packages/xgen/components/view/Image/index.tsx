@@ -15,7 +15,7 @@ interface IProps extends Component.PropsViewComponent, ImageProps {
 }
 
 const Index = (props: IProps) => {
-	const { __value, onSave, api, useAppRoot, previewURL, ...rest_props } = props
+	const { __value, onSave, api, useAppRoot, previewURL, style, ...rest_props } = props
 
 	const [urls, setUrls] = useState<string[]>([])
 
@@ -38,9 +38,9 @@ const Index = (props: IProps) => {
 	if (!__value || (Array.isArray(__value) && __value.length == 0)) return <span>-</span>
 
 	const props_image: ImageProps = {
-		width: 48,
-		height: 48,
 		preview: false,
+		height: '100%',
+		style: { objectFit: 'cover', ...(style || {}) },
 		...rest_props
 	}
 
