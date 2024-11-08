@@ -41,7 +41,8 @@ export const links = [
 	{ rel: 'preload', href: `/${process.env.BASE}/icon_font.css`, as: 'style' },
 	{ rel: 'preload', href: `/${process.env.BASE}/theme/light.css`, as: 'style' },
 	{ rel: 'stylesheet', href: `/${process.env.BASE}/icon_font.css`, as: 'style' },
-	{ rel: 'stylesheet', href: `/${process.env.BASE}/theme/light.css`, as: 'style' }
+	{ rel: 'stylesheet', href: `/${process.env.BASE}/theme/light.css`, as: 'style' },
+	{ rel: 'stylesheet', href: `/assets/base.css`, as: 'style' }
 ]
 
 export const chainWebpack = (config: Config, _: any) => {
