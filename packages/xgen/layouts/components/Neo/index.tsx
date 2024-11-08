@@ -293,7 +293,7 @@ const Index = (props: IPropsNeo) => {
 								className={clsx('input_chat flex align_center', resized && 'resized')}
 								placeholder={placeholder}
 								ref={textarea}
-								autoSize
+								autoSize={{ maxRows: 12 }}
 								value={value}
 								onChange={onChange}
 								onResize={({ height }) => setResized(height > 38)}
