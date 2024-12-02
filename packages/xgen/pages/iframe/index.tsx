@@ -28,11 +28,16 @@ const Index = () => {
 		const token = getToken()
 		const theme = getTheme()
 		const locale = getLocale()
-		const params = new URLSearchParams()
-		params.append('__token', token)
-		params.append('__theme', theme)
-		params.append('__locale', locale)
-		return src.includes('?') ? `${src}&${params.toString()}` : `${src}?${params.toString()}`
+		const url = decodeURIComponent(src)
+		const re = /{{\s*([^}]+)\s*}}/gi
+		const replace = (match: string, p1: string) => {
+			p1 = p1.trim()
+			if (p1 === '__token') return token
+			if (p1 === '__theme') return theme
+			if (p1 === '__locale') return locale
+			return ''
+		}
+		return url.replace(re, replace)
 	}, [search])
 
 	useLayoutEffect(() => {
