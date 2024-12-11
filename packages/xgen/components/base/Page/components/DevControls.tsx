@@ -13,7 +13,10 @@ const Index = (props: IDevControls) => {
 		<Fragment>
 			{enableXterm && (
 				<Tooltip title={is_cn ? '打开终端' : 'Open Terminal'} placement='bottom' key={0}>
-					<a className='option_item cursor_point flex justify_center align_center transition_normal clickable'>
+					<a
+						className='option_item cursor_point flex justify_center align_center transition_normal clickable'
+						onClick={() => window.$app.Event.emit('app/setSidebarVisible', false)}
+					>
 						<Icon className='icon_option' name='icon-terminal' size={18}></Icon>
 					</a>
 				</Tooltip>
@@ -21,7 +24,10 @@ const Index = (props: IDevControls) => {
 
 			{enableAIEdit && (
 				<Tooltip title={is_cn ? '使用AI编辑' : 'Edit with AI'} placement='bottom' key={2}>
-					<a className='option_item cursor_point flex justify_center align_center transition_normal clickable'>
+					<a
+						className='option_item cursor_point flex justify_center align_center transition_normal clickable'
+						onClick={() => window.$app.Event.emit('app/setSidebarVisible', true)}
+					>
 						<Icon className='icon_option' name='icon-message-square' size={18}></Icon>
 					</a>
 				</Tooltip>
