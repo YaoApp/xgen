@@ -121,13 +121,57 @@ export declare namespace App {
 			/** way of token storage */
 			storage: 'sessionStorage' | 'localStorage'
 		}
+
+		/** Application mode */
+		mode?: 'development' | 'production' | 'test'
+
 		optional?: {
 			/** remote api cache, default is true */
 			remoteCache?: boolean
 			/** neo config, for chatgpt service */
-			neo?: { api: string; studio?: boolean }
+			neo?: {
+				/** Neo stream API endpoint */
+				api: string
+
+				/**
+				 * Dock position
+				 * Options:
+				 * - `right-bottom`: Floats at the bottom-right corner.（default）
+				 * - `right-top`: Sticks to the top-right corner, clicking the button opens the chat window on the right side.
+				 * - `right`: Docked to the right side.
+				 * - `left`: Docked to the left side.
+				 */
+				dock?: 'right-bottom' | 'right-top' | 'right' | 'left'
+
+				studio?: boolean // Will be deprecated
+			}
+
 			/** menu config, default is { layout:"2-columns", hide:false, showName:false }  */
 			menu?: { layout: '1-column' | '2-columns'; hide?: boolean; showName?: boolean }
+
+			/**
+			 * Developer-specific controls.
+			 */
+			devControls?: {
+				/**
+				 * Determines whether to show xterm links.
+				 * Default: `false`. Takes effect only in development mode.
+				 */
+				enableXterm?: boolean
+
+				/**
+				 * Enables the "Edit with AI" button.
+				 * Default: `false`. Takes effect only in development mode.
+				 */
+				enableAIEdit?: boolean
+
+				/**
+				 * ?? Planning, not implemented yet
+				 * Enables the "View Source Code" button.
+				 * Default: `false`. Takes effect only in development mode.
+				 */
+				enableViewSourceCode?: boolean
+			}
 		}
 	}
 

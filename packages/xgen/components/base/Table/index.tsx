@@ -82,20 +82,22 @@ const Index = (props: IProps) => {
 	const with_total_row = x.setting.table?.props?.withTotalRow && styles.withTotalRow
 
 	if (parent === 'Page') {
-		const props_custom_action: IPropsCustomAction = {
-			setting: toJS(x.setting),
-			namespace: x.namespace.value,
-			batch_columns: toJS(x.batch_columns),
-			batch: toJS(x.batch),
-			search,
-			setBatchActive
-		}
+		// TODO: Batch Actions
+		// Batch Actions will be re-implemented in the future
+		// const props_custom_action: IPropsCustomAction = {
+		// 	setting: toJS(x.setting),
+		// 	namespace: x.namespace.value,
+		// 	batch_columns: toJS(x.batch_columns),
+		// 	batch: toJS(x.batch),
+		// 	search,
+		// 	setBatchActive
+		// }
 
 		return (
 			<Page
 				title={x.setting.name}
 				className={clsx([styles._local, compact_style, with_total_row, 'w_100'])}
-				customAction={<CustomAction {...props_custom_action}></CustomAction>}
+				// customAction={<CustomAction {...props_custom_action}></CustomAction>}
 				full={x.setting?.config?.full}
 			>
 				<Filter {...props_filter}></Filter>

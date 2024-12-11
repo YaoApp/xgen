@@ -12,16 +12,24 @@ import styles from './index.less'
 
 import type { CSSProperties } from 'react'
 import type { IProps, IPropsLeft } from './types'
+import DevControls from './components/DevControls'
 
 const Index = (props: IProps) => {
 	const { children, title: page_title, className, style, actions = [], withRows, customAction, full } = props
 	const global = useGlobal()
 	const title = page_title ?? usePageTitle(toJS(global.menu), toJS(global.menu_key_path), global.current_nav)
 
+	const appEnableXterm =
+		global.app_info?.mode == 'development' && global.app_info?.optional?.devControls?.enableXterm
+	const appEnableAIEdit =
+		global.app_info?.mode == 'development' && global.app_info?.optional?.devControls?.enableAIEdit
+
+	const enableXterm = props.enableXterm ?? appEnableXterm
+	const enableAIEdit = props.enableAIEdit ?? appEnableAIEdit
+
 	useTitle(`${global.app_info.name} - ${global.menu[global.current_nav]?.name} - ${title}`)
 
 	const toggleVisibleMenu = useMemoizedFn(() => (global.visible_menu = !global.visible_menu))
-
 	const props_left: IPropsLeft = {
 		title,
 		visible_menu: global.visible_menu,
@@ -50,6 +58,7 @@ const Index = (props: IProps) => {
 					<div className='options_wrap flex align_center'>
 						{customAction}
 						<Actions actions={actions}></Actions>
+						<DevControls enableXterm={enableXterm} enableAIEdit={enableAIEdit}></DevControls>
 					</div>
 				</header>
 				<div className='page_wrap'>{children}</div>

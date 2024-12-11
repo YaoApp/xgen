@@ -11,6 +11,8 @@ export interface IProps {
 	withRows?: boolean
 	customAction?: ReactNode
 	full?: Common.Config['full']
+	enableXterm?: boolean
+	enableAIEdit?: boolean
 }
 
 export interface IPropsLeft {
@@ -21,4 +23,9 @@ export interface IPropsLeft {
 
 export interface IPropsActions {
 	actions: IProps['actions']
+}
+
+export interface IDevControls {
+	enableXterm?: boolean
+	enableAIEdit?: boolean
 }
