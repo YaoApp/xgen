@@ -16,10 +16,8 @@
 		padding-bottom: 0;
 	}
 
-	transition: padding-right 0.3s ease;
-
 	&.with_sidebar {
-		padding-right: 380px;
+		transition: padding-right 0.3s ease;
 	}
 }
 
@@ -41,25 +39,35 @@
 		padding-bottom: 0;
 	}
 
-	transition: padding-right 0.3s ease;
-
 	&.with_sidebar {
-		padding-right: 380px;
+		transition: padding-right 0.3s ease;
 	}
 }
 
 .right_sidebar {
 	position: fixed;
-	top: 0;
 	right: 0;
-	width: 380px;
-	height: 100vh;
-	background: var(--color-bg);
-	transition: transform 0.3s ease;
+	top: 0;
+	bottom: 0;
+	background: var(--color_bg);
 	border-left: 1px solid var(--color_border);
 	z-index: 1000;
 
 	&.hidden {
+		transition: transform 0.3s ease;
 		transform: translateX(100%);
+	}
+
+	.resize_handle {
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 5px;
+		cursor: col-resize;
+
+		&:hover {
+			background-color: var(--color_border_soft);
+		}
 	}
 }
