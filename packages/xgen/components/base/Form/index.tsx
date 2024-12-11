@@ -39,7 +39,14 @@ const Index = (props: Component.FormComponent) => {
 		}
 
 		return page_title_prefix + x.setting.name
-	}, [page_title_prefix, x.setting.name, x.type, x.setting?.config?.viewTitle, x.setting?.config?.editTitle])
+	}, [
+		page_title_prefix,
+		x.setting.name,
+		x.type,
+		x.setting?.config?.viewTitle,
+		x.setting?.config?.editTitle,
+		x.data
+	])
 
 	const onFormBack = useMemoizedFn(() => {
 		if (onBack) {
