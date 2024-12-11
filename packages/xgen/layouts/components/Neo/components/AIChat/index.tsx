@@ -1,0 +1,151 @@
+import { Input, Button, Upload } from 'antd'
+import clsx from 'clsx'
+import { PaperPlaneTilt, X, UploadSimple, Sparkle, Robot, User, Plus } from 'phosphor-react'
+import { useState, useEffect, useRef } from 'react'
+
+import styles from './index.less'
+
+const { TextArea } = Input
+
+interface Message {
+	role: 'user' | 'assistant'
+	content: string
+}
+
+interface AIChatProps {
+	messages?: Message[]
+	onSend?: (message: string, files?: any[]) => void
+	className?: string
+	title?: string
+	onClose?: () => void
+	onNew?: () => void
+}
+
+const AIChat = ({ messages = [], onSend, className, title = 'AI Assistant', onClose, onNew }: AIChatProps) => {
+	const [selectedFiles, setSelectedFiles] = useState<any[]>([])
+	const [inputValue, setInputValue] = useState('')
+	const messagesEndRef = useRef<HTMLDivElement>(null)
+
+	const handleFileSelect = (info: any) => {
+		setSelectedFiles(info.fileList)
+	}
+
+	const handleSend = () => {
+		if (inputValue.trim()) {
+			onSend?.(inputValue, selectedFiles)
+			setInputValue('')
+			setSelectedFiles([])
+		}
+	}
+
+	const scrollToBottom = () => {
+		if (messagesEndRef.current) {
+			const container = messagesEndRef.current.parentElement
+			if (container) {
+				container.scrollTop = container.scrollHeight
+			}
+		}
+	}
+
+	useEffect(() => {
+		setTimeout(() => {
+			requestAnimationFrame(() => scrollToBottom())
+		}, 100)
+	}, [messages])
+
+	return (
+		<div className={clsx(styles.aiChat, className)}>
+			{/* Header */}
+			<div className={styles.header}>
+				<div className={styles.title}>{title}</div>
+				<div className={styles.actions}>
+					<Button
+						type='text'
+						icon={<Plus size={20} />}
+						className={styles.actionBtn}
+						onClick={onNew}
+					/>
+					<Button
+						type='text'
+						icon={<X size={20} />}
+						className={styles.actionBtn}
+						onClick={onClose}
+					/>
+				</div>
+			</div>
+
+			{/* Chat Messages */}
+			<div className={styles.messages}>
+				<div className={styles.messageWrapper}>
+					{messages.map((msg, index) => (
+						<div
+							key={index}
+							className={clsx(styles.messageItem, {
+								[styles.user]: msg.role === 'user',
+								[styles.assistant]: msg.role === 'assistant'
+							})}
+						>
+							<div className={styles.avatar}>
+								{msg.role === 'user' ? (
+									<User size={16} weight='fill' />
+								) : (
+									<Robot size={16} weight='fill' />
+								)}
+							</div>
+							<div className={styles.content}>{msg.content}</div>
+						</div>
+					))}
+					<div ref={messagesEndRef} />
+				</div>
+			</div>
+
+			{/* Input Area */}
+			<div className={styles.inputArea}>
+				<div className={styles.inputWrapper}>
+					<TextArea
+						rows={3}
+						placeholder='Type your message here...'
+						className={styles.input}
+						value={inputValue}
+						onChange={(e) => setInputValue(e.target.value)}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter') {
+								if (e.shiftKey) {
+									return // 允许 Shift + Enter 默认换行行为
+								}
+								e.preventDefault()
+								handleSend()
+							}
+						}}
+					/>
+					{inputValue && (
+						<Button
+							type='primary'
+							icon={<PaperPlaneTilt size={16} />}
+							className={styles.sendBtn}
+							onClick={handleSend}
+						/>
+					)}
+				</div>
+
+				{/* Status Bar */}
+				<div className={styles.statusBar}>
+					<div className={styles.leftTools}>
+						<Upload
+							onChange={handleFileSelect}
+							fileList={selectedFiles}
+							multiple
+							showUploadList={false}
+						>
+							<Button type='text' icon={<UploadSimple size={14} />} />
+						</Upload>
+						<Button type='text' icon={<Sparkle size={14} />} />
+					</div>
+					<div className={styles.rightInfo}>Press Enter to send</div>
+				</div>
+			</div>
+		</div>
+	)
+}
+
+export default AIChat
