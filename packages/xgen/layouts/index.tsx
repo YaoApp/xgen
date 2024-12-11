@@ -22,6 +22,7 @@ import Loading from './components/Loading'
 import Menu from './components/Menu'
 import Nav from './components/Nav'
 import Neo from './components/Neo'
+import NeoSidebar from './components/Neo/Sidebar'
 import LoginWrapper from './wrappers/Login'
 import AuthWrapper from './wrappers/Auth'
 
@@ -43,6 +44,7 @@ const Index = () => {
 	const menu = toJS(global.menu)
 	const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
 	const is_auth = pathname === '/auth'
+	const is_chat = pathname === '/chat'
 
 	useLayoutEffect(() => {
 		window.$global = global
@@ -106,10 +108,12 @@ const Index = () => {
 		show_name: show_name
 	}
 
+	// Neo Settings
 	const props_neo: IPropsNeo = {
 		stack: global.stack.paths.join('/'),
 		api: global.app_info.optional?.neo?.api!,
-		studio: global.app_info.optional?.neo?.studio
+		studio: global.app_info.optional?.neo?.studio,
+		dock: global.app_info.optional?.neo?.dock || 'right-bottom'
 	}
 
 	const props_container: IPropsContainer = {
@@ -117,7 +121,9 @@ const Index = () => {
 		visible_menu: global.visible_menu,
 		menu_layout: layout,
 		show_name: show_name,
-		hide_nav: hide_nav
+		hide_nav: hide_nav,
+		sidebar_content: !is_chat && <NeoSidebar {...props_neo}></NeoSidebar>,
+		sidebar_visible: !is_chat && props_neo.dock === 'right'
 	}
 
 	return (
@@ -191,7 +197,7 @@ const Index = () => {
 									</Then>
 								</If>
 
-								{global.app_info.optional?.neo?.api && <Neo {...props_neo}></Neo>}
+								<Neo {...props_neo}></Neo>
 							</Fragment>
 						</Then>
 					</If>

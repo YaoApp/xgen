@@ -71,9 +71,10 @@ export interface IPropsMenu {
 }
 
 export interface IPropsNeo {
-	stack: string
-	api: string
+	stack?: string
+	api?: string
 	studio?: boolean
+	dock?: 'right-bottom' | 'right-top' | 'right'
 }
 
 export interface IPropsNeoChatItem {

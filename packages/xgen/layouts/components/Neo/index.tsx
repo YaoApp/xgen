@@ -20,7 +20,10 @@ import type { App, Common } from '@/types'
 const { TextArea } = Input
 
 const Index = (props: IPropsNeo) => {
-	const { stack, api, studio } = props
+	const { stack, api, studio, dock } = props
+	if (!api) return null
+	if (dock && dock !== 'right-bottom') return null
+
 	const locale = getLocale()
 	const { pathname } = useLocation()
 	const textarea = useRef<HTMLTextAreaElement>(null)
@@ -80,7 +83,7 @@ const Index = (props: IPropsNeo) => {
 				text: v.text,
 				context: {
 					namespace: context.namespace,
-					stack,
+					stack: stack || '',
 					pathname,
 					formdata: context.data_item,
 					field: { name: v.name, bind: v.bind },
@@ -100,14 +103,15 @@ const Index = (props: IPropsNeo) => {
 	})
 
 	useLayoutEffect(() => {
-		window.$app.Event.on('app/getContext', getContext)
-		window.$app.Event.on('app/getField', getField)
-		window.$app.Event.on('app/setNeoVisible', setNeoVisible)
+		const events = window.$app.Event
+		events.on('app/getContext', getContext)
+		events.on('app/getField', getField)
+		events.on('app/setNeoVisible', setNeoVisible)
 
 		return () => {
-			window.$app.Event.off('app/getContext', getContext)
-			window.$app.Event.off('app/getField', getField)
-			window.$app.Event.off('app/setNeoVisible', setNeoVisible)
+			events.off('app/getContext', getContext)
+			events.off('app/getField', getField)
+			events.off('app/setNeoVisible', setNeoVisible)
 		}
 	}, [])
 
@@ -130,7 +134,7 @@ const Index = (props: IPropsNeo) => {
 				text: value,
 				context: {
 					namespace: context.namespace,
-					stack,
+					stack: stack || '',
 					pathname,
 					formdata: context.data_item,
 					field: { name: field.name, bind: field.bind },

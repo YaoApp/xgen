@@ -139,9 +139,8 @@ export declare namespace App {
 				 * - `right-bottom`: Floats at the bottom-right corner.（default）
 				 * - `right-top`: Sticks to the top-right corner, clicking the button opens the chat window on the right side.
 				 * - `right`: Docked to the right side.
-				 * - `left`: Docked to the left side.
 				 */
-				dock?: 'right-bottom' | 'right-top' | 'right' | 'left'
+				dock?: 'right-bottom' | 'right-top' | 'right'
 
 				studio?: boolean // Will be deprecated
 			}
