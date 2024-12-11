@@ -17,7 +17,9 @@
 	}
 
 	&.with_sidebar {
-		transition: padding-right 0.3s ease;
+		&.animating {
+			transition: padding-right 0.3s ease;
+		}
 	}
 }
 
@@ -40,21 +42,25 @@
 	}
 
 	&.with_sidebar {
-		transition: padding-right 0.3s ease;
+		&.animating {
+			transition: padding-right 0.3s ease;
+		}
 	}
 }
 
 .right_sidebar {
 	position: fixed;
-	right: 0;
 	top: 0;
-	bottom: 0;
-	background: var(--color_bg);
+	right: 0;
+	height: 100%;
+	background: var(--color-bg);
 	border-left: 1px solid var(--color_border);
-	z-index: 1000;
+
+	&.animating {
+		transition: transform 0.3s ease;
+	}
 
 	&.hidden {
-		transition: transform 0.3s ease;
 		transform: translateX(100%);
 	}
 

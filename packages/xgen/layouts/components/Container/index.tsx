@@ -14,10 +14,13 @@ const Index = (props: IPropsContainer & { children: React.ReactNode }) => {
 	const { children, menu, visible_menu, show_name, hide_nav, sidebar_visible = false, sidebar_content } = props
 	const [sidebarVisible, setSidebarVisible] = useState(sidebar_visible)
 	const [sidebarWidth, setSidebarWidth] = useState(sidebar_min_width)
+	const [isAnimating, setIsAnimating] = useState(false)
 
 	useEffect(() => {
 		const onSetSidebarVisible = (visible?: boolean) => {
+			setIsAnimating(true)
 			setSidebarVisible(visible !== undefined ? visible : !sidebarVisible)
+			setTimeout(() => setIsAnimating(false), 300)
 		}
 		const onToggleSidebarVisible = () => {
 			setSidebarVisible(!sidebarVisible)
@@ -62,7 +65,8 @@ const Index = (props: IPropsContainer & { children: React.ReactNode }) => {
 				!hide_nav && (!menu?.length || !visible_menu) && styles.no_menu,
 				hide_nav && styles.no_nav,
 				history.location.pathname.indexOf('/iframe') !== -1 ? styles.iframe : '',
-				sidebarVisible && styles.with_sidebar
+				sidebarVisible && styles.with_sidebar,
+				isAnimating && styles.animating
 			])}
 			style={sidebarVisible ? { paddingRight: sidebarWidth } : undefined}
 		>
@@ -71,7 +75,11 @@ const Index = (props: IPropsContainer & { children: React.ReactNode }) => {
 			</div>
 
 			<div
-				className={clsx(styles.right_sidebar, !sidebarVisible && styles.hidden)}
+				className={clsx(
+					styles.right_sidebar,
+					!sidebarVisible && styles.hidden,
+					isAnimating && styles.animating
+				)}
 				style={{ width: sidebarWidth }}
 			>
 				<div className={styles.resize_handle} onMouseDown={handleResizeStart} />
