@@ -41,7 +41,7 @@
 				align-items: center;
 				justify-content: center;
 				opacity: 0.85;
-				transition: all 0.2s;
+				transition: all 0.2s ease;
 
 				svg {
 					font-size: 15px;
@@ -52,7 +52,12 @@
 				&:hover {
 					color: var(--color_main);
 					opacity: 1;
-					background: rgba(0, 0, 0, 0.04);
+					background: none;
+					transform: scale(1.1);
+				}
+
+				&:active {
+					transform: scale(0.95);
 				}
 			}
 		}
@@ -61,17 +66,43 @@
 	.messages {
 		flex: 1;
 		min-height: 0;
-		overflow-y: auto;
+		overflow-y: overlay;
 		width: 100%;
 		padding: 20px;
 		padding-bottom: 180px;
+		padding-right: 0;
+
+		&:hover {
+			&::-webkit-scrollbar-thumb {
+				background: var(--color_border);
+
+				&:hover {
+					background: var(--color_text_grey);
+				}
+			}
+		}
+
+		&::-webkit-scrollbar {
+			width: 6px;
+			height: 6px;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: transparent;
+			border-radius: 4px;
+			transition: all 0.2s;
+		}
+
+		&::-webkit-scrollbar-track {
+			background: transparent;
+		}
 
 		.messageWrapper {
 			padding: 0 16px;
+			padding-right: 16px;
 			min-height: 100%;
 			display: flex;
 			flex-direction: column;
-			justify-content: flex-end;
 		}
 
 		.messageItem {
@@ -124,15 +155,6 @@
 				}
 			}
 		}
-
-		&::-webkit-scrollbar {
-			width: 4px;
-		}
-
-		&::-webkit-scrollbar-thumb {
-			background: var(--color_border);
-			border-radius: 2px;
-		}
 	}
 
 	.inputArea {
@@ -143,7 +165,7 @@
 		flex-shrink: 0;
 		max-width: calc(768px - 32px);
 		margin: 0 auto;
-		padding: 16px;
+		padding: 16px 16px 12px;
 		background: rgba(255, 255, 255, 0.98);
 		backdrop-filter: blur(10px);
 		border-radius: var(--radius);
@@ -157,7 +179,7 @@
 			.input {
 				margin-bottom: 0;
 				border-color: var(--color_border);
-				background: rgba(0, 0, 0, 0.02);
+				background: rgba(0, 0, 0, 0.03);
 				color: var(--color_text);
 				border-radius: var(--radius);
 				padding: 8px 12px;
@@ -172,7 +194,7 @@
 				&:focus {
 					border-color: var(--color_main);
 					box-shadow: none;
-					background: rgba(0, 0, 0, 0.03);
+					background: rgba(0, 0, 0, 0.04);
 				}
 			}
 
@@ -198,41 +220,48 @@
 		}
 
 		.statusBar {
-			width: 100%;
-			margin-top: 8px;
 			display: flex;
-			align-items: center;
 			justify-content: space-between;
-			padding: 0 4px;
+			align-items: center;
+			padding: 2px 12px;
+			margin-top: 8px;
+			border-top: 1px solid var(--color-border);
 
 			.leftTools {
 				display: flex;
 				gap: 4px;
 
-				:global(.ant-btn) {
-					color: var(--color_text);
-					padding: 4px;
-					height: 24px;
-					width: 24px;
-					opacity: 0.6;
+				button {
+					padding: 2px;
+					height: 20px;
+					width: 20px;
+					color: var(--color-text-quaternary);
+					transition: all 0.2s ease;
+					display: flex;
+					align-items: center;
+					justify-content: center;
 
 					&:hover {
-						opacity: 0.9;
 						color: var(--color_main);
+						transform: scale(1.1);
+					}
+
+					&:active {
+						transform: scale(0.95);
 					}
 				}
 			}
 
 			.rightInfo {
 				font-size: 12px;
-				color: var(--color_text_grey);
-				opacity: 0.6;
+				color: var(--color-text-quaternary);
+				opacity: 0.45;
 			}
 		}
 	}
 }
 
-// 添加暗色主题样式
+// 添加色主题样式
 [data-theme='dark'] {
 	.header {
 		background: rgba(47, 47, 52, 0.4);
@@ -248,7 +277,7 @@
 				color: rgba(255, 255, 255, 0.95);
 
 				&:hover {
-					background: rgba(255, 255, 255, 0.04);
+					background: none;
 					color: var(--color_main);
 				}
 			}
@@ -289,52 +318,28 @@
 		}
 
 		&::-webkit-scrollbar-thumb {
-			background: var(--color_border);
+			background: transparent;
+		}
+
+		&:hover {
+			&::-webkit-scrollbar-thumb {
+				background: rgba(255, 255, 255, 0.08);
+
+				&:hover {
+					background: rgba(255, 255, 255, 0.15);
+				}
+			}
 		}
 	}
 
 	.inputArea {
-		background: rgba(47, 47, 52, 0.45);
+		background: rgba(45, 45, 50, 0.55);
 		backdrop-filter: blur(12px);
-		border-color: rgba(64, 64, 70, 0.12);
-
-		.fileList {
-			.fileItem {
-				background: rgba(0, 0, 0, 0.25);
-				border-color: rgba(255, 255, 255, 0.04);
-				color: rgba(255, 255, 255, 0.95);
-
-				.fileName {
-					color: rgba(255, 255, 255, 0.95);
-
-					svg {
-						color: rgba(255, 255, 255, 0.6);
-					}
-				}
-
-				:global(.ant-btn) {
-					color: rgba(255, 255, 255, 0.6);
-					&:hover {
-						color: var(--color_danger);
-					}
-				}
-			}
-		}
-
-		.toolbar {
-			:global {
-				.ant-btn {
-					color: rgba(255, 255, 255, 0.95);
-					&:hover {
-						color: var(--color_main);
-					}
-				}
-			}
-		}
+		border: none;
 
 		.input {
-			background: rgba(0, 0, 0, 0.25);
-			border-color: rgba(255, 255, 255, 0.08);
+			background: rgba(60, 60, 70, 0.45);
+			border: none;
 			color: rgba(255, 255, 255, 0.95);
 
 			&::placeholder {
@@ -342,34 +347,26 @@
 			}
 
 			&:focus {
-				background: rgba(0, 0, 0, 0.35);
-				border-color: var(--color_main);
-			}
-		}
-
-		.sendBtn {
-			background: var(--color_main);
-			color: white;
-
-			&:hover {
-				opacity: 0.9;
+				background: rgba(75, 75, 85, 0.65);
+				border: none;
 			}
 		}
 
 		.statusBar {
+			border-top: none;
+
 			.leftTools {
-				:global(.ant-btn) {
-					color: rgba(255, 255, 255, 0.6);
+				button {
+					color: rgba(255, 255, 255, 0.5);
 
 					&:hover {
 						color: var(--color_main);
-						opacity: 1;
 					}
 				}
 			}
 
 			.rightInfo {
-				color: rgba(255, 255, 255, 0.4);
+				color: rgba(255, 255, 255, 0.35);
 			}
 		}
 	}

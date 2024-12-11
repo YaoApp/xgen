@@ -9,9 +9,18 @@ import styles from './index.less'
 import type { IPropsContainer } from '../../types'
 
 const Index = (props: IPropsContainer & { children: React.ReactNode }) => {
-	const sidebar_min_width = 360
-	const sidebar_max_width = 960
-	const { children, menu, visible_menu, show_name, hide_nav, sidebar_visible = false, sidebar_content } = props
+	const {
+		children,
+		menu,
+		visible_menu,
+		show_name,
+		hide_nav,
+		sidebar_visible = false,
+		sidebar_content,
+		sidebar_hidden,
+		sidebar_min_width = 360,
+		sidebar_max_width = 960
+	} = props
 	const [sidebarVisible, setSidebarVisible] = useState(sidebar_visible)
 	const [sidebarWidth, setSidebarWidth] = useState(sidebar_min_width)
 	const [isAnimating, setIsAnimating] = useState(false)
@@ -68,23 +77,25 @@ const Index = (props: IPropsContainer & { children: React.ReactNode }) => {
 				sidebarVisible && styles.with_sidebar,
 				isAnimating && styles.animating
 			])}
-			style={sidebarVisible ? { paddingRight: sidebarWidth } : undefined}
+			style={sidebarVisible && !sidebar_hidden ? { paddingRight: sidebarWidth } : undefined}
 		>
 			<div className='content_wrap w_100 border_box' style={{ paddingBottom: 90 }}>
 				<ErrorCatcher>{children}</ErrorCatcher>
 			</div>
 
-			<div
-				className={clsx(
-					styles.right_sidebar,
-					!sidebarVisible && styles.hidden,
-					isAnimating && styles.animating
-				)}
-				style={{ width: sidebarWidth }}
-			>
-				<div className={styles.resize_handle} onMouseDown={handleResizeStart} />
-				{sidebar_content}
-			</div>
+			{!sidebar_hidden && (
+				<div
+					className={clsx(
+						styles.right_sidebar,
+						!sidebarVisible && styles.hidden,
+						isAnimating && styles.animating
+					)}
+					style={{ width: sidebarWidth }}
+				>
+					<div className={styles.resize_handle} onMouseDown={handleResizeStart} />
+					{sidebar_content}
+				</div>
+			)}
 		</div>
 	)
 }

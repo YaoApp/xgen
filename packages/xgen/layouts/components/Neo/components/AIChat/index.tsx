@@ -40,7 +40,7 @@ const AIChat = ({ messages = [], onSend, className, title = 'AI Assistant', onCl
 
 	const scrollToBottom = () => {
 		if (messagesEndRef.current) {
-			const container = messagesEndRef.current.parentElement
+			const container = messagesEndRef.current.closest(`.${styles.messages}`)
 			if (container) {
 				container.scrollTop = container.scrollHeight
 			}
@@ -49,9 +49,14 @@ const AIChat = ({ messages = [], onSend, className, title = 'AI Assistant', onCl
 
 	useEffect(() => {
 		setTimeout(() => {
-			requestAnimationFrame(() => scrollToBottom())
+			scrollToBottom()
 		}, 100)
 	}, [messages])
+
+	const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+		setInputValue(e.target.value)
+		requestAnimationFrame(() => scrollToBottom())
+	}
 
 	return (
 		<div className={clsx(styles.aiChat, className)}>
@@ -103,11 +108,11 @@ const AIChat = ({ messages = [], onSend, className, title = 'AI Assistant', onCl
 			<div className={styles.inputArea}>
 				<div className={styles.inputWrapper}>
 					<TextArea
-						rows={3}
+						autoSize={{ minRows: 4, maxRows: 16 }}
 						placeholder='Type your message here...'
 						className={styles.input}
 						value={inputValue}
-						onChange={(e) => setInputValue(e.target.value)}
+						onChange={handleInputChange}
 						onKeyDown={(e) => {
 							if (e.key === 'Enter') {
 								if (e.shiftKey) {

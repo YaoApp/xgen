@@ -1,15 +1,28 @@
 import AIChat from '../components/AIChat'
 import styles from './index.less'
 import type { IPropsNeo } from '../../../types'
+import { useState } from 'react'
+import { mockMessages } from '../Sidebar/mock'
 
 const Index = (props: IPropsNeo) => {
+	const [messages, setMessages] = useState<any[]>(mockMessages)
 	const handleSend = (message: string, files?: any[]) => {
-		console.log('Send message:', message, files)
+		setMessages([...messages, { role: 'user', content: message }])
 	}
 
 	return (
 		<div className={styles.container}>
-			<AIChat onSend={handleSend} className={styles.chat} />
+			<AIChat
+				messages={messages}
+				onSend={handleSend}
+				title='AI Assistant'
+				onNew={() => {
+					/* handle new */
+				}}
+				onClose={() => {
+					/* handle close */
+				}}
+			/>
 		</div>
 	)
 }

@@ -44,7 +44,7 @@ const Index = () => {
 	const menu = toJS(global.menu)
 	const is_login = pathname.indexOf('/login/') !== -1 || pathname === '/'
 	const is_auth = pathname === '/auth'
-	const is_chat = pathname === '/chat'
+	const is_chat = pathname?.startsWith('/chat')
 
 	useLayoutEffect(() => {
 		window.$global = global
@@ -123,7 +123,8 @@ const Index = () => {
 		show_name: show_name,
 		hide_nav: hide_nav,
 		sidebar_content: !is_chat && <NeoSidebar {...props_neo}></NeoSidebar>,
-		sidebar_visible: !is_chat && props_neo.dock === 'right'
+		sidebar_visible: !is_chat && props_neo.dock === 'right',
+		sidebar_hidden: is_chat
 	}
 
 	return (
