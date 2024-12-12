@@ -158,6 +158,14 @@ const AIChat = (props: AIChatProps) => {
 		}
 	}, [])
 
+	const inputRef = useRef<HTMLTextAreaElement>(null)
+
+	useEffect(() => {
+		if (!loading && inputRef.current) {
+			inputRef.current.focus()
+		}
+	}, [loading])
+
 	return (
 		<div className={clsx(styles.aiChat, className)}>
 			{/* Header */}
@@ -224,12 +232,16 @@ const AIChat = (props: AIChatProps) => {
 									{currentPage}
 								</div>
 								{loading && (
-									<div className={styles.loadingIcon}>
-										<Icon
-											name='icon-loader'
-											size={12}
-											className={styles.spinning}
-										/>
+									<div className={styles.loadingContainer}>
+										<svg
+											width='8'
+											height='8'
+											viewBox='0 0 8 8'
+											fill='currentColor'
+											xmlns='http://www.w3.org/2000/svg'
+										>
+											<circle cx='4' cy='4' r='4' />
+										</svg>
 									</div>
 								)}
 							</div>
@@ -278,6 +290,7 @@ const AIChat = (props: AIChatProps) => {
 
 				<div className={styles.inputWrapper}>
 					<TextArea
+						ref={inputRef}
 						autoSize={{ minRows: 4, maxRows: 16 }}
 						placeholder={loading ? 'Please wait for response...' : 'Type your message here...'}
 						className={styles.input}
@@ -336,7 +349,9 @@ const AIChat = (props: AIChatProps) => {
 							? is_cn
 								? '正在响应中...'
 								: 'Waiting for response...'
-							: 'Press Enter to send'}
+							: is_cn
+							? '换行：Shift + ⏎，发送：⏎'
+							: 'Line break: Shift + ⏎, Send: ⏎'}
 					</div>
 				</div>
 			</div>
