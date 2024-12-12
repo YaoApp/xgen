@@ -1,6 +1,4 @@
 ._local {
-	margin-top: 18px;
-
 	&.left_content {
 		:global {
 			.chat_content {
@@ -11,24 +9,22 @@
 
 	&.right_content {
 		:global {
-                  ::selection{
-                        background-color: white;
-                        color: black;
-                  }
+			::selection {
+				background-color: white;
+				color: black;
+			}
 
 			.chat_content {
 				border-top-left-radius: 0;
 				background-color: var(--color_main);
 				color: white;
-
-                        
 			}
 		}
 	}
 
 	:global {
 		.chat_content {
-			padding: 12px;
+			padding: 4px;
 			font-size: 13px;
 			background-color: var(--color_bg_nav);
 			border-radius: 12px;
@@ -40,12 +36,12 @@
 		.confirm_wrap {
 			padding-top: 12px;
 
-                  .text{
-                        width: calc(100% - 60px);
-                  }
+			.text {
+				width: calc(100% - 60px);
+			}
 
 			.btn_yes {
-                        width: 60px;
+				width: 60px;
 
 				&:hover {
 					text-decoration: underline;

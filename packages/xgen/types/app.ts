@@ -143,6 +143,9 @@ export declare namespace App {
 				dock?: 'right-bottom' | 'right-top' | 'right'
 
 				studio?: boolean // Will be deprecated
+
+				// AI Chatbot Name
+				name?: string
 			}
 
 			/** menu config, default is { layout:"2-columns", hide:false, showName:false }  */

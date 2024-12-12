@@ -1,18 +1,18 @@
 import { Input, Button, Upload } from 'antd'
 import clsx from 'clsx'
 import { UploadSimple, Sparkle } from 'phosphor-react'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import Icon from '@/widgets/Icon'
 import styles from './index.less'
-import { getLocale } from '@umijs/max'
+import { getLocale, useLocation } from '@umijs/max'
 import Logo from '@/layouts/components/ColumnOne/Menu/Logo'
+import useAIChat from '../../hooks/useAIChat'
+import { App, Common } from '@/types'
+import { useMemoizedFn } from 'ahooks'
+import { useGlobal } from '@/context/app'
+import ChatItem from '../ChatItem'
 
 const { TextArea } = Input
-
-interface Message {
-	role: 'user' | 'assistant'
-	content: string
-}
 
 interface ContextFile {
 	name: string
@@ -22,7 +22,7 @@ interface ContextFile {
 }
 
 interface AIChatProps {
-	messages?: Message[]
+	messages?: App.ChatInfo[]
 	onSend?: (message: string, files?: any[]) => void
 	className?: string
 	title?: string
@@ -35,23 +35,75 @@ interface AIChatProps {
 	botAvatar?: string
 }
 
-const AIChat = ({
-	messages = [],
-	onSend,
-	className,
-	title = 'AI Assistant',
-	onClose,
-	onNew,
-	currentPage,
-	showCurrentPage = true,
-	contextFiles = [],
-	onRemoveContextFile,
-	botAvatar
-}: AIChatProps) => {
+// {
+// 	messages = [],
+// 	onSend,
+// 	className,
+// 	title = 'AI Assistant',
+// 	onClose,
+// 	onNew,
+// 	currentPage,
+// 	showCurrentPage = true,
+// 	contextFiles = [],
+// 	onRemoveContextFile,
+// 	botAvatar
+// }
+
+const AIChat = (props: AIChatProps) => {
+	const showCurrentPage = true
+
+	const global = useGlobal()
+	const locale = getLocale()
+	const { pathname } = useLocation()
+	const is_cn = locale === 'zh-CN'
+	const stack = global.stack.paths.join('/')
+
+	const { onSend, onClose, onNew, className, onRemoveContextFile, botAvatar } = props
 	const [selectedFiles, setSelectedFiles] = useState<any[]>([])
 	const [inputValue, setInputValue] = useState('')
 	const messagesEndRef = useRef<HTMLDivElement>(null)
-	const is_cn = getLocale() === 'zh-CN'
+	const [chat_id, setChatId] = useState('hello')
+	const [title, setTitle] = useState(global.app_info.optional?.neo?.name || 'AI Assistant')
+	const [currentPage, setCurrentPage] = useState(pathname.replace(/\/_menu.*/gi, '').toLowerCase())
+	const [contextFiles, setContextFiles] = useState<ContextFile[]>([])
+	const { messages, loading, setMessages, cancel } = useAIChat({ chat_id })
+	const [chat_context, setChatContext] = useState<App.ChatContext>({ placeholder: '', signal: '' })
+
+	const [field, setField] = useState<App.Field>({
+		name: '',
+		bind: '',
+		config: {} as Common.FieldDetail
+	})
+
+	const getContext = useMemoizedFn((v: App.Context) => setContext(v))
+	const getField = useMemoizedFn((v: App.Field & { text: string; config: Common.FieldDetail }) => {
+		if (loading) return
+
+		setField(v)
+
+		setMessages([
+			...messages,
+			{
+				is_neo: false,
+				text: v.text,
+				context: {
+					namespace: context.namespace,
+					stack: stack || '',
+					pathname,
+					formdata: context.data_item,
+					field: { name: v.name, bind: v.bind },
+					config: v.config,
+					signal: chat_context.signal
+				}
+			}
+		])
+	})
+
+	const [context, setContext] = useState<App.Context>({
+		namespace: '',
+		primary: '',
+		data_item: {}
+	})
 
 	const handleFileSelect = (info: any) => {
 		setSelectedFiles(info.fileList)
@@ -62,6 +114,24 @@ const AIChat = ({
 			onSend?.(inputValue, selectedFiles)
 			setInputValue('')
 			setSelectedFiles([])
+
+			// Send message to Neo
+			setMessages([
+				...messages,
+				{
+					is_neo: false,
+					text: inputValue,
+					context: {
+						namespace: context.namespace,
+						stack: stack || '',
+						pathname,
+						formdata: context.data_item,
+						field: { name: field.name, bind: field.bind },
+						config: field.config,
+						signal: chat_context.signal
+					}
+				}
+			])
 		}
 	}
 
@@ -84,6 +154,23 @@ const AIChat = ({
 		setInputValue(e.target.value)
 		requestAnimationFrame(() => scrollToBottom())
 	}
+
+	/** Set Current Page **/
+	useEffect(() => {
+		setCurrentPage(pathname.replace(/\/_menu.*/gi, '').toLowerCase())
+	}, [pathname])
+
+	/** Register Events **/
+	useLayoutEffect(() => {
+		const events = window.$app.Event
+		events.on('app/getContext', getContext)
+		events.on('app/getField', getField)
+
+		return () => {
+			events.off('app/getContext', getContext)
+			events.off('app/getField', getField)
+		}
+	}, [])
 
 	return (
 		<div className={clsx(styles.aiChat, className)}>
@@ -113,19 +200,27 @@ const AIChat = ({
 						<div
 							key={index}
 							className={clsx(styles.messageItem, {
-								[styles.user]: msg.role === 'user',
-								[styles.assistant]: msg.role === 'assistant'
+								[styles.user]: !msg.is_neo,
+								[styles.assistant]: msg.is_neo
 							})}
 						>
 							<div className={styles.avatar}>
-								{msg.role === 'assistant' &&
+								{msg.is_neo &&
 									(botAvatar ? (
 										<img src={botAvatar} alt='bot' />
 									) : (
 										<Logo logo={undefined} />
 									))}
 							</div>
-							<div className={styles.content}>{msg.content}</div>
+							<div className={styles.content}>
+								<ChatItem
+									context={context}
+									field={field}
+									chat_info={msg}
+									callback={() => {}}
+									key={index}
+								></ChatItem>
+							</div>
 						</div>
 					))}
 					<div ref={messagesEndRef} />
