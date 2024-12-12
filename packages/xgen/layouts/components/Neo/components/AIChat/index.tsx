@@ -35,20 +35,6 @@ interface AIChatProps {
 	botAvatar?: string
 }
 
-// {
-// 	messages = [],
-// 	onSend,
-// 	className,
-// 	title = 'AI Assistant',
-// 	onClose,
-// 	onNew,
-// 	currentPage,
-// 	showCurrentPage = true,
-// 	contextFiles = [],
-// 	onRemoveContextFile,
-// 	botAvatar
-// }
-
 const AIChat = (props: AIChatProps) => {
 	const showCurrentPage = true
 
@@ -233,8 +219,19 @@ const AIChat = (props: AIChatProps) => {
 					<div className={styles.contextArea}>
 						{showCurrentPage && currentPage && (
 							<div className={styles.currentPage}>
-								<Icon name='icon-link-2' size={12} className='pageIcon' />
-								{currentPage}
+								<div className={styles.pageInfo}>
+									<Icon name='icon-link-2' size={12} className='pageIcon' />
+									{currentPage}
+								</div>
+								{loading && (
+									<div className={styles.loadingIcon}>
+										<Icon
+											name='icon-loader'
+											size={12}
+											className={styles.spinning}
+										/>
+									</div>
+								)}
 							</div>
 						)}
 
@@ -282,12 +279,12 @@ const AIChat = (props: AIChatProps) => {
 				<div className={styles.inputWrapper}>
 					<TextArea
 						autoSize={{ minRows: 4, maxRows: 16 }}
-						placeholder='Type your message here...'
+						placeholder={loading ? 'Please wait for response...' : 'Type your message here...'}
 						className={styles.input}
 						value={inputValue}
 						onChange={handleInputChange}
 						onKeyDown={(e) => {
-							if (e.key === 'Enter') {
+							if (e.key === 'Enter' && !loading) {
 								if (e.shiftKey) {
 									return
 								}
@@ -295,16 +292,28 @@ const AIChat = (props: AIChatProps) => {
 								handleSend()
 							}
 						}}
+						disabled={loading}
 					/>
-					{inputValue && (
+					{loading ? (
 						<Button
-							type='primary'
-							icon={<Icon name='icon-send' size={16} />}
-							className={styles.sendBtn}
-							onClick={handleSend}
+							type='text'
+							icon={<Icon name='icon-x' size={16} />}
+							className={styles.cancelBtn}
+							onClick={cancel}
 						>
-							{is_cn ? '发送' : 'Send'}
+							{is_cn ? '取消' : 'Cancel'}
 						</Button>
+					) : (
+						inputValue && (
+							<Button
+								type='primary'
+								icon={<Icon name='icon-send' size={16} />}
+								className={styles.sendBtn}
+								onClick={handleSend}
+							>
+								{is_cn ? '发送' : 'Send'}
+							</Button>
+						)
 					)}
 				</div>
 
@@ -316,12 +325,19 @@ const AIChat = (props: AIChatProps) => {
 							fileList={selectedFiles}
 							multiple
 							showUploadList={false}
+							disabled={loading}
 						>
-							<Button type='text' icon={<UploadSimple size={14} />} />
+							<Button type='text' icon={<UploadSimple size={14} />} disabled={loading} />
 						</Upload>
-						<Button type='text' icon={<Sparkle size={14} />} />
+						<Button type='text' icon={<Sparkle size={14} />} disabled={loading} />
 					</div>
-					<div className={styles.rightInfo}>Press Enter to send</div>
+					<div className={styles.rightInfo}>
+						{loading
+							? is_cn
+								? '正在响应中...'
+								: 'Waiting for response...'
+							: 'Press Enter to send'}
+					</div>
 				</div>
 			</div>
 		</div>
