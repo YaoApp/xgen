@@ -124,47 +124,54 @@
 		padding: 16px;
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
+		gap: 0;
 
 		.contextArea {
-			padding: 12px;
-			background: #f9f9f9;
-			border-radius: 8px;
-			margin-bottom: 8px;
-			display: flex;
-			flex-direction: column;
-			gap: 8px;
+			width: 95%;
+			margin: 0 auto;
+			padding: 6px 12px;
+			background: #f5f5f5;
+			border-radius: 8px 8px 0 0;
+			margin-bottom: 0;
+			border-bottom: none;
 
 			.currentPage {
 				display: flex;
 				align-items: center;
-				padding: 4px 8px;
-				background: rgba(22, 119, 255, 0.04);
-				border: 1px solid rgba(22, 119, 255, 0.15);
-				border-radius: 4px;
-				font-size: 12px;
-				color: #1677ff;
-				width: 100%;
+				gap: 4px;
+				padding: 2px 0;
+				background: none;
+				border: none;
+				font-size: 11px;
+				color: #666;
+
+				.pageIcon {
+					font-size: 12px;
+					color: #999;
+				}
 			}
 
 			.filesContext {
 				.filesList {
 					display: flex;
 					flex-wrap: wrap;
-					gap: 8px;
+					gap: 4px;
+					padding-bottom: 2px;
 
 					.fileItem {
 						display: flex;
 						align-items: center;
 						gap: 4px;
-						padding: 4px 8px;
+						padding: 2px 6px;
 						background: #fff;
 						border-radius: 4px;
 						border: 1px solid #f0f0f0;
+						position: relative;
+						padding-right: 24px !important;
 
 						.fileThumb {
-							width: 20px;
-							height: 20px;
+							width: 16px;
+							height: 16px;
 							display: flex;
 							align-items: center;
 							justify-content: center;
@@ -177,17 +184,52 @@
 							}
 
 							.fileTypeIcon {
-								font-size: 10px;
+								font-size: 9px;
 								color: #666;
 							}
 						}
 
 						.fileName {
-							font-size: 12px;
+							font-size: 11px;
 							max-width: 120px;
 							overflow: hidden;
 							text-overflow: ellipsis;
 							white-space: nowrap;
+						}
+
+						.deleteBtn {
+							position: absolute;
+							right: 6px;
+							top: 50%;
+							transform: translateY(-50%);
+							width: 16px;
+							height: 16px;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							color: #999;
+							cursor: pointer;
+							opacity: 0;
+							transition: all 0.2s;
+							border-radius: 2px;
+							z-index: 1;
+
+							i {
+								display: flex;
+								align-items: center;
+								justify-content: center;
+							}
+
+							&:hover {
+								color: #ff4d4f;
+								background: rgba(255, 77, 79, 0.1);
+							}
+						}
+
+						&:hover {
+							.deleteBtn {
+								opacity: 1;
+							}
 						}
 					}
 				}
@@ -195,10 +237,11 @@
 		}
 
 		.inputWrapper {
+			margin-top: 0;
 			position: relative;
 
 			.input {
-				padding-right: 40px;
+				padding: 8px;
 				border-radius: 8px;
 				resize: none;
 			}
@@ -207,12 +250,30 @@
 				position: absolute;
 				right: 8px;
 				bottom: 8px;
-				padding: 4px;
+				padding: 4px 12px;
 				border-radius: 4px;
+				min-width: 80px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 4px;
+				opacity: 0.3;
+				transition: opacity 0.2s;
+
+				&:hover {
+					opacity: 1;
+				}
+
+				i {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+				}
 			}
 		}
 
 		.statusBar {
+			margin-top: 12px;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
@@ -306,16 +367,20 @@
 			border-top: 1px solid rgba(255, 255, 255, 0.08);
 
 			.contextArea {
-				background: rgba(255, 255, 255, 0.04);
+				background: rgba(255, 255, 255, 0.08);
 
 				.currentPage {
-					background: rgba(22, 119, 255, 0.08);
-					border-color: rgba(22, 119, 255, 0.15);
-					color: #1677ff;
+					color: rgba(255, 255, 255, 0.65);
+
+					.pageIcon {
+						color: rgba(255, 255, 255, 0.45);
+					}
 				}
 
 				.filesContext {
 					.filesList {
+						padding-bottom: 2px;
+
 						.fileItem {
 							background: rgba(255, 255, 255, 0.04);
 							border-color: rgba(255, 255, 255, 0.08);
@@ -328,6 +393,14 @@
 
 							.fileName {
 								color: rgba(255, 255, 255, 0.85);
+							}
+
+							.deleteBtn {
+								color: rgba(255, 255, 255, 0.45);
+
+								&:hover {
+									color: #ff4d4f;
+								}
 							}
 						}
 					}

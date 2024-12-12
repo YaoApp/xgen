@@ -1,9 +1,10 @@
 import { Input, Button, Upload } from 'antd'
 import clsx from 'clsx'
-import { PaperPlaneTilt, X, UploadSimple, Sparkle, Robot, User, Plus } from 'phosphor-react'
+import { UploadSimple, Sparkle, Robot, User } from 'phosphor-react'
 import { useState, useEffect, useRef } from 'react'
-
+import Icon from '@/widgets/Icon'
 import styles from './index.less'
+import { getLocale } from '@umijs/max'
 
 const { TextArea } = Input
 
@@ -29,6 +30,7 @@ interface AIChatProps {
 	currentPage?: string
 	showCurrentPage?: boolean
 	contextFiles?: ContextFile[]
+	onRemoveContextFile?: (file: ContextFile) => void
 }
 
 const AIChat = ({
@@ -40,11 +42,13 @@ const AIChat = ({
 	onNew,
 	currentPage,
 	showCurrentPage = true,
-	contextFiles = []
+	contextFiles = [],
+	onRemoveContextFile
 }: AIChatProps) => {
 	const [selectedFiles, setSelectedFiles] = useState<any[]>([])
 	const [inputValue, setInputValue] = useState('')
 	const messagesEndRef = useRef<HTMLDivElement>(null)
+	const is_cn = getLocale() === 'zh-CN'
 
 	const handleFileSelect = (info: any) => {
 		setSelectedFiles(info.fileList)
@@ -86,13 +90,13 @@ const AIChat = ({
 				<div className={styles.actions}>
 					<Button
 						type='text'
-						icon={<Plus size={20} />}
+						icon={<Icon name='icon-plus' size={20} />}
 						className={styles.actionBtn}
 						onClick={onNew}
 					/>
 					<Button
 						type='text'
-						icon={<X size={20} />}
+						icon={<Icon name='icon-x' size={20} />}
 						className={styles.actionBtn}
 						onClick={onClose}
 					/>
@@ -129,7 +133,10 @@ const AIChat = ({
 				{((showCurrentPage && currentPage) || contextFiles.length > 0) && (
 					<div className={styles.contextArea}>
 						{showCurrentPage && currentPage && (
-							<div className={styles.currentPage}>{currentPage}</div>
+							<div className={styles.currentPage}>
+								<Icon name='icon-link-2' size={12} className='pageIcon' />
+								{currentPage}
+							</div>
 						)}
 
 						{contextFiles.length > 0 && (
@@ -154,6 +161,17 @@ const AIChat = ({
 													? `${file.name.slice(0, 12)}...`
 													: file.name}
 											</div>
+											{onRemoveContextFile && (
+												<div
+													className={styles.deleteBtn}
+													onClick={(e) => {
+														e.stopPropagation()
+														onRemoveContextFile(file)
+													}}
+												>
+													<Icon name='icon-x' size={12} />
+												</div>
+											)}
 										</div>
 									))}
 								</div>
@@ -182,10 +200,12 @@ const AIChat = ({
 					{inputValue && (
 						<Button
 							type='primary'
-							icon={<PaperPlaneTilt size={16} />}
+							icon={<Icon name='icon-send' size={16} />}
 							className={styles.sendBtn}
 							onClick={handleSend}
-						/>
+						>
+							{is_cn ? '发送' : 'Send'}
+						</Button>
 					)}
 				</div>
 
