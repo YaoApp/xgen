@@ -12,6 +12,13 @@ interface Message {
 	content: string
 }
 
+interface ContextFile {
+	name: string
+	type: string
+	url?: string
+	thumbUrl?: string
+}
+
 interface AIChatProps {
 	messages?: Message[]
 	onSend?: (message: string, files?: any[]) => void
@@ -19,9 +26,22 @@ interface AIChatProps {
 	title?: string
 	onClose?: () => void
 	onNew?: () => void
+	currentPage?: string
+	showCurrentPage?: boolean
+	contextFiles?: ContextFile[]
 }
 
-const AIChat = ({ messages = [], onSend, className, title = 'AI Assistant', onClose, onNew }: AIChatProps) => {
+const AIChat = ({
+	messages = [],
+	onSend,
+	className,
+	title = 'AI Assistant',
+	onClose,
+	onNew,
+	currentPage,
+	showCurrentPage = true,
+	contextFiles = []
+}: AIChatProps) => {
 	const [selectedFiles, setSelectedFiles] = useState<any[]>([])
 	const [inputValue, setInputValue] = useState('')
 	const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -106,6 +126,42 @@ const AIChat = ({ messages = [], onSend, className, title = 'AI Assistant', onCl
 
 			{/* Input Area */}
 			<div className={styles.inputArea}>
+				{((showCurrentPage && currentPage) || contextFiles.length > 0) && (
+					<div className={styles.contextArea}>
+						{showCurrentPage && currentPage && (
+							<div className={styles.currentPage}>{currentPage}</div>
+						)}
+
+						{contextFiles.length > 0 && (
+							<div className={styles.filesContext}>
+								<div className={styles.filesList}>
+									{contextFiles.map((file, index) => (
+										<div key={index} className={styles.fileItem}>
+											<div className={styles.fileThumb}>
+												{file.thumbUrl ? (
+													<img
+														src={file.thumbUrl}
+														alt={file.name}
+													/>
+												) : (
+													<div className={styles.fileTypeIcon}>
+														{file.type}
+													</div>
+												)}
+											</div>
+											<div className={styles.fileName} title={file.name}>
+												{file.name.length > 15
+													? `${file.name.slice(0, 12)}...`
+													: file.name}
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+						)}
+					</div>
+				)}
+
 				<div className={styles.inputWrapper}>
 					<TextArea
 						autoSize={{ minRows: 4, maxRows: 16 }}
@@ -116,7 +172,7 @@ const AIChat = ({ messages = [], onSend, className, title = 'AI Assistant', onCl
 						onKeyDown={(e) => {
 							if (e.key === 'Enter') {
 								if (e.shiftKey) {
-									return // 允许 Shift + Enter 默认换行行为
+									return
 								}
 								e.preventDefault()
 								handleSend()

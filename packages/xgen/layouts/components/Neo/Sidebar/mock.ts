@@ -1,3 +1,21 @@
+export const mockContextFiles = [
+	{
+		name: 'document.pdf',
+		type: 'PDF',
+		thumbUrl: undefined
+	},
+	{
+		name: 'screenshot.png',
+		type: 'IMG',
+		thumbUrl: 'https://placehold.co/60/000000/FFF'
+	},
+	{
+		name: 'very-long-filename-example.txt',
+		type: 'TXT',
+		thumbUrl: undefined
+	}
+]
+
 export const mockMessages = [
 	{
 		role: 'assistant',

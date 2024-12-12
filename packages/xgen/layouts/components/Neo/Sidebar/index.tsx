@@ -3,7 +3,7 @@ import { Plus, X } from 'phosphor-react'
 import { useState } from 'react'
 
 import AIChat from '../components/AIChat'
-import { mockMessages } from './mock'
+import { mockMessages, mockContextFiles } from './mock'
 import styles from './index.less'
 import type { IPropsNeo } from '../../../types'
 
@@ -21,6 +21,8 @@ const Index = (props: IPropsNeo) => {
 				messages={messages}
 				onSend={handleSend}
 				title='AI Assistant'
+				currentPage={'Form/Index'}
+				contextFiles={mockContextFiles}
 				onNew={() => {
 					/* handle new */
 				}}
