@@ -172,9 +172,9 @@
 						align-items: center;
 						gap: 4px;
 						padding: 2px 6px;
-						background: #fff;
+						background: var(--color_border_light);
 						border-radius: 4px;
-						border: 1px solid #f0f0f0;
+						border: 1px solid var(--color_border);
 						position: relative;
 						padding-right: 24px !important;
 
@@ -194,7 +194,7 @@
 
 							.fileTypeIcon {
 								font-size: 9px;
-								color: #666;
+								color: var(--color_title);
 							}
 						}
 
@@ -204,6 +204,7 @@
 							overflow: hidden;
 							text-overflow: ellipsis;
 							white-space: nowrap;
+							color: var(--color_text);
 						}
 
 						.deleteBtn {
@@ -216,28 +217,14 @@
 							display: flex;
 							align-items: center;
 							justify-content: center;
-							color: #999;
+							color: var(--color_text);
 							cursor: pointer;
-							opacity: 0;
 							transition: all 0.2s;
 							border-radius: 2px;
 							z-index: 1;
 
-							i {
-								display: flex;
-								align-items: center;
-								justify-content: center;
-							}
-
 							&:hover {
-								color: #ff4d4f;
-								background: rgba(255, 77, 79, 0.1);
-							}
-						}
-
-						&:hover {
-							.deleteBtn {
-								opacity: 1;
+								color: var(--color_danger);
 							}
 						}
 					}
@@ -393,24 +380,24 @@
 						padding-bottom: 2px;
 
 						.fileItem {
-							background: rgba(255, 255, 255, 0.04);
-							border-color: rgba(255, 255, 255, 0.08);
+							background: var(--color_border_light);
+							border-color: var(--color_border);
 
 							.fileThumb {
 								.fileTypeIcon {
-									color: rgba(255, 255, 255, 0.45);
+									color: var(--color_title);
 								}
 							}
 
 							.fileName {
-								color: rgba(255, 255, 255, 0.85);
+								color: var(--color_text);
 							}
 
 							.deleteBtn {
-								color: rgba(255, 255, 255, 0.45);
+								color: var(--color_text);
 
 								&:hover {
-									color: #ff4d4f;
+									color: var(--color_danger);
 								}
 							}
 						}
@@ -423,7 +410,7 @@
 
 				.input {
 					background: rgba(255, 255, 255, 0.04);
-					border-color: rgba(255, 255, 255, 0.08);
+					border-color: var(--color_border);
 					color: rgba(255, 255, 255, 0.85);
 
 					&::placeholder {
