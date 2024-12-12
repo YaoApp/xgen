@@ -1,10 +1,11 @@
 import { Input, Button, Upload } from 'antd'
 import clsx from 'clsx'
-import { UploadSimple, Sparkle, Robot, User } from 'phosphor-react'
+import { UploadSimple, Sparkle } from 'phosphor-react'
 import { useState, useEffect, useRef } from 'react'
 import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import { getLocale } from '@umijs/max'
+import Logo from '@/layouts/components/ColumnOne/Menu/Logo'
 
 const { TextArea } = Input
 
@@ -31,6 +32,7 @@ interface AIChatProps {
 	showCurrentPage?: boolean
 	contextFiles?: ContextFile[]
 	onRemoveContextFile?: (file: ContextFile) => void
+	botAvatar?: string
 }
 
 const AIChat = ({
@@ -43,7 +45,8 @@ const AIChat = ({
 	currentPage,
 	showCurrentPage = true,
 	contextFiles = [],
-	onRemoveContextFile
+	onRemoveContextFile,
+	botAvatar
 }: AIChatProps) => {
 	const [selectedFiles, setSelectedFiles] = useState<any[]>([])
 	const [inputValue, setInputValue] = useState('')
@@ -115,11 +118,12 @@ const AIChat = ({
 							})}
 						>
 							<div className={styles.avatar}>
-								{msg.role === 'user' ? (
-									<User size={16} weight='fill' />
-								) : (
-									<Robot size={16} weight='fill' />
-								)}
+								{msg.role === 'assistant' &&
+									(botAvatar ? (
+										<img src={botAvatar} alt='bot' />
+									) : (
+										<Logo logo={undefined} />
+									))}
 							</div>
 							<div className={styles.content}>{msg.content}</div>
 						</div>
