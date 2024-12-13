@@ -13,20 +13,27 @@ import { useMDXComponents } from '@mdx-js/react'
 
 import components from './components'
 import styles from './index.less'
+import { App } from '@/types'
 
 interface IProps {
 	source: string
+	type?: App.ChatMessageType
 	callback?: () => void
 }
 
 const Index = (props: IProps) => {
-	const { source, callback } = props
+	const { source, type, callback } = props
 	const [target, setTarget] = useState<any>()
 	const mdx_components = useMDXComponents(components)
 
 	useAsyncEffect(async () => {
-		const vfile = new VFile(source)
+		// If there is an error, display the error message
+		if (type === 'error') {
+			setTarget(<div className={'error'}>{source}</div>)
+			return
+		}
 
+		const vfile = new VFile(source)
 		const [err, compiled_source] = await to(
 			compile(vfile, {
 				format: 'md',
@@ -67,8 +74,12 @@ const Index = (props: IProps) => {
 			})
 		)
 
-		if (!compiled_source) return
+		if (err) {
+			setTarget(<div className={'error'}>{err.message}</div>)
+			return
+		}
 
+		if (!compiled_source) return
 		compiled_source.value = (compiled_source.value as string).replaceAll('%7B', '{')
 
 		const { default: Content } = await run(compiled_source, {

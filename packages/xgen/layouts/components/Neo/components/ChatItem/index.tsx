@@ -16,7 +16,7 @@ import type { App } from '@/types'
 const Index = (props: IPropsNeoChatItem) => {
 	const { context, chat_info, callback } = props
 	const { is_neo, text } = chat_info as App.ChatHuman
-	const { confirm, actions } = chat_info as App.ChatAI
+	const { confirm, actions, type } = chat_info as App.ChatAI
 	const locale = getLocale()
 	const onAction = useAction()
 	const is_cn = locale === 'zh-CN'
@@ -52,7 +52,7 @@ const Index = (props: IPropsNeoChatItem) => {
 			<If condition={is_neo}>
 				<Then>
 					<div className='chat_content w_100 border_box flex flex_column'>
-						<NeoContent source={text} callback={callback}></NeoContent>
+						<NeoContent source={text} type={type} callback={callback}></NeoContent>
 						<When condition={confirm && actions?.length}>
 							<div className='confirm_wrap flex align_center justify_between'>
 								<span className='text'>

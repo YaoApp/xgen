@@ -52,13 +52,21 @@ export default ({ chat_id }: Args) => {
 			const formated_data = ntry(() => JSON.parse(data)) as App.ChatAI
 			if (!formated_data) return
 
-			const { text, confirm, actions, done, command } = formated_data
+			const { text, confirm, type, actions, done } = formated_data
 			const current_answer = messages[messages.length - 1] as App.ChatAI
 			if (done) {
+				if (text) {
+					current_answer.text = text
+				}
+				if (type) {
+					current_answer.type = type
+				}
 				current_answer.confirm = confirm
 				current_answer.actions = actions
 				setMessages([...messages])
-				return setLoading(false)
+				setLoading(false)
+				es.close() // Close the EventSource if the AI is done
+				return
 			}
 
 			if (!text) return
@@ -75,6 +83,15 @@ export default ({ chat_id }: Args) => {
 		}
 
 		es.onerror = () => {
+			const message_new = [
+				...messages,
+				{
+					text: 'Network error, please try again later',
+					type: 'error',
+					is_neo: true
+				}
+			]
+			setMessages(message_new)
 			setLoading(false)
 			es.close()
 		}

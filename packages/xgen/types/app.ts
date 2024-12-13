@@ -3,6 +3,18 @@ import type { Action, Common } from '@/types'
 export declare namespace App {
 	type Theme = 'light' | 'dark'
 
+	type ChatMessageType =
+		| 'text'
+		| 'image'
+		| 'audio'
+		| 'video'
+		| 'file'
+		| 'link'
+		| 'error'
+		| 'progress'
+		| 'page'
+		| 'widget'
+
 	type ChatCmd = {
 		id: string
 		name: string
@@ -18,6 +30,7 @@ export declare namespace App {
 	type ChatAI = {
 		is_neo: boolean
 		text: string
+		type?: ChatMessageType
 		done: boolean
 		confirm?: boolean
 		actions?: Array<Action.ActionParams>
