@@ -6,16 +6,27 @@ import to from 'await-to-js'
 import axios from 'axios'
 import ntry from 'nice-try'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { message } from 'antd'
+import { RcFile, UploadFile } from 'antd/es/upload'
 
 type Args = {
 	/** The Chat ID **/
 	chat_id?: string
+	/** Upload options **/
+	upload_options?: {
+		process_image?: boolean
+		max_file_size?: number // in MB
+		allowed_types?: string[]
+		[key: string]: any
+	}
 }
 
-export default ({ chat_id }: Args) => {
+export default ({ chat_id, upload_options = {} }: Args) => {
 	const event_source = useRef<EventSource>()
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
 	const [loading, setLoading] = useState(false)
+	const [selectedFiles, setSelectedFiles] = useState<UploadFile[]>([])
+	const [uploading, setUploading] = useState(false)
 
 	const global = useGlobal()
 
@@ -183,5 +194,160 @@ export default ({ chat_id }: Args) => {
 		return () => event_source.current?.close()
 	}, [])
 
-	return { messages, loading, setMessages, cancel }
+	/** Upload files to Neo API **/
+	const uploadFile = useMemoizedFn(async (file: RcFile) => {
+		if (!neo_api) {
+			throw new Error('Neo API endpoint not configured')
+		}
+
+		// Default options
+		const options = {
+			process_image: false,
+			max_file_size: 10, // 10MB
+			allowed_types: ['image/*', '.pdf', '.doc', '.docx', '.txt'],
+			...upload_options
+		}
+
+		// Validate file size
+		const maxSize = options.max_file_size * 1024 * 1024 // Convert to bytes
+		if (file.size > maxSize) {
+			throw new Error(`File size cannot exceed ${options.max_file_size}MB`)
+		}
+
+		// Validate file type
+		const isValidType = options.allowed_types.some((type) => {
+			if (type.includes('*')) {
+				return file.type.startsWith(type.replace('*', ''))
+			}
+			return file.name.toLowerCase().endsWith(type)
+		})
+
+		if (!isValidType) {
+			throw new Error('File type not supported')
+		}
+
+		const formData = new FormData()
+		formData.append('file', file)
+		for (const [key, value] of Object.entries(options)) {
+			formData.append(`option_${key}`, String(value))
+		}
+
+		const endpoint = `${neo_api}/upload?token=${encodeURIComponent(getToken())}&chat_id=${chat_id}`
+
+		try {
+			const response = await fetch(endpoint, {
+				method: 'POST',
+				body: formData,
+				credentials: 'include'
+			})
+
+			if (!response.ok) {
+				const error = await response.json()
+				throw new Error(error.message || `HTTP error! status: ${response.status}`)
+			}
+
+			const result = await response.json()
+			return result
+		} catch (error: any) {
+			message.error(error.message || 'Failed to upload file')
+			throw error
+		}
+	})
+
+	/** Handle multiple file uploads **/
+	const uploadFiles = useMemoizedFn(async (files: RcFile[]) => {
+		try {
+			const uploadPromises = files.map((file) => uploadFile(file))
+			const results = await Promise.all(uploadPromises)
+			return results
+		} catch (error) {
+			console.error('Failed to upload files:', error)
+			throw error
+		}
+	})
+
+	/** Handle file selection **/
+	const handleFileSelect = useMemoizedFn((file: RcFile) => {
+		// Validate file type
+		const options = {
+			process_image: false,
+			max_file_size: 10,
+			allowed_types: ['image/*', '.pdf', '.doc', '.docx', '.txt'],
+			...upload_options
+		}
+
+		const isValidType = options.allowed_types.some((type) => {
+			if (type.includes('*')) {
+				return file.type.startsWith(type.replace('*', ''))
+			}
+			return file.name.toLowerCase().endsWith(type)
+		})
+
+		if (!isValidType) {
+			message.error('File type not supported')
+			return false
+		}
+
+		// Validate file size
+		const maxSize = options.max_file_size * 1024 * 1024
+		if (file.size > maxSize) {
+			message.error(`File size cannot exceed ${options.max_file_size}MB`)
+			return false
+		}
+
+		setSelectedFiles((prev) => [...prev, { ...file, status: 'uploading' } as UploadFile])
+		return false // Prevent automatic upload
+	})
+
+	/** Handle file upload **/
+	const handleUpload = useMemoizedFn(async () => {
+		if (!selectedFiles.length) return
+
+		setUploading(true)
+		try {
+			const files = selectedFiles.filter((file) => file.status === 'uploading')
+			const results = await uploadFiles(files as RcFile[])
+
+			// Update file status to done
+			setSelectedFiles((prev) =>
+				prev.map((file) => ({
+					...file,
+					status: 'done',
+					response: results.find((r) => r.filename === file.name)
+				}))
+			)
+
+			message.success('Files uploaded successfully')
+		} catch (error: any) {
+			// Update file status to error
+			setSelectedFiles((prev) =>
+				prev.map((file) => ({
+					...file,
+					status: 'error',
+					error: error.message
+				}))
+			)
+		} finally {
+			setUploading(false)
+		}
+	})
+
+	/** Remove file from selection **/
+	const handleRemoveFile = useMemoizedFn((file: UploadFile) => {
+		setSelectedFiles((prev) => prev.filter((f) => f.uid !== file.uid))
+	})
+
+	return {
+		messages,
+		loading,
+		setMessages,
+		cancel,
+		uploadFile,
+		uploadFiles,
+		selectedFiles,
+		uploading,
+		handleFileSelect,
+		handleUpload,
+		handleRemoveFile
+	}
 }

@@ -1,4 +1,5 @@
-import { Input, Button, Upload } from 'antd'
+import { Input, Button, Upload, message } from 'antd'
+import { UploadChangeParam, UploadFile, UploadProps, RcFile } from 'antd/es/upload'
 import clsx from 'clsx'
 import { UploadSimple, Sparkle } from 'phosphor-react'
 import { useState, useEffect, useRef, useLayoutEffect } from 'react'
@@ -11,6 +12,7 @@ import { App, Common } from '@/types'
 import { useMemoizedFn } from 'ahooks'
 import { useGlobal } from '@/context/app'
 import ChatItem from '../ChatItem'
+import { UploadOutlined } from '@ant-design/icons'
 
 const { TextArea } = Input
 
@@ -33,6 +35,11 @@ interface AIChatProps {
 	contextFiles?: ContextFile[]
 	onRemoveContextFile?: (file: ContextFile) => void
 	botAvatar?: string
+	upload_options?: {
+		process_image?: boolean
+		max_file_size?: number
+		allowed_types?: string[]
+	}
 }
 
 const AIChat = (props: AIChatProps) => {
@@ -44,7 +51,7 @@ const AIChat = (props: AIChatProps) => {
 	const is_cn = locale === 'zh-CN'
 	const stack = global.stack.paths.join('/')
 
-	const { onSend, onClose, onNew, className, onRemoveContextFile, botAvatar } = props
+	const { onSend, onClose, onNew, className, onRemoveContextFile, botAvatar, upload_options } = props
 	const [selectedFiles, setSelectedFiles] = useState<any[]>([])
 	const [inputValue, setInputValue] = useState('')
 	const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -52,7 +59,18 @@ const AIChat = (props: AIChatProps) => {
 	const [title, setTitle] = useState(global.app_info.optional?.neo?.name || 'AI Assistant')
 	const [currentPage, setCurrentPage] = useState(pathname.replace(/\/_menu.*/gi, '').toLowerCase())
 	const [contextFiles, setContextFiles] = useState<ContextFile[]>([])
-	const { messages, loading, setMessages, cancel } = useAIChat({ chat_id })
+	const {
+		messages,
+		loading,
+		setMessages,
+		cancel,
+		selectedFiles: aiChatSelectedFiles,
+		uploading,
+		handleFileSelect,
+		handleUpload,
+		handleRemoveFile,
+		uploadFile
+	} = useAIChat({ chat_id, upload_options })
 	const [chat_context, setChatContext] = useState<App.ChatContext>({ placeholder: '', signal: '' })
 
 	const [field, setField] = useState<App.Field>({
@@ -90,10 +108,6 @@ const AIChat = (props: AIChatProps) => {
 		primary: '',
 		data_item: {}
 	})
-
-	const handleFileSelect = (info: any) => {
-		setSelectedFiles(info.fileList)
-	}
 
 	const handleSend = () => {
 		if (inputValue.trim()) {
@@ -165,6 +179,46 @@ const AIChat = (props: AIChatProps) => {
 			inputRef.current.focus()
 		}
 	}, [loading])
+
+	const uploadProps: UploadProps = {
+		onChange: async (info: UploadChangeParam<UploadFile>) => {
+			if (info.file.status === 'uploading') {
+				return
+			}
+
+			try {
+				const result = await uploadFile(info.file as RcFile)
+				message.success(`uploaded successfully`)
+				handleFileSelect(info.file as any)
+				setSelectedFiles(
+					info.fileList.map((file) => ({
+						...file,
+						status: file.uid === info.file.uid ? 'done' : file.status,
+						response: file.uid === info.file.uid ? result : file.response
+					}))
+				)
+			} catch (error: any) {
+				message.error(error.message || `upload failed.`)
+				setSelectedFiles(
+					info.fileList.map((file) => ({
+						...file,
+						status: file.uid === info.file.uid ? 'error' : file.status
+					}))
+				)
+			}
+		},
+		beforeUpload: (file) => {
+			const isValidSize = file.size / 1024 / 1024 < (upload_options?.max_file_size || 10)
+			if (!isValidSize) {
+				message.error(`File must be smaller than ${upload_options?.max_file_size || 10}MB!`)
+				return Upload.LIST_IGNORE
+			}
+			return false
+		},
+		multiple: true,
+		showUploadList: false,
+		disabled: loading
+	}
 
 	return (
 		<div className={clsx(styles.aiChat, className)}>
@@ -333,13 +387,7 @@ const AIChat = (props: AIChatProps) => {
 				{/* Status Bar */}
 				<div className={styles.statusBar}>
 					<div className={styles.leftTools}>
-						<Upload
-							onChange={handleFileSelect}
-							fileList={selectedFiles}
-							multiple
-							showUploadList={false}
-							disabled={loading}
-						>
+						<Upload {...uploadProps}>
 							<Button type='text' icon={<UploadSimple size={14} />} disabled={loading} />
 						</Upload>
 						<Button type='text' icon={<Sparkle size={14} />} disabled={loading} />
