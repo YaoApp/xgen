@@ -260,11 +260,10 @@ const AIChat = (props: AIChatProps) => {
 	}
 
 	const handlePaste = async (e: ClipboardEvent<HTMLTextAreaElement>) => {
-		e.preventDefault()
-
 		// 处理剪贴板中的文本
 		const text = e.clipboardData?.getData('text')
 		if (text && isValidUrl(text.trim()) && text.trim() === text) {
+			e.preventDefault()
 			// 如果是纯URL，添加为URL类型的ContextFile
 			const urlFile: ContextFile = {
 				name: text,
@@ -283,6 +282,7 @@ const AIChat = (props: AIChatProps) => {
 
 		for (const item of Array.from(items)) {
 			if (item.type.startsWith('image/')) {
+				e.preventDefault()
 				const file = item.getAsFile()
 				if (!file) continue
 
