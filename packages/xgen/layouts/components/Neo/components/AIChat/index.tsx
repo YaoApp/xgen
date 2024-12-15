@@ -7,21 +7,13 @@ import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import { getLocale, useLocation } from '@umijs/max'
 import Logo from '@/layouts/components/ColumnOne/Menu/Logo'
-import useAIChat from '../../hooks/useAIChat'
+import useAIChat, { ContextFile } from '../../hooks/useAIChat'
 import { App, Common } from '@/types'
 import { useMemoizedFn } from 'ahooks'
 import { useGlobal } from '@/context/app'
 import ChatItem from '../ChatItem'
-import { UploadOutlined } from '@ant-design/icons'
 
 const { TextArea } = Input
-
-interface ContextFile {
-	name: string
-	type: string
-	url?: string
-	thumbUrl?: string
-}
 
 interface AIChatProps {
 	messages?: App.ChatInfo[]
@@ -32,8 +24,6 @@ interface AIChatProps {
 	onNew?: () => void
 	currentPage?: string
 	showCurrentPage?: boolean
-	contextFiles?: ContextFile[]
-	onRemoveContextFile?: (file: ContextFile) => void
 	botAvatar?: string
 	upload_options?: {
 		process_image?: boolean
@@ -51,25 +41,23 @@ const AIChat = (props: AIChatProps) => {
 	const is_cn = locale === 'zh-CN'
 	const stack = global.stack.paths.join('/')
 
-	const { onSend, onClose, onNew, className, onRemoveContextFile, botAvatar, upload_options } = props
+	const { onSend, onClose, onNew, className, botAvatar, upload_options } = props
 	const [selectedFiles, setSelectedFiles] = useState<any[]>([])
 	const [inputValue, setInputValue] = useState('')
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const [chat_id, setChatId] = useState('hello')
 	const [title, setTitle] = useState(global.app_info.optional?.neo?.name || 'AI Assistant')
 	const [currentPage, setCurrentPage] = useState(pathname.replace(/\/_menu.*/gi, '').toLowerCase())
-	const [contextFiles, setContextFiles] = useState<ContextFile[]>([])
 	const {
 		messages,
 		loading,
 		setMessages,
 		cancel,
-		selectedFiles: aiChatSelectedFiles,
-		uploading,
-		handleFileSelect,
-		handleUpload,
-		handleRemoveFile,
-		uploadFile
+		uploadFile,
+		contextFiles,
+		removeContextFile,
+		addContextFile,
+		formatFileName
 	} = useAIChat({ chat_id, upload_options })
 	const [chat_context, setChatContext] = useState<App.ChatContext>({ placeholder: '', signal: '' })
 
@@ -185,39 +173,76 @@ const AIChat = (props: AIChatProps) => {
 			if (info.file.status === 'uploading') {
 				return
 			}
-
-			try {
-				const result = await uploadFile(info.file as RcFile)
-				message.success(`uploaded successfully`)
-				handleFileSelect(info.file as any)
-				setSelectedFiles(
-					info.fileList.map((file) => ({
-						...file,
-						status: file.uid === info.file.uid ? 'done' : file.status,
-						response: file.uid === info.file.uid ? result : file.response
-					}))
-				)
-			} catch (error: any) {
-				message.error(error.message || `upload failed.`)
-				setSelectedFiles(
-					info.fileList.map((file) => ({
-						...file,
-						status: file.uid === info.file.uid ? 'error' : file.status
-					}))
-				)
-			}
 		},
-		beforeUpload: (file) => {
-			const isValidSize = file.size / 1024 / 1024 < (upload_options?.max_file_size || 10)
-			if (!isValidSize) {
-				message.error(`File must be smaller than ${upload_options?.max_file_size || 10}MB!`)
-				return Upload.LIST_IGNORE
+		beforeUpload: async (file: RcFile) => {
+			try {
+				const contextFile: ContextFile = {
+					name: file.name,
+					type: file.type.startsWith('image/')
+						? 'IMG'
+						: file.name.split('.').pop()?.toUpperCase() || 'FILE',
+					status: 'uploading',
+					blob: file
+				}
+
+				// If it's an image, create a preview
+				if (file.type.startsWith('image/')) {
+					contextFile.thumbUrl = URL.createObjectURL(file)
+				}
+
+				// Add to context files with loading state
+				addContextFile(contextFile)
+
+				// Upload the file
+				const result = await uploadFile(file)
+
+				// Update context file with success state and result
+				const updatedFile: ContextFile = {
+					...contextFile,
+					status: 'done',
+					url: result.url,
+					thumbUrl: result.thumbUrl || contextFile.thumbUrl,
+					file_id: result.file_id,
+					bytes: result.bytes,
+					created_at: result.created_at,
+					filename: result.filename,
+					content_type: result.content_type
+				}
+
+				// Remove old file and add updated one
+				removeContextFile(contextFile)
+				addContextFile(updatedFile)
+
+				message.success(`${formatFileName(file.name)} uploaded successfully`)
+			} catch (error: any) {
+				message.error(error.message || `Failed to upload ${file.name}`)
+
+				// Remove failed file from context
+				removeContextFile({ name: file.name, type: file.type })
 			}
-			return false
+
+			return false // Prevent default upload behavior
 		},
 		multiple: true,
 		showUploadList: false,
 		disabled: loading
+	}
+
+	// Update click handler function
+	const handleFileClick = (file: ContextFile) => {
+		// For images, use thumbUrl (local preview)
+		if (file.type === 'IMG' && file.thumbUrl) {
+			window.open(file.thumbUrl, '_blank')
+			return
+		}
+
+		// For other files, create and open object URL
+		if (file.blob) {
+			const url = URL.createObjectURL(file.blob)
+			window.open(url, '_blank')
+			// Clean up object URL after window opens
+			setTimeout(() => URL.revokeObjectURL(url), 100)
+		}
 	}
 
 	return (
@@ -305,7 +330,14 @@ const AIChat = (props: AIChatProps) => {
 							<div className={styles.filesContext}>
 								<div className={styles.filesList}>
 									{contextFiles.map((file, index) => (
-										<div key={index} className={styles.fileItem}>
+										<div
+											key={index}
+											className={clsx(styles.fileItem, {
+												[styles.uploading]: file.status === 'uploading'
+											})}
+											onClick={() => handleFileClick(file)}
+											style={{ cursor: 'pointer' }}
+										>
 											<div className={styles.fileThumb}>
 												{file.thumbUrl ? (
 													<img
@@ -317,23 +349,30 @@ const AIChat = (props: AIChatProps) => {
 														{file.type}
 													</div>
 												)}
+												{file.status === 'uploading' && (
+													<div className={styles.uploadingOverlay}>
+														<Icon
+															name='icon-loader'
+															size={16}
+															className={styles.spinner}
+														/>
+													</div>
+												)}
 											</div>
 											<div className={styles.fileName} title={file.name}>
 												{file.name.length > 15
 													? `${file.name.slice(0, 12)}...`
 													: file.name}
 											</div>
-											{onRemoveContextFile && (
-												<div
-													className={styles.deleteBtn}
-													onClick={(e) => {
-														e.stopPropagation()
-														onRemoveContextFile(file)
-													}}
-												>
-													<Icon name='icon-x' size={12} />
-												</div>
-											)}
+											<div
+												className={styles.deleteBtn}
+												onClick={(e) => {
+													e.stopPropagation()
+													removeContextFile(file)
+												}}
+											>
+												<Icon name='icon-x' size={12} />
+											</div>
 										</div>
 									))}
 								</div>

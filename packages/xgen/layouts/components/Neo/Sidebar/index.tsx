@@ -22,8 +22,6 @@ const Index = (props: IPropsNeo) => {
 				onSend={handleSend}
 				title='AI Assistant'
 				currentPage={'Form/Index'}
-				contextFiles={mockContextFiles}
-				onRemoveContextFile={() => {}}
 				onNew={() => {
 					/* handle new */
 				}}

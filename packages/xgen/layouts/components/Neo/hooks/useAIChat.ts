@@ -7,7 +7,21 @@ import axios from 'axios'
 import ntry from 'nice-try'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { message } from 'antd'
-import { RcFile, UploadFile } from 'antd/es/upload'
+import { RcFile } from 'antd/es/upload'
+
+export interface ContextFile {
+	name: string
+	type: string
+	url?: string
+	thumbUrl?: string
+	status?: 'uploading' | 'done' | 'error'
+	file_id?: string
+	bytes?: number
+	created_at?: number
+	filename?: string
+	content_type?: string
+	blob?: Blob
+}
 
 type Args = {
 	/** The Chat ID **/
@@ -21,13 +35,55 @@ type Args = {
 	}
 }
 
+export const formatFileName = (fileName: string, maxLength: number = 30) => {
+	if (fileName.length <= maxLength) return fileName
+
+	const ext = fileName.split('.').pop() || ''
+	const nameWithoutExt = fileName.slice(0, fileName.lastIndexOf('.'))
+	const start = nameWithoutExt.slice(0, 10)
+	const end = nameWithoutExt.slice(-10)
+
+	return `${start}...${end}.${ext}`
+}
+
+// Update allowed file types - only keep specific document types
+const ALLOWED_FILE_TYPES = {
+	'application/pdf': 'pdf',
+	'application/msword': 'doc',
+	'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
+	'application/vnd.oasis.opendocument.text': 'odt',
+	'application/vnd.ms-excel': 'xls',
+	'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+	'application/vnd.ms-powerpoint': 'ppt',
+	'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx'
+} as const
+
+// Keep CODE_FILE_TYPES for handling specific code file extensions
+const CODE_FILE_TYPES: Record<string, string> = {
+	'.js': 'text/javascript',
+	'.ts': 'text/typescript',
+	'.go': 'text/x-go',
+	'.py': 'text/x-python',
+	'.java': 'text/x-java',
+	'.c': 'text/x-c',
+	'.cpp': 'text/x-c++',
+	'.rb': 'text/x-ruby',
+	'.php': 'text/x-php',
+	'.swift': 'text/x-swift',
+	'.rs': 'text/x-rust',
+	'.jsx': 'text/javascript',
+	'.tsx': 'text/typescript',
+	'.vue': 'text/x-vue',
+	'.sh': 'text/x-sh',
+	'.yao': 'text/x-yao'
+}
+
 export default ({ chat_id, upload_options = {} }: Args) => {
 	const event_source = useRef<EventSource>()
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
 	const [loading, setLoading] = useState(false)
-	const [selectedFiles, setSelectedFiles] = useState<UploadFile[]>([])
-	const [uploading, setUploading] = useState(false)
-
+	const [contextFiles, setContextFiles] = useState<ContextFile[]>([])
+	const uploadControllers = useRef<Map<string, AbortController>>(new Map())
 	const global = useGlobal()
 
 	/** Get Neo API **/
@@ -196,6 +252,9 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 
 	/** Upload files to Neo API **/
 	const uploadFile = useMemoizedFn(async (file: RcFile) => {
+		const controller = new AbortController()
+		uploadControllers.current.set(file.name, controller)
+
 		if (!neo_api) {
 			throw new Error('Neo API endpoint not configured')
 		}
@@ -214,20 +273,60 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 			throw new Error(`File size cannot exceed ${options.max_file_size}MB`)
 		}
 
-		// Validate file type
-		const isValidType = options.allowed_types.some((type) => {
-			if (type.includes('*')) {
-				return file.type.startsWith(type.replace('*', ''))
+		// Update isValidType to include .yao in code extensions
+		const isValidType = (fileType: string, fileName: string) => {
+			// Check for code file extensions
+			const codeExtensions = [
+				'.js',
+				'.ts',
+				'.go',
+				'.py',
+				'.java',
+				'.c',
+				'.cpp',
+				'.rb',
+				'.php',
+				'.swift',
+				'.rs',
+				'.jsx',
+				'.tsx',
+				'.vue',
+				'.sh',
+				'.yao'
+			]
+			if (codeExtensions.some((ext) => fileName.toLowerCase().endsWith(ext))) {
+				return true
 			}
-			return file.name.toLowerCase().endsWith(type)
-		})
 
-		if (!isValidType) {
+			// Check for general media types
+			if (
+				fileType.startsWith('text/') ||
+				fileType.startsWith('image/') ||
+				fileType.startsWith('audio/') ||
+				fileType.startsWith('video/')
+			) {
+				return true
+			}
+
+			// Check for specific document types
+			return fileType in ALLOWED_FILE_TYPES
+		}
+
+		if (!isValidType(file.type, file.name)) {
 			throw new Error('File type not supported')
 		}
 
 		const formData = new FormData()
-		formData.append('file', file)
+
+		// Handle code files with correct Content-Type
+		const ext = '.' + file.name.split('.').pop()?.toLowerCase()
+		if (ext && CODE_FILE_TYPES[ext]) {
+			const codeBlob = new Blob([file], { type: CODE_FILE_TYPES[ext] })
+			formData.append('file', codeBlob, file.name)
+		} else {
+			formData.append('file', file)
+		}
+
 		for (const [key, value] of Object.entries(options)) {
 			formData.append(`option_${key}`, String(value))
 		}
@@ -238,8 +337,11 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 			const response = await fetch(endpoint, {
 				method: 'POST',
 				body: formData,
-				credentials: 'include'
+				credentials: 'include',
+				signal: controller.signal
 			})
+
+			uploadControllers.current.delete(file.name)
 
 			if (!response.ok) {
 				const error = await response.json()
@@ -247,94 +349,46 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 			}
 
 			const result = await response.json()
-			return result
+			return {
+				...result,
+				url: result.filename,
+				content_type: result.content_type || file.type
+			}
 		} catch (error: any) {
+			uploadControllers.current.delete(file.name)
+			if (error.name === 'AbortError') {
+				throw new Error('Upload cancelled')
+			}
 			message.error(error.message || 'Failed to upload file')
 			throw error
 		}
 	})
 
-	/** Handle multiple file uploads **/
-	const uploadFiles = useMemoizedFn(async (files: RcFile[]) => {
-		try {
-			const uploadPromises = files.map((file) => uploadFile(file))
-			const results = await Promise.all(uploadPromises)
-			return results
-		} catch (error) {
-			console.error('Failed to upload files:', error)
-			throw error
-		}
+	/** Add/Update context files **/
+	const addContextFile = useMemoizedFn((file: ContextFile) => {
+		setContextFiles((prev) => [...prev, file])
 	})
 
-	/** Handle file selection **/
-	const handleFileSelect = useMemoizedFn((file: RcFile) => {
-		// Validate file type
-		const options = {
-			process_image: false,
-			max_file_size: 10,
-			allowed_types: ['image/*', '.pdf', '.doc', '.docx', '.txt'],
-			...upload_options
+	/** Remove context file **/
+	const removeContextFile = useMemoizedFn((fileToRemove: ContextFile) => {
+		if (fileToRemove.status === 'uploading') {
+			cancelUpload(fileToRemove.name)
 		}
-
-		const isValidType = options.allowed_types.some((type) => {
-			if (type.includes('*')) {
-				return file.type.startsWith(type.replace('*', ''))
-			}
-			return file.name.toLowerCase().endsWith(type)
-		})
-
-		if (!isValidType) {
-			message.error('File type not supported')
-			return false
-		}
-
-		// Validate file size
-		const maxSize = options.max_file_size * 1024 * 1024
-		if (file.size > maxSize) {
-			message.error(`File size cannot exceed ${options.max_file_size}MB`)
-			return false
-		}
-
-		setSelectedFiles((prev) => [...prev, { ...file, status: 'uploading' } as UploadFile])
-		return false // Prevent automatic upload
+		setContextFiles((prev) => prev.filter((file) => file.name !== fileToRemove.name))
 	})
 
-	/** Handle file upload **/
-	const handleUpload = useMemoizedFn(async () => {
-		if (!selectedFiles.length) return
-
-		setUploading(true)
-		try {
-			const files = selectedFiles.filter((file) => file.status === 'uploading')
-			const results = await uploadFiles(files as RcFile[])
-
-			// Update file status to done
-			setSelectedFiles((prev) =>
-				prev.map((file) => ({
-					...file,
-					status: 'done',
-					response: results.find((r) => r.filename === file.name)
-				}))
-			)
-
-			message.success('Files uploaded successfully')
-		} catch (error: any) {
-			// Update file status to error
-			setSelectedFiles((prev) =>
-				prev.map((file) => ({
-					...file,
-					status: 'error',
-					error: error.message
-				}))
-			)
-		} finally {
-			setUploading(false)
-		}
+	/** Clear all context files **/
+	const clearContextFiles = useMemoizedFn(() => {
+		setContextFiles([])
 	})
 
-	/** Remove file from selection **/
-	const handleRemoveFile = useMemoizedFn((file: UploadFile) => {
-		setSelectedFiles((prev) => prev.filter((f) => f.uid !== file.uid))
+	/** Cancel upload **/
+	const cancelUpload = useMemoizedFn((fileName: string) => {
+		const controller = uploadControllers.current.get(fileName)
+		if (controller) {
+			controller.abort()
+			uploadControllers.current.delete(fileName)
+		}
 	})
 
 	return {
@@ -343,11 +397,11 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 		setMessages,
 		cancel,
 		uploadFile,
-		uploadFiles,
-		selectedFiles,
-		uploading,
-		handleFileSelect,
-		handleUpload,
-		handleRemoveFile
+		contextFiles,
+		addContextFile,
+		removeContextFile,
+		clearContextFiles,
+		cancelUpload,
+		formatFileName
 	}
 }
