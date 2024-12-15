@@ -6,8 +6,8 @@ import { useState, useEffect, useRef, useLayoutEffect, ClipboardEvent } from 're
 import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import { getLocale, useLocation } from '@umijs/max'
-import Logo from '@/layouts/components/ColumnOne/Menu/Logo'
-import useAIChat, { ContextFile } from '../../hooks/useAIChat'
+
+import useAIChat from '../../hooks/useAIChat'
 import { App, Common } from '@/types'
 import { useMemoizedFn } from 'ahooks'
 import { useGlobal } from '@/context/app'
@@ -55,9 +55,9 @@ const AIChat = (props: AIChatProps) => {
 		setMessages,
 		cancel,
 		uploadFile,
-		contextFiles,
-		removeContextFile,
-		addContextFile,
+		attachments,
+		removeAttachment,
+		addAttachment,
 		formatFileName
 	} = useAIChat({ chat_id, upload_options })
 	const [chat_context, setChatContext] = useState<App.ChatContext>({ placeholder: '', signal: '' })
@@ -99,17 +99,20 @@ const AIChat = (props: AIChatProps) => {
 	})
 
 	const handleSend = () => {
-		if (inputValue.trim()) {
-			onSend?.(inputValue, selectedFiles)
+		const message = inputValue.trim()
+		if (message) {
+			// Clear input first
 			setInputValue('')
 			setSelectedFiles([])
 
-			// Send message to Neo
+			// Then send message
+			onSend?.(message, selectedFiles)
 			setMessages([
 				...messages,
 				{
 					is_neo: false,
-					text: inputValue,
+					text: message, // Use saved message instead of inputValue
+					attachments: attachments, // Add attachments to the message
 					context: {
 						namespace: context.namespace,
 						stack: stack || '',
@@ -121,14 +124,6 @@ const AIChat = (props: AIChatProps) => {
 					}
 				}
 			])
-
-			// Clear context files after sending
-			contextFiles.forEach((file) => {
-				if (file.thumbUrl) {
-					URL.revokeObjectURL(file.thumbUrl)
-				}
-				removeContextFile(file)
-			})
 		}
 	}
 
@@ -185,7 +180,7 @@ const AIChat = (props: AIChatProps) => {
 		},
 		beforeUpload: async (file: RcFile) => {
 			try {
-				const contextFile: ContextFile = {
+				const attachment: App.ChatAttachment = {
 					name: file.name,
 					type: file.type.startsWith('image/')
 						? 'IMG'
@@ -194,23 +189,19 @@ const AIChat = (props: AIChatProps) => {
 					blob: file
 				}
 
-				// If it's an image, create a preview
 				if (file.type.startsWith('image/')) {
-					contextFile.thumbUrl = URL.createObjectURL(file)
+					attachment.thumbUrl = URL.createObjectURL(file)
 				}
 
-				// Add to context files with loading state
-				addContextFile(contextFile)
+				addAttachment(attachment)
 
-				// Upload the file
 				const result = await uploadFile(file)
 
-				// Update context file with success state and result
-				const updatedFile: ContextFile = {
-					...contextFile,
+				const updatedAttachment: App.ChatAttachment = {
+					...attachment,
 					status: 'done',
 					url: result.url,
-					thumbUrl: result.thumbUrl || contextFile.thumbUrl,
+					thumbUrl: result.thumbUrl || attachment.thumbUrl,
 					file_id: result.file_id,
 					bytes: result.bytes,
 					created_at: result.created_at,
@@ -218,43 +209,36 @@ const AIChat = (props: AIChatProps) => {
 					content_type: result.content_type
 				}
 
-				// Remove old file and add updated one
-				removeContextFile(contextFile)
-				addContextFile(updatedFile)
+				removeAttachment(attachment)
+				addAttachment(updatedAttachment)
 
 				message.success(`${formatFileName(file.name)} uploaded successfully`)
 			} catch (error: any) {
 				message.error(error.message || `Failed to upload ${file.name}`)
-
-				// Remove failed file from context
-				removeContextFile({ name: file.name, type: file.type })
+				removeAttachment({ name: file.name, type: file.type })
 			}
 
-			return false // Prevent default upload behavior
+			return false
 		},
 		multiple: true,
 		showUploadList: false,
 		disabled: loading
 	}
 
-	// Update click handler function
-	const handleFileClick = (file: ContextFile) => {
-		if (file.type === 'URL') {
-			window.open(file.url, '_blank')
+	const handleFileClick = (attachment: App.ChatAttachment) => {
+		if (attachment.type === 'URL') {
+			window.open(attachment.url, '_blank')
 			return
 		}
 
-		// For images, use thumbUrl (local preview)
-		if (file.type === 'IMG' && file.thumbUrl) {
-			window.open(file.thumbUrl, '_blank')
+		if (attachment.type === 'IMG' && attachment.thumbUrl) {
+			window.open(attachment.thumbUrl, '_blank')
 			return
 		}
 
-		// For other files, create and open object URL
-		if (file.blob) {
-			const url = URL.createObjectURL(file.blob)
+		if (attachment.blob) {
+			const url = URL.createObjectURL(attachment.blob)
 			window.open(url, '_blank')
-			// Clean up object URL after window opens
 			setTimeout(() => URL.revokeObjectURL(url), 100)
 		}
 	}
@@ -264,15 +248,15 @@ const AIChat = (props: AIChatProps) => {
 		const text = e.clipboardData?.getData('text')
 		if (text && isValidUrl(text.trim()) && text.trim() === text) {
 			e.preventDefault()
-			// 如果是纯URL，添加为URL类型的ContextFile
-			const urlFile: ContextFile = {
+			// 如果是纯URL，添加为URL类型的Attachment
+			const urlAttachment: App.ChatAttachment = {
 				name: text,
 				type: 'URL',
 				status: 'done',
 				url: text,
 				thumbUrl: undefined
 			}
-			addContextFile(urlFile)
+			addAttachment(urlAttachment)
 			return
 		}
 
@@ -294,7 +278,7 @@ const AIChat = (props: AIChatProps) => {
 				rcFile.uid = `rc-upload-${Date.now()}`
 
 				try {
-					const contextFile: ContextFile = {
+					const attachment: App.ChatAttachment = {
 						name: `pasted-image-${Date.now()}.png`,
 						type: 'IMG',
 						status: 'uploading',
@@ -302,15 +286,15 @@ const AIChat = (props: AIChatProps) => {
 						thumbUrl: URL.createObjectURL(rcFile)
 					}
 
-					// 添加到context files并显示加载状态
-					addContextFile(contextFile)
+					// 添加到attachments并显示加载状态
+					addAttachment(attachment)
 
 					// 上传文件
 					const result = await uploadFile(rcFile)
 
-					// 更新context file状态
-					const updatedFile: ContextFile = {
-						...contextFile,
+					// 更新attachment状态
+					const updatedAttachment: App.ChatAttachment = {
+						...attachment,
 						status: 'done',
 						url: result.url,
 						file_id: result.file_id,
@@ -321,13 +305,13 @@ const AIChat = (props: AIChatProps) => {
 					}
 
 					// 更新文件状态
-					removeContextFile(contextFile)
-					addContextFile(updatedFile)
+					removeAttachment(attachment)
+					addAttachment(updatedAttachment)
 
 					message.success('Image uploaded successfully')
 				} catch (error: any) {
 					message.error(error.message || 'Failed to upload image')
-					removeContextFile({ name: file.name, type: file.type })
+					removeAttachment({ name: file.name, type: file.type })
 				}
 			}
 		}
@@ -358,31 +342,14 @@ const AIChat = (props: AIChatProps) => {
 			<div className={styles.messages}>
 				<div className={styles.messageWrapper}>
 					{messages.map((msg, index) => (
-						<div
+						<ChatItem
 							key={index}
-							className={clsx(styles.messageItem, {
-								[styles.user]: !msg.is_neo,
-								[styles.assistant]: msg.is_neo
-							})}
-						>
-							<div className={styles.avatar}>
-								{msg.is_neo &&
-									(botAvatar ? (
-										<img src={botAvatar} alt='bot' />
-									) : (
-										<Logo logo={undefined} />
-									))}
-							</div>
-							<div className={styles.content}>
-								<ChatItem
-									context={context}
-									field={field}
-									chat_info={msg}
-									callback={() => {}}
-									key={index}
-								></ChatItem>
-							</div>
-						</div>
+							context={context}
+							field={field}
+							chat_info={msg}
+							callback={() => {}}
+							avatar={msg.is_neo ? botAvatar : undefined}
+						/>
 					))}
 					<div ref={messagesEndRef} />
 				</div>
@@ -390,7 +357,7 @@ const AIChat = (props: AIChatProps) => {
 
 			{/* Input Area */}
 			<div className={styles.inputArea}>
-				{((showCurrentPage && currentPage) || contextFiles.length > 0) && (
+				{((showCurrentPage && currentPage) || attachments.length > 0) && (
 					<div className={styles.contextArea}>
 						{showCurrentPage && currentPage && (
 							<div className={styles.currentPage}>
@@ -414,34 +381,43 @@ const AIChat = (props: AIChatProps) => {
 							</div>
 						)}
 
-						{contextFiles.length > 0 && (
-							<div className={styles.filesContext}>
-								<div className={styles.filesList}>
-									{contextFiles.map((file, index) => (
+						{attachments.length > 0 && (
+							<div className={styles.attachmentsArea}>
+								<div className={styles.attachmentsList}>
+									{attachments.map((attachment, index) => (
 										<div
 											key={index}
-											className={clsx(styles.fileItem, {
-												[styles.uploading]: file.status === 'uploading'
+											className={clsx(styles.attachmentItem, {
+												[styles.uploading]:
+													attachment.status === 'uploading'
 											})}
-											onClick={() => handleFileClick(file)}
+											onClick={() => handleFileClick(attachment)}
 											style={{ cursor: 'pointer' }}
 										>
-											<div className={styles.fileThumb}>
-												{file.type === 'URL' ? (
-													<div className={styles.fileTypeIcon}>
-														<Icon name='icon-link' size={16} />
+											<div className={styles.attachmentThumb}>
+												{attachment.type === 'URL' ? (
+													<div
+														className={
+															styles.attachmentTypeIcon
+														}
+													>
+														<Icon name='icon-link' size={10} />
 													</div>
-												) : file.thumbUrl ? (
+												) : attachment.thumbUrl ? (
 													<img
-														src={file.thumbUrl}
-														alt={file.name}
+														src={attachment.thumbUrl}
+														alt={attachment.name}
 													/>
 												) : (
-													<div className={styles.fileTypeIcon}>
-														{file.type}
+													<div
+														className={
+															styles.attachmentTypeIcon
+														}
+													>
+														{attachment.type}
 													</div>
 												)}
-												{file.status === 'uploading' && (
+												{attachment.status === 'uploading' && (
 													<div className={styles.uploadingOverlay}>
 														<Icon
 															name='icon-loader'
@@ -451,16 +427,19 @@ const AIChat = (props: AIChatProps) => {
 													</div>
 												)}
 											</div>
-											<div className={styles.fileName} title={file.name}>
-												{file.name.length > 15
-													? `${file.name.slice(0, 12)}...`
-													: file.name}
+											<div
+												className={styles.attachmentName}
+												title={attachment.name}
+											>
+												{attachment.name.length > 15
+													? `${attachment.name.slice(0, 12)}...`
+													: attachment.name}
 											</div>
 											<div
 												className={styles.deleteBtn}
 												onClick={(e) => {
 													e.stopPropagation()
-													removeContextFile(file)
+													removeAttachment(attachment)
 												}}
 											>
 												<Icon name='icon-x' size={12} />

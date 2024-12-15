@@ -32,14 +32,13 @@ export declare namespace App {
 		text: string
 		type?: ChatMessageType
 		done: boolean
-		confirm?: boolean
 		actions?: Array<Action.ActionParams>
-		command?: ChatCmd
 	}
 
 	type ChatHuman = {
 		is_neo: boolean
 		text: string
+		attachments?: ChatAttachment[]
 		context?: {
 			namespace: string
 			stack: string
@@ -212,5 +211,19 @@ export declare namespace App {
 	interface Menus {
 		items: Array<App.Menu>
 		setting: Array<App.Menu>
+	}
+
+	interface ChatAttachment {
+		name: string
+		type: string
+		url?: string
+		thumbUrl?: string
+		status?: 'uploading' | 'done' | 'error'
+		file_id?: string
+		bytes?: number
+		created_at?: number
+		filename?: string
+		content_type?: string
+		blob?: Blob
 	}
 }

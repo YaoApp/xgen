@@ -9,20 +9,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { message } from 'antd'
 import { RcFile } from 'antd/es/upload'
 
-export interface ContextFile {
-	name: string
-	type: string
-	url?: string
-	thumbUrl?: string
-	status?: 'uploading' | 'done' | 'error'
-	file_id?: string
-	bytes?: number
-	created_at?: number
-	filename?: string
-	content_type?: string
-	blob?: Blob
-}
-
 type Args = {
 	/** The Chat ID **/
 	chat_id?: string
@@ -82,7 +68,7 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 	const event_source = useRef<EventSource>()
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
 	const [loading, setLoading] = useState(false)
-	const [contextFiles, setContextFiles] = useState<ContextFile[]>([])
+	const [attachments, setAttachments] = useState<App.ChatAttachment[]>([])
 	const uploadControllers = useRef<Map<string, AbortController>>(new Map())
 	const global = useGlobal()
 
@@ -108,7 +94,27 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 	/** Get AI Chat Data **/
 	const getData = useMemoizedFn((message: App.ChatHuman) => {
 		setLoading(true)
-		const contentRaw = encodeURIComponent(message.text)
+
+		const content: { text: string; attachments?: App.ChatAttachment[] } = { text: message.text }
+
+		// Set attachments
+		if (attachments?.length && attachments.length > 0) {
+			content.attachments = []
+			attachments.forEach((attachment) => {
+				content.attachments?.push({
+					name: attachment.name,
+					url: attachment.url,
+					type: attachment.type,
+					content_type: attachment.content_type,
+					bytes: attachment.bytes,
+					created_at: attachment.created_at,
+					filename: attachment.filename,
+					file_id: attachment.file_id
+				})
+			})
+		}
+
+		const contentRaw = encodeURIComponent(JSON.stringify(content))
 		const contextRaw = encodeURIComponent(JSON.stringify(message.context))
 		const token = getToken()
 		const status_endpoint = `${neo_api}/status?content=${contentRaw}&context=${contextRaw}&token=${token}&chat_id=${chat_id}`
@@ -132,6 +138,14 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 				}
 				// If response is ok, proceed with EventSource
 				setupEventSource()
+
+				// Clear attachments after successful request
+				attachments.forEach((attachment) => {
+					if (attachment.thumbUrl) {
+						URL.revokeObjectURL(attachment.thumbUrl)
+					}
+				})
+				setAttachments([])
 			})
 			.catch((error) => {
 				let errorMessage = 'Network error, please try again later'
@@ -177,7 +191,7 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 				const formated_data = ntry(() => JSON.parse(data)) as App.ChatAI
 				if (!formated_data) return
 
-				const { text, confirm, type, actions, done } = formated_data
+				const { text, type, actions, done } = formated_data
 				const current_answer = messages[messages.length - 1] as App.ChatAI
 				if (done) {
 					if (text) {
@@ -186,7 +200,6 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 					if (type) {
 						current_answer.type = type
 					}
-					current_answer.confirm = confirm
 					current_answer.actions = actions
 					setMessages([...messages])
 					setLoading(false)
@@ -364,22 +377,22 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 		}
 	})
 
-	/** Add/Update context files **/
-	const addContextFile = useMemoizedFn((file: ContextFile) => {
-		setContextFiles((prev) => [...prev, file])
+	/** Add/Update attachment **/
+	const addAttachment = useMemoizedFn((attachment: App.ChatAttachment) => {
+		setAttachments((prev) => [...prev, attachment])
 	})
 
-	/** Remove context file **/
-	const removeContextFile = useMemoizedFn((fileToRemove: ContextFile) => {
-		if (fileToRemove.status === 'uploading') {
-			cancelUpload(fileToRemove.name)
+	/** Remove attachment **/
+	const removeAttachment = useMemoizedFn((attachmentToRemove: App.ChatAttachment) => {
+		if (attachmentToRemove.status === 'uploading') {
+			cancelUpload(attachmentToRemove.name)
 		}
-		setContextFiles((prev) => prev.filter((file) => file.name !== fileToRemove.name))
+		setAttachments((prev) => prev.filter((attachment) => attachment.name !== attachmentToRemove.name))
 	})
 
-	/** Clear all context files **/
-	const clearContextFiles = useMemoizedFn(() => {
-		setContextFiles([])
+	/** Clear all attachments **/
+	const clearAttachments = useMemoizedFn(() => {
+		setAttachments([])
 	})
 
 	/** Cancel upload **/
@@ -397,10 +410,10 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 		setMessages,
 		cancel,
 		uploadFile,
-		contextFiles,
-		addContextFile,
-		removeContextFile,
-		clearContextFiles,
+		attachments,
+		addAttachment,
+		removeAttachment,
+		clearAttachments,
 		cancelUpload,
 		formatFileName
 	}

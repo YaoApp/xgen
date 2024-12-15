@@ -56,76 +56,6 @@
 			margin: 0 auto;
 			width: 100%;
 		}
-
-		.messageItem {
-			display: flex;
-			gap: 8px;
-			max-width: 85%;
-
-			&.user {
-				margin-left: auto;
-				flex-direction: row-reverse;
-
-				.avatar {
-					display: none;
-				}
-
-				.content {
-					background: var(--color_main);
-					color: #fff;
-				}
-			}
-
-			&.assistant {
-				margin-right: auto;
-				max-width: 95%;
-
-				.avatar {
-					flex: 0 0 24px;
-					background: var(--color_bg_nav);
-					color: #666;
-				}
-
-				.content {
-					background: var(--color_bg_nav);
-				}
-			}
-
-			.avatar {
-				width: 32px;
-				height: 32px;
-				min-width: 32px;
-				border-radius: 50%;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				overflow: hidden;
-				background: var(--color_bg_nav);
-
-				img {
-					width: 100%;
-					height: 100%;
-					object-fit: contain;
-					padding: 4px;
-				}
-
-				:global {
-					.logo {
-						width: 100%;
-						height: 100%;
-						padding: 4px;
-					}
-				}
-			}
-
-			.content {
-				padding: 8px 12px;
-				border-radius: 12px;
-				word-break: break-word;
-				flex: 1;
-				min-width: 0;
-			}
-		}
 	}
 
 	.inputArea {
@@ -169,14 +99,14 @@
 				}
 			}
 
-			.filesContext {
-				.filesList {
+			.attachmentsArea {
+				.attachmentsList {
 					display: flex;
 					flex-wrap: wrap;
 					gap: 4px;
 					padding-bottom: 2px;
 
-					.fileItem {
+					.attachmentItem {
 						display: flex;
 						align-items: center;
 						gap: 4px;
@@ -193,7 +123,7 @@
 							background: var(--color_border);
 						}
 
-						.fileThumb {
+						.attachmentThumb {
 							width: 16px;
 							height: 16px;
 							display: flex;
@@ -207,13 +137,13 @@
 								border-radius: 2px;
 							}
 
-							.fileTypeIcon {
+							.attachmentTypeIcon {
 								font-size: 9px;
 								color: var(--color_title);
 							}
 						}
 
-						.fileName {
+						.attachmentName {
 							font-size: 11px;
 							max-width: 120px;
 							overflow: hidden;
@@ -389,29 +319,12 @@
 		}
 
 		.messages {
-			.messageItem {
-				&.user {
-					.avatar {
-						background: var(--color_main);
-					}
-
-					.content {
-						background: var(--color_main);
-						color: #fff;
-					}
-				}
-
-				&.assistant {
-					.avatar {
-						background: var(--color_bg_nav);
-						color: rgba(255, 255, 255, 0.65);
-					}
-
-					.content {
-						background: var(--color_bg_nav);
-						color: rgba(255, 255, 255, 0.85);
-					}
-				}
+			.messageWrapper {
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+				margin: 0 auto;
+				width: 100%;
 			}
 		}
 
@@ -429,21 +342,21 @@
 					}
 				}
 
-				.filesContext {
-					.filesList {
+				.attachmentsArea {
+					.attachmentsList {
 						padding-bottom: 2px;
 
-						.fileItem {
+						.attachmentItem {
 							background: var(--color_border_light);
 							border-color: var(--color_border);
 
-							.fileThumb {
-								.fileTypeIcon {
+							.attachmentThumb {
+								.attachmentTypeIcon {
 									color: var(--color_title);
 								}
 							}
 
-							.fileName {
+							.attachmentName {
 								color: var(--color_text);
 							}
 
