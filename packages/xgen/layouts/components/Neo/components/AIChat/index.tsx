@@ -120,6 +120,14 @@ const AIChat = (props: AIChatProps) => {
 					}
 				}
 			])
+
+			// Clear context files after sending
+			contextFiles.forEach((file) => {
+				if (file.thumbUrl) {
+					URL.revokeObjectURL(file.thumbUrl)
+				}
+				removeContextFile(file)
+			})
 		}
 	}
 
@@ -398,29 +406,20 @@ const AIChat = (props: AIChatProps) => {
 								handleSend()
 							}
 						}}
-						disabled={loading}
 					/>
-					{loading ? (
-						<Button
-							type='text'
-							icon={<Icon name='icon-x' size={16} />}
-							className={styles.cancelBtn}
-							onClick={cancel}
-						>
-							{is_cn ? '取消' : 'Cancel'}
-						</Button>
-					) : (
-						inputValue && (
-							<Button
-								type='primary'
-								icon={<Icon name='icon-send' size={16} />}
-								className={styles.sendBtn}
-								onClick={handleSend}
-							>
-								{is_cn ? '发送' : 'Send'}
-							</Button>
-						)
-					)}
+					<Button
+						type='text'
+						icon={
+							loading ? (
+								<Icon name='icon-square' size={16} />
+							) : (
+								<Icon name='icon-send' size={16} />
+							)
+						}
+						className={styles.sendBtn}
+						onClick={loading ? cancel : handleSend}
+						disabled={!loading && !inputValue.trim()}
+					/>
 				</div>
 
 				{/* Status Bar */}
