@@ -2,7 +2,7 @@ import { Input, Button, Upload, message } from 'antd'
 import { UploadChangeParam, UploadFile, UploadProps, RcFile } from 'antd/es/upload'
 import clsx from 'clsx'
 import { UploadSimple, Sparkle } from 'phosphor-react'
-import { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import { useState, useEffect, useRef, useLayoutEffect, ClipboardEvent } from 'react'
 import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import { getLocale, useLocation } from '@umijs/max'
@@ -12,6 +12,7 @@ import { App, Common } from '@/types'
 import { useMemoizedFn } from 'ahooks'
 import { useGlobal } from '@/context/app'
 import ChatItem from '../ChatItem'
+import { isValidUrl } from '@/utils'
 
 const { TextArea } = Input
 
@@ -238,6 +239,11 @@ const AIChat = (props: AIChatProps) => {
 
 	// Update click handler function
 	const handleFileClick = (file: ContextFile) => {
+		if (file.type === 'URL') {
+			window.open(file.url, '_blank')
+			return
+		}
+
 		// For images, use thumbUrl (local preview)
 		if (file.type === 'IMG' && file.thumbUrl) {
 			window.open(file.thumbUrl, '_blank')
@@ -250,6 +256,80 @@ const AIChat = (props: AIChatProps) => {
 			window.open(url, '_blank')
 			// Clean up object URL after window opens
 			setTimeout(() => URL.revokeObjectURL(url), 100)
+		}
+	}
+
+	const handlePaste = async (e: ClipboardEvent<HTMLTextAreaElement>) => {
+		e.preventDefault()
+
+		// 处理剪贴板中的文本
+		const text = e.clipboardData?.getData('text')
+		if (text && isValidUrl(text.trim()) && text.trim() === text) {
+			// 如果是纯URL，添加为URL类型的ContextFile
+			const urlFile: ContextFile = {
+				name: text,
+				type: 'URL',
+				status: 'done',
+				url: text,
+				thumbUrl: undefined
+			}
+			addContextFile(urlFile)
+			return
+		}
+
+		// 处理剪贴板中的图片
+		const items = e.clipboardData?.items
+		if (!items) return
+
+		for (const item of Array.from(items)) {
+			if (item.type.startsWith('image/')) {
+				const file = item.getAsFile()
+				if (!file) continue
+
+				// Convert File to RcFile
+				const rcFile = new File([file], file.name, {
+					type: file.type,
+					lastModified: Date.now()
+				}) as RcFile
+				rcFile.uid = `rc-upload-${Date.now()}`
+
+				try {
+					const contextFile: ContextFile = {
+						name: `pasted-image-${Date.now()}.png`,
+						type: 'IMG',
+						status: 'uploading',
+						blob: rcFile,
+						thumbUrl: URL.createObjectURL(rcFile)
+					}
+
+					// 添加到context files并显示加载状态
+					addContextFile(contextFile)
+
+					// 上传文件
+					const result = await uploadFile(rcFile)
+
+					// 更新context file状态
+					const updatedFile: ContextFile = {
+						...contextFile,
+						status: 'done',
+						url: result.url,
+						file_id: result.file_id,
+						bytes: result.bytes,
+						created_at: result.created_at,
+						filename: result.filename,
+						content_type: result.content_type
+					}
+
+					// 更新文件状态
+					removeContextFile(contextFile)
+					addContextFile(updatedFile)
+
+					message.success('Image uploaded successfully')
+				} catch (error: any) {
+					message.error(error.message || 'Failed to upload image')
+					removeContextFile({ name: file.name, type: file.type })
+				}
+			}
 		}
 	}
 
@@ -347,7 +427,11 @@ const AIChat = (props: AIChatProps) => {
 											style={{ cursor: 'pointer' }}
 										>
 											<div className={styles.fileThumb}>
-												{file.thumbUrl ? (
+												{file.type === 'URL' ? (
+													<div className={styles.fileTypeIcon}>
+														<Icon name='icon-link' size={16} />
+													</div>
+												) : file.thumbUrl ? (
 													<img
 														src={file.thumbUrl}
 														alt={file.name}
@@ -406,6 +490,7 @@ const AIChat = (props: AIChatProps) => {
 								handleSend()
 							}
 						}}
+						onPaste={handlePaste}
 					/>
 					<Button
 						type='text'
