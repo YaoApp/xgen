@@ -13,6 +13,7 @@ import { useMemoizedFn } from 'ahooks'
 import { useGlobal } from '@/context/app'
 import ChatItem from '../ChatItem'
 import { isValidUrl } from '@/utils'
+import DefaultHeader from './Header'
 
 const { TextArea } = Input
 
@@ -26,6 +27,7 @@ interface AIChatProps {
 	currentPage?: string
 	showCurrentPage?: boolean
 	botAvatar?: string
+	header?: React.ReactNode
 	upload_options?: {
 		process_image?: boolean
 		max_file_size?: number
@@ -42,7 +44,7 @@ const AIChat = (props: AIChatProps) => {
 	const is_cn = locale === 'zh-CN'
 	const stack = global.stack.paths.join('/')
 
-	const { onSend, onClose, onNew, className, botAvatar, upload_options } = props
+	const { onSend, onClose, onNew, className, botAvatar, header, upload_options } = props
 	const [selectedFiles, setSelectedFiles] = useState<any[]>([])
 	const [inputValue, setInputValue] = useState('')
 	const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -338,24 +340,7 @@ const AIChat = (props: AIChatProps) => {
 
 	return (
 		<div className={clsx(styles.aiChat, className)}>
-			{/* Header */}
-			<div className={styles.header}>
-				<div className={styles.title}>{title}</div>
-				<div className={styles.actions}>
-					<Button
-						type='text'
-						icon={<Icon name='icon-plus' size={20} />}
-						className={styles.actionBtn}
-						onClick={onNew}
-					/>
-					<Button
-						type='text'
-						icon={<Icon name='icon-x' size={20} />}
-						className={styles.actionBtn}
-						onClick={onClose}
-					/>
-				</div>
-			</div>
+			{header || <DefaultHeader title={title} onNew={onNew} onClose={onClose} />}
 
 			{/* Chat Messages */}
 			<div className={styles.messages}>
