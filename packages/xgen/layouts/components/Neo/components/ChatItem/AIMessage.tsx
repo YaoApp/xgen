@@ -7,7 +7,7 @@ import type { App } from '@/types'
 
 interface AIMessageProps {
 	chat_info: App.ChatAI
-	context: any
+	context: App.Context
 	callback?: () => void
 }
 

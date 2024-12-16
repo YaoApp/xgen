@@ -47,6 +47,8 @@ export declare namespace App {
 			field?: Omit<Field, 'config'>
 			config?: Common.FieldDetail
 			signal?: ChatContext['signal']
+			chat_id?: string
+			assistant_id?: string
 		}
 	}
 

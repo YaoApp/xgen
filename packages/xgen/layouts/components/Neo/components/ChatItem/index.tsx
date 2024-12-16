@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import styles from './index.less'
 import type { App } from '@/types'
 import AIMessage from './AIMessage'
@@ -6,7 +5,7 @@ import HumanMessage from './HumanMessage'
 
 interface ChatItemProps {
 	chat_info: App.ChatInfo
-	context: any
+	context: App.Context
 	field: App.Field
 	callback?: () => void
 	avatar?: string

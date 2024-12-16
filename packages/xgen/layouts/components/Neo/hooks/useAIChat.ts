@@ -88,7 +88,26 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 		const [err, res] = await to<App.ChatHistory>(axios.get(endpoint))
 		if (err) return
 		if (!res?.data) return
-		setMessages(res.data.map(({ role, content }) => ({ is_neo: role === 'assistant', text: content })))
+
+		setMessages(
+			res.data.map(({ role, content }) => {
+				const baseMessage = { is_neo: role === 'assistant', context: { chat_id } }
+
+				// Check if content is potentially JSON
+				const trimmedContent = content.trim()
+				if (!trimmedContent.startsWith('{')) {
+					return { ...baseMessage, text: content }
+				}
+
+				try {
+					const parsedContent = JSON.parse(trimmedContent)
+					return { ...baseMessage, ...parsedContent }
+				} catch (e) {
+					// If JSON parsing fails, use the original content
+					return { ...baseMessage, text: content }
+				}
+			})
+		)
 	})
 
 	/** Get AI Chat Data **/
@@ -108,7 +127,6 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 					content_type: attachment.content_type,
 					bytes: attachment.bytes,
 					created_at: attachment.created_at,
-					filename: attachment.filename,
 					file_id: attachment.file_id
 				})
 			})
@@ -120,39 +138,18 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 		const status_endpoint = `${neo_api}/status?content=${contentRaw}&context=${contextRaw}&token=${token}&chat_id=${chat_id}`
 		const endpoint = `${neo_api}?content=${contentRaw}&context=${contextRaw}&token=${token}&chat_id=${chat_id}`
 
-		// First check if the endpoint is accessible
-		fetch(status_endpoint, { credentials: 'include', headers: { Accept: 'application/json' } })
-			.then((response) => {
-				if (!response.ok) {
-					return response
-						.json()
-						.catch(() => {
-							throw new Error(`HTTP ${response.status}`)
-						})
-						.then((data) => {
-							if (data?.code && data?.message) {
-								throw new Error(data.message, { cause: { isApiError: true } })
-							}
-							throw new Error(`HTTP ${response.status}`)
-						})
-				}
-				// If response is ok, proceed with EventSource
-				setupEventSource()
-
-				// Clear attachments after successful request
-				attachments.forEach((attachment) => {
-					if (attachment.thumbUrl) {
-						URL.revokeObjectURL(attachment.thumbUrl)
-					}
+		const handleError = async (error: any) => {
+			// Check status endpoint for detailed error information
+			try {
+				const response = await fetch(status_endpoint, {
+					credentials: 'include',
+					headers: { Accept: 'application/json' }
 				})
-				setAttachments([])
-			})
-			.catch((error) => {
-				let errorMessage = 'Network error, please try again later'
+				const data = await response.json().catch(() => ({ message: `HTTP ${response.status}` }))
 
-				if (error.cause?.isApiError) {
-					// Use the error message directly from API
-					errorMessage = error.message
+				let errorMessage = 'Network error, please try again later'
+				if (data?.message) {
+					errorMessage = data.message
 				} else if (error.message.includes('401')) {
 					errorMessage = 'Session expired: Please login again'
 				} else if (error.message.includes('403')) {
@@ -173,15 +170,41 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 						is_neo: true
 					}
 				])
-				setLoading(false)
-			})
+			} catch (statusError) {
+				// If status check fails, show generic error
+				setMessages((prevMessages) => [
+					...prevMessages,
+					{
+						text: 'Service unavailable, please try again later',
+						type: 'error',
+						is_neo: true
+					}
+				])
+			}
+			setLoading(false)
+		}
 
-		const setupEventSource = () => {
+		const cleanupAttachments = () => {
+			attachments.forEach((attachment) => {
+				if (attachment.thumbUrl) {
+					URL.revokeObjectURL(attachment.thumbUrl)
+				}
+			})
+			setAttachments([])
+		}
+
+		// Directly try to establish EventSource connection
+		setupEventSource()
+
+		// Clean up attachments after request
+		cleanupAttachments()
+
+		function setupEventSource() {
 			// Close existing connection if any
 			event_source.current?.close()
 
 			const es = new EventSource(endpoint, {
-				withCredentials: true // Enable credentials for EventSource
+				withCredentials: true
 			})
 			event_source.current = es
 
@@ -221,16 +244,7 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 			}
 
 			es.onerror = (ev) => {
-				const message_new = [
-					...messages,
-					{
-						text: 'Connection lost. Please check your network and try again.',
-						type: 'error',
-						is_neo: true
-					}
-				]
-				setMessages(message_new)
-				setLoading(false)
+				handleError(ev)
 				es.close()
 			}
 		}
@@ -377,6 +391,58 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 		}
 	})
 
+	/** Download file from Neo API **/
+	const downloadFile = useMemoizedFn(
+		async (file_id: string, disposition: 'inline' | 'attachment' = 'attachment') => {
+			if (!neo_api) {
+				throw new Error('Neo API endpoint not configured')
+			}
+
+			if (!chat_id) {
+				throw new Error('Chat ID is required')
+			}
+
+			const endpoint = `${neo_api}/download?file_id=${encodeURIComponent(
+				file_id
+			)}&token=${encodeURIComponent(getToken())}&chat_id=${chat_id}&disposition=${disposition}`
+
+			try {
+				const response = await fetch(endpoint, {
+					credentials: 'include'
+				})
+
+				if (!response.ok) {
+					const error = await response.json().catch(() => ({ message: `HTTP ${response.status}` }))
+					throw new Error(error.message || `Failed to download file: ${response.statusText}`)
+				}
+
+				// Get filename from Content-Disposition header if present
+				const contentDisposition = response.headers.get('Content-Disposition')
+				const filename = contentDisposition
+					? contentDisposition.split('filename=')[1]?.replace(/["']/g, '')
+					: file_id
+
+				// Create blob from response
+				const blob = await response.blob()
+
+				// Create download link and trigger download
+				const url = window.URL.createObjectURL(blob)
+				const link = document.createElement('a')
+				link.href = url
+				link.download = filename
+				document.body.appendChild(link)
+				link.click()
+				document.body.removeChild(link)
+				window.URL.revokeObjectURL(url)
+
+				return { success: true }
+			} catch (error: any) {
+				message.error(error.message || 'Failed to download file')
+				throw error
+			}
+		}
+	)
+
 	/** Add/Update attachment **/
 	const addAttachment = useMemoizedFn((attachment: App.ChatAttachment) => {
 		setAttachments((prev) => [...prev, attachment])
@@ -410,6 +476,7 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 		setMessages,
 		cancel,
 		uploadFile,
+		downloadFile,
 		attachments,
 		addAttachment,
 		removeAttachment,

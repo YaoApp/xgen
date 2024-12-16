@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import type { App } from '@/types'
+import useAIChat from '../../hooks/useAIChat'
 
 interface HumanMessageProps {
 	chat_info: App.ChatHuman
@@ -9,8 +10,11 @@ interface HumanMessageProps {
 
 const HumanMessage = ({ chat_info }: HumanMessageProps) => {
 	const { text, attachments } = chat_info
+	const { downloadFile } = useAIChat({ chat_id: chat_info.context?.chat_id })
 
-	const handleFileClick = (attachment: App.ChatAttachment) => {
+	const handleFileClick = async (attachment: App.ChatAttachment) => {
+		console.log('chat_info', chat_info)
+
 		if (attachment.type === 'URL') {
 			window.open(attachment.url, '_blank')
 			return
@@ -19,6 +23,15 @@ const HumanMessage = ({ chat_info }: HumanMessageProps) => {
 		if (attachment.type === 'IMG' && attachment.thumbUrl) {
 			window.open(attachment.thumbUrl, '_blank')
 			return
+		}
+
+		if (attachment.file_id) {
+			try {
+				await downloadFile(attachment.file_id)
+				return
+			} catch (error) {
+				console.error('Failed to download file:', error)
+			}
 		}
 
 		if (attachment.url) {

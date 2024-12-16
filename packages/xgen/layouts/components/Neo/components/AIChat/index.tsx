@@ -47,6 +47,7 @@ const AIChat = (props: AIChatProps) => {
 	const [inputValue, setInputValue] = useState('')
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const [chat_id, setChatId] = useState('hello')
+	const [assistant_id, setAssistantId] = useState(undefined)
 	const [title, setTitle] = useState(global.app_info.optional?.neo?.name || 'AI Assistant')
 	const [currentPage, setCurrentPage] = useState(pathname.replace(/\/_menu.*/gi, '').toLowerCase())
 	const {
@@ -86,7 +87,9 @@ const AIChat = (props: AIChatProps) => {
 					formdata: context.data_item,
 					field: { name: v.name, bind: v.bind },
 					config: v.config,
-					signal: chat_context.signal
+					signal: chat_context.signal,
+					chat_id: chat_id,
+					assistant_id: assistant_id
 				}
 			}
 		])
@@ -120,7 +123,9 @@ const AIChat = (props: AIChatProps) => {
 						formdata: context.data_item,
 						field: { name: field.name, bind: field.bind },
 						config: field.config,
-						signal: chat_context.signal
+						signal: chat_context.signal,
+						chat_id: chat_id,
+						assistant_id: assistant_id
 					}
 				}
 			])
