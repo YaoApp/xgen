@@ -10,8 +10,12 @@ import { message } from 'antd'
 import { RcFile } from 'antd/es/upload'
 
 type Args = {
+	/** the assistant id to use for the chat **/
+	assistant_id?: string
+
 	/** The Chat ID **/
 	chat_id?: string
+
 	/** Upload options **/
 	upload_options?: {
 		process_image?: boolean
@@ -34,6 +38,7 @@ export const formatFileName = (fileName: string, maxLength: number = 30) => {
 
 // Update allowed file types - only keep specific document types
 const ALLOWED_FILE_TYPES = {
+	'application/json': 'json',
 	'application/pdf': 'pdf',
 	'application/msword': 'doc',
 	'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
@@ -64,7 +69,7 @@ const CODE_FILE_TYPES: Record<string, string> = {
 	'.yao': 'text/x-yao'
 }
 
-export default ({ chat_id, upload_options = {} }: Args) => {
+export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 	const event_source = useRef<EventSource>()
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
 	const [loading, setLoading] = useState(false)
@@ -84,14 +89,16 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 	const getHistory = useMemoizedFn(async () => {
 		if (!chat_id) return
 
-		const endpoint = `${neo_api}/history?token=${encodeURIComponent(getToken())}&chat_id=${chat_id}`
+		const endpoint = `${neo_api}/history?token=${encodeURIComponent(getToken())}&chat_id=${chat_id}${
+			assistant_id ? `&assistant_id=${assistant_id}` : ''
+		}`
 		const [err, res] = await to<App.ChatHistory>(axios.get(endpoint))
 		if (err) return
 		if (!res?.data) return
 
 		setMessages(
 			res.data.map(({ role, content }) => {
-				const baseMessage = { is_neo: role === 'assistant', context: { chat_id } }
+				const baseMessage = { is_neo: role === 'assistant', context: { chat_id, assistant_id } }
 
 				// Check if content is potentially JSON
 				const trimmedContent = content.trim()
@@ -127,7 +134,9 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 					content_type: attachment.content_type,
 					bytes: attachment.bytes,
 					created_at: attachment.created_at,
-					file_id: attachment.file_id
+					file_id: attachment.file_id,
+					chat_id: attachment.chat_id,
+					assistant_id: attachment.assistant_id
 				})
 			})
 		}
@@ -135,8 +144,10 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 		const contentRaw = encodeURIComponent(JSON.stringify(content))
 		const contextRaw = encodeURIComponent(JSON.stringify(message.context))
 		const token = getToken()
-		const status_endpoint = `${neo_api}/status?content=${contentRaw}&context=${contextRaw}&token=${token}&chat_id=${chat_id}`
-		const endpoint = `${neo_api}?content=${contentRaw}&context=${contextRaw}&token=${token}&chat_id=${chat_id}`
+		const assistantParam = assistant_id ? `&assistant_id=${assistant_id}` : ''
+
+		const status_endpoint = `${neo_api}/status?content=${contentRaw}&context=${contextRaw}&token=${token}&chat_id=${chat_id}${assistantParam}`
+		const endpoint = `${neo_api}?content=${contentRaw}&context=${contextRaw}&token=${token}&chat_id=${chat_id}${assistantParam}`
 
 		const handleError = async (error: any) => {
 			// Check status endpoint for detailed error information
@@ -256,11 +267,6 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 		event_source.current?.close()
 	})
 
-	useAsyncEffect(async () => {
-		if (!neo_api) return
-		getHistory()
-	}, [neo_api])
-
 	/** Get AI Chat Data **/
 	useEffect(() => {
 		if (!messages.length) return
@@ -358,7 +364,9 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 			formData.append(`option_${key}`, String(value))
 		}
 
-		const endpoint = `${neo_api}/upload?token=${encodeURIComponent(getToken())}&chat_id=${chat_id}`
+		const endpoint = `${neo_api}/upload?token=${encodeURIComponent(getToken())}&chat_id=${chat_id}${
+			assistant_id ? `&assistant_id=${assistant_id}` : ''
+		}`
 
 		try {
 			const response = await fetch(endpoint, {
@@ -377,9 +385,11 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 
 			const result = await response.json()
 			return {
-				...result,
 				url: result.filename,
-				content_type: result.content_type || file.type
+				...result,
+				content_type: result.content_type || file.type,
+				chat_id: chat_id,
+				assistant_id: assistant_id
 			}
 		} catch (error: any) {
 			uploadControllers.current.delete(file.name)
@@ -404,7 +414,9 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 
 			const endpoint = `${neo_api}/download?file_id=${encodeURIComponent(
 				file_id
-			)}&token=${encodeURIComponent(getToken())}&chat_id=${chat_id}&disposition=${disposition}`
+			)}&token=${encodeURIComponent(getToken())}&chat_id=${chat_id}&disposition=${disposition}${
+				assistant_id ? `&assistant_id=${assistant_id}` : ''
+			}`
 
 			try {
 				const response = await fetch(endpoint, {
@@ -482,6 +494,7 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 		removeAttachment,
 		clearAttachments,
 		cancelUpload,
-		formatFileName
+		formatFileName,
+		getHistory
 	}
 }

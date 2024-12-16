@@ -20,11 +20,6 @@ const HumanMessage = ({ chat_info }: HumanMessageProps) => {
 			return
 		}
 
-		if (attachment.type === 'IMG' && attachment.thumbUrl) {
-			window.open(attachment.thumbUrl, '_blank')
-			return
-		}
-
 		if (attachment.file_id) {
 			try {
 				await downloadFile(attachment.file_id)
@@ -32,6 +27,12 @@ const HumanMessage = ({ chat_info }: HumanMessageProps) => {
 			} catch (error) {
 				console.error('Failed to download file:', error)
 			}
+		}
+
+		// Others
+		if (attachment.type === 'IMG' && attachment.thumbUrl) {
+			window.open(attachment.thumbUrl, '_blank')
+			return
 		}
 
 		if (attachment.url) {

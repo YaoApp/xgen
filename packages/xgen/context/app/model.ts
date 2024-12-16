@@ -3,7 +3,6 @@ import { makeAutoObservable, reaction, toJS } from 'mobx'
 import { genConfig } from 'react-nice-avatar'
 import { singleton } from 'tsyringe'
 
-import { sleep } from '@/knife'
 import { Stack } from '@/models'
 import Service from '@/services/app'
 import { getCurrentMenuIndexs } from '@/utils'
@@ -31,6 +30,8 @@ export default class GlobalModel {
 	visible_menu: boolean = true
 	hide_nav: boolean = false
 
+	// Global Neo Context
+	neo: App.Neo = { assistant_id: undefined, chat_id: undefined }
 	dataCache: Record<string, any> = {}
 
 	constructor(private service: Service, public stack: Stack) {
@@ -43,6 +44,7 @@ export default class GlobalModel {
 		this.getAppInfo()
 		this.setTheme(theme)
 		this.setAvatar(avatar)
+		this.setNeo()
 	}
 
 	async getAppInfo() {
@@ -121,6 +123,22 @@ export default class GlobalModel {
 				primaryColor: theme === 'light' ? '#3371fc' : '#4580ff'
 			}
 		})
+	}
+
+	setNeo(neo?: App.Neo | null) {
+		if (neo) {
+			this.neo = neo
+			return
+		}
+		this.neo = { assistant_id: undefined, chat_id: undefined }
+	}
+
+	setNeoChatId(chat_id: string) {
+		this.neo.chat_id = chat_id
+	}
+
+	setNeoAssistantId(assistant_id: string) {
+		this.neo.assistant_id = assistant_id
 	}
 
 	updateMenuStatus(itemkey_or_pathname: string) {

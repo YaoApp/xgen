@@ -3,6 +3,9 @@ import type { Action, Common } from '@/types'
 export declare namespace App {
 	type Theme = 'light' | 'dark'
 
+	/** Global Neo Context */
+	type Neo = { assistant_id?: string; chat_id?: string }
+
 	type ChatMessageType =
 		| 'text'
 		| 'image'
@@ -219,13 +222,16 @@ export declare namespace App {
 		name: string
 		type: string
 		url?: string
-		thumbUrl?: string
 		status?: 'uploading' | 'done' | 'error'
+
 		file_id?: string
 		bytes?: number
 		created_at?: number
 		filename?: string
 		content_type?: string
+		chat_id?: string
+		assistant_id?: string
+		thumbUrl?: string
 		blob?: Blob
 	}
 }

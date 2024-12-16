@@ -46,13 +46,16 @@ const AIChat = (props: AIChatProps) => {
 	const [selectedFiles, setSelectedFiles] = useState<any[]>([])
 	const [inputValue, setInputValue] = useState('')
 	const messagesEndRef = useRef<HTMLDivElement>(null)
-	const [chat_id, setChatId] = useState('hello')
-	const [assistant_id, setAssistantId] = useState(undefined)
+	const [chat_id, setChatId] = useState(global.neo.chat_id || 'hello')
+	const [assistant_id, setAssistantId] = useState(global.neo.assistant_id)
 	const [title, setTitle] = useState(global.app_info.optional?.neo?.name || 'AI Assistant')
 	const [currentPage, setCurrentPage] = useState(pathname.replace(/\/_menu.*/gi, '').toLowerCase())
+	const [initialized, setInitialized] = useState(false)
+
 	const {
 		messages,
 		loading,
+		getHistory,
 		setMessages,
 		cancel,
 		uploadFile,
@@ -100,6 +103,17 @@ const AIChat = (props: AIChatProps) => {
 		primary: '',
 		data_item: {}
 	})
+
+	// Load history when initialized
+	useEffect(() => {
+		const loadHistory = async () => {
+			if (!initialized) {
+				await getHistory()
+				setInitialized(true)
+			}
+		}
+		loadHistory()
+	}, [initialized])
 
 	const handleSend = () => {
 		const message = inputValue.trim()
@@ -346,16 +360,28 @@ const AIChat = (props: AIChatProps) => {
 			{/* Chat Messages */}
 			<div className={styles.messages}>
 				<div className={styles.messageWrapper}>
-					{messages.map((msg, index) => (
-						<ChatItem
-							key={index}
-							context={context}
-							field={field}
-							chat_info={msg}
-							callback={() => {}}
-							avatar={msg.is_neo ? botAvatar : undefined}
-						/>
-					))}
+					{!initialized ? (
+						<div className={styles.loadingState}>
+							<Icon
+								name='icon-loader'
+								size={14}
+								color='var(--color_placeholder)'
+								className={styles.spinner}
+							/>
+							<span>{is_cn ? '加载历史消息...' : 'Loading message history...'}</span>
+						</div>
+					) : (
+						messages.map((msg, index) => (
+							<ChatItem
+								key={index}
+								context={context}
+								field={field}
+								chat_info={msg}
+								callback={() => {}}
+								avatar={msg.is_neo ? botAvatar : undefined}
+							/>
+						))
+					)}
 					<div ref={messagesEndRef} />
 				</div>
 			</div>
