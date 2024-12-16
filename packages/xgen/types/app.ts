@@ -223,7 +223,6 @@ export declare namespace App {
 		type: string
 		url?: string
 		status?: 'uploading' | 'done' | 'error'
-
 		file_id?: string
 		bytes?: number
 		created_at?: number
@@ -233,5 +232,11 @@ export declare namespace App {
 		assistant_id?: string
 		thumbUrl?: string
 		blob?: Blob
+	}
+
+	/** Options for creating a new chat */
+	interface NewChatOptions {
+		content?: string
+		attachments?: ChatAttachment[]
 	}
 }

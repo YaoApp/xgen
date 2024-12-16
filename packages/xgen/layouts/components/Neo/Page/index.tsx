@@ -16,6 +16,7 @@ const Index = (props: IPropsNeo) => {
 				messages={messages}
 				onSend={handleSend}
 				title='AI Assistant'
+				headerButtons={['new', 'history']}
 				currentPage={'chat/index'}
 				onNew={() => {
 					/* handle new */

@@ -490,6 +490,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		uploadFile,
 		downloadFile,
 		attachments,
+		setAttachments,
 		addAttachment,
 		removeAttachment,
 		clearAttachments,

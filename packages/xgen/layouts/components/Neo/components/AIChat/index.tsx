@@ -28,6 +28,7 @@ interface AIChatProps {
 	showCurrentPage?: boolean
 	botAvatar?: string
 	header?: React.ReactNode
+	headerButtons?: ('new' | 'history' | 'float' | 'close')[]
 	upload_options?: {
 		process_image?: boolean
 		max_file_size?: number
@@ -44,7 +45,7 @@ const AIChat = (props: AIChatProps) => {
 	const is_cn = locale === 'zh-CN'
 	const stack = global.stack.paths.join('/')
 
-	const { onSend, onClose, onNew, className, botAvatar, header, upload_options } = props
+	const { onSend, onClose, onNew, className, botAvatar, header, headerButtons, upload_options } = props
 	const [selectedFiles, setSelectedFiles] = useState<any[]>([])
 	const [inputValue, setInputValue] = useState('')
 	const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -64,7 +65,8 @@ const AIChat = (props: AIChatProps) => {
 		attachments,
 		removeAttachment,
 		addAttachment,
-		formatFileName
+		formatFileName,
+		setAttachments
 	} = useAIChat({ chat_id, upload_options })
 	const [chat_context, setChatContext] = useState<App.ChatContext>({ placeholder: '', signal: '' })
 
@@ -173,17 +175,53 @@ const AIChat = (props: AIChatProps) => {
 		setCurrentPage(pathname.replace(/\/_menu.*/gi, '').toLowerCase())
 	}, [pathname])
 
+	const handleNewChat = (options?: App.NewChatOptions) => {
+		const new_chat_id = `chat_${Date.now()}`
+		setChatId(new_chat_id)
+		setMessages([])
+		setAttachments([])
+
+		// Update global chat_id
+		global.setNeoChatId(new_chat_id)
+
+		// Set untitled as title
+		setTitle(is_cn ? '未命名' : 'Untitled')
+
+		// Handle optional content
+		if (options?.content) {
+			setInputValue(options.content)
+		}
+
+		// Handle optional attachments
+		if (options?.attachments?.length) {
+			options.attachments.forEach((attachment) => {
+				addAttachment(attachment)
+			})
+		}
+
+		onNew?.()
+	}
+
 	/** Register Events **/
 	useLayoutEffect(() => {
 		const events = window.$app.Event
 		events.on('app/getContext', getContext)
 		events.on('app/getField', getField)
 
+		/** Create a new chat */
+		events.on('app/neoNewChat', handleNewChat)
+
 		return () => {
 			events.off('app/getContext', getContext)
 			events.off('app/getField', getField)
+			events.off('app/neoNewChat', handleNewChat)
 		}
 	}, [])
+
+	const handleOnNew = useMemoizedFn(() => {
+		handleNewChat()
+		onNew?.()
+	})
 
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 
@@ -340,7 +378,9 @@ const AIChat = (props: AIChatProps) => {
 
 	return (
 		<div className={clsx(styles.aiChat, className)}>
-			{header || <DefaultHeader title={title} onNew={onNew} onClose={onClose} />}
+			{header || (
+				<DefaultHeader title={title} onNew={handleOnNew} onClose={onClose} buttons={headerButtons} />
+			)}
 
 			{/* Chat Messages */}
 			<div className={styles.messages}>
