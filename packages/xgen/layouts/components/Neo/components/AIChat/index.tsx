@@ -51,14 +51,14 @@ const AIChat = (props: AIChatProps) => {
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const [chat_id, setChatId] = useState(global.neo.chat_id || 'hello')
 	const [assistant_id, setAssistantId] = useState(global.neo.assistant_id)
-	const [title, setTitle] = useState(global.app_info.optional?.neo?.name || 'AI Assistant')
 	const [currentPage, setCurrentPage] = useState(pathname.replace(/\/_menu.*/gi, '').toLowerCase())
 	const [initialized, setInitialized] = useState(false)
 
 	const {
 		messages,
 		loading,
-		getHistory,
+		title,
+		setTitle,
 		setMessages,
 		cancel,
 		uploadFile,
@@ -66,7 +66,8 @@ const AIChat = (props: AIChatProps) => {
 		removeAttachment,
 		addAttachment,
 		formatFileName,
-		setAttachments
+		setAttachments,
+		getChat
 	} = useAIChat({ chat_id, upload_options })
 	const [chat_context, setChatContext] = useState<App.ChatContext>({ placeholder: '', signal: '' })
 
@@ -108,16 +109,16 @@ const AIChat = (props: AIChatProps) => {
 		data_item: {}
 	})
 
-	// Load history when initialized
+	// Load chat details when initialized
 	useEffect(() => {
-		const loadHistory = async () => {
-			if (!initialized) {
-				await getHistory()
+		const loadChat = async () => {
+			if (!initialized && chat_id) {
+				await getChat()
 				setInitialized(true)
 			}
 		}
-		loadHistory()
-	}, [initialized])
+		loadChat()
+	}, [initialized, chat_id])
 
 	const handleSend = () => {
 		const message = inputValue.trim()

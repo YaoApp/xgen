@@ -57,6 +57,16 @@ export declare namespace App {
 
 	type ChatInfo = ChatHuman | ChatAI
 
+	/** Chat detail with history */
+	interface ChatDetail {
+		chat: Record<string, any>
+		history: Array<{
+			role: string
+			content: string
+			[key: string]: any
+		}>
+	}
+
 	type ChatHistory = {
 		command?: ChatCmd
 		data: Array<{

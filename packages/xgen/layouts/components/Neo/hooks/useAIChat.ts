@@ -8,6 +8,7 @@ import ntry from 'nice-try'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { message } from 'antd'
 import { RcFile } from 'antd/es/upload'
+import { getLocale } from '@umijs/max'
 
 type Args = {
 	/** the assistant id to use for the chat **/
@@ -72,10 +73,14 @@ const CODE_FILE_TYPES: Record<string, string> = {
 export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 	const event_source = useRef<EventSource>()
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
+	const [title, setTitle] = useState<string>('')
 	const [loading, setLoading] = useState(false)
 	const [attachments, setAttachments] = useState<App.ChatAttachment[]>([])
 	const uploadControllers = useRef<Map<string, AbortController>>(new Map())
 	const global = useGlobal()
+
+	const locale = getLocale()
+	const is_cn = locale === 'zh-CN'
 
 	/** Get Neo API **/
 	const neo_api = useMemo(() => {
@@ -84,6 +89,24 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		if (api.startsWith('http')) return api
 		return `/api/${window.$app.api_prefix}${api}`
 	}, [global.app_info.optional?.neo?.api])
+
+	/** Format chat message **/
+	const formatMessage = useMemoizedFn((role: string, content: string, chatId: string) => {
+		const baseMessage = { is_neo: role === 'assistant', context: { chat_id: chatId, assistant_id } }
+
+		// Check if content is potentially JSON
+		const trimmedContent = content.trim()
+		if (!trimmedContent.startsWith('{')) {
+			return { ...baseMessage, text: content }
+		}
+
+		try {
+			const parsedContent = JSON.parse(trimmedContent)
+			return { ...baseMessage, ...parsedContent }
+		} catch (e) {
+			return { ...baseMessage, text: content }
+		}
+	})
 
 	/** Get AI Chat History **/
 	const getHistory = useMemoizedFn(async () => {
@@ -96,25 +119,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		if (err) return
 		if (!res?.data) return
 
-		setMessages(
-			res.data.map(({ role, content }) => {
-				const baseMessage = { is_neo: role === 'assistant', context: { chat_id, assistant_id } }
-
-				// Check if content is potentially JSON
-				const trimmedContent = content.trim()
-				if (!trimmedContent.startsWith('{')) {
-					return { ...baseMessage, text: content }
-				}
-
-				try {
-					const parsedContent = JSON.parse(trimmedContent)
-					return { ...baseMessage, ...parsedContent }
-				} catch (e) {
-					// If JSON parsing fails, use the original content
-					return { ...baseMessage, text: content }
-				}
-			})
-		)
+		setMessages(res.data.map(({ role, content }) => formatMessage(role, content, chat_id)))
 	})
 
 	/** Get AI Chat Data **/
@@ -234,6 +239,12 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					if (type) {
 						current_answer.type = type
 					}
+
+					// If is the first message, set the title
+					if (messages.length === 2 && chat_id && current_answer.text) {
+						updateChat(chat_id, current_answer.text) // TODO: set the title
+					}
+
 					current_answer.actions = actions
 					setMessages([...messages])
 					setLoading(false)
@@ -482,6 +493,77 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		}
 	})
 
+	/** Get All Chats **/
+	const getChats = useMemoizedFn(async (keywords?: string) => {
+		if (!neo_api) return
+
+		const endpoint = `${neo_api}/chats?token=${encodeURIComponent(getToken())}${
+			keywords ? `&keywords=${encodeURIComponent(keywords)}` : ''
+		}`
+
+		const [err, res] = await to(axios.get(endpoint))
+		if (err) {
+			message.error('Failed to fetch chats')
+			return
+		}
+
+		return res?.data?.data || []
+	})
+
+	/** Get Single Chat **/
+	const getChat = useMemoizedFn(async (id?: string) => {
+		if (!neo_api) return
+
+		const chatId = id || chat_id
+		if (!chatId) return null
+
+		const endpoint = `${neo_api}/chats/${chatId}?token=${encodeURIComponent(getToken())}`
+
+		const [err, res] = await to<{ data: App.ChatDetail }>(axios.get(endpoint))
+		if (err) {
+			message.error('Failed to fetch chat details')
+			return
+		}
+
+		if (!res?.data) return null
+
+		const chatInfo = res.data
+		const formattedMessages = chatInfo.history.map(({ role, content }) => formatMessage(role, content, chatId))
+
+		// Set messages directly in getChat
+		setMessages(formattedMessages)
+		setTitle(chatInfo.chat.title || (is_cn ? '未命名' : 'Untitled'))
+
+		return {
+			messages: formattedMessages,
+			title: chatInfo.chat.title || (is_cn ? '未命名' : 'Untitled')
+		}
+	})
+
+	/** Update Chat **/
+	const updateChat = useMemoizedFn(async (id: string, content: string) => {
+		if (!neo_api) return
+
+		const endpoint = `${neo_api}/chats/${id}?token=${encodeURIComponent(getToken())}`
+
+		const [err, res] = await to<{ title?: string; message?: string; code?: number }>(
+			axios.post(endpoint, { content })
+		)
+		if (err) {
+			message.error('Failed to update chat')
+			return false
+		}
+
+		const { title, message: msg, code } = res || {}
+		if (code && code >= 400) {
+			message.error(msg || 'Failed to update chat')
+			return false
+		}
+
+		setTitle(title || '')
+		return true
+	})
+
 	return {
 		messages,
 		loading,
@@ -496,6 +578,11 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		clearAttachments,
 		cancelUpload,
 		formatFileName,
-		getHistory
+		getHistory,
+		getChats,
+		getChat,
+		updateChat,
+		title,
+		setTitle
 	}
 }
