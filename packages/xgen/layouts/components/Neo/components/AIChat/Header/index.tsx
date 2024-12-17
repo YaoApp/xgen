@@ -89,7 +89,6 @@ const Header = ({
 	}
 
 	const handleTitleClick = (e: React.MouseEvent) => {
-		console.log(chatId)
 		e.stopPropagation()
 		if (!chatId) return
 		setIsEditing(true)

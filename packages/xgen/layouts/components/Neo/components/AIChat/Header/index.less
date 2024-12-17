@@ -18,7 +18,7 @@
 			color: var(--color_text);
 			display: flex;
 			align-items: center;
-			gap: 8px;
+			gap: 4px;
 			cursor: pointer;
 			overflow: hidden;
 			white-space: nowrap;
@@ -27,14 +27,13 @@
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
-				flex: 1;
 				min-width: 0;
 			}
 
 			.editIcon {
 				opacity: 0;
 				color: var(--color_text_grey);
-				transition: all 0.2s ease;
+				transition: opacity 0.2s;
 				flex-shrink: 0;
 			}
 
