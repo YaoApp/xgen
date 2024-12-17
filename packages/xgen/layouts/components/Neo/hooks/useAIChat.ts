@@ -78,20 +78,22 @@ type ChatFilter = {
 	order?: 'desc' | 'asc'
 }
 
-type ChatListResponse = {
-	data: {
-		groups: Array<{
-			label: string
-			chats: Array<{
-				chat_id: string
-				title: string | null
-			}>
-		}>
-		page: number
-		pagesize: number
-		total: number
-		last_page: number
-	}
+export interface ChatItem {
+	chat_id: string
+	title: string | null
+}
+
+export interface ChatGroup {
+	label: string
+	chats: ChatItem[]
+}
+
+export interface ChatResponse {
+	groups: ChatGroup[]
+	page: number
+	pagesize: number
+	total: number
+	last_page: number
 }
 
 export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
@@ -533,7 +535,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		}
 
 		const endpoint = `${neo_api}/chats?${params.toString()}`
-		const [err, res] = await to<ChatListResponse>(axios.get(endpoint))
+		const [err, res] = await to<{ data: ChatResponse }>(axios.get(endpoint))
 		if (err) throw err
 
 		// Return the complete response data with pagination info

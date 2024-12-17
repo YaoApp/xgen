@@ -4,27 +4,8 @@ import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import { getLocale } from '@umijs/max'
 import { useMemoizedFn } from 'ahooks'
-import { App } from '@/types'
+import useAIChat, { ChatGroup, ChatResponse } from '../../../hooks/useAIChat'
 import clsx from 'clsx'
-import useAIChat from '../../../hooks/useAIChat'
-
-interface ChatItem {
-	chat_id: string
-	title: string | null
-}
-
-interface ChatGroup {
-	label: string
-	chats: ChatItem[]
-}
-
-interface ChatResponse {
-	groups: ChatGroup[]
-	page: number
-	pagesize: number
-	total: number
-	last_page: number
-}
 
 interface HistoryProps {
 	visible: boolean
@@ -50,7 +31,7 @@ const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
 	const is_cn = locale === 'zh-CN'
 
 	// Get methods from useAIChat hook
-	const { getChats, deleteChat, updateChat, deleteAllChats } = useAIChat({})
+	const { getChats, deleteChat, updateChat } = useAIChat({})
 
 	// Load chats
 	const loadChats = useMemoizedFn(async (search?: string, pageNum: number = 1) => {
@@ -111,25 +92,6 @@ const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
 		}
 	})
 
-	// Handle delete all chats
-	const handleDeleteAll = useMemoizedFn(() => {
-		Modal.confirm({
-			title: is_cn ? '确认删除' : 'Confirm Delete',
-			content: is_cn ? '确定要删除所有会话吗？' : 'Are you sure you want to delete all chats?',
-			okText: is_cn ? '确定' : 'OK',
-			cancelText: is_cn ? '取消' : 'Cancel',
-			onOk: async () => {
-				try {
-					await deleteAllChats()
-					message.success(is_cn ? '清空成功' : 'Cleared successfully')
-					loadChats()
-				} catch (error) {
-					message.error(is_cn ? '清空失败' : 'Failed to clear')
-				}
-			}
-		})
-	})
-
 	useEffect(() => {
 		if (visible) {
 			loadChats()
@@ -181,12 +143,6 @@ const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
 				/>
 				<Button
 					type='text'
-					className={styles.clearBtn}
-					onClick={handleDeleteAll}
-					icon={<Icon name='material-delete' size={16} />}
-				/>
-				<Button
-					type='text'
 					className={styles.closeBtn}
 					onClick={onClose}
 					icon={<Icon name='material-close' size={16} />}
@@ -231,6 +187,19 @@ const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
 														})
 													}
 													onClick={(e) => e.stopPropagation()}
+													onPressEnter={(e) => {
+														e.stopPropagation()
+														handleUpdateTitle(
+															chat.chat_id,
+															editingChat.tempTitle
+														)
+													}}
+													onKeyDown={(e) => {
+														if (e.key === 'Escape') {
+															e.stopPropagation()
+															setEditingChat(null)
+														}
+													}}
 													aria-label={
 														is_cn
 															? '编辑会话标题'

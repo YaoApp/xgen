@@ -2,7 +2,7 @@
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-	background: #fff;
+	background: var(--color_bg_menu);
 
 	.messages {
 		flex: 1;
@@ -19,7 +19,7 @@
 	}
 
 	.inputArea {
-		border-top: 1px solid #f0f0f0;
+		border-top: 1px solid var(--color_border_light);
 		padding: 16px;
 		display: flex;
 		flex-direction: column;
@@ -29,7 +29,7 @@
 			width: 95%;
 			margin: 0 auto;
 			padding: 6px 12px;
-			background: #f5f5f5;
+			background: var(--color_border_light);
 			border-radius: 8px 8px 0 0;
 			margin-bottom: 0;
 			border-bottom: none;
@@ -39,10 +39,9 @@
 				align-items: center;
 				justify-content: space-between;
 				padding: 4px 8px;
-				background: var(--color-bg-subtle);
 				border-radius: 4px;
 				font-size: 12px;
-				color: var(--color-text-secondary);
+				color: var(--color_title);
 
 				.pageInfo {
 					display: flex;
@@ -51,7 +50,7 @@
 				}
 
 				.loadingContainer {
-					color: #ffb800;
+					color: var(--color_warning);
 					animation: breathing 1.5s ease-in-out infinite;
 					display: flex;
 					align-items: center;
@@ -166,15 +165,16 @@
 			.input {
 				flex: 1;
 				resize: none;
-				border: 1px solid var(--color-border);
+				border: 1px solid var(--color_border);
 				border-radius: 8px;
 				padding: 8px 40px 8px 12px;
 				font-size: 14px;
 				line-height: 1.5;
+				color: var(--color_text);
 
 				&:focus {
-					border-color: var(--color-primary);
-					box-shadow: 0 0 0 2px var(--color-primary-light);
+					border-color: var(--color_main);
+					box-shadow: 0 0 0 2px rgba(var(--r), var(--g), var(--b), 0.15);
 				}
 			}
 
@@ -198,6 +198,7 @@
 				&:disabled {
 					opacity: 0.5;
 					cursor: not-allowed;
+					color: var(--color_text_grey);
 				}
 			}
 		}
@@ -220,12 +221,12 @@
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					color: #666;
+					color: var(--color_text_grey);
 					transition: all 0.2s ease;
 					background: transparent !important;
 
 					&:hover {
-						color: #1677ff;
+						color: var(--color_main);
 						transform: scale(1.1);
 					}
 
@@ -238,7 +239,7 @@
 
 			.rightInfo {
 				font-size: 12px;
-				color: #999;
+				color: var(--color_text_grey);
 			}
 		}
 	}
@@ -252,107 +253,6 @@
 
 		.ant-upload-list {
 			margin-bottom: 0;
-		}
-	}
-}
-
-[data-theme='dark'] {
-	.aiChat {
-		background: #1f1f1f;
-
-		.messages {
-			.messageWrapper {
-				display: flex;
-				flex-direction: column;
-				gap: 16px;
-				margin: 0 auto;
-				width: 100%;
-			}
-		}
-
-		.inputArea {
-			border-top: 1px solid rgba(255, 255, 255, 0.08);
-
-			.contextArea {
-				background: rgba(255, 255, 255, 0.08);
-
-				.currentPage {
-					color: rgba(255, 255, 255, 0.65);
-
-					.pageIcon {
-						color: rgba(255, 255, 255, 0.45);
-					}
-				}
-
-				.attachmentsArea {
-					.attachmentsList {
-						padding-bottom: 2px;
-
-						.attachmentItem {
-							background: var(--color_border_light);
-							border-color: var(--color_border);
-
-							.attachmentThumb {
-								.attachmentTypeIcon {
-									color: var(--color_title);
-								}
-							}
-
-							.attachmentName {
-								color: var(--color_text);
-							}
-
-							.deleteBtn {
-								color: var(--color_text);
-
-								&:hover {
-									color: var(--color_danger);
-								}
-							}
-						}
-					}
-				}
-			}
-
-			.inputWrapper {
-				box-shadow: 0 0 0 1px var(--color_border_soft);
-
-				.input {
-					background: rgba(255, 255, 255, 0.04);
-					border-color: var(--color_border);
-					color: rgba(255, 255, 255, 0.85);
-
-					&:disabled {
-						background-color: var(--color_border_light);
-						cursor: not-allowed;
-					}
-
-					&:hover {
-						border-color: rgba(255, 255, 255, 0.15);
-					}
-
-					&:focus {
-						border-color: #1677ff;
-						box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.15);
-					}
-				}
-			}
-
-			.statusBar {
-				.leftTools {
-					button {
-						color: rgba(255, 255, 255, 0.45);
-
-						&:hover {
-							color: #1677ff;
-						}
-					}
-				}
-
-				.rightInfo {
-					color: rgba(255, 255, 255, 0.45);
-				}
-			}
 		}
 	}
 }
