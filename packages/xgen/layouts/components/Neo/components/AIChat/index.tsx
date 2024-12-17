@@ -122,11 +122,14 @@ const AIChat = (props: AIChatProps) => {
 		loadChat()
 	}, [initialized, chat_id])
 
+	const clearRef = useRef<(() => void) | null>(null)
+
 	const handleSend = () => {
 		const message = inputValue.trim()
 		if (message) {
 			// Clear input first
 			setInputValue('')
+			clearRef.current?.()
 			setSelectedFiles([])
 
 			// Then send message
@@ -135,8 +138,8 @@ const AIChat = (props: AIChatProps) => {
 				...messages,
 				{
 					is_neo: false,
-					text: message, // Use saved message instead of inputValue
-					attachments: attachments, // Add attachments to the message
+					text: message,
+					attachments: attachments,
 					context: {
 						namespace: context.namespace,
 						stack: stack || '',
@@ -310,7 +313,7 @@ const AIChat = (props: AIChatProps) => {
 		}
 	}
 
-	const handlePaste = async (e: ClipboardEvent<HTMLTextAreaElement>) => {
+	const handlePaste = async (e: ClipboardEvent<HTMLDivElement>) => {
 		// 处理剪贴板中的文本
 		const text = e.clipboardData?.getData('text')
 		if (text && isValidUrl(text.trim()) && text.trim() === text) {
@@ -561,6 +564,7 @@ const AIChat = (props: AIChatProps) => {
 						onPaste={handlePaste}
 						placeholder={loading ? 'Please wait for response...' : 'Type your message here...'}
 						autoSize={{ minRows: 4, maxRows: 16 }}
+						clear={(fn) => (clearRef.current = fn)}
 					/>
 					<Button
 						type='text'

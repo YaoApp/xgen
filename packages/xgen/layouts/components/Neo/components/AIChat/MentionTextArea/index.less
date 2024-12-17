@@ -2,19 +2,36 @@
 	position: relative;
 	width: 100%;
 
-	:global(.ant-input) {
+	.editor {
 		width: 100%;
-		resize: none;
-		border: 1px solid var(--color_border);
+		min-height: 96px;
+		max-height: 384px;
+		overflow-y: auto;
 		border-radius: 8px;
 		padding: 8px 40px 8px 12px;
 		font-size: 14px;
 		line-height: 1.5;
 		color: var(--color_text);
+		outline: none;
+		white-space: pre-wrap;
+		word-break: break-word;
+		background: var(--color_bg_nav);
+		transition: all 0.3s ease;
+
+		&:empty:before {
+			content: attr(placeholder);
+			color: var(--color_text_grey);
+		}
 
 		&:focus {
-			border-color: var(--color_main);
-			box-shadow: 0 0 0 2px rgba(var(--r), var(--g), var(--b), 0.15);
+			background: var(--color_bg_nav);
+			box-shadow: 0 0 0 2.5px rgba(var(--r), var(--g), var(--b), 0.15);
+		}
+
+		.mention-tag {
+			color: var(--color_main);
+			user-select: all;
+			white-space: nowrap;
 		}
 	}
 }
