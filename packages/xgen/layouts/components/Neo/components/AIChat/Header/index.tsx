@@ -1,7 +1,9 @@
+import { useState, useRef } from 'react'
 import { Button, Tooltip } from 'antd'
 import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import { getLocale } from '@umijs/max'
+import History from '../History'
 
 interface HeaderProps {
 	title: string
@@ -20,6 +22,9 @@ const Header = ({
 	onFloat,
 	buttons = ['new', 'history', 'float', 'close']
 }: HeaderProps) => {
+	const [showHistory, setShowHistory] = useState(false)
+	const triggerRef = useRef<HTMLButtonElement>(null)
+
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
 
@@ -50,12 +55,30 @@ const Header = ({
 		}
 	}
 
+	// Add history handlers
+	const handleHistoryClick = () => {
+		setShowHistory(true)
+		onHistory?.()
+	}
+
+	const handleHistoryClose = () => {
+		setShowHistory(false)
+	}
+
+	const handleHistorySelect = (chatId: string) => {
+		// Handle chat selection
+		setShowHistory(false)
+	}
+
 	return (
 		<div className={styles.header}>
 			<div className={styles.title}>{title}</div>
 			<div className={styles.actions}>
 				{buttons.map((key) => {
-					const config = buttonConfig[key]
+					const config = {
+						...buttonConfig[key],
+						onClick: key === 'history' ? handleHistoryClick : buttonConfig[key].onClick
+					}
 					return (
 						<Tooltip key={key} title={config.title} placement='bottom'>
 							<Button
@@ -63,11 +86,19 @@ const Header = ({
 								icon={<Icon name={config.icon} size={config.size} />}
 								className={styles.actionBtn}
 								onClick={config.onClick}
+								ref={key === 'history' ? triggerRef : undefined}
 							/>
 						</Tooltip>
 					)
 				})}
 			</div>
+
+			<History
+				visible={showHistory}
+				onClose={handleHistoryClose}
+				onSelect={handleHistorySelect}
+				triggerRef={triggerRef}
+			/>
 		</div>
 	)
 }

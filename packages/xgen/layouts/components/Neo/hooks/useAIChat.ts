@@ -70,6 +70,30 @@ const CODE_FILE_TYPES: Record<string, string> = {
 	'.yao': 'text/x-yao'
 }
 
+// Add these type definitions near the top of the file
+type ChatFilter = {
+	keywords?: string
+	page?: number
+	pagesize?: number
+	order?: 'desc' | 'asc'
+}
+
+type ChatListResponse = {
+	data: {
+		groups: Array<{
+			label: string
+			chats: Array<{
+				chat_id: string
+				title: string | null
+			}>
+		}>
+		page: number
+		pagesize: number
+		total: number
+		last_page: number
+	}
+}
+
 export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 	const event_source = useRef<EventSource>()
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
@@ -242,7 +266,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 
 					// If is the first message, set the title
 					if (messages.length === 2 && chat_id && current_answer.text) {
-						updateChat(chat_id, current_answer.text) // TODO: set the title
+						updateChatByContent(chat_id, JSON.stringify(messages)) // TODO: set the title
 					}
 
 					current_answer.actions = actions
@@ -494,20 +518,32 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 	})
 
 	/** Get All Chats **/
-	const getChats = useMemoizedFn(async (keywords?: string) => {
-		if (!neo_api) return
+	const getChats = useMemoizedFn(async (filter?: ChatFilter) => {
+		if (!neo_api) return { groups: [], page: 1, pagesize: 10, total: 0, last_page: 1 }
 
-		const endpoint = `${neo_api}/chats?token=${encodeURIComponent(getToken())}${
-			keywords ? `&keywords=${encodeURIComponent(keywords)}` : ''
-		}`
+		const params = new URLSearchParams()
+		params.append('token', getToken())
 
-		const [err, res] = await to(axios.get(endpoint))
-		if (err) {
-			message.error('Failed to fetch chats')
-			return
+		// Add filter parameters if provided
+		if (filter) {
+			if (filter.keywords) params.append('keywords', filter.keywords)
+			if (filter.page) params.append('page', filter.page.toString())
+			if (filter.pagesize) params.append('pagesize', filter.pagesize.toString())
+			if (filter.order) params.append('order', filter.order)
 		}
 
-		return res?.data?.data || []
+		const endpoint = `${neo_api}/chats?${params.toString()}`
+		const [err, res] = await to<ChatListResponse>(axios.get(endpoint))
+		if (err) throw err
+
+		// Return the complete response data with pagination info
+		return {
+			groups: res?.data?.groups || [],
+			page: res?.data?.page || 1,
+			pagesize: res?.data?.pagesize || 10,
+			total: res?.data?.total || 0,
+			last_page: res?.data?.last_page || 1
+		}
 	})
 
 	/** Get Single Chat **/
@@ -541,7 +577,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 	})
 
 	/** Update Chat **/
-	const updateChat = useMemoizedFn(async (id: string, content: string) => {
+	const updateChatByContent = useMemoizedFn(async (id: string, content: string) => {
 		if (!neo_api) return
 
 		const endpoint = `${neo_api}/chats/${id}?token=${encodeURIComponent(getToken())}`
@@ -564,6 +600,33 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		return true
 	})
 
+	/** Update Chat **/
+	const updateChat = useMemoizedFn(async (chatId: string, title: string) => {
+		if (!neo_api) return false
+		const endpoint = `${neo_api}/chats/${chatId}?token=${encodeURIComponent(getToken())}`
+		const [err] = await to(axios.post(endpoint, { title }))
+		if (err) throw err
+		return true
+	})
+
+	/** Delete Chat **/
+	const deleteChat = useMemoizedFn(async (chatId: string) => {
+		if (!neo_api) return false
+		const endpoint = `${neo_api}/chats/${chatId}?token=${encodeURIComponent(getToken())}`
+		const [err] = await to(axios.delete(endpoint))
+		if (err) throw err
+		return true
+	})
+
+	/** Delete All Chats **/
+	const deleteAllChats = useMemoizedFn(async () => {
+		if (!neo_api) return false
+		const endpoint = `${neo_api}/dangerous/clear_chats?token=${encodeURIComponent(getToken())}`
+		const [err] = await to(axios.delete(endpoint))
+		if (err) throw err
+		return true
+	})
+
 	return {
 		messages,
 		loading,
@@ -583,6 +646,8 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		getChat,
 		updateChat,
 		title,
-		setTitle
+		setTitle,
+		deleteChat,
+		deleteAllChats
 	}
 }
