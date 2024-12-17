@@ -24,6 +24,7 @@ interface AIChatProps {
 	title?: string
 	onClose?: () => void
 	onNew?: () => void
+	onSelect?: () => void
 	currentPage?: string
 	showCurrentPage?: boolean
 	botAvatar?: string
@@ -199,6 +200,11 @@ const AIChat = (props: AIChatProps) => {
 				addAttachment(attachment)
 			})
 		}
+
+		// Focus the input after creating new chat
+		setTimeout(() => {
+			inputRef.current?.focus()
+		}, 0)
 
 		onNew?.()
 	}
@@ -377,10 +383,38 @@ const AIChat = (props: AIChatProps) => {
 		}
 	}
 
+	const handleHistorySelect = useMemoizedFn(async (chatId: string) => {
+		// Update chat ID
+		setChatId(chatId)
+		global.setNeoChatId(chatId) // Update global chat ID
+
+		// Reset messages and attachments
+		setMessages([])
+		setAttachments([])
+		setInitialized(false) // Set initialized to false to trigger loading
+
+		// Focus the input after switching chat
+		setTimeout(() => {
+			inputRef.current?.focus()
+		}, 0)
+	})
+
+	const handleOnFloat = useMemoizedFn(() => {
+		// Empty placeholder for now
+	})
+
 	return (
 		<div className={clsx(styles.aiChat, className)}>
 			{header || (
-				<DefaultHeader title={title} onNew={handleOnNew} onClose={onClose} buttons={headerButtons} />
+				<DefaultHeader
+					title={title}
+					onNew={handleOnNew}
+					onClose={onClose}
+					onHistory={() => {}}
+					onFloat={handleOnFloat}
+					onSelect={handleHistorySelect}
+					buttons={headerButtons}
+				/>
 			)}
 
 			{/* Chat Messages */}

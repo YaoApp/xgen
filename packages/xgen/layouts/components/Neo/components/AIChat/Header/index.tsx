@@ -11,6 +11,7 @@ interface HeaderProps {
 	onClose?: () => void
 	onHistory?: () => void
 	onFloat?: () => void
+	onSelect?: (chatId: string) => void
 	buttons?: ('new' | 'history' | 'float' | 'close')[]
 }
 
@@ -20,6 +21,7 @@ const Header = ({
 	onClose,
 	onHistory,
 	onFloat,
+	onSelect,
 	buttons = ['new', 'history', 'float', 'close']
 }: HeaderProps) => {
 	const [showHistory, setShowHistory] = useState(false)
@@ -66,7 +68,7 @@ const Header = ({
 	}
 
 	const handleHistorySelect = (chatId: string) => {
-		// Handle chat selection
+		onSelect?.(chatId)
 		setShowHistory(false)
 	}
 
