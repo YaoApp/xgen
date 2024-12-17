@@ -249,4 +249,12 @@ export declare namespace App {
 		content?: string
 		attachments?: ChatAttachment[]
 	}
+
+	// Add Mention interface near the top with other basic types
+	interface Mention {
+		id: string
+		name: string
+		avatar?: string
+		type?: string
+	}
 }

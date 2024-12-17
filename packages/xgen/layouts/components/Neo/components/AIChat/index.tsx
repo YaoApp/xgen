@@ -14,6 +14,7 @@ import { useGlobal } from '@/context/app'
 import ChatItem from '../ChatItem'
 import { isValidUrl } from '@/utils'
 import DefaultHeader from './Header'
+import MentionTextArea from './MentionTextArea'
 
 const { TextArea } = Input
 
@@ -167,8 +168,8 @@ const AIChat = (props: AIChatProps) => {
 		}, 100)
 	}, [messages])
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-		setInputValue(e.target.value)
+	const handleInputChange = (value: string) => {
+		setInputValue(value)
 		requestAnimationFrame(() => scrollToBottom())
 	}
 
@@ -552,23 +553,14 @@ const AIChat = (props: AIChatProps) => {
 				)}
 
 				<div className={styles.inputWrapper}>
-					<TextArea
-						ref={inputRef}
-						autoSize={{ minRows: 4, maxRows: 16 }}
-						placeholder={loading ? 'Please wait for response...' : 'Type your message here...'}
-						className={styles.input}
+					<MentionTextArea
 						value={inputValue}
 						onChange={handleInputChange}
-						onKeyDown={(e) => {
-							if (e.key === 'Enter' && !loading) {
-								if (e.shiftKey) {
-									return
-								}
-								e.preventDefault()
-								handleSend()
-							}
-						}}
+						onSend={handleSend}
+						loading={loading}
 						onPaste={handlePaste}
+						placeholder={loading ? 'Please wait for response...' : 'Type your message here...'}
+						autoSize={{ minRows: 4, maxRows: 16 }}
 					/>
 					<Button
 						type='text'

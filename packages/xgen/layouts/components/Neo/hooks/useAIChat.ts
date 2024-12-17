@@ -629,6 +629,23 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		return true
 	})
 
+	/** Get Mentions **/
+	const getMentions = useMemoizedFn(async (keywords: string) => {
+		if (!neo_api) return []
+
+		const params = new URLSearchParams()
+		params.append('token', getToken())
+		if (keywords) {
+			params.append('keywords', keywords)
+		}
+
+		const endpoint = `${neo_api}/mentions?${params.toString()}`
+		const [err, res] = await to<{ data: App.Mention[] }>(axios.get(endpoint))
+		if (err) throw err
+
+		return res?.data || []
+	})
+
 	return {
 		messages,
 		loading,
@@ -650,6 +667,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		title,
 		setTitle,
 		deleteChat,
-		deleteAllChats
+		deleteAllChats,
+		getMentions
 	}
 }
