@@ -21,7 +21,7 @@
 
 		.search {
 			flex: 1;
-			margin-right: 8px;
+			margin-right: 0;
 
 			:global {
 				.xgen-input {
@@ -37,28 +37,6 @@
 						border-color: var(--color_main) !important;
 					}
 				}
-			}
-		}
-
-		.closeBtn {
-			padding: 0;
-			width: 24px;
-			height: 24px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			color: var(--color_text);
-			transition: all 0.2s ease;
-			background: transparent !important;
-
-			&:hover {
-				color: var(--color_main);
-				transform: scale(1.1);
-			}
-
-			svg {
-				font-size: 14px;
-				transition: all 0.2s ease;
 			}
 		}
 	}
@@ -213,6 +191,30 @@
 		svg {
 			font-size: 14px;
 			transition: all 0.2s ease;
+		}
+	}
+}
+
+.empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 32px 0;
+	color: var(--color_text_grey);
+
+	:global(.ant-empty) {
+		margin-bottom: 16px;
+	}
+
+	.emptyButton {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+
+		i {
+			margin-right: 4px;
 		}
 	}
 }

@@ -1,34 +1,50 @@
-import { useState, useRef } from 'react'
-import { Button, Tooltip } from 'antd'
+import { useState, useRef, useEffect } from 'react'
+import { Button, Tooltip, Input, message } from 'antd'
+import type { InputRef } from 'antd'
 import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import { getLocale } from '@umijs/max'
 import History from '../History'
+import useAIChat from '../../../hooks/useAIChat'
 
 interface HeaderProps {
 	title: string
+	loading?: boolean
 	onNew?: () => void
 	onClose?: () => void
 	onHistory?: () => void
 	onFloat?: () => void
 	onSelect?: (chatId: string) => void
 	buttons?: ('new' | 'history' | 'float' | 'close')[]
+	chatId?: string
 }
 
 const Header = ({
-	title,
+	title: initialTitle,
 	onNew,
 	onClose,
 	onHistory,
 	onFloat,
 	onSelect,
-	buttons = ['new', 'history', 'float', 'close']
+	buttons = ['new', 'history', 'float', 'close'],
+	chatId
 }: HeaderProps) => {
 	const [showHistory, setShowHistory] = useState(false)
+	const [isEditing, setIsEditing] = useState(false)
+	const [editTitle, setEditTitle] = useState(initialTitle)
+	const [displayTitle, setDisplayTitle] = useState(initialTitle)
+	const [loading, setLoading] = useState(false)
 	const triggerRef = useRef<HTMLButtonElement>(null)
+	const inputRef = useRef<InputRef>(null)
+	const { updateChat } = useAIChat({})
 
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
+
+	useEffect(() => {
+		setDisplayTitle(initialTitle)
+		setEditTitle(initialTitle)
+	}, [initialTitle])
 
 	const buttonConfig = {
 		new: {
@@ -72,9 +88,82 @@ const Header = ({
 		setShowHistory(false)
 	}
 
+	const handleTitleClick = (e: React.MouseEvent) => {
+		console.log(chatId)
+		e.stopPropagation()
+		if (!chatId) return
+		setIsEditing(true)
+		setEditTitle(displayTitle)
+		inputRef.current?.focus()
+	}
+
+	const handleTitleUpdate = async () => {
+		if (!chatId || loading) {
+			return
+		}
+		if (editTitle.trim() === '') {
+			message.error(is_cn ? '标题不能为空' : 'Title cannot be empty')
+			return
+		}
+		setLoading(true)
+		try {
+			await updateChat(chatId, editTitle)
+			setDisplayTitle(editTitle)
+			setIsEditing(false)
+		} catch (error) {
+			message.error(is_cn ? '更新失败' : 'Failed to update')
+		}
+		setLoading(false)
+	}
+
+	const handleCancel = () => {
+		setIsEditing(false)
+		setEditTitle(displayTitle)
+	}
+
 	return (
 		<div className={styles.header}>
-			<div className={styles.title}>{title}</div>
+			<div className={styles.titleWrapper}>
+				{isEditing ? (
+					<div className={styles.editWrapper}>
+						<Input
+							ref={inputRef}
+							value={editTitle}
+							onChange={(e) => setEditTitle(e.target.value)}
+							onPressEnter={handleTitleUpdate}
+							onKeyDown={(e) => {
+								if (e.key === 'Escape') {
+									handleCancel()
+								}
+							}}
+							disabled={loading}
+							autoFocus
+						/>
+						<div className={styles.editActions}>
+							<Button
+								type='text'
+								className={styles.actionBtn}
+								onClick={handleTitleUpdate}
+								disabled={loading}
+								icon={<Icon name='material-check' size={14} />}
+							/>
+							<Button
+								type='text'
+								className={styles.actionBtn}
+								onClick={handleCancel}
+								disabled={loading}
+								icon={<Icon name='material-close' size={14} />}
+							/>
+						</div>
+						{loading && <Icon name='icon-loader' className={styles.spinner} />}
+					</div>
+				) : (
+					<div className={styles.title} onClick={handleTitleClick}>
+						<span>{displayTitle}</span>
+						<Icon name='material-edit' className={styles.editIcon} size={14} />
+					</div>
+				)}
+			</div>
 			<div className={styles.actions}>
 				{buttons.map((key) => {
 					const config = {

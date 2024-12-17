@@ -383,7 +383,13 @@ const AIChat = (props: AIChatProps) => {
 		}
 	}
 
-	const handleHistorySelect = useMemoizedFn(async (chatId: string) => {
+	const handleHistorySelect = useMemoizedFn(async (chatId?: string) => {
+		// Handle empty chatId or undefined case by creating new chat
+		if (!chatId || typeof chatId === undefined) {
+			handleNewChat()
+			return
+		}
+
 		// Update chat ID
 		setChatId(chatId)
 		global.setNeoChatId(chatId) // Update global chat ID
@@ -408,12 +414,14 @@ const AIChat = (props: AIChatProps) => {
 			{header || (
 				<DefaultHeader
 					title={title}
+					loading={loading}
 					onNew={handleOnNew}
 					onClose={onClose}
 					onHistory={() => {}}
 					onFloat={handleOnFloat}
 					onSelect={handleHistorySelect}
 					buttons={headerButtons}
+					chatId={chat_id}
 				/>
 			)}
 

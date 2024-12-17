@@ -1,4 +1,5 @@
 import { Input, Button, Modal, message } from 'antd'
+import type { InputRef } from 'antd'
 import { useState, useEffect, useRef } from 'react'
 import Icon from '@/widgets/Icon'
 import styles from './index.less'
@@ -6,6 +7,7 @@ import { getLocale } from '@umijs/max'
 import { useMemoizedFn } from 'ahooks'
 import useAIChat, { ChatGroup, ChatResponse } from '../../../hooks/useAIChat'
 import clsx from 'clsx'
+import { Empty } from 'antd'
 
 interface HistoryProps {
 	visible: boolean
@@ -26,6 +28,7 @@ const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
 		tempTitle: string
 	} | null>(null)
 	const historyRef = useRef<HTMLDivElement>(null)
+	const searchInputRef = useRef<InputRef>(null)
 
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
@@ -95,6 +98,9 @@ const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
 	useEffect(() => {
 		if (visible) {
 			loadChats()
+			setTimeout(() => {
+				searchInputRef.current?.focus()
+			}, 100)
 		}
 	}, [visible])
 
@@ -137,15 +143,10 @@ const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
 		<div ref={historyRef} className={clsx(styles.history, { [styles.visible]: visible })}>
 			<div className={styles.header}>
 				<Input
+					ref={searchInputRef}
 					placeholder={is_cn ? '搜索会话' : 'Search chats'}
 					onChange={(e) => handleSearch(e.target.value)}
 					className={styles.search}
-				/>
-				<Button
-					type='text'
-					className={styles.closeBtn}
-					onClick={onClose}
-					icon={<Icon name='material-close' size={16} />}
 				/>
 			</div>
 
@@ -156,7 +157,20 @@ const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
 						<span>{is_cn ? '加载中...' : 'Loading...'}</span>
 					</div>
 				) : chatGroups.length === 0 ? (
-					<div className={styles.empty}>{is_cn ? '暂无会话' : 'No chats'}</div>
+					<div className={styles.empty}>
+						<Empty
+							image={Empty.PRESENTED_IMAGE_SIMPLE}
+							description={is_cn ? '还没有任何会话记录' : 'No chat history yet'}
+						/>
+						<Button
+							type='primary'
+							icon={<Icon name='material-add' size={18} />}
+							onClick={() => onSelect('')}
+							className={styles.emptyButton}
+						>
+							{is_cn ? '开始新会话' : 'Start New Chat'}
+						</Button>
+					</div>
 				) : (
 					<>
 						{chatGroups.map((group, index) => (
