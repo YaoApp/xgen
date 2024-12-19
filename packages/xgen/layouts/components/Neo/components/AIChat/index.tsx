@@ -645,9 +645,9 @@ const AIChat = (props: AIChatProps) => {
 						type='text'
 						icon={
 							loading ? (
-								<Icon name='icon-square' size={16} />
+								<Icon name='icon-square' size={16} className={styles.actionIcon} />
 							) : (
-								<Icon name='icon-send' size={16} />
+								<Icon name='icon-send' size={16} className={styles.actionIcon} />
 							)
 						}
 						className={styles.sendBtn}

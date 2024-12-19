@@ -244,16 +244,31 @@
 				align-items: center;
 				justify-content: center;
 				border-radius: 6px;
-				transition: all 0.2s;
+				transition: all 0.2s ease;
+				background: transparent !important;
+				color: var(--color_text_grey);
 
-				&:hover {
-					background-color: var(--color-hover);
+				.actionIcon {
+					transition: all 0.2s ease;
+				}
+
+				&:hover:not(:disabled) {
+					color: var(--color_main);
+					background: var(--color_hover) !important;
+
+					.actionIcon {
+						transform: scale(1.1);
+					}
 				}
 
 				&:disabled {
 					opacity: 0.5;
 					cursor: not-allowed;
 					color: var(--color_text_grey);
+
+					&:hover {
+						background: transparent !important;
+					}
 				}
 			}
 		}
@@ -262,8 +277,6 @@
 			margin-top: 12px;
 			display: flex;
 			justify-content: space-between;
-			align-items: center;
-			padding: 0 4px;
 
 			.leftTools {
 				display: flex;
@@ -282,7 +295,14 @@
 
 					&:hover:not(:disabled) {
 						color: var(--color_main);
-						transform: scale(1.1);
+						background: var(--color_hover) !important;
+
+						svg,
+						i,
+						span,
+						.icon {
+							transform: scale(1.1);
+						}
 					}
 
 					&:disabled {
