@@ -40,3 +40,4 @@ packages/setup/*.timestamp-*
 
 # pro
 __Test*
+.cursorrules

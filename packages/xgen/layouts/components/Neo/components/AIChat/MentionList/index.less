@@ -1,5 +1,5 @@
 .mentionList {
-	position: absolute;
+	position: fixed;
 	background: var(--color_bg_menu);
 	border: 1px solid var(--color_border);
 	border-radius: var(--radius);
@@ -25,10 +25,30 @@
 	}
 
 	.list {
-		max-height: 300px;
+		max-height: 200px;
 		overflow-y: auto;
 
+		&::-webkit-scrollbar {
+			width: 6px;
+			height: 6px;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: var(--color_border);
+			border-radius: 3px;
+
+			&:hover {
+				background: var(--color_text_grey);
+			}
+		}
+
+		&::-webkit-scrollbar-track {
+			background: var(--color_border_soft);
+			border-radius: 3px;
+		}
+
 		.item {
+			height: 40px;
 			padding: 8px 12px;
 			display: flex;
 			align-items: center;

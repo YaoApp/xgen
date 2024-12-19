@@ -57,21 +57,16 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 		const range = selection.getRangeAt(0)
 		const rects = range.getClientRects()
 		const rect = rects[0]
-		const editorRect = editorRef.current?.getBoundingClientRect()
 
-		if (!editorRect || !rect) {
+		if (!rect || (rect.top === 0 && rect.left === 0)) {
 			hideMentionList()
 			return
 		}
 
-		if (rect.top === 0 && rect.left === 0) {
-			hideMentionList()
-			return
-		}
-
+		// 设置相对于视窗的绝对位置
 		setCursorPosition({
-			top: rect.top - editorRect.top + rect.height,
-			left: rect.left - editorRect.left
+			top: rect.top + rect.height,
+			left: rect.left
 		})
 
 		lastAtPosition.current = atPosition

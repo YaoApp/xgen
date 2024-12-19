@@ -12,6 +12,7 @@ interface MentionListProps {
 	position: { top: number; left: number }
 	onSelect: (mention: App.Mention) => void
 	onClose: () => void
+	containerRef?: React.RefObject<HTMLElement>
 }
 
 const MentionList: React.FC<MentionListProps> = ({ keyword, position, onSelect, onClose }) => {
@@ -75,6 +76,50 @@ const MentionList: React.FC<MentionListProps> = ({ keyword, position, onSelect, 
 		e.stopPropagation()
 	}
 
+	// 计算列表位置
+	const calculatePosition = () => {
+		const ITEM_HEIGHT = 40 // 每个列表项高度
+		const LIST_HEIGHT = Math.min(mentions.length * ITEM_HEIGHT + 24, 200) // 实际列表高度
+		const LIST_WIDTH = 300 // max-width from CSS
+		const PADDING = 12 // 边距
+
+		// position 已经是相对于视窗的位置
+		let { top, left } = position
+
+		// 获取视窗尺寸
+		const viewportHeight = window.innerHeight
+		const viewportWidth = window.innerWidth
+
+		// 检查底部空间
+		const spaceBelow = viewportHeight - top
+		const spaceAbove = top
+
+		// 向上显示的条件
+		if (spaceBelow < LIST_HEIGHT && spaceAbove > LIST_HEIGHT) {
+			top = top - LIST_HEIGHT - PADDING
+		}
+
+		// 确保不超出右侧
+		if (left + LIST_WIDTH > viewportWidth) {
+			left = viewportWidth - LIST_WIDTH - PADDING
+		}
+
+		// 确保不超出左侧
+		left = Math.max(PADDING, left)
+
+		// 确保不超出底部
+		if (top + LIST_HEIGHT > viewportHeight) {
+			top = viewportHeight - LIST_HEIGHT - PADDING
+		}
+
+		// 确保不超出顶部
+		top = Math.max(PADDING, top)
+
+		return { top, left }
+	}
+
+	const adjustedPosition = calculatePosition()
+
 	if (error) {
 		return (
 			<div className={styles.mentionList} style={{ top: position.top, left: position.left }}>
@@ -89,7 +134,12 @@ const MentionList: React.FC<MentionListProps> = ({ keyword, position, onSelect, 
 	return (
 		<div
 			className={styles.mentionList}
-			style={{ top: position.top, left: position.left }}
+			style={{
+				position: 'fixed',
+				top: adjustedPosition.top,
+				left: adjustedPosition.left,
+				zIndex: 1000
+			}}
 			onMouseDown={(e) => e.preventDefault()}
 			onClick={handleListClick}
 		>
