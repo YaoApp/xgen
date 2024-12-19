@@ -6,7 +6,7 @@ import to from 'await-to-js'
 import axios from 'axios'
 import ntry from 'nice-try'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { message } from 'antd'
+import { message as message_ } from 'antd'
 import { RcFile } from 'antd/es/upload'
 import { getLocale } from '@umijs/max'
 
@@ -103,6 +103,7 @@ export interface ChatResponse {
 type GenerateOptions = {
 	useSSE?: boolean // Whether to use Server-Sent Events
 	onProgress?: (text: string) => void // Callback for SSE progress updates
+	onComplete?: (finalText: string) => void | Promise<void>
 }
 
 export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
@@ -116,6 +117,9 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
+
+	// Add new state for title generation loading
+	const [titleGenerating, setTitleGenerating] = useState(false)
 
 	/** Get Neo API **/
 	const neo_api = useMemo(() => {
@@ -155,6 +159,43 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		if (!res?.data) return
 
 		setMessages(res.data.map(({ role, content }) => formatMessage(role, content, chat_id)))
+	})
+
+	/** Handle title generation with progress updates **/
+	const handleTitleGeneration = useMemoizedFn(async (messages: App.ChatInfo[], chatId: string) => {
+		if (!chatId) return
+
+		setTitleGenerating(true)
+
+		try {
+			let generatedTitle = ''
+
+			await generateTitle(JSON.stringify(messages), {
+				useSSE: true,
+				onProgress: (title) => {
+					setTitle(title)
+					generatedTitle = title // Keep track of final title
+				},
+				onComplete: async (finalTitle) => {
+					// Use the final complete title
+					generatedTitle = finalTitle
+					setTitle(finalTitle)
+
+					// Update the chat with the generated title
+					try {
+						await updateChat(chatId, finalTitle)
+					} catch (err) {
+						console.error('Failed to update chat title:', err)
+						message_.error(is_cn ? '更新标题失败' : 'Failed to update chat title')
+					}
+				}
+			})
+		} catch (err) {
+			console.error('Failed to generate title:', err)
+			message_.error(is_cn ? '生成标题失败' : 'Failed to generate title')
+		} finally {
+			setTitleGenerating(false)
+		}
 	})
 
 	/** Get AI Chat Data **/
@@ -277,9 +318,9 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 						current_answer.type = type
 					}
 
-					// If is the first message, set the title
+					// If is the first message, generate title using SSE
 					if (messages.length === 2 && chat_id && current_answer.text) {
-						updateChatByContent(chat_id, JSON.stringify(messages)) // TODO: set the title
+						handleTitleGeneration(messages, chat_id)
 					}
 
 					current_answer.actions = actions
@@ -427,7 +468,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 			if (error.name === 'AbortError') {
 				throw new Error('Upload cancelled')
 			}
-			message.error(error.message || 'Failed to upload file')
+			message_.error(error.message || 'Failed to upload file')
 			throw error
 		}
 	})
@@ -480,7 +521,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 
 				return { success: true }
 			} catch (error: any) {
-				message.error(error.message || 'Failed to download file')
+				message_.error(error.message || 'Failed to download file')
 				throw error
 			}
 		}
@@ -553,7 +594,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 
 		const [err, res] = await to<{ data: App.ChatDetail }>(axios.get(endpoint))
 		if (err) {
-			message.error('Failed to fetch chat details')
+			message_.error('Failed to fetch chat details')
 			return
 		}
 
@@ -582,13 +623,13 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 			axios.post(endpoint, { content })
 		)
 		if (err) {
-			message.error('Failed to update chat')
+			message_.error('Failed to update chat')
 			return false
 		}
 
 		const { title, message: msg, code } = res || {}
 		if (code && code >= 400) {
-			message.error(msg || 'Failed to update chat')
+			message_.error(msg || 'Failed to update chat')
 			return false
 		}
 
@@ -672,6 +713,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 						}
 						if (done) {
 							es.close()
+							options.onComplete?.(result)
 							resolve(result)
 						}
 					}
@@ -721,6 +763,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					}
 					if (done) {
 						es.close()
+						options.onComplete?.(result)
 						resolve(result)
 					}
 				}
@@ -811,6 +854,8 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		getMentions,
 		generate,
 		generateTitle,
-		generatePrompts
+		generatePrompts,
+		titleGenerating,
+		setTitleGenerating
 	}
 }

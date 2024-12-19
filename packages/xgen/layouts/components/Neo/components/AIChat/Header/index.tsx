@@ -17,10 +17,12 @@ interface HeaderProps {
 	onSelect?: (chatId: string) => void
 	buttons?: ('new' | 'history' | 'float' | 'close')[]
 	chatId?: string
+	titleGenerating?: boolean
 }
 
 const Header = ({
 	title: initialTitle,
+	titleGenerating = false,
 	onNew,
 	onClose,
 	onHistory,
@@ -90,7 +92,7 @@ const Header = ({
 
 	const handleTitleClick = (e: React.MouseEvent) => {
 		e.stopPropagation()
-		if (!chatId) return
+		if (!chatId || titleGenerating) return
 		setIsEditing(true)
 		setEditTitle(displayTitle)
 		inputRef.current?.focus()
@@ -157,9 +159,17 @@ const Header = ({
 						{loading && <Icon name='icon-loader' className={styles.spinner} />}
 					</div>
 				) : (
-					<div className={styles.title} onClick={handleTitleClick}>
+					<div
+						className={styles.title}
+						onClick={handleTitleClick}
+						style={{ cursor: titleGenerating ? 'not-allowed' : 'pointer' }}
+					>
 						<span>{displayTitle}</span>
-						<Icon name='material-edit' className={styles.editIcon} size={14} />
+						{titleGenerating ? (
+							<Icon name='icon-loader' className={styles.spinner} />
+						) : (
+							<Icon name='material-edit' className={styles.editIcon} size={14} />
+						)}
 					</div>
 				)}
 			</div>
