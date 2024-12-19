@@ -69,7 +69,8 @@ const AIChat = (props: AIChatProps) => {
 		addAttachment,
 		formatFileName,
 		setAttachments,
-		getChat
+		getChat,
+		generatePrompts
 	} = useAIChat({ chat_id, upload_options })
 	const [chat_context, setChatContext] = useState<App.ChatContext>({ placeholder: '', signal: '' })
 
@@ -374,7 +375,7 @@ const AIChat = (props: AIChatProps) => {
 						content_type: result.content_type
 					}
 
-					// 更新文件状态
+					// ��新文件状态
 					removeAttachment(attachment)
 					addAttachment(updatedAttachment)
 
@@ -408,6 +409,44 @@ const AIChat = (props: AIChatProps) => {
 	const handleOnFloat = useMemoizedFn(() => {
 		// Empty placeholder for now
 	})
+
+	const [optimizing, setOptimizing] = useState(false)
+
+	// Add handleOptimize function
+	const handleOptimize = async () => {
+		if (!inputValue.trim() || loading || optimizing) return
+
+		setOptimizing(true)
+		try {
+			const result = await generatePrompts(inputValue.trim(), {
+				useSSE: true,
+				onProgress: (text) => {
+					// Only update input if text is not an error message
+					if (typeof text === 'string' && text.trim()) {
+						setInputValue(text)
+					}
+				}
+			})
+
+			// Handle error response
+			if (typeof result === 'object' && result.type === 'error') {
+				throw new Error(result.text || 'Optimization failed')
+			}
+		} catch (error: any) {
+			// Handle different error messages
+			let errorMsg = is_cn ? '优化失败' : 'Optimization failed'
+
+			if (error.message === 'content is required') {
+				errorMsg = is_cn ? '请输入内容' : 'Please enter content'
+			} else if (error.message) {
+				errorMsg = error.message
+			}
+
+			message.error(errorMsg)
+		} finally {
+			setOptimizing(false)
+		}
+	}
 
 	return (
 		<div className={clsx(styles.aiChat, className)}>
@@ -601,6 +640,7 @@ const AIChat = (props: AIChatProps) => {
 						autoSize={{ minRows: 4, maxRows: 16 }}
 						clear={(fn) => (clearRef.current = fn)}
 						focus={(fn) => (focusRef.current = fn)}
+						disabled={loading || optimizing}
 					/>
 					<Button
 						type='text'
@@ -623,10 +663,15 @@ const AIChat = (props: AIChatProps) => {
 						<Upload {...uploadProps}>
 							<Button type='text' icon={<UploadSimple size={14} />} disabled={loading} />
 						</Upload>
-						<Button type='text' icon={<Sparkle size={14} />} disabled={loading} />
+						<Button
+							type='text'
+							icon={<Sparkle size={14} className={optimizing ? styles.optimizing : ''} />}
+							disabled={loading || !inputValue.trim()}
+							onClick={handleOptimize}
+						/>
 					</div>
 					<div className={styles.rightInfo}>
-						{loading
+						{loading || optimizing
 							? is_cn
 								? '正在响应中...'
 								: 'Waiting for response...'

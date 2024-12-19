@@ -67,7 +67,10 @@ const CODE_FILE_TYPES: Record<string, string> = {
 	'.tsx': 'text/typescript',
 	'.vue': 'text/x-vue',
 	'.sh': 'text/x-sh',
-	'.yao': 'text/x-yao'
+	'.yao': 'text/x-yao',
+	'.mdx': 'text/markdown',
+	'.yml': 'text/x-yaml',
+	'.yaml': 'text/x-yaml'
 }
 
 // Add these type definitions near the top of the file
@@ -94,6 +97,12 @@ export interface ChatResponse {
 	pagesize: number
 	total: number
 	last_page: number
+}
+
+// Add these types near the top of the file
+type GenerateOptions = {
+	useSSE?: boolean // Whether to use Server-Sent Events
+	onProgress?: (text: string) => void // Callback for SSE progress updates
 }
 
 export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
@@ -345,27 +354,10 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 			throw new Error(`File size cannot exceed ${options.max_file_size}MB`)
 		}
 
-		// Update isValidType to include .yao in code extensions
+		// Update isValidType to use CODE_FILE_TYPES
 		const isValidType = (fileType: string, fileName: string) => {
 			// Check for code file extensions
-			const codeExtensions = [
-				'.js',
-				'.ts',
-				'.go',
-				'.py',
-				'.java',
-				'.c',
-				'.cpp',
-				'.rb',
-				'.php',
-				'.swift',
-				'.rs',
-				'.jsx',
-				'.tsx',
-				'.vue',
-				'.sh',
-				'.yao'
-			]
+			const codeExtensions = Object.keys(CODE_FILE_TYPES)
 			if (codeExtensions.some((ext) => fileName.toLowerCase().endsWith(ext))) {
 				return true
 			}
@@ -648,6 +640,152 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		return res?.data || []
 	})
 
+	/** Generate with AI **/
+	const generate = useMemoizedFn(
+		async (content: string, type: string, systemPrompt: string, options: GenerateOptions = {}) => {
+			if (!neo_api) return ''
+
+			const endpoint = `${neo_api}/generate?token=${encodeURIComponent(getToken())}&chat_id=${chat_id}${
+				assistant_id ? `&assistant_id=${assistant_id}` : ''
+			}`
+
+			if (options.useSSE) {
+				return new Promise<string>((resolve, reject) => {
+					const es = new EventSource(endpoint, { withCredentials: true })
+					let result = ''
+
+					es.onmessage = ({ data }) => {
+						const response = ntry(() => JSON.parse(data))
+						if (!response) return
+
+						// Handle error response
+						if (response.type === 'error') {
+							es.close()
+							reject(new Error(response.text))
+							return
+						}
+
+						const { text, done } = response
+						if (text) {
+							result += text
+							options.onProgress?.(result)
+						}
+						if (done) {
+							es.close()
+							resolve(result)
+						}
+					}
+
+					es.onerror = (err) => {
+						es.close()
+						reject(err)
+					}
+				})
+			}
+
+			// Regular HTTP request
+			const [err, res] = await to(axios.post(endpoint, { content, type, system_prompt: systemPrompt }))
+			if (err) throw err
+			return res?.data?.result || ''
+		}
+	)
+
+	/** Generate title **/
+	const generateTitle = useMemoizedFn(async (content: string, options: GenerateOptions = {}) => {
+		if (!neo_api) return ''
+
+		const endpoint = `${neo_api}/generate/title?token=${encodeURIComponent(getToken())}&chat_id=${chat_id}${
+			assistant_id ? `&assistant_id=${assistant_id}` : ''
+		}&content=${encodeURIComponent(content)}`
+
+		if (options.useSSE) {
+			return new Promise<string>((resolve, reject) => {
+				const es = new EventSource(endpoint, { withCredentials: true })
+				let result = ''
+
+				es.onmessage = ({ data }) => {
+					const response = ntry(() => JSON.parse(data))
+					if (!response) return
+
+					// Handle error response
+					if (response.type === 'error') {
+						es.close()
+						reject(new Error(response.text))
+						return
+					}
+
+					const { text, done } = response
+					if (text) {
+						result += text
+						options.onProgress?.(result)
+					}
+					if (done) {
+						es.close()
+						resolve(result)
+					}
+				}
+
+				es.onerror = (err) => {
+					es.close()
+					reject(err)
+				}
+			})
+		}
+
+		// Regular HTTP request
+		const [err, res] = await to(axios.post(endpoint, { content }))
+		if (err) throw err
+		return res?.data?.result || ''
+	})
+
+	/** Generate prompts **/
+	const generatePrompts = useMemoizedFn(async (content: string, options: GenerateOptions = {}) => {
+		if (!neo_api) return ''
+
+		const endpoint = `${neo_api}/generate/prompts?token=${encodeURIComponent(getToken())}&chat_id=${chat_id}${
+			assistant_id ? `&assistant_id=${assistant_id}` : ''
+		}&content=${encodeURIComponent(content)}`
+
+		if (options.useSSE) {
+			return new Promise<string>((resolve, reject) => {
+				const es = new EventSource(endpoint, { withCredentials: true })
+				let result = ''
+
+				es.onmessage = ({ data }) => {
+					const response = ntry(() => JSON.parse(data))
+					if (!response) return
+
+					// Handle error response
+					if (response.type === 'error') {
+						es.close()
+						reject(new Error(response.text))
+						return
+					}
+
+					const { text, done } = response
+					if (text) {
+						result += text
+						options.onProgress?.(result)
+					}
+					if (done) {
+						es.close()
+						resolve(result)
+					}
+				}
+
+				es.onerror = (err) => {
+					es.close()
+					reject(err)
+				}
+			})
+		}
+
+		// Regular HTTP request
+		const [err, res] = await to(axios.post(endpoint, { content }))
+		if (err) throw err
+		return res?.data?.result || ''
+	})
+
 	return {
 		messages,
 		loading,
@@ -670,6 +808,9 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		setTitle,
 		deleteChat,
 		deleteAllChats,
-		getMentions
+		getMentions,
+		generate,
+		generateTitle,
+		generatePrompts
 	}
 }

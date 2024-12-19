@@ -13,6 +13,7 @@ interface MentionTextAreaProps {
 	autoSize?: { minRows: number; maxRows: number }
 	clear?: (fn: () => void) => void
 	focus?: (fn: () => void) => void
+	disabled?: boolean
 }
 
 const MentionTextArea: React.FC<MentionTextAreaProps> = ({
@@ -24,7 +25,8 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 	placeholder,
 	autoSize = { minRows: 4, maxRows: 16 },
 	clear,
-	focus
+	focus,
+	disabled = false
 }) => {
 	const [mentionListVisible, setMentionListVisible] = useState(false)
 	const [mentionKeyword, setMentionKeyword] = useState('')
@@ -32,6 +34,14 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 	const [isMentionCompleted, setIsMentionCompleted] = useState(true)
 	const editorRef = useRef<HTMLDivElement>(null)
 	const lastAtPosition = useRef<number>(-1)
+
+	// Add useEffect to sync value prop with editor content
+	useEffect(() => {
+		const editor = editorRef.current
+		if (editor && editor.innerText !== value) {
+			editor.innerText = value
+		}
+	}, [value])
 
 	// Handle input
 	const handleInput = () => {
@@ -65,7 +75,7 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 			return
 		}
 
-		// 设置相对于视窗的绝对位置
+		// 设置相对于窗的绝对位置
 		setCursorPosition({
 			top: rect.top + rect.height,
 			left: rect.left
@@ -329,14 +339,16 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 			<div
 				ref={editorRef}
 				className={styles.editor}
-				contentEditable
+				contentEditable={!disabled}
 				onInput={handleInput}
 				onKeyDown={handleKeyDown}
 				onPaste={handlePaste}
 				placeholder={placeholder}
 				style={{
 					minHeight: `${autoSize.minRows * 24}px`,
-					maxHeight: `${autoSize.maxRows * 24}px`
+					maxHeight: `${autoSize.maxRows * 24}px`,
+					opacity: disabled ? 0.7 : 1,
+					cursor: disabled ? 'not-allowed' : 'text'
 				}}
 			/>
 			{mentionListVisible && (
