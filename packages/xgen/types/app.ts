@@ -242,6 +242,7 @@ export declare namespace App {
 		assistant_id?: string
 		thumbUrl?: string
 		blob?: Blob
+		pinned?: boolean
 	}
 
 	/** Options for creating a new chat */

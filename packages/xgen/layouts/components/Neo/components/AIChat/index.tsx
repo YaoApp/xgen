@@ -131,10 +131,12 @@ const AIChat = (props: AIChatProps) => {
 			// Clear input first
 			setInputValue('')
 			clearRef.current?.()
-			setSelectedFiles([])
 
-			// Then send message
-			onSend?.(message, selectedFiles)
+			// 获取固定的附件
+			const pinnedAttachments = attachments.filter((att) => att.pinned)
+
+			// Then send message with all current attachments
+			onSend?.(message, attachments)
 			setMessages([
 				...messages,
 				{
@@ -154,6 +156,9 @@ const AIChat = (props: AIChatProps) => {
 					}
 				}
 			])
+
+			// 在发送后设置附件为固定的附件
+			setAttachments(pinnedAttachments)
 		}
 	}
 
@@ -479,56 +484,7 @@ const AIChat = (props: AIChatProps) => {
 							<div className={styles.attachmentsArea}>
 								<div className={styles.attachmentsList}>
 									{attachments.map((attachment, index) => (
-										<div
-											key={index}
-											className={clsx(styles.attachmentItem, {
-												[styles.uploading]:
-													attachment.status === 'uploading'
-											})}
-											onClick={() => handleFileClick(attachment)}
-											style={{ cursor: 'pointer' }}
-										>
-											<div className={styles.attachmentThumb}>
-												{attachment.type === 'URL' ? (
-													<div
-														className={
-															styles.attachmentTypeIcon
-														}
-													>
-														<Icon name='icon-link' size={10} />
-													</div>
-												) : attachment.thumbUrl ? (
-													<img
-														src={attachment.thumbUrl}
-														alt={attachment.name}
-													/>
-												) : (
-													<div
-														className={
-															styles.attachmentTypeIcon
-														}
-													>
-														{attachment.type}
-													</div>
-												)}
-												{attachment.status === 'uploading' && (
-													<div className={styles.uploadingOverlay}>
-														<Icon
-															name='icon-loader'
-															size={16}
-															className={styles.spinner}
-														/>
-													</div>
-												)}
-											</div>
-											<div
-												className={styles.attachmentName}
-												title={attachment.name}
-											>
-												{attachment.name.length > 15
-													? `${attachment.name.slice(0, 12)}...`
-													: attachment.name}
-											</div>
+										<div key={index} className={clsx(styles.attachmentItem)}>
 											<div
 												className={styles.deleteBtn}
 												onClick={(e) => {
@@ -536,7 +492,95 @@ const AIChat = (props: AIChatProps) => {
 													removeAttachment(attachment)
 												}}
 											>
-												<Icon name='icon-x' size={12} />
+												<Icon name='material-close' size={12} />
+											</div>
+											<div
+												className={clsx(styles.attachmentContent, {
+													[styles.uploading]:
+														attachment.status === 'uploading'
+												})}
+												onClick={() => handleFileClick(attachment)}
+											>
+												<div className={styles.attachmentThumb}>
+													{attachment.type === 'URL' ? (
+														<div
+															className={
+																styles.attachmentTypeIcon
+															}
+														>
+															<Icon
+																name='icon-link'
+																size={10}
+															/>
+														</div>
+													) : attachment.thumbUrl ? (
+														<img
+															src={attachment.thumbUrl}
+															alt={attachment.name}
+														/>
+													) : (
+														<div
+															className={clsx(
+																styles.attachmentTypeIcon,
+																{
+																	[styles.longType]:
+																		attachment
+																			.type
+																			.length >=
+																		4
+																}
+															)}
+														>
+															{attachment.type.slice(0, 3)}
+														</div>
+													)}
+													{attachment.status === 'uploading' && (
+														<div
+															className={
+																styles.uploadingOverlay
+															}
+														>
+															<Icon
+																name='icon-loader'
+																size={16}
+																className={
+																	styles.spinner
+																}
+															/>
+														</div>
+													)}
+												</div>
+												<div
+													className={styles.attachmentName}
+													title={attachment.name}
+												>
+													{attachment.name.length > 15
+														? `${attachment.name.slice(
+																0,
+																12
+														  )}...`
+														: attachment.name}
+												</div>
+												<div
+													className={clsx(styles.pinBtn, {
+														[styles.pinned]: attachment.pinned
+													})}
+													onClick={(e) => {
+														e.stopPropagation()
+														const updatedAttachments =
+															attachments.map((att) =>
+																att === attachment
+																	? {
+																			...att,
+																			pinned: !att.pinned
+																	  }
+																	: att
+															)
+														setAttachments(updatedAttachments)
+													}}
+												>
+													<Icon name='material-keep' size={12} />
+												</div>
 											</div>
 										</div>
 									))}

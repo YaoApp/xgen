@@ -149,7 +149,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 	})
 
 	/** Get AI Chat Data **/
-	const getData = useMemoizedFn((message: App.ChatHuman) => {
+	const getData = useMemoizedFn(async (message: App.ChatHuman) => {
 		setLoading(true)
 
 		const content: { text: string; attachments?: App.ChatAttachment[] } = { text: message.text }
@@ -227,12 +227,14 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		}
 
 		const cleanupAttachments = () => {
+			// Only cleanup non-pinned attachments
 			attachments.forEach((attachment) => {
-				if (attachment.thumbUrl) {
+				if (!attachment.pinned && attachment.thumbUrl) {
 					URL.revokeObjectURL(attachment.thumbUrl)
 				}
 			})
-			setAttachments([])
+			// Keep pinned attachments, remove others
+			setAttachments(attachments.filter((att) => att.pinned))
 		}
 
 		// Directly try to establish EventSource connection
