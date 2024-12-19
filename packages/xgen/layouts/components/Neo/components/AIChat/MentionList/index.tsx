@@ -23,6 +23,7 @@ const MentionList: React.FC<MentionListProps> = ({ keyword, position, onSelect, 
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
 
+	// Load mentions when keyword changes
 	useEffect(() => {
 		const loadMentions = async () => {
 			setLoading(true)
@@ -39,6 +40,7 @@ const MentionList: React.FC<MentionListProps> = ({ keyword, position, onSelect, 
 		loadMentions()
 	}, [keyword])
 
+	// Handle keyboard navigation
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === 'ArrowDown') {
@@ -60,6 +62,19 @@ const MentionList: React.FC<MentionListProps> = ({ keyword, position, onSelect, 
 		return () => document.removeEventListener('keydown', handleKeyDown)
 	}, [mentions, selectedIndex])
 
+	// Handle item click
+	const handleItemClick = (e: React.MouseEvent, mention: App.Mention, index: number) => {
+		e.preventDefault()
+		e.stopPropagation()
+		setSelectedIndex(index)
+		onSelect(mention)
+	}
+
+	// Handle list container click
+	const handleListClick = (e: React.MouseEvent) => {
+		e.stopPropagation()
+	}
+
 	if (error) {
 		return (
 			<div className={styles.mentionList} style={{ top: position.top, left: position.left }}>
@@ -72,7 +87,12 @@ const MentionList: React.FC<MentionListProps> = ({ keyword, position, onSelect, 
 	}
 
 	return (
-		<div className={styles.mentionList} style={{ top: position.top, left: position.left }}>
+		<div
+			className={styles.mentionList}
+			style={{ top: position.top, left: position.left }}
+			onMouseDown={(e) => e.preventDefault()}
+			onClick={handleListClick}
+		>
 			{loading ? (
 				<div className={styles.loading}>
 					<Spin size='small' />
@@ -86,7 +106,8 @@ const MentionList: React.FC<MentionListProps> = ({ keyword, position, onSelect, 
 						<div
 							key={mention.id}
 							className={clsx(styles.item, { [styles.selected]: index === selectedIndex })}
-							onClick={() => onSelect(mention)}
+							onMouseDown={(e) => handleItemClick(e, mention, index)}
+							onMouseEnter={() => setSelectedIndex(index)}
 						>
 							{mention.avatar && (
 								<div className={styles.avatar}>

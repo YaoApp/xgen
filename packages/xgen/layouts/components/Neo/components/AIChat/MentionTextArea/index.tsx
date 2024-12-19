@@ -89,7 +89,10 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 	// Handle mention selection
 	const handleMentionSelect = (mention: App.Mention) => {
 		const editor = editorRef.current
-		if (!editor) return
+		if (!editor) {
+			console.error('Editor ref is null')
+			return
+		}
 
 		const selection = window.getSelection()
 		if (!selection?.focusNode) return
@@ -170,7 +173,17 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 	// Add click outside handler
 	useEffect(() => {
 		const handleClickOutside = (e: MouseEvent) => {
-			if (mentionListVisible && !editorRef.current?.contains(e.target as Node)) {
+			const target = e.target as Node
+			const editor = editorRef.current
+			const mentionList = document.querySelector(`.${styles.mentionList}`)
+
+			if (
+				mentionListVisible &&
+				editor &&
+				!editor.contains(target) &&
+				mentionList &&
+				!mentionList.contains(target)
+			) {
 				hideMentionList()
 			}
 		}
