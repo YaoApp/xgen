@@ -375,7 +375,7 @@ const AIChat = (props: AIChatProps) => {
 						content_type: result.content_type
 					}
 
-					// ��新文件状态
+					// 更新文件状态
 					removeAttachment(attachment)
 					addAttachment(updatedAttachment)
 
@@ -653,7 +653,7 @@ const AIChat = (props: AIChatProps) => {
 						}
 						className={styles.sendBtn}
 						onClick={loading ? cancel : handleSend}
-						disabled={!loading && !inputValue.trim()}
+						disabled={(!loading && !inputValue.trim()) || optimizing}
 					/>
 				</div>
 
@@ -666,7 +666,7 @@ const AIChat = (props: AIChatProps) => {
 						<Button
 							type='text'
 							icon={<Sparkle size={14} className={optimizing ? styles.optimizing : ''} />}
-							disabled={loading || !inputValue.trim()}
+							disabled={loading || optimizing || !inputValue.trim()}
 							onClick={handleOptimize}
 						/>
 					</div>

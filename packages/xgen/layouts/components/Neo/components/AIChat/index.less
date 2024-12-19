@@ -356,7 +356,7 @@
 
 .optimizing {
 	animation: glow 1.5s ease-in-out infinite;
-	color: var(--color_main);
+	color: var(--color_warning);
 }
 
 @keyframes glow {
@@ -368,5 +368,26 @@
 	}
 	100% {
 		opacity: 0.5;
+	}
+}
+
+.loadingIndicator {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 12px;
+
+	.spinner {
+		animation: rotate 1s linear infinite;
+		color: var(--color_text_45);
+	}
+}
+
+@keyframes rotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
 	}
 }
