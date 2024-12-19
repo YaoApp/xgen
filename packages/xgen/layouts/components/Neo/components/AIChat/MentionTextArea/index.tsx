@@ -267,6 +267,52 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 		}
 	}, [clear])
 
+	// Add paste handler
+	const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+		// Handle custom paste logic if provided first
+		if (onPaste) {
+			onPaste(e)
+			// If custom handler prevented default, don't do anything else
+			if (e.defaultPrevented) {
+				return
+			}
+		}
+
+		// Prevent default paste only if we're handling it ourselves
+		e.preventDefault()
+
+		// Get clipboard data
+		const clipboardData = e.clipboardData
+		let content = clipboardData.getData('text/plain')
+
+		// If no content, don't proceed
+		if (!content) return
+
+		try {
+			// Use execCommand for more reliable paste behavior
+			document.execCommand('insertText', false, content)
+		} catch (err) {
+			// Fallback to manual insertion if execCommand fails
+			const selection = window.getSelection()
+			if (!selection?.rangeCount) return
+
+			const range = selection.getRangeAt(0)
+			const textNode = document.createTextNode(content)
+
+			range.deleteContents()
+			range.insertNode(textNode)
+
+			// Move cursor to end of inserted text
+			range.setStartAfter(textNode)
+			range.setEndAfter(textNode)
+			selection.removeAllRanges()
+			selection.addRange(range)
+		}
+
+		// Trigger input handler to update value
+		handleInput()
+	}
+
 	return (
 		<div className={styles.mentionTextArea}>
 			<div
@@ -275,7 +321,7 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 				contentEditable
 				onInput={handleInput}
 				onKeyDown={handleKeyDown}
-				onPaste={onPaste}
+				onPaste={handlePaste}
 				placeholder={placeholder}
 				style={{
 					minHeight: `${autoSize.minRows * 24}px`,
