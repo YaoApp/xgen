@@ -347,7 +347,6 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 				style={{
 					minHeight: `${autoSize.minRows * 24}px`,
 					maxHeight: `${autoSize.maxRows * 24}px`,
-					opacity: disabled ? 0.7 : 1,
 					cursor: disabled ? 'not-allowed' : 'text'
 				}}
 			/>

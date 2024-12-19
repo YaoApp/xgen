@@ -280,9 +280,17 @@
 					transition: all 0.2s ease;
 					background: transparent !important;
 
-					&:hover {
+					&:hover:not(:disabled) {
 						color: var(--color_main);
 						transform: scale(1.1);
+					}
+
+					&:disabled {
+						cursor: not-allowed;
+
+						&:not(:has(.optimizing)) {
+							opacity: 0.5;
+						}
 					}
 
 					svg {
@@ -355,19 +363,21 @@
 }
 
 .optimizing {
-	animation: glow 1.5s ease-in-out infinite;
-	color: var(--color_warning);
+	animation: glow 1.5s ease-in-out infinite !important;
+	color: var(--color_warning) !important;
+	opacity: 1 !important;
 }
 
 @keyframes glow {
 	0% {
-		opacity: 0.5;
+		opacity: 0.4;
 	}
 	50% {
 		opacity: 1;
+		transform: scale(1.1);
 	}
 	100% {
-		opacity: 0.5;
+		opacity: 0.4;
 	}
 }
 

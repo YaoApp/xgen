@@ -48,7 +48,6 @@ const AIChat = (props: AIChatProps) => {
 	const stack = global.stack.paths.join('/')
 
 	const { onSend, onClose, onNew, className, botAvatar, header, headerButtons, upload_options } = props
-	const [selectedFiles, setSelectedFiles] = useState<any[]>([])
 	const [inputValue, setInputValue] = useState('')
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const [chat_id, setChatId] = useState(global.neo.chat_id || 'hello')
