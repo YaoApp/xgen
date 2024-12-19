@@ -46,6 +46,25 @@
 		overflow-y: auto;
 		padding: 8px;
 		min-height: 0;
+
+		&::-webkit-scrollbar {
+			width: 6px;
+			height: 6px;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: var(--color_border);
+			border-radius: 3px;
+
+			&:hover {
+				background: var(--color_text_grey);
+			}
+		}
+
+		&::-webkit-scrollbar-track {
+			background: var(--color_border_soft);
+			border-radius: 3px;
+		}
 	}
 
 	.group {

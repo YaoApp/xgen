@@ -1,9 +1,9 @@
 .mentionList {
 	position: fixed;
 	background: var(--color_bg_menu);
-	border: 1px solid var(--color_border);
-	border-radius: var(--radius);
+	border-radius: 8px;
 	box-shadow: var(--shadow);
+	border: none;
 	min-width: 200px;
 	max-width: 300px;
 	z-index: 1000;
@@ -64,7 +64,7 @@
 
 			&:hover,
 			&.selected {
-				background: var(--color_border_soft);
+				background-color: var(--color_border_soft);
 			}
 
 			.avatar {
@@ -84,15 +84,17 @@
 				flex: 1;
 				min-width: 0;
 				display: flex;
+				justify-content: space-between;
 				align-items: center;
-				gap: 8px;
 
 				.name {
+					flex: 1;
 					font-size: 13px;
 					color: var(--color_text);
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
+					margin-right: 12px;
 				}
 
 				.type {
@@ -101,6 +103,7 @@
 					background: var(--color_border_light);
 					padding: 2px 6px;
 					border-radius: 4px;
+					flex-shrink: 0;
 				}
 			}
 		}
