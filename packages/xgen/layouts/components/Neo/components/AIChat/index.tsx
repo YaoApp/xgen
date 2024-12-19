@@ -123,6 +123,7 @@ const AIChat = (props: AIChatProps) => {
 	}, [initialized, chat_id])
 
 	const clearRef = useRef<(() => void) | null>(null)
+	const focusRef = useRef<(() => void) | null>(null)
 
 	const handleSend = () => {
 		const message = inputValue.trim()
@@ -186,29 +187,23 @@ const AIChat = (props: AIChatProps) => {
 		setChatId(new_chat_id)
 		setMessages([])
 		setAttachments([])
-
-		// Update global chat_id
 		global.setNeoChatId(new_chat_id)
-
-		// Set untitled as title
 		setTitle(is_cn ? '未命名' : 'Untitled')
 
-		// Handle optional content
 		if (options?.content) {
 			setInputValue(options.content)
 		}
 
-		// Handle optional attachments
 		if (options?.attachments?.length) {
 			options.attachments.forEach((attachment) => {
 				addAttachment(attachment)
 			})
 		}
 
-		// Focus the input after creating new chat
+		// Focus using the new method
 		setTimeout(() => {
-			inputRef.current?.focus()
-		}, 0)
+			focusRef.current?.()
+		}, 100)
 
 		onNew?.()
 	}
@@ -388,25 +383,21 @@ const AIChat = (props: AIChatProps) => {
 	}
 
 	const handleHistorySelect = useMemoizedFn(async (chatId?: string) => {
-		// Handle empty chatId or undefined case by creating new chat
 		if (!chatId || typeof chatId === undefined) {
 			handleNewChat()
 			return
 		}
 
-		// Update chat ID
 		setChatId(chatId)
-		global.setNeoChatId(chatId) // Update global chat ID
-
-		// Reset messages and attachments
+		global.setNeoChatId(chatId)
 		setMessages([])
 		setAttachments([])
-		setInitialized(false) // Set initialized to false to trigger loading
+		setInitialized(false)
 
-		// Focus the input after switching chat
+		// Focus using the new method
 		setTimeout(() => {
-			inputRef.current?.focus()
-		}, 0)
+			focusRef.current?.()
+		}, 100)
 	})
 
 	const handleOnFloat = useMemoizedFn(() => {
@@ -565,6 +556,7 @@ const AIChat = (props: AIChatProps) => {
 						placeholder={loading ? 'Please wait for response...' : 'Type your message here...'}
 						autoSize={{ minRows: 4, maxRows: 16 }}
 						clear={(fn) => (clearRef.current = fn)}
+						focus={(fn) => (focusRef.current = fn)}
 					/>
 					<Button
 						type='text'

@@ -12,6 +12,7 @@ interface MentionTextAreaProps {
 	placeholder?: string
 	autoSize?: { minRows: number; maxRows: number }
 	clear?: (fn: () => void) => void
+	focus?: (fn: () => void) => void
 }
 
 const MentionTextArea: React.FC<MentionTextAreaProps> = ({
@@ -22,7 +23,8 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 	onPaste,
 	placeholder,
 	autoSize = { minRows: 4, maxRows: 16 },
-	clear
+	clear,
+	focus
 }) => {
 	const [mentionListVisible, setMentionListVisible] = useState(false)
 	const [mentionKeyword, setMentionKeyword] = useState('')
@@ -312,6 +314,15 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 		// Trigger input handler to update value
 		handleInput()
 	}
+
+	// Add useEffect for focus registration
+	useEffect(() => {
+		if (focus) {
+			focus(() => {
+				editorRef.current?.focus()
+			})
+		}
+	}, [focus])
 
 	return (
 		<div className={styles.mentionTextArea}>
