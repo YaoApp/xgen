@@ -9,12 +9,11 @@ import { getCurrentMenuIndexs } from '@/utils'
 import { local } from '@yaoapp/storex'
 
 import type { AvatarFullConfig } from 'react-nice-avatar'
-
 import type { App, LocaleMessages } from '@/types'
 
 @singleton()
 export default class GlobalModel {
-	layout: App.Layout = 'Chat'
+	layout: App.Layout = 'Admin'
 	theme: App.Theme = 'light'
 	avatar = {} as AvatarFullConfig
 	locale_messages = {} as LocaleMessages
@@ -40,7 +39,7 @@ export default class GlobalModel {
 
 		const theme = (local.xgen_theme || 'light') as App.Theme
 		const avatar = local.avatar as AvatarFullConfig
-		const layout = (local.xgen_layout || 'AI') as App.Layout
+		const layout = (local.xgen_layout || 'Admin') as App.Layout
 
 		this.reactions()
 		this.getAppInfo()
