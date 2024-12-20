@@ -14,6 +14,7 @@ import type { App, LocaleMessages } from '@/types'
 
 @singleton()
 export default class GlobalModel {
+	layout: App.Layout = 'AI'
 	theme: App.Theme = 'light'
 	avatar = {} as AvatarFullConfig
 	locale_messages = {} as LocaleMessages
@@ -39,11 +40,13 @@ export default class GlobalModel {
 
 		const theme = (local.xgen_theme || 'light') as App.Theme
 		const avatar = local.avatar as AvatarFullConfig
+		const layout = (local.xgen_layout || 'AI') as App.Layout
 
 		this.reactions()
 		this.getAppInfo()
 		this.setTheme(theme)
 		this.setAvatar(avatar)
+		this.setLayout(layout)
 		this.setNeo()
 	}
 
@@ -123,6 +126,11 @@ export default class GlobalModel {
 				primaryColor: theme === 'light' ? '#3371fc' : '#4580ff'
 			}
 		})
+	}
+
+	setLayout(layout: App.Layout) {
+		this.layout = layout
+		local.xgen_layout = layout
 	}
 
 	setNeo(neo?: App.Neo | null) {

@@ -100,6 +100,15 @@ const Index = () => {
 						onChange={(v) => global.setTheme(v ? 'light' : 'dark')}
 					/>
 				</div>
+				<div className='setting_item w_100 border_box flex justify_between align_center'>
+					<span className='name'>Layout</span>
+					<Switch
+						checkedChildren='Admin'
+						unCheckedChildren='AI'
+						checked={global.layout === 'Admin'}
+						onChange={(v) => global.setLayout(v ? 'Admin' : 'AI')}
+					/>
+				</div>
 			</div>
 		</div>
 	)

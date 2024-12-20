@@ -1,6 +1,15 @@
 import type { Action, Common } from '@/types'
 
 export declare namespace App {
+	/**
+	 * Layout type 布局类型
+	 * - AILayout: AI Assistant Interface (AI 助手界面)
+	 *   Button text: "AI" / "智能助手"
+	 * - AdminLayout: Traditional Dashboard (传统后台界面)
+	 *   Button text: "Admin" / "后台"
+	 */
+	type Layout = 'AI' | 'Admin'
+
 	type Theme = 'light' | 'dark'
 
 	/** Global Neo Context */
