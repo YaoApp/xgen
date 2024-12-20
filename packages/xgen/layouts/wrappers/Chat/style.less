@@ -1,0 +1,111 @@
+.chat-wrapper {
+	height: 100vh;
+	position: relative;
+	overflow: hidden;
+	transition: padding-right 0.3s;
+
+	&.with-sidebar {
+		.chat-content {
+			width: calc(100% - var(--sidebar-width));
+		}
+	}
+
+	&.animating {
+		.chat-content,
+		.chat-sidebar {
+			transition: all 0.3s;
+		}
+	}
+
+	.chat-content {
+		height: 100%;
+		width: 100%;
+		transition: width 0.3s;
+		overflow: auto;
+	}
+
+	.chat-header {
+		position: fixed;
+		top: 16px;
+		right: 16px;
+		z-index: 1000;
+	}
+}
+
+.chat-sidebar {
+	position: fixed;
+	top: 0;
+	right: 0;
+	height: 100vh;
+	background-color: var(--color_bg);
+	border-left: 1px solid var(--color_border_soft);
+	overflow: hidden;
+	transition: transform 0.3s;
+
+	&.hidden {
+		transform: translateX(100%);
+	}
+
+	.resize-handle {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 5px;
+		height: 100%;
+		cursor: col-resize;
+		background-color: transparent;
+
+		&:hover {
+			&::after {
+				opacity: 1;
+				width: 3px;
+				background-color: var(--color_border);
+			}
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 1px;
+			height: 100%;
+			background-color: var(--color_border_light);
+			opacity: 0.6;
+			transition: all 0.2s;
+		}
+
+		&:active::after {
+			opacity: 1;
+			width: 3px;
+			background-color: var(--color_border);
+		}
+	}
+
+	.sidebar-content {
+		height: 100%;
+		width: 100%;
+		padding: 16px;
+		overflow: auto;
+	}
+}
+
+.sidebar-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.3);
+	z-index: 99;
+	animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
