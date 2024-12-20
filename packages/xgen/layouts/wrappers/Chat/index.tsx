@@ -85,7 +85,7 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 	}
 
 	const handleToggleMaximize = (e: React.MouseEvent) => {
-		e.stopPropagation() // Prevent triggering resize handle's onMouseDown
+		e.stopPropagation()
 		setIsAnimating(true)
 		if (isMaximized) {
 			setSidebarWidth(previousWidth)
@@ -133,7 +133,6 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 				isAnimating && 'animating',
 				isMaximized && 'maximized'
 			)}
-			style={sidebarVisible ? { paddingRight: sidebarWidth } : undefined}
 		>
 			<div className='chat-header'>
 				<Button onClick={handleToggleLayout} style={{ marginRight: 8 }}>
@@ -143,10 +142,18 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 					{sidebarVisible ? 'Close Sidebar' : 'Open Sidebar'}
 				</Button>
 			</div>
-			<div className='chat-content'>{children}</div>
+			<div
+				className='chat-content'
+				style={sidebarVisible && !isMaximized ? { width: `calc(100% - ${sidebarWidth}px)` } : undefined}
+			>
+				{children}
+			</div>
 			<div
 				className={clsx('chat-sidebar', !sidebarVisible && 'hidden', isAnimating && 'animating')}
-				style={{ width: sidebarWidth }}
+				style={{
+					width: sidebarWidth,
+					...(isMaximized ? { position: 'fixed', right: 0 } : undefined)
+				}}
 			>
 				<div className='resize-handle' onMouseDown={handleResizeStart}>
 					<Button
@@ -158,6 +165,7 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 				</div>
 				<div className='sidebar-content'>Sidebar Content</div>
 			</div>
+			{isMaximized && sidebarVisible && <div className='sidebar-overlay' onClick={handleToggleMaximize} />}
 		</div>
 	)
 }

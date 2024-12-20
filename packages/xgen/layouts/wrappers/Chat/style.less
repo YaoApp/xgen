@@ -18,7 +18,11 @@
 
 			.chat-sidebar {
 				box-shadow: var(--shadow);
-				z-index: 2;
+				position: fixed;
+				right: 0;
+				z-index: 1001;
+				border-left: none;
+				transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
 				.maximize-btn {
 					background-color: var(--color_bg_active);
@@ -36,6 +40,10 @@
 					&:hover::after {
 						width: 2px;
 						opacity: 0.8;
+					}
+
+					&::after {
+						opacity: 0;
 					}
 				}
 			}
@@ -92,7 +100,7 @@
 			left: 0;
 			top: 50%;
 			transform: translateY(-50%);
-			width: 16px;
+			width: 12px;
 			height: 24px;
 			padding: 0;
 			border-radius: 2px;
@@ -152,7 +160,7 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.3);
+	background-color: var(--color_border_light);
 	z-index: 99;
 	animation: fadeIn 0.3s ease-in-out;
 }
