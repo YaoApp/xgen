@@ -14,7 +14,7 @@ import type { App, LocaleMessages } from '@/types'
 
 @singleton()
 export default class GlobalModel {
-	layout: App.Layout = 'AI'
+	layout: App.Layout = 'Chat'
 	theme: App.Theme = 'light'
 	avatar = {} as AvatarFullConfig
 	locale_messages = {} as LocaleMessages
