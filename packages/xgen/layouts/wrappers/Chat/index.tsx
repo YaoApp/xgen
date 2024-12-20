@@ -5,6 +5,7 @@ import { container } from 'tsyringe'
 import { GlobalModel } from '@/context/app'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import clsx from 'clsx'
+import Menu from './Menu'
 import './style.less'
 
 const MAIN_CONTENT_MIN_WIDTH = 560
@@ -134,14 +135,16 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 				isMaximized && 'maximized'
 			)}
 		>
-			<div className='chat-header'>
+			{/* <div className='chat-header'>
 				<Button onClick={handleToggleLayout} style={{ marginRight: 8 }}>
 					Switch to Admin
 				</Button>
 				<Button onClick={handleToggleSidebar}>
 					{sidebarVisible ? 'Close Sidebar' : 'Open Sidebar'}
 				</Button>
-			</div>
+			</div> */}
+
+			<Menu sidebarVisible={sidebarVisible} setSidebarVisible={setSidebarVisible} />
 			<div
 				className='chat-content'
 				style={sidebarVisible && !isMaximized ? { width: `calc(100% - ${sidebarWidth}px)` } : undefined}
@@ -163,7 +166,10 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 						icon={isMaximized ? <RightOutlined /> : <LeftOutlined />}
 					/>
 				</div>
-				<div className='sidebar-content'>Sidebar Content</div>
+				<div className='sidebar-content'>
+					<Button onClick={handleToggleSidebar}>Close Sidebar</Button>
+					Sidebar Content
+				</div>
 			</div>
 			{isMaximized && sidebarVisible && <div className='sidebar-overlay' onClick={handleToggleMaximize} />}
 		</div>
