@@ -32,6 +32,7 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 	const [mentionKeyword, setMentionKeyword] = useState('')
 	const [cursorPosition, setCursorPosition] = useState({ top: 0, left: 0 })
 	const [isMentionCompleted, setIsMentionCompleted] = useState(true)
+	const [isEmpty, setIsEmpty] = useState(!value)
 	const editorRef = useRef<HTMLDivElement>(null)
 	const lastAtPosition = useRef<number>(-1)
 
@@ -46,12 +47,16 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 	// Handle input
 	const handleInput = () => {
 		const content = editorRef.current?.innerText || ''
+		setIsEmpty(!content.trim())
 		onChange(content)
 	}
 
 	// Handle keydown
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-		if (e.key === 'Enter' && !e.shiftKey && !loading) {
+		if (e.key === 'Enter') {
+			if (e.shiftKey || loading) {
+				return // Allow line break with Shift+Enter or during loading
+			}
 			e.preventDefault()
 			if (mentionListVisible) return
 			onSend()
@@ -273,6 +278,7 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 			clear(() => {
 				if (editorRef.current) {
 					editorRef.current.innerHTML = ''
+					setIsEmpty(true)
 					handleInput()
 				}
 			})
@@ -338,12 +344,12 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 		<div className={styles.mentionTextArea}>
 			<div
 				ref={editorRef}
-				className={styles.editor}
+				className={`${styles.editor} ${isEmpty ? styles.empty : ''}`}
 				contentEditable={!disabled}
 				onInput={handleInput}
 				onKeyDown={handleKeyDown}
 				onPaste={handlePaste}
-				placeholder={placeholder}
+				data-placeholder={placeholder}
 				style={{
 					minHeight: `${autoSize.minRows * 24}px`,
 					maxHeight: `${autoSize.maxRows * 24}px`,

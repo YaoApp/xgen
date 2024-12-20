@@ -632,14 +632,26 @@ const AIChat = (props: AIChatProps) => {
 					<MentionTextArea
 						value={inputValue}
 						onChange={handleInputChange}
-						onSend={handleSend}
+						onSend={() => {
+							if (!loading && !optimizing) {
+								handleSend()
+							}
+						}}
 						loading={loading}
 						onPaste={handlePaste}
-						placeholder={loading ? 'Please wait for response...' : 'Type your message here...'}
+						placeholder={
+							loading
+								? is_cn
+									? '请等待响应...'
+									: 'Please wait for response...'
+								: is_cn
+								? '输入消息，使用 @ 呼叫助手'
+								: 'Type your message, use @ to mention assistant'
+						}
 						autoSize={{ minRows: 4, maxRows: 16 }}
 						clear={(fn) => (clearRef.current = fn)}
 						focus={(fn) => (focusRef.current = fn)}
-						disabled={loading || optimizing}
+						disabled={optimizing}
 					/>
 					<Button
 						type='text'
