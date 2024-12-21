@@ -94,10 +94,6 @@
 	border-radius: 6px;
 }
 
-.common-function-item:hover {
-	background: var(--color_border_soft);
-}
-
 .common-function-item i {
 	display: flex;
 	align-items: center;
@@ -107,6 +103,7 @@
 .common-function-item.active {
 	background: var(--color_border_soft);
 	color: var(--color_main);
+	font-weight: 500;
 }
 
 .menu-items {
@@ -149,6 +146,7 @@
 .menu-item.active {
 	background: var(--color_border_soft);
 	color: var(--color_main);
+	font-weight: 500;
 }
 
 .more-menu {
@@ -195,12 +193,13 @@
 }
 
 .more-menu-items .menu-item:hover {
-	background: var(--color_border_soft);
+	background: none;
 }
 
 .more-menu-items .menu-item.active {
 	background: var(--color_border_soft);
 	color: var(--color_main);
+	font-weight: 500;
 }
 
 .header-right {
