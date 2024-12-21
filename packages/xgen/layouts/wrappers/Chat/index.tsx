@@ -11,7 +11,7 @@ import Container from './Container/index'
 import NeoPage from '@/layouts/components/Neo/Page'
 import './style.less'
 
-const MAIN_CONTENT_MIN_WIDTH = 560
+const MAIN_CONTENT_MIN_WIDTH = 460
 const DEFAULT_WIDTH = 400
 
 // Get maximum available width for sidebar while maintaining minimum content width
@@ -194,7 +194,9 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 					/>
 				</div>
 				<div className='sidebar-content'>
-					<Container onToggleSidebar={handleToggleSidebar}>{children}</Container>
+					<Container isMaximized={isMaximized} onToggleSidebar={handleToggleSidebar}>
+						{children}
+					</Container>
 				</div>
 			</div>
 			{isMaximized && sidebarVisible && <div className='sidebar-overlay' onClick={handleToggleMaximize} />}

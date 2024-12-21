@@ -273,15 +273,18 @@ const Header: FC<HeaderProps> = ({
 
 			<div className='header-right'>
 				<Tooltip title='Terminal'>
-					<Button type='text' icon={<Icon name='material-terminal' size={16} />} />
-				</Tooltip>
-				<Tooltip title='Close Sidebar'>
 					<Button
 						type='text'
-						icon={<Icon name='material-chevron_right' size={16} />}
-						onClick={onToggleSidebar}
+						className='header-icon-btn'
+						icon={<Icon name='material-terminal' size={16} />}
 					/>
 				</Tooltip>
+				<Button
+					type='text'
+					className='header-icon-btn'
+					icon={<Icon name='material-close' size={16} />}
+					onClick={onToggleSidebar}
+				/>
 			</div>
 		</div>
 	)
