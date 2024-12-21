@@ -1,0 +1,29 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+
+.header {
+	height: 48px;
+	padding: 0 0.5rem;
+	display: flex;
+	align-items: center;
+}
+
+.mainContent {
+	display: flex;
+	flex: 1;
+	overflow: hidden;
+}
+
+.leftSidebar {
+	width: 250px;
+	overflow-y: auto;
+}
+
+.content {
+	flex: 1;
+	overflow-y: auto;
+	padding: 0;
+}

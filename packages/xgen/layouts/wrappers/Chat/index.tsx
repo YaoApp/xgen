@@ -7,6 +7,7 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { IPropsNeo } from '@/layouts/types'
 import clsx from 'clsx'
 import Menu from './Menu'
+import Container from './Container/index'
 import NeoPage from '@/layouts/components/Neo/Page'
 import './style.less'
 
@@ -193,8 +194,7 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 					/>
 				</div>
 				<div className='sidebar-content'>
-					<Button onClick={handleToggleSidebar}>Close Sidebar</Button>
-					{children}
+					<Container onToggleSidebar={handleToggleSidebar}>{children}</Container>
 				</div>
 			</div>
 			{isMaximized && sidebarVisible && <div className='sidebar-overlay' onClick={handleToggleMaximize} />}
