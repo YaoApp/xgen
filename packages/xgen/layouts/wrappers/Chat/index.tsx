@@ -4,8 +4,10 @@ import { FC, PropsWithChildren, useState, useCallback, useEffect } from 'react'
 import { container } from 'tsyringe'
 import { GlobalModel } from '@/context/app'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
+import { IPropsNeo } from '@/layouts/types'
 import clsx from 'clsx'
 import Menu from './Menu'
+import NeoPage from '@/layouts/components/Neo/Page'
 import './style.less'
 
 const MAIN_CONTENT_MIN_WIDTH = 560
@@ -56,6 +58,13 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 	const [responsiveWidths, setResponsiveWidths] = useState(getResponsiveWidths())
 	const [isMaximized, setIsMaximized] = useState(false)
 	const [previousWidth, setPreviousWidth] = useState(DEFAULT_WIDTH)
+
+	const props_neo: IPropsNeo = {
+		stack: global.stack.paths.join('/'),
+		api: global.app_info.optional?.neo?.api!,
+		studio: global.app_info.optional?.neo?.studio,
+		dock: global.app_info.optional?.neo?.dock || 'right-bottom'
+	}
 
 	// Listen for window resize events
 	useEffect(() => {
@@ -150,9 +159,23 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 			<Menu sidebarVisible={sidebarVisible} setSidebarVisible={setSidebarVisible} />
 			<div
 				className='chat-content'
-				style={sidebarVisible && !isMaximized ? { width: `calc(100% - ${sidebarWidth}px)` } : undefined}
+				style={
+					sidebarVisible && !isMaximized
+						? { width: `calc(100% - ${sidebarWidth}px)` }
+						: { marginLeft: '92px', width: 'calc(100% - 92px)' }
+				}
 			>
-				{children}
+				<div
+					className={clsx(['w_100 border_box flex flex_column'])}
+					style={{
+						margin: '0 auto',
+						maxWidth: '1200px',
+						height: '100%',
+						padding: '32px'
+					}}
+				>
+					<NeoPage {...props_neo}></NeoPage>
+				</div>
 			</div>
 			<div
 				className={clsx('chat-sidebar', !sidebarVisible && 'hidden', isAnimating && 'animating')}
@@ -171,7 +194,7 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 				</div>
 				<div className='sidebar-content'>
 					<Button onClick={handleToggleSidebar}>Close Sidebar</Button>
-					Sidebar Content
+					{children}
 				</div>
 			</div>
 			{isMaximized && sidebarVisible && <div className='sidebar-overlay' onClick={handleToggleMaximize} />}

@@ -16,8 +16,6 @@ import { isValidUrl } from '@/utils'
 import DefaultHeader from './Header'
 import MentionTextArea from './MentionTextArea'
 
-const { TextArea } = Input
-
 interface AIChatProps {
 	messages?: App.ChatInfo[]
 	onSend?: (message: string, files?: any[]) => void
