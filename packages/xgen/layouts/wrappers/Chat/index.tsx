@@ -24,23 +24,26 @@ const getMaximizedWidth = () => {
 // Get responsive width settings based on screen size
 const getResponsiveWidths = () => {
 	const screenWidth = window.innerWidth
+	const halfScreen = Math.floor(screenWidth / 2)
+	const maxAvailableWidth = getMaxWidth()
+
 	if (screenWidth >= 1920) {
 		return {
 			min: 480,
-			max: getMaxWidth(),
-			default: 720
+			max: maxAvailableWidth,
+			default: Math.min(halfScreen, maxAvailableWidth)
 		}
 	} else if (screenWidth >= 1440) {
 		return {
 			min: 400,
-			max: getMaxWidth(),
-			default: 520
+			max: maxAvailableWidth,
+			default: Math.min(halfScreen, maxAvailableWidth)
 		}
 	} else {
 		return {
 			min: 320,
-			max: getMaxWidth(),
-			default: 400
+			max: maxAvailableWidth,
+			default: Math.min(halfScreen, maxAvailableWidth)
 		}
 	}
 }
