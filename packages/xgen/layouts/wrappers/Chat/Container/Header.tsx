@@ -236,6 +236,8 @@ const Header: FC<HeaderProps> = ({
 			const logo = header.querySelector('.header-logo') as HTMLElement
 			const createNew = header.querySelector('.current-function') as HTMLElement
 
+			if (!logo || !createNew) return
+
 			const usedWidth =
 				headerRightWidth +
 				logo.getBoundingClientRect().width +
@@ -265,16 +267,16 @@ const Header: FC<HeaderProps> = ({
 		}
 
 		// Initial measurement and calculation
-		requestAnimationFrame(() => {
-			measureItemWidths()
-			calculateVisibleItems()
-		})
-
-		const resizeObserver = new ResizeObserver(() => {
+		const recalculate = () => {
 			requestAnimationFrame(() => {
+				measureItemWidths()
 				calculateVisibleItems()
 			})
-		})
+		}
+
+		recalculate()
+
+		const resizeObserver = new ResizeObserver(recalculate)
 
 		// Observe the header element instead
 		const header = container.closest('.header')
@@ -285,7 +287,15 @@ const Header: FC<HeaderProps> = ({
 		return () => {
 			resizeObserver.disconnect()
 		}
-	}, [])
+	}, [isTemporaryView])
+
+	useEffect(() => {
+		// Reset menu state when switching back from temporary view
+		if (!isTemporaryView) {
+			setActiveMenuId('chat') // Or whatever should be the default active menu
+			setActiveCommonFunctionId('')
+		}
+	}, [isTemporaryView])
 
 	const renderNormalMenu = () => {
 		// Determine visible and hidden items
