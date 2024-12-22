@@ -5,7 +5,7 @@ import { useRef, useEffect, useState } from 'react'
 import clsx from 'clsx'
 
 // Base breakpoint width (in pixels) at which the layout switches to small screen mode
-// This is the minimum content width (excluding padding) needed for normal layout
+// When content width is less than or equal to this value, the layout will switch to small screen mode
 export const NEO_PAGE_BREAKPOINT = 460
 
 // Single side padding (in pixels) for the page content
@@ -32,11 +32,8 @@ const Index = (props: IPropsNeo) => {
 		return () => resizeObserver.disconnect()
 	}, [])
 
-	// First check if we have enough space for content + padding
-	const hasSpaceForPadding = containerWidth > NEO_PAGE_BREAKPOINT + NEO_PAGE_TOTAL_PADDING
-	// If we have space for padding, check if the remaining content width is sufficient
-	const actualContentWidth = hasSpaceForPadding ? containerWidth - NEO_PAGE_TOTAL_PADDING : containerWidth
-	const isSmallScreen = actualContentWidth <= NEO_PAGE_BREAKPOINT
+	// Simply check if the content width is below or equal to the breakpoint
+	const isSmallScreen = containerWidth <= NEO_PAGE_BREAKPOINT
 
 	const containerStyle = isSmallScreen
 		? {

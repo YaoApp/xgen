@@ -175,12 +175,8 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 						padding: (() => {
 							const availableWidth =
 								window.innerWidth - (sidebarVisible ? sidebarWidth : 92)
-							const hasSpaceForPadding =
-								availableWidth > NEO_PAGE_BREAKPOINT + NEO_PAGE_TOTAL_PADDING
-							const actualContentWidth = hasSpaceForPadding
-								? availableWidth - NEO_PAGE_TOTAL_PADDING
-								: availableWidth
-							return actualContentWidth <= NEO_PAGE_BREAKPOINT ? 0 : `${NEO_PAGE_PADDING}px`
+							// If available width is less than or equal to breakpoint, don't add padding
+							return availableWidth <= NEO_PAGE_BREAKPOINT ? 0 : `${NEO_PAGE_PADDING}px`
 						})()
 					}}
 				>
