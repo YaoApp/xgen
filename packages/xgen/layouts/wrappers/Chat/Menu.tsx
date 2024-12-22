@@ -45,19 +45,18 @@ const TEST_MENU_ITEMS: MenuItem[] = [
 interface Props {
 	sidebarVisible?: boolean
 	setSidebarVisible?: (visible: boolean) => void
+	closeSidebar?: () => void
+	openSidebar?: (temporaryLink?: string, title?: string) => void
 }
 
-const Menu: FC<Props> = ({ sidebarVisible, setSidebarVisible }) => {
+const Menu: FC<Props> = ({ sidebarVisible, setSidebarVisible, openSidebar }) => {
 	const global = container.resolve(GlobalModel)
 	const [currentNav, setCurrentNav] = useState(1)
 
 	const handleNavChange = (id: number) => {
-		// setCurrentNav(id)
-
-		//ID = 3
-		if (id === 3 && setSidebarVisible) {
-			setSidebarVisible(true)
-		}
+		const menuItem = TEST_MENU_ITEMS.find((item) => item.id === id)
+		id === 3 && openSidebar?.('/id=3', menuItem?.name)
+		id === 4 && setSidebarVisible?.(true)
 	}
 
 	return (

@@ -7,7 +7,8 @@ import clsx from 'clsx'
 import './styles.css'
 
 interface HeaderProps {
-	onToggleSidebar: () => void
+	openSidebar: (temporaryLink?: string, title?: string) => void
+	closeSidebar: () => void
 	isTemporaryView?: boolean
 	currentPageName?: string
 	temporaryLink?: string
@@ -30,7 +31,8 @@ interface MenuItem {
 }
 
 const Header: FC<HeaderProps> = ({
-	onToggleSidebar,
+	openSidebar,
+	closeSidebar,
 	isTemporaryView = false,
 	currentPageName = '',
 	onBackToNormal
@@ -416,7 +418,7 @@ const Header: FC<HeaderProps> = ({
 						type='text'
 						className='header-icon-btn'
 						icon={<Icon name='material-close' size={16} />}
-						onClick={onToggleSidebar}
+						onClick={closeSidebar}
 					/>
 				</div>
 			</div>
@@ -429,20 +431,21 @@ const Header: FC<HeaderProps> = ({
 				<span className='current-page'>{currentPageName}</span>
 			</div>
 			<div className='header-right'>
-				<Tooltip title='Back'>
-					<Button
-						type='text'
-						icon={<Icon name='material-chevron_left' size={16} />}
-						onClick={onBackToNormal}
-					/>
-				</Tooltip>
-				<Tooltip title='Close Sidebar'>
-					<Button
-						type='text'
-						icon={<Icon name='material-chevron_right' size={16} />}
-						onClick={onToggleSidebar}
-					/>
-				</Tooltip>
+				<Button
+					type='text'
+					className='header-icon-btn back-btn'
+					style={{ marginRight: '2px', width: 'auto' }}
+					onClick={onBackToNormal}
+				>
+					<Icon name='material-chevron_left' size={16} style={{ marginRight: '0px' }} />
+					<span>Back</span>
+				</Button>
+				<Button
+					type='text'
+					className='header-icon-btn'
+					icon={<Icon name='material-close' size={16} />}
+					onClick={closeSidebar}
+				/>
 			</div>
 		</div>
 	)

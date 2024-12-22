@@ -59,6 +59,9 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 	const [responsiveWidths, setResponsiveWidths] = useState(getResponsiveWidths())
 	const [isMaximized, setIsMaximized] = useState(false)
 	const [previousWidth, setPreviousWidth] = useState(DEFAULT_WIDTH)
+	const [temporaryLink, setTemporaryLink] = useState<string>()
+	const [isTemporaryView, setIsTemporaryView] = useState(false)
+	const [currentPageName, setCurrentPageName] = useState<string>()
 
 	const props_neo: IPropsNeo = {
 		stack: global.stack.paths.join('/'),
@@ -92,10 +95,38 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 		global.setLayout('Admin')
 	}
 
-	const handleToggleSidebar = () => {
+	const openSidebar = (tempLink?: string, title?: string) => {
 		setIsAnimating(true)
-		setSidebarVisible(!sidebarVisible)
+		if (tempLink) {
+			setTemporaryLink(tempLink)
+			setIsTemporaryView(true)
+			setCurrentPageName(title || tempLink)
+			if (!sidebarVisible) {
+				setSidebarVisible(true)
+			}
+		} else {
+			// 如果没有传入链接，则只是简单地打开侧边栏
+			if (!sidebarVisible) {
+				setSidebarVisible(true)
+			}
+		}
 		setTimeout(() => setIsAnimating(false), 300)
+	}
+
+	const closeSidebar = () => {
+		setIsAnimating(true)
+		setSidebarVisible(false)
+		// 如果是临时视图，清除相关状态
+		if (isTemporaryView) {
+			handleBackToNormal()
+		}
+		setTimeout(() => setIsAnimating(false), 300)
+	}
+
+	const handleBackToNormal = () => {
+		setTemporaryLink(undefined)
+		setIsTemporaryView(false)
+		setCurrentPageName(undefined)
 	}
 
 	const handleToggleMaximize = (e: React.MouseEvent) => {
@@ -157,7 +188,12 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 				</Button>
 			</div> */}
 
-			<Menu sidebarVisible={sidebarVisible} setSidebarVisible={setSidebarVisible} />
+			<Menu
+				sidebarVisible={sidebarVisible}
+				setSidebarVisible={setSidebarVisible}
+				openSidebar={openSidebar}
+				closeSidebar={closeSidebar}
+			/>
 			<div
 				className='chat-content'
 				style={
@@ -199,7 +235,15 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 					/>
 				</div>
 				<div className='sidebar-content'>
-					<Container isMaximized={isMaximized} onToggleSidebar={handleToggleSidebar}>
+					<Container
+						isMaximized={isMaximized}
+						openSidebar={openSidebar}
+						closeSidebar={closeSidebar}
+						temporaryLink={temporaryLink}
+						currentPageName={currentPageName}
+						isTemporaryView={isTemporaryView}
+						onBackToNormal={handleBackToNormal}
+					>
 						{children}
 					</Container>
 				</div>
