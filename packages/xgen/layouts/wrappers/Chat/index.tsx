@@ -8,10 +8,10 @@ import { IPropsNeo } from '@/layouts/types'
 import clsx from 'clsx'
 import Menu from './Menu'
 import Container from './Container/index'
-import NeoPage from '@/layouts/components/Neo/Page'
+import NeoPage, { NEO_PAGE_BREAKPOINT, NEO_PAGE_PADDING, NEO_PAGE_TOTAL_PADDING } from '@/layouts/components/Neo/Page'
 import './style.less'
 
-const MAIN_CONTENT_MIN_WIDTH = 460
+const MAIN_CONTENT_MIN_WIDTH = 320
 const DEFAULT_WIDTH = 400
 
 // Get maximum available width for sidebar while maintaining minimum content width
@@ -172,7 +172,16 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 						margin: '0 auto',
 						maxWidth: '1200px',
 						height: '100%',
-						padding: '32px'
+						padding: (() => {
+							const availableWidth =
+								window.innerWidth - (sidebarVisible ? sidebarWidth : 92)
+							const hasSpaceForPadding =
+								availableWidth > NEO_PAGE_BREAKPOINT + NEO_PAGE_TOTAL_PADDING
+							const actualContentWidth = hasSpaceForPadding
+								? availableWidth - NEO_PAGE_TOTAL_PADDING
+								: availableWidth
+							return actualContentWidth <= NEO_PAGE_BREAKPOINT ? 0 : `${NEO_PAGE_PADDING}px`
+						})()
 					}}
 				>
 					<NeoPage {...props_neo}></NeoPage>
