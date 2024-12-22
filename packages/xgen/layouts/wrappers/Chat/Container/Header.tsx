@@ -37,6 +37,7 @@ const Header: FC<HeaderProps> = ({
 }) => {
 	const global = container.resolve(GlobalModel)
 	const [activeMenuId, setActiveMenuId] = useState<string>('')
+	const [activeCommonFunctionId, setActiveCommonFunctionId] = useState<string>('')
 	const [visibleMenuItems, setVisibleMenuItems] = useState<number>(3)
 	const menuContainerRef = useRef<HTMLDivElement>(null)
 	const measureContainerRef = useRef<HTMLDivElement>(null)
@@ -48,58 +49,156 @@ const Header: FC<HeaderProps> = ({
 			id: 'chat',
 			name: 'Chat',
 			icon: 'material-chat',
-			onClick: () => setActiveMenuId('chat'),
-			isActive: activeMenuId === 'chat'
+			onClick: () => {
+				setActiveMenuId('chat')
+				setActiveCommonFunctionId('')
+			},
+			isActive: activeMenuId === 'chat' && !activeCommonFunctionId
 		},
 		{
 			id: 'apps',
 			name: 'Apps',
 			icon: 'material-apps',
-			onClick: () => setActiveMenuId('apps'),
-			isActive: activeMenuId === 'apps'
+			onClick: () => {
+				setActiveMenuId('apps')
+				setActiveCommonFunctionId('')
+			},
+			isActive: activeMenuId === 'apps' && !activeCommonFunctionId
 		},
 		{
 			id: 'flows',
 			name: 'Flows',
 			icon: 'material-account_tree',
-			onClick: () => setActiveMenuId('flows'),
-			isActive: activeMenuId === 'flows'
+			onClick: () => {
+				setActiveMenuId('flows')
+				setActiveCommonFunctionId('')
+			},
+			isActive: activeMenuId === 'flows' && !activeCommonFunctionId
 		},
 		{
 			id: 'docs',
 			name: 'Documents',
 			icon: 'material-description',
-			onClick: () => setActiveMenuId('docs'),
-			isActive: activeMenuId === 'docs'
+			onClick: () => {
+				setActiveMenuId('docs')
+				setActiveCommonFunctionId('')
+			},
+			isActive: activeMenuId === 'docs' && !activeCommonFunctionId
 		},
 		{
 			id: 'teams',
 			name: 'Teams',
 			icon: 'material-group',
-			onClick: () => setActiveMenuId('teams'),
-			isActive: activeMenuId === 'teams'
+			onClick: () => {
+				setActiveMenuId('teams')
+				setActiveCommonFunctionId('')
+			},
+			isActive: activeMenuId === 'teams' && !activeCommonFunctionId
 		},
 		{
 			id: 'settings',
 			name: 'Settings',
 			icon: 'material-settings',
-			onClick: () => setActiveMenuId('settings'),
-			isActive: activeMenuId === 'settings'
+			onClick: () => {
+				setActiveMenuId('settings')
+				setActiveCommonFunctionId('')
+			},
+			isActive: activeMenuId === 'settings' && !activeCommonFunctionId
 		}
 	]
 
 	// Test data for common functions
 	const commonFunctions: CommonFunction[] = [
-		{ id: 'new_chat', name: 'New Chat', icon: 'material-chat', onClick: () => {} },
-		{ id: 'new_app', name: 'New App', icon: 'material-add_box', onClick: () => {} },
-		{ id: 'new_flow', name: 'New Flow', icon: 'material-account_tree', onClick: () => {} },
-		{ id: 'new_doc', name: 'New Document', icon: 'material-description', onClick: () => {} },
-		{ id: 'import', name: 'Import', icon: 'material-upload_file', onClick: () => {} },
-		{ id: 'export', name: 'Export', icon: 'material-download', onClick: () => {} },
-		{ id: 'share', name: 'Share', icon: 'material-share', onClick: () => {} },
-		{ id: 'favorite', name: 'Favorites', icon: 'material-star', onClick: () => {} },
-		{ id: 'recent', name: 'Recent', icon: 'material-history', onClick: () => {} },
-		{ id: 'trash', name: 'Trash', icon: 'material-delete', onClick: () => {} }
+		{
+			id: 'new_chat',
+			name: 'New Chat',
+			icon: 'material-chat',
+			onClick: () => {
+				setActiveCommonFunctionId('new_chat')
+				setActiveMenuId('')
+			}
+		},
+		{
+			id: 'new_app',
+			name: 'New App',
+			icon: 'material-add_box',
+			onClick: () => {
+				setActiveCommonFunctionId('new_app')
+				setActiveMenuId('')
+			}
+		},
+		{
+			id: 'new_flow',
+			name: 'New Flow',
+			icon: 'material-account_tree',
+			onClick: () => {
+				setActiveCommonFunctionId('new_flow')
+				setActiveMenuId('')
+			}
+		},
+		{
+			id: 'new_doc',
+			name: 'New Document',
+			icon: 'material-description',
+			onClick: () => {
+				setActiveCommonFunctionId('new_doc')
+				setActiveMenuId('')
+			}
+		},
+		{
+			id: 'import',
+			name: 'Import',
+			icon: 'material-upload_file',
+			onClick: () => {
+				setActiveCommonFunctionId('import')
+				setActiveMenuId('')
+			}
+		},
+		{
+			id: 'export',
+			name: 'Export',
+			icon: 'material-download',
+			onClick: () => {
+				setActiveCommonFunctionId('export')
+				setActiveMenuId('')
+			}
+		},
+		{
+			id: 'share',
+			name: 'Share',
+			icon: 'material-share',
+			onClick: () => {
+				setActiveCommonFunctionId('share')
+				setActiveMenuId('')
+			}
+		},
+		{
+			id: 'favorite',
+			name: 'Favorites',
+			icon: 'material-star',
+			onClick: () => {
+				setActiveCommonFunctionId('favorite')
+				setActiveMenuId('')
+			}
+		},
+		{
+			id: 'recent',
+			name: 'Recent',
+			icon: 'material-history',
+			onClick: () => {
+				setActiveCommonFunctionId('recent')
+				setActiveMenuId('')
+			}
+		},
+		{
+			id: 'trash',
+			name: 'Trash',
+			icon: 'material-delete',
+			onClick: () => {
+				setActiveCommonFunctionId('trash')
+				setActiveMenuId('')
+			}
+		}
 	]
 
 	useEffect(() => {
@@ -186,108 +285,143 @@ const Header: FC<HeaderProps> = ({
 		}
 	}, [])
 
-	const renderNormalMenu = () => (
-		<div className='header-normal'>
-			<div className='header-left'>
-				{/* Logo */}
-				<div className='header-logo'>
-					<img src={global.app_info?.logo} alt='Logo' />
-				</div>
+	const renderNormalMenu = () => {
+		// Find active menu item in hidden items
+		const hiddenItems = menuItems.slice(visibleMenuItems)
+		const activeHiddenItem = hiddenItems.find((item) => item.isActive)
+		let visibleMenuList = [...menuItems]
 
-				{/* Common Functions */}
-				<Dropdown
-					menu={{
-						items: commonFunctions.map((func) => ({
-							key: func.id,
-							label: (
-								<div className='common-function-item'>
-									<Icon name={func.icon} size={14} />
-									<span>{func.name}</span>
-								</div>
-							),
-							onClick: func.onClick
-						})),
-						className: 'common-functions-dropdown'
-					}}
-					trigger={['hover']}
-				>
-					<div className='current-function'>
-						<Icon name='material-add' size={14} />
-						<span>Create New</span>
+		// If there's an active item in hidden items, swap it with the last visible item
+		if (activeHiddenItem) {
+			const activeIndex = menuItems.findIndex((item) => item.id === activeHiddenItem.id)
+			const lastVisibleIndex = visibleMenuItems - 1
+
+			visibleMenuList = [...menuItems]
+			;[visibleMenuList[activeIndex], visibleMenuList[lastVisibleIndex]] = [
+				visibleMenuList[lastVisibleIndex],
+				visibleMenuList[activeIndex]
+			]
+		}
+
+		// Find active common function
+		const activeFunction = commonFunctions.find((func) => func.id === activeCommonFunctionId)
+
+		return (
+			<div className='header-normal'>
+				<div className='header-left'>
+					{/* Logo */}
+					<div className='header-logo'>
+						<img src={global.app_info?.logo} alt='Logo' />
 					</div>
-				</Dropdown>
 
-				{/* Hidden container for measurements */}
-				<div className='menu-items-measure' ref={measureContainerRef}>
-					{menuItems.map((item) => (
-						<div key={item.id} className='menu-item'>
-							{item.icon && <Icon name={item.icon} size={14} />}
-							<span>{item.name}</span>
-						</div>
-					))}
-				</div>
-
-				{/* Visible menu items */}
-				<div className='menu-items' ref={menuContainerRef}>
-					{menuItems.map((item, index) => (
+					{/* Common Functions */}
+					<Dropdown
+						menu={{
+							items: commonFunctions.map((func) => ({
+								key: func.id,
+								label: (
+									<div
+										className={clsx('common-function-item', {
+											active: func.id === activeCommonFunctionId
+										})}
+									>
+										<Icon name={func.icon} size={14} />
+										<span>{func.name}</span>
+									</div>
+								),
+								onClick: func.onClick
+							})),
+							className: 'common-functions-dropdown'
+						}}
+						trigger={['hover']}
+					>
 						<div
-							key={item.id}
-							className={clsx('menu-item', {
-								active: item.isActive,
-								hidden: index >= visibleMenuItems
+							className={clsx('current-function', {
+								active: !!activeCommonFunctionId
 							})}
-							onClick={item.onClick}
 						>
-							{item.icon && <Icon name={item.icon} size={14} />}
-							<span>{item.name}</span>
+							<Icon
+								name={activeFunction ? activeFunction.icon : 'material-star'}
+								size={14}
+							/>
+							<span>{activeFunction ? activeFunction.name : 'Quick Actions'}</span>
 						</div>
-					))}
-					{menuItems.length > visibleMenuItems && (
-						<Dropdown
-							menu={{
-								items: menuItems.slice(visibleMenuItems).map((item) => ({
-									key: item.id,
-									label: (
-										<div
-											className={clsx('menu-item', {
-												active: item.isActive
-											})}
-											onClick={item.onClick}
-										>
-											{item.icon && <Icon name={item.icon} size={14} />}
-											<span>{item.name}</span>
-										</div>
-									)
-								})),
-								className: 'more-menu-items'
-							}}
-							trigger={['hover']}
-						>
-							<div className='more-menu'>
-								<Icon name='material-more_horiz' size={14} />
-							</div>
-						</Dropdown>
-					)}
-				</div>
-			</div>
+					</Dropdown>
 
-			<div className='header-right'>
-				<Tooltip title='Terminal'>
+					{/* Hidden container for measurements */}
+					<div className='menu-items-measure' ref={measureContainerRef}>
+						{visibleMenuList.map((item) => (
+							<div key={item.id} className='menu-item'>
+								{item.icon && <Icon name={item.icon} size={14} />}
+								<span>{item.name}</span>
+							</div>
+						))}
+					</div>
+
+					{/* Visible menu items */}
+					<div className='menu-items' ref={menuContainerRef}>
+						{visibleMenuList.map((item, index) => (
+							<div
+								key={item.id}
+								className={clsx('menu-item', {
+									active: item.isActive,
+									hidden: index >= visibleMenuItems
+								})}
+								onClick={item.onClick}
+							>
+								{item.icon && <Icon name={item.icon} size={14} />}
+								<span>{item.name}</span>
+							</div>
+						))}
+						{menuItems.length > visibleMenuItems && (
+							<Dropdown
+								menu={{
+									items: visibleMenuList.slice(visibleMenuItems).map((item) => ({
+										key: item.id,
+										label: (
+											<div
+												className={clsx('menu-item', {
+													active: item.isActive
+												})}
+												onClick={item.onClick}
+											>
+												{item.icon && (
+													<Icon name={item.icon} size={14} />
+												)}
+												<span>{item.name}</span>
+											</div>
+										)
+									})),
+									className: 'more-menu-items'
+								}}
+								trigger={['hover']}
+							>
+								<div className='more-menu'>
+									<Icon name='material-more_horiz' size={14} />
+								</div>
+							</Dropdown>
+						)}
+					</div>
+				</div>
+
+				<div className='header-right'>
+					<Tooltip title='Terminal'>
+						<Button
+							type='text'
+							className='header-icon-btn'
+							icon={<Icon name='material-terminal' size={16} />}
+						/>
+					</Tooltip>
 					<Button
 						type='text'
 						className='header-icon-btn'
-						icon={<Icon name='material-terminal' size={16} />}
+						icon={<Icon name='material-close' size={16} />}
+						onClick={onToggleSidebar}
 					/>
-				</Tooltip>
-				<Button
-					type='text'
-					className='header-icon-btn'
-					icon={<Icon name='material-close' size={16} />}
-					onClick={onToggleSidebar}
-				/>
+				</div>
 			</div>
-		</div>
-	)
+		)
+	}
 
 	const renderTemporaryView = () => (
 		<div className='header-temporary'>

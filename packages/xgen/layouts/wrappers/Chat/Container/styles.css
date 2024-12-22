@@ -60,6 +60,7 @@
 	color: var(--color_text_light);
 	transition: all 0.3s;
 	line-height: 1;
+	border-radius: 4px;
 }
 
 .current-function i {
@@ -70,6 +71,12 @@
 
 .current-function:hover {
 	background: var(--color_border_soft);
+}
+
+.current-function.active {
+	background: var(--color_border_soft);
+	color: var(--color_main);
+	font-weight: 500;
 }
 
 .common-functions-dropdown {
