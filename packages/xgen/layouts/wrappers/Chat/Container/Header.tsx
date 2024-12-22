@@ -288,22 +288,25 @@ const Header: FC<HeaderProps> = ({
 	}, [])
 
 	const renderNormalMenu = () => {
-		// Find active menu item in hidden items
+		// Determine visible and hidden items
+		const visibleItems = menuItems.slice(0, visibleMenuItems)
 		const hiddenItems = menuItems.slice(visibleMenuItems)
 		const activeHiddenItem = hiddenItems.find((item) => item.isActive)
-		let visibleMenuList = [...menuItems]
 
-		// If there's an active item in hidden items, swap it with the last visible item
+		// Create the final list of visible items
+		let finalVisibleItems = [...visibleItems]
 		if (activeHiddenItem) {
-			const activeIndex = menuItems.findIndex((item) => item.id === activeHiddenItem.id)
-			const lastVisibleIndex = visibleMenuItems - 1
-
-			visibleMenuList = [...menuItems]
-			;[visibleMenuList[activeIndex], visibleMenuList[lastVisibleIndex]] = [
-				visibleMenuList[lastVisibleIndex],
-				visibleMenuList[activeIndex]
-			]
+			// Replace the last visible item with the active hidden item
+			finalVisibleItems = [...visibleItems.slice(0, -1), activeHiddenItem]
 		}
+
+		// Create the list of items for the dropdown
+		const dropdownItems = activeHiddenItem
+			? [
+					...hiddenItems.filter((item) => item.id !== activeHiddenItem.id),
+					visibleItems[visibleItems.length - 1]
+			  ]
+			: hiddenItems
 
 		// Find active common function
 		const activeFunction = commonFunctions.find((func) => func.id === activeCommonFunctionId)
@@ -352,7 +355,7 @@ const Header: FC<HeaderProps> = ({
 
 					{/* Hidden container for measurements */}
 					<div className='menu-items-measure' ref={measureContainerRef}>
-						{visibleMenuList.map((item) => (
+						{menuItems.map((item) => (
 							<div key={item.id} className='menu-item'>
 								{item.icon && <Icon name={item.icon} size={14} />}
 								<span>{item.name}</span>
@@ -362,12 +365,11 @@ const Header: FC<HeaderProps> = ({
 
 					{/* Visible menu items */}
 					<div className='menu-items' ref={menuContainerRef}>
-						{visibleMenuList.map((item, index) => (
+						{finalVisibleItems.map((item) => (
 							<div
 								key={item.id}
 								className={clsx('menu-item', {
-									active: item.isActive,
-									hidden: index >= visibleMenuItems
+									active: item.isActive
 								})}
 								onClick={item.onClick}
 							>
@@ -378,21 +380,21 @@ const Header: FC<HeaderProps> = ({
 						{menuItems.length > visibleMenuItems && (
 							<Dropdown
 								menu={{
-									items: visibleMenuList.slice(visibleMenuItems).map((item) => ({
+									items: dropdownItems.map((item) => ({
 										key: item.id,
 										label: (
 											<div
 												className={clsx('menu-item', {
 													active: item.isActive
 												})}
-												onClick={item.onClick}
 											>
 												{item.icon && (
 													<Icon name={item.icon} size={14} />
 												)}
 												<span>{item.name}</span>
 											</div>
-										)
+										),
+										onClick: item.onClick
 									})),
 									className: 'more-menu-items'
 								}}
