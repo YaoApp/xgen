@@ -189,7 +189,16 @@ const MenuItem: FC<{
 }> = ({ item, level, expanded, activeId, onToggle, onSelect, searchTerm }) => {
 	const hasChildren = item.children && item.children.length > 0
 	const isExpanded = expanded[item.id]
-	const isActive = activeId === item.id
+
+	// Check if current item or any of its children are active
+	const isActive = (currentItem: MenuItem): boolean => {
+		if (currentItem.id === activeId) return true
+		if (currentItem.children) {
+			return currentItem.children.some((child) => isActive(child))
+		}
+		return false
+	}
+
 	const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase())
 	const hasMatchingChildren =
 		item.children?.some((child) => child.name.toLowerCase().includes(searchTerm.toLowerCase())) || false
@@ -204,7 +213,7 @@ const MenuItem: FC<{
 				className={clsx('menu-item', {
 					expanded: isExpanded,
 					'has-children': hasChildren,
-					active: isActive
+					active: isActive(item)
 				})}
 				onClick={() => {
 					if (item.link) {
@@ -226,7 +235,7 @@ const MenuItem: FC<{
 					<Icon
 						name={isExpanded ? 'material-expand_less' : 'material-expand_more'}
 						size={16}
-						className='expand-icon'
+						className={clsx('expand-icon', { active: isActive(item) })}
 					/>
 				)}
 			</div>

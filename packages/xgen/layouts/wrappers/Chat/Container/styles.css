@@ -469,7 +469,6 @@
 
 .menu-item.expanded .expand-icon {
 	opacity: 1;
-	color: var(--color_main);
 }
 
 .menu-children {
