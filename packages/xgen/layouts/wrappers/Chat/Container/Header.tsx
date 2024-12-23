@@ -7,6 +7,7 @@ import clsx from 'clsx'
 import './header.less'
 import { App } from '@/types'
 import { useLocation, useNavigate } from '@umijs/max'
+import { findNavPath } from './Utils'
 
 interface HeaderProps {
 	openSidebar: (temporaryLink?: string, title?: string) => void
@@ -26,6 +27,7 @@ const Header: FC<HeaderProps> = ({
 }) => {
 	const global = container.resolve(GlobalModel)
 	const current_path = useLocation().pathname
+
 	const [activeMenuId, setActiveMenuId] = useState<string>(current_path)
 	const [activeCommonFunctionId, setActiveCommonFunctionId] = useState<string>(current_path)
 	const [visibleMenuItems, setVisibleMenuItems] = useState<number>(3)
@@ -36,6 +38,8 @@ const Header: FC<HeaderProps> = ({
 	const items = [...(global.menus?.items || []), ...(global.menus?.setting || [])].filter(
 		(item) => item.path != '/chat'
 	)
+
+	const nav_path = findNavPath(current_path, items)
 	const navigate = useNavigate()
 	const handleNavChange = (menu: App.Menu) => {
 		navigate(menu.path)
@@ -255,7 +259,7 @@ const Header: FC<HeaderProps> = ({
 								key={`v_${item.id}_${index}`}
 								className={clsx('header_menu_item', {
 									active:
-										current_path?.startsWith(item.path) &&
+										nav_path?.startsWith(item.path) &&
 										activeFunction?.path != item.path
 								})}
 								onClick={() => handleNavChange(item)}
@@ -282,9 +286,7 @@ const Header: FC<HeaderProps> = ({
 											<div
 												className={clsx('header_menu_item', {
 													active:
-														current_path?.startsWith(
-															item.path
-														) &&
+														nav_path?.startsWith(item.path) &&
 														activeFunction?.path != item.path
 												})}
 											>

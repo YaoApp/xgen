@@ -1,190 +1,33 @@
-import { FC, useState, useEffect, useRef } from 'react'
+import { FC, useState, useRef } from 'react'
 import { Input } from 'antd'
 import Icon from '@/widgets/Icon'
 import clsx from 'clsx'
 import './menu.less'
-
-interface MenuItem {
+export interface MenuItem {
 	id: string
 	name: string
 	icon?: string
 	image?: string
 	link?: string
 	children?: MenuItem[]
+	hasParent?: boolean
 }
 
 interface MenuProps {
 	isVisible?: boolean
-	onToggle?: () => void
+	activeId?: string
+	items: MenuItem[]
+	onSelect: (item: MenuItem) => void
+	onToggle: (id?: string) => void
 }
-
-// Test data with 3 levels and 30+ items
-const testMenuItems: MenuItem[] = [
-	{
-		id: '1',
-		name: 'Dashboard',
-		icon: 'material-dashboard',
-		link: '/dashboard',
-		children: [
-			{
-				id: '1-1',
-				name: 'Analytics',
-				icon: 'material-analytics',
-				link: '/dashboard/analytics',
-				children: [
-					{
-						id: '1-1-1',
-						name: 'Real-time',
-						icon: 'material-timer',
-						link: '/dashboard/analytics/realtime'
-					},
-					{
-						id: '1-1-2',
-						name: 'Historical',
-						icon: 'material-history',
-						link: '/dashboard/analytics/historical'
-					}
-				]
-			},
-			{
-				id: '1-2',
-				name: 'Performance',
-				icon: 'material-speed',
-				link: '/dashboard/performance'
-			}
-		]
-	},
-	{
-		id: '2',
-		name: 'Projects',
-		icon: 'material-folder',
-		link: '/projects',
-		children: [
-			{
-				id: '2-1',
-				name: 'Active',
-				icon: 'material-work',
-				link: '/projects/active',
-				children: [
-					{
-						id: '2-1-1',
-						name: 'Development',
-						icon: 'material-code',
-						link: '/projects/active/dev'
-					},
-					{
-						id: '2-1-2',
-						name: 'Design',
-						icon: 'material-palette',
-						link: '/projects/active/design'
-					}
-				]
-			},
-			{
-				id: '2-2',
-				name: 'Archived',
-				icon: 'material-archive',
-				link: '/projects/archived'
-			}
-		]
-	},
-	{
-		id: '3',
-		name: 'Team',
-		icon: 'material-group',
-		link: '/team',
-		children: [
-			{
-				id: '3-1',
-				name: 'Members',
-				icon: 'material-person',
-				link: '/team/members',
-				children: [
-					{
-						id: '3-1-1',
-						name: 'Developers',
-						icon: 'material-code',
-						link: '/team/members/developers'
-					},
-					{
-						id: '3-1-2',
-						name: 'Designers',
-						icon: 'material-palette',
-						link: '/team/members/designers'
-					}
-				]
-			},
-			{
-				id: '3-2',
-				name: 'Groups',
-				icon: 'material-groups',
-				link: '/team/groups'
-			}
-		]
-	},
-	{
-		id: '4',
-		name: 'Settings',
-		icon: 'material-settings',
-		link: '/settings',
-		children: [
-			{
-				id: '4-1',
-				name: 'General',
-				icon: 'material-tune',
-				link: '/settings/general'
-			},
-			{
-				id: '4-2',
-				name: 'Security',
-				icon: 'material-security',
-				link: '/settings/security',
-				children: [
-					{
-						id: '4-2-1',
-						name: 'Authentication',
-						icon: 'material-lock',
-						link: '/settings/security/auth'
-					},
-					{
-						id: '4-2-2',
-						name: 'Permissions',
-						icon: 'material-admin_panel_settings',
-						link: '/settings/security/permissions'
-					}
-				]
-			}
-		]
-	},
-	{
-		id: '5',
-		name: 'Help',
-		icon: 'material-help',
-		link: '/help',
-		children: [
-			{
-				id: '5-1',
-				name: 'Documentation',
-				icon: 'material-description',
-				link: '/help/docs'
-			},
-			{
-				id: '5-2',
-				name: 'Support',
-				icon: 'material-support',
-				link: '/help/support'
-			}
-		]
-	}
-]
 
 const MenuItem: FC<{
 	item: MenuItem
 	level: number
 	expanded: { [key: string]: boolean }
 	activeId: string
-	onToggle: (id: string) => void
-	onSelect: (id: string) => void
+	onToggle: (id?: string) => void
+	onSelect: (menu: MenuItem) => void
 	searchTerm: string
 }> = ({ item, level, expanded, activeId, onToggle, onSelect, searchTerm }) => {
 	const hasChildren = item.children && item.children.length > 0
@@ -217,9 +60,7 @@ const MenuItem: FC<{
 				})}
 				onClick={() => {
 					if (item.link) {
-						onSelect(item.id)
-						// Handle navigation
-						console.log('Navigate to:', item.link)
+						onSelect(item)
 					}
 					if (hasChildren) {
 						onToggle(item.id)
@@ -259,21 +100,22 @@ const MenuItem: FC<{
 	)
 }
 
-const Menu: FC<MenuProps> = ({ isVisible = true, onToggle }) => {
+const Menu: FC<MenuProps> = ({ isVisible = true, onToggle, onSelect, activeId: initialActiveId, items }) => {
 	const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({})
 	const [searchTerm, setSearchTerm] = useState('')
-	const [activeId, setActiveId] = useState('')
+	const [activeId, setActiveId] = useState(initialActiveId || '')
 	const menuRef = useRef<HTMLDivElement>(null)
-
-	const handleToggle = (id: string) => {
+	const handleToggle = (id?: string) => {
+		if (!id) return
 		setExpanded((prev) => ({
 			...prev,
 			[id]: !prev[id]
 		}))
 	}
 
-	const handleSelect = (id: string) => {
-		setActiveId(id)
+	const handleSelect = (item: MenuItem) => {
+		setActiveId(item.id)
+		onSelect(item)
 	}
 
 	return (
@@ -287,7 +129,7 @@ const Menu: FC<MenuProps> = ({ isVisible = true, onToggle }) => {
 				/>
 			</div>
 			<div className='menu_items_container'>
-				{testMenuItems.map((item) => (
+				{items.map((item) => (
 					<MenuItem
 						key={item.id}
 						item={item}
@@ -301,7 +143,7 @@ const Menu: FC<MenuProps> = ({ isVisible = true, onToggle }) => {
 				))}
 			</div>
 			{isVisible && (
-				<button className='menu_toggle menu_toggle_close' onClick={onToggle}>
+				<button className='menu_toggle menu_toggle_close' onClick={() => onToggle()}>
 					<Icon name='material-first_page' size={16} />
 				</button>
 			)}
