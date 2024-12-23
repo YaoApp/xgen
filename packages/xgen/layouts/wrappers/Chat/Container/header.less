@@ -155,6 +155,7 @@
 
 	&:hover {
 		color: var(--color_text);
+		background: var(--color_border_soft);
 	}
 
 	&.expanded {
@@ -213,6 +214,10 @@
 		transition: all 0.2s ease;
 		font-size: 13px;
 		line-height: 1;
+
+		&:hover {
+			background: none;
+		}
 
 		&.active {
 			background: var(--color_border_soft);
