@@ -2,7 +2,7 @@ import { FC, useState, useEffect, useRef } from 'react'
 import { Input } from 'antd'
 import Icon from '@/widgets/Icon'
 import clsx from 'clsx'
-import './styles.css'
+import './menu.less'
 
 interface MenuItem {
 	id: string
@@ -208,9 +208,9 @@ const MenuItem: FC<{
 	}
 
 	return (
-		<div className={clsx('menu-item-wrapper', `level-${level}`)}>
+		<div className={clsx('menu_item_wrapper', `level-${level}`)}>
 			<div
-				className={clsx('menu-item', {
+				className={clsx('menu_item', {
 					expanded: isExpanded,
 					'has-children': hasChildren,
 					active: isActive(item)
@@ -226,21 +226,21 @@ const MenuItem: FC<{
 					}
 				}}
 			>
-				<div className='menu-item-content'>
+				<div className='menu_item_content'>
 					{item.icon && <Icon name={item.icon} size={16} />}
-					{item.image && <img src={item.image} alt={item.name} className='menu-item-image' />}
-					<span className='menu-item-name'>{item.name}</span>
+					{item.image && <img src={item.image} alt={item.name} className='menu_item_image' />}
+					<span className='menu_item_name'>{item.name}</span>
 				</div>
 				{hasChildren && (
 					<Icon
 						name={isExpanded ? 'material-expand_less' : 'material-expand_more'}
 						size={16}
-						className={clsx('expand-icon', { active: isActive(item) })}
+						className={clsx('menu_expand_icon', { active: isActive(item) })}
 					/>
 				)}
 			</div>
 			{hasChildren && isExpanded && (
-				<div className='menu-children'>
+				<div className='menu_children'>
 					{item.children?.map((child) => (
 						<MenuItem
 							key={child.id}
@@ -277,8 +277,8 @@ const Menu: FC<MenuProps> = ({ isVisible = true, onToggle }) => {
 	}
 
 	return (
-		<aside className={clsx('menu', { hidden: !isVisible })} ref={menuRef}>
-			<div className='menu-search'>
+		<aside className={clsx('menu_container', { hidden: !isVisible })} ref={menuRef}>
+			<div className='menu_search'>
 				<Input
 					prefix={<Icon name='material-search' size={16} />}
 					placeholder='Search menu...'
@@ -286,7 +286,7 @@ const Menu: FC<MenuProps> = ({ isVisible = true, onToggle }) => {
 					onChange={(e) => setSearchTerm(e.target.value)}
 				/>
 			</div>
-			<div className='menu-items-container'>
+			<div className='menu_items_container'>
 				{testMenuItems.map((item) => (
 					<MenuItem
 						key={item.id}
@@ -301,7 +301,7 @@ const Menu: FC<MenuProps> = ({ isVisible = true, onToggle }) => {
 				))}
 			</div>
 			{isVisible && (
-				<button className='menu-toggle menu-toggle-close' onClick={onToggle}>
+				<button className='menu_toggle menu_toggle_close' onClick={onToggle}>
 					<Icon name='material-first_page' size={16} />
 				</button>
 			)}

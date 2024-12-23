@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, useState, useEffect, useRef } from 'react'
 import Icon from '@/widgets/Icon'
 import Header from './Header'
 import Menu from './Menu'
-import './styles.css'
+import './style.less'
 
 interface ContainerProps {
 	openSidebar: (temporaryLink?: string, title?: string) => void
@@ -71,9 +71,9 @@ const Container: FC<PropsWithChildren<ContainerProps>> = ({
 			<div className='mainContent' ref={mainContentRef}>
 				{showMenu && <Menu isVisible={isMenuVisible} onToggle={toggleMenu} />}
 				<main className='content' ref={contentRef}>
-					<div className='content-wrapper'>{children}</div>
+					<div className='content_wrapper'>{children}</div>
 					{showMenu && !isMenuVisible && (
-						<button className='menu-toggle menu-toggle-open' onClick={toggleMenu}>
+						<button className='menu_toggle menu_toggle_open' onClick={toggleMenu}>
 							<Icon name='material-menu' size={14} />
 						</button>
 					)}

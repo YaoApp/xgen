@@ -4,7 +4,7 @@ import { container } from 'tsyringe'
 import { GlobalModel } from '@/context/app'
 import Icon from '@/widgets/Icon'
 import clsx from 'clsx'
-import './styles.css'
+import './header.less'
 
 interface HeaderProps {
 	openSidebar: (temporaryLink?: string, title?: string) => void
@@ -223,29 +223,30 @@ const Header: FC<HeaderProps> = ({
 
 		const calculateVisibleItems = () => {
 			// Get the header element's width
-			const header = container.closest('.header') as HTMLElement
+			const header = container.closest('.header_container') as HTMLElement
 			if (!header) return
 
 			// Get the header-right width
-			const headerRight = header.querySelector('.header-right') as HTMLElement
+			const headerRight = header.querySelector('.header_right') as HTMLElement
 			if (!headerRight) return
 
 			// Calculate available width
 			const headerWidth = header.getBoundingClientRect().width
 			const headerRightWidth = headerRight.getBoundingClientRect().width
-			const logo = header.querySelector('.header-logo') as HTMLElement
-			const createNew = header.querySelector('.current-function') as HTMLElement
+			const logo = header.querySelector('.header_logo') as HTMLElement
+			const createNew = header.querySelector('.header_current_function') as HTMLElement
 
 			if (!logo || !createNew) return
 
-			const usedWidth =
-				headerRightWidth +
-				logo.getBoundingClientRect().width +
-				createNew.getBoundingClientRect().width +
-				64 // Total padding and gaps
+			// Add some buffer for padding and spacing
+			const BUFFER_SPACE = 80
+			const logoWidth = logo.getBoundingClientRect().width
+			const createNewWidth = createNew.getBoundingClientRect().width
+
+			const usedWidth = headerRightWidth + logoWidth + createNewWidth + BUFFER_SPACE
 
 			const availableWidth = headerWidth - usedWidth
-			const moreMenuWidth = 40
+			const moreMenuWidth = 48
 			let currentWidth = 0
 			let count = 0
 
@@ -255,7 +256,10 @@ const Header: FC<HeaderProps> = ({
 				const remainingItems = itemWidthsRef.current.length - (i + 1)
 				const needMoreMenu = remainingItems > 0
 
-				if (currentWidth + itemWidth + (needMoreMenu ? moreMenuWidth : 0) <= availableWidth) {
+				// Add the "More" menu width if there will be hidden items
+				const totalWidthNeeded = currentWidth + itemWidth + (needMoreMenu ? moreMenuWidth : 0)
+
+				if (totalWidthNeeded <= availableWidth) {
 					currentWidth += itemWidth
 					count = i + 1
 				} else {
@@ -263,7 +267,15 @@ const Header: FC<HeaderProps> = ({
 				}
 			}
 
-			setVisibleMenuItems(Math.max(1, count))
+			// Ensure we show at least one item
+			const finalCount = Math.max(1, Math.min(count, itemWidthsRef.current.length))
+
+			// If we're showing all items except one, show the more menu anyway
+			if (finalCount === itemWidthsRef.current.length - 1) {
+				setVisibleMenuItems(finalCount - 1)
+			} else {
+				setVisibleMenuItems(finalCount)
+			}
 		}
 
 		// Initial measurement and calculation
@@ -279,7 +291,7 @@ const Header: FC<HeaderProps> = ({
 		const resizeObserver = new ResizeObserver(recalculate)
 
 		// Observe the header element instead
-		const header = container.closest('.header')
+		const header = container.closest('.header_container')
 		if (header) {
 			resizeObserver.observe(header)
 		}
@@ -322,10 +334,10 @@ const Header: FC<HeaderProps> = ({
 		const activeFunction = commonFunctions.find((func) => func.id === activeCommonFunctionId)
 
 		return (
-			<div className='header-normal'>
-				<div className='header-left'>
+			<div className='header_normal'>
+				<div className='header_left'>
 					{/* Logo */}
-					<div className='header-logo'>
+					<div className='header_logo'>
 						<img src={global.app_info?.logo} alt='Logo' />
 					</div>
 
@@ -336,7 +348,7 @@ const Header: FC<HeaderProps> = ({
 								key: func.id,
 								label: (
 									<div
-										className={clsx('common-function-item', {
+										className={clsx('header_common_function_item', {
 											active: func.id === activeCommonFunctionId
 										})}
 									>
@@ -346,12 +358,12 @@ const Header: FC<HeaderProps> = ({
 								),
 								onClick: func.onClick
 							})),
-							className: 'common-functions-dropdown'
+							className: 'header_common_functions_dropdown'
 						}}
 						trigger={['hover']}
 					>
 						<div
-							className={clsx('current-function', {
+							className={clsx('header_current_function', {
 								active: !!activeCommonFunctionId
 							})}
 						>
@@ -364,9 +376,9 @@ const Header: FC<HeaderProps> = ({
 					</Dropdown>
 
 					{/* Hidden container for measurements */}
-					<div className='menu-items-measure' ref={measureContainerRef}>
+					<div className='header_menu_items_measure' ref={measureContainerRef}>
 						{menuItems.map((item) => (
-							<div key={item.id} className='menu-item'>
+							<div key={item.id} className='header_menu_item'>
 								{item.icon && <Icon name={item.icon} size={14} />}
 								<span>{item.name}</span>
 							</div>
@@ -374,11 +386,11 @@ const Header: FC<HeaderProps> = ({
 					</div>
 
 					{/* Visible menu items */}
-					<div className='menu-items' ref={menuContainerRef}>
+					<div className='header_menu_items' ref={menuContainerRef}>
 						{finalVisibleItems.map((item) => (
 							<div
 								key={item.id}
-								className={clsx('menu-item', {
+								className={clsx('header_menu_item', {
 									active: item.isActive
 								})}
 								onClick={item.onClick}
@@ -394,7 +406,7 @@ const Header: FC<HeaderProps> = ({
 										key: item.id,
 										label: (
 											<div
-												className={clsx('menu-item', {
+												className={clsx('header_menu_item', {
 													active: item.isActive
 												})}
 											>
@@ -406,11 +418,11 @@ const Header: FC<HeaderProps> = ({
 										),
 										onClick: item.onClick
 									})),
-									className: 'more-menu-items'
+									className: 'header_more_menu_items'
 								}}
 								trigger={['hover']}
 							>
-								<div className='more-menu'>
+								<div className='header_more_menu'>
 									<Icon name='material-more_horiz' size={14} />
 								</div>
 							</Dropdown>
@@ -418,17 +430,17 @@ const Header: FC<HeaderProps> = ({
 					</div>
 				</div>
 
-				<div className='header-right'>
+				<div className='header_right'>
 					<Tooltip title='Terminal'>
 						<Button
 							type='text'
-							className='header-icon-btn'
+							className='header_icon_btn'
 							icon={<Icon name='material-terminal' size={16} />}
 						/>
 					</Tooltip>
 					<Button
 						type='text'
-						className='header-icon-btn'
+						className='header_icon_btn'
 						icon={<Icon name='material-close' size={16} />}
 						onClick={closeSidebar}
 					/>
@@ -438,14 +450,14 @@ const Header: FC<HeaderProps> = ({
 	}
 
 	const renderTemporaryView = () => (
-		<div className='header-temporary'>
-			<div className='header-left'>
-				<span className='current-page'>{currentPageName}</span>
+		<div className='header_temporary'>
+			<div className='header_left'>
+				<span className='header_current_page'>{currentPageName}</span>
 			</div>
-			<div className='header-right'>
+			<div className='header_right'>
 				<Button
 					type='text'
-					className='header-icon-btn back-btn'
+					className='header_icon_btn back-btn'
 					style={{ marginRight: '2px', width: 'auto' }}
 					onClick={onBackToNormal}
 				>
@@ -454,7 +466,7 @@ const Header: FC<HeaderProps> = ({
 				</Button>
 				<Button
 					type='text'
-					className='header-icon-btn'
+					className='header_icon_btn'
 					icon={<Icon name='material-close' size={16} />}
 					onClick={closeSidebar}
 				/>
@@ -462,7 +474,9 @@ const Header: FC<HeaderProps> = ({
 		</div>
 	)
 
-	return <header className='header'>{isTemporaryView ? renderTemporaryView() : renderNormalMenu()}</header>
+	return (
+		<header className='header_container'>{isTemporaryView ? renderTemporaryView() : renderNormalMenu()}</header>
+	)
 }
 
 export default Header
