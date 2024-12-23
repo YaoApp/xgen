@@ -1,10 +1,12 @@
-import { Button, Dropdown, Tooltip, Menu } from 'antd'
+import { Button, Dropdown, Tooltip } from 'antd'
 import { FC, useState, useEffect, useRef } from 'react'
 import { container } from 'tsyringe'
 import { GlobalModel } from '@/context/app'
 import Icon from '@/widgets/Icon'
 import clsx from 'clsx'
 import './header.less'
+import { App } from '@/types'
+import { useLocation, useNavigate } from '@umijs/max'
 
 interface HeaderProps {
 	openSidebar: (temporaryLink?: string, title?: string) => void
@@ -15,21 +17,6 @@ interface HeaderProps {
 	onBackToNormal?: () => void
 }
 
-interface CommonFunction {
-	id: string
-	name: string
-	icon: string
-	onClick: () => void
-}
-
-interface MenuItem {
-	id: string
-	name: string
-	icon?: string
-	onClick: () => void
-	isActive?: boolean
-}
-
 const Header: FC<HeaderProps> = ({
 	openSidebar,
 	closeSidebar,
@@ -38,170 +25,21 @@ const Header: FC<HeaderProps> = ({
 	onBackToNormal
 }) => {
 	const global = container.resolve(GlobalModel)
-	const [activeMenuId, setActiveMenuId] = useState<string>('')
-	const [activeCommonFunctionId, setActiveCommonFunctionId] = useState<string>('')
+	const current_path = useLocation().pathname
+	const [activeMenuId, setActiveMenuId] = useState<string>(current_path)
+	const [activeCommonFunctionId, setActiveCommonFunctionId] = useState<string>(current_path)
 	const [visibleMenuItems, setVisibleMenuItems] = useState<number>(3)
 	const menuContainerRef = useRef<HTMLDivElement>(null)
 	const measureContainerRef = useRef<HTMLDivElement>(null)
 	const itemWidthsRef = useRef<number[]>([])
-
-	// Test data for menu items
-	const menuItems: MenuItem[] = [
-		{
-			id: 'chat',
-			name: 'Chat',
-			icon: 'material-chat',
-			onClick: () => {
-				setActiveMenuId('chat')
-				setActiveCommonFunctionId('')
-			},
-			isActive: activeMenuId === 'chat' && !activeCommonFunctionId
-		},
-		{
-			id: 'apps',
-			name: 'Apps',
-			icon: 'material-apps',
-			onClick: () => {
-				setActiveMenuId('apps')
-				setActiveCommonFunctionId('')
-			},
-			isActive: activeMenuId === 'apps' && !activeCommonFunctionId
-		},
-		{
-			id: 'flows',
-			name: 'Flows',
-			icon: 'material-account_tree',
-			onClick: () => {
-				setActiveMenuId('flows')
-				setActiveCommonFunctionId('')
-			},
-			isActive: activeMenuId === 'flows' && !activeCommonFunctionId
-		},
-		{
-			id: 'docs',
-			name: 'Documents',
-			icon: 'material-description',
-			onClick: () => {
-				setActiveMenuId('docs')
-				setActiveCommonFunctionId('')
-			},
-			isActive: activeMenuId === 'docs' && !activeCommonFunctionId
-		},
-		{
-			id: 'teams',
-			name: 'Teams',
-			icon: 'material-group',
-			onClick: () => {
-				setActiveMenuId('teams')
-				setActiveCommonFunctionId('')
-			},
-			isActive: activeMenuId === 'teams' && !activeCommonFunctionId
-		},
-		{
-			id: 'settings',
-			name: 'Settings',
-			icon: 'material-settings',
-			onClick: () => {
-				setActiveMenuId('settings')
-				setActiveCommonFunctionId('')
-			},
-			isActive: activeMenuId === 'settings' && !activeCommonFunctionId
-		}
-	]
-
-	// Test data for common functions
-	const commonFunctions: CommonFunction[] = [
-		{
-			id: 'new_chat',
-			name: 'New Chat',
-			icon: 'material-chat',
-			onClick: () => {
-				setActiveCommonFunctionId('new_chat')
-				setActiveMenuId('')
-			}
-		},
-		{
-			id: 'new_app',
-			name: 'New App',
-			icon: 'material-add_box',
-			onClick: () => {
-				setActiveCommonFunctionId('new_app')
-				setActiveMenuId('')
-			}
-		},
-		{
-			id: 'new_flow',
-			name: 'New Flow',
-			icon: 'material-account_tree',
-			onClick: () => {
-				setActiveCommonFunctionId('new_flow')
-				setActiveMenuId('')
-			}
-		},
-		{
-			id: 'new_doc',
-			name: 'New Document',
-			icon: 'material-description',
-			onClick: () => {
-				setActiveCommonFunctionId('new_doc')
-				setActiveMenuId('')
-			}
-		},
-		{
-			id: 'import',
-			name: 'Import',
-			icon: 'material-upload_file',
-			onClick: () => {
-				setActiveCommonFunctionId('import')
-				setActiveMenuId('')
-			}
-		},
-		{
-			id: 'export',
-			name: 'Export',
-			icon: 'material-download',
-			onClick: () => {
-				setActiveCommonFunctionId('export')
-				setActiveMenuId('')
-			}
-		},
-		{
-			id: 'share',
-			name: 'Share',
-			icon: 'material-share',
-			onClick: () => {
-				setActiveCommonFunctionId('share')
-				setActiveMenuId('')
-			}
-		},
-		{
-			id: 'favorite',
-			name: 'Favorites',
-			icon: 'material-star',
-			onClick: () => {
-				setActiveCommonFunctionId('favorite')
-				setActiveMenuId('')
-			}
-		},
-		{
-			id: 'recent',
-			name: 'Recent',
-			icon: 'material-history',
-			onClick: () => {
-				setActiveCommonFunctionId('recent')
-				setActiveMenuId('')
-			}
-		},
-		{
-			id: 'trash',
-			name: 'Trash',
-			icon: 'material-delete',
-			onClick: () => {
-				setActiveCommonFunctionId('trash')
-				setActiveMenuId('')
-			}
-		}
-	]
+	const quick_items = (global.menus?.quick || []).filter((item) => item.path != '/chat')
+	const items = [...(global.menus?.items || []), ...(global.menus?.setting || [])].filter(
+		(item) => item.path != '/chat'
+	)
+	const navigate = useNavigate()
+	const handleNavChange = (menu: App.Menu) => {
+		navigate(menu.path)
+	}
 
 	useEffect(() => {
 		const container = menuContainerRef.current
@@ -311,9 +149,9 @@ const Header: FC<HeaderProps> = ({
 
 	const renderNormalMenu = () => {
 		// Determine visible and hidden items
-		const visibleItems = menuItems.slice(0, visibleMenuItems)
-		const hiddenItems = menuItems.slice(visibleMenuItems)
-		const activeHiddenItem = hiddenItems.find((item) => item.isActive)
+		const visibleItems = items.slice(0, visibleMenuItems)
+		const hiddenItems = items.slice(visibleMenuItems)
+		const activeHiddenItem = hiddenItems.find((item) => false)
 
 		// Create the final list of visible items
 		let finalVisibleItems = [...visibleItems]
@@ -331,7 +169,7 @@ const Header: FC<HeaderProps> = ({
 			: hiddenItems
 
 		// Find active common function
-		const activeFunction = commonFunctions.find((func) => func.id === activeCommonFunctionId)
+		const activeFunction = quick_items.find((item) => item.path === current_path)
 
 		return (
 			<div className='header_normal'>
@@ -344,19 +182,28 @@ const Header: FC<HeaderProps> = ({
 					{/* Common Functions */}
 					<Dropdown
 						menu={{
-							items: commonFunctions.map((func) => ({
-								key: func.id,
+							items: quick_items.map((item, index) => ({
+								key: `${item.path}_${index}`,
 								label: (
 									<div
 										className={clsx('header_common_function_item', {
-											active: func.id === activeCommonFunctionId
+											active: current_path?.startsWith(item.path)
 										})}
 									>
-										<Icon name={func.icon} size={14} />
-										<span>{func.name}</span>
+										{item.icon && (
+											<Icon
+												name={
+													typeof item.icon === 'string'
+														? item.icon
+														: item.icon?.name
+												}
+												size={14}
+											/>
+										)}
+										<span>{item.name}</span>
 									</div>
 								),
-								onClick: func.onClick
+								onClick: () => handleNavChange(item)
 							})),
 							className: 'header_common_functions_dropdown'
 						}}
@@ -364,22 +211,38 @@ const Header: FC<HeaderProps> = ({
 					>
 						<div
 							className={clsx('header_current_function', {
-								active: !!activeCommonFunctionId
+								active: activeFunction && current_path?.startsWith(activeFunction.path)
 							})}
 						>
 							<Icon
-								name={activeFunction ? activeFunction.icon : 'material-star'}
+								name={`${
+									(activeFunction &&
+										activeFunction.icon &&
+										(typeof activeFunction.icon === 'string'
+											? activeFunction.icon
+											: activeFunction.icon.name)) ||
+									'material-star'
+								}`}
 								size={14}
 							/>
-							<span>{activeFunction ? activeFunction.name : 'Quick Actions'}</span>
+							<span>{activeFunction ? activeFunction.name : 'Quick Launch'}</span>
 						</div>
 					</Dropdown>
 
 					{/* Hidden container for measurements */}
 					<div className='header_menu_items_measure' ref={measureContainerRef}>
-						{menuItems.map((item) => (
-							<div key={item.id} className='header_menu_item'>
-								{item.icon && <Icon name={item.icon} size={14} />}
+						{items.map((item, index) => (
+							<div key={`m_${item.id}_${index}`} className='header_menu_item'>
+								{item.icon && (
+									<Icon
+										name={
+											typeof item.icon === 'string'
+												? item.icon
+												: item.icon?.name
+										}
+										size={14}
+									/>
+								)}
 								<span>{item.name}</span>
 							</div>
 						))}
@@ -387,36 +250,58 @@ const Header: FC<HeaderProps> = ({
 
 					{/* Visible menu items */}
 					<div className='header_menu_items' ref={menuContainerRef}>
-						{finalVisibleItems.map((item) => (
+						{finalVisibleItems.map((item, index) => (
 							<div
-								key={item.id}
+								key={`v_${item.id}_${index}`}
 								className={clsx('header_menu_item', {
-									active: item.isActive
+									active:
+										current_path?.startsWith(item.path) &&
+										activeFunction?.path != item.path
 								})}
-								onClick={item.onClick}
+								onClick={() => handleNavChange(item)}
 							>
-								{item.icon && <Icon name={item.icon} size={14} />}
+								{item.icon && (
+									<Icon
+										name={
+											typeof item.icon === 'string'
+												? item.icon
+												: item.icon.name
+										}
+										size={14}
+									/>
+								)}
 								<span>{item.name}</span>
 							</div>
 						))}
-						{menuItems.length > visibleMenuItems && (
+						{items.length > visibleMenuItems && (
 							<Dropdown
 								menu={{
-									items: dropdownItems.map((item) => ({
-										key: item.id,
+									items: dropdownItems.map((item, index) => ({
+										key: `h_${item.id}_${index}`,
 										label: (
 											<div
 												className={clsx('header_menu_item', {
-													active: item.isActive
+													active:
+														current_path?.startsWith(
+															item.path
+														) &&
+														activeFunction?.path != item.path
 												})}
 											>
 												{item.icon && (
-													<Icon name={item.icon} size={14} />
+													<Icon
+														name={
+															typeof item.icon === 'string'
+																? item.icon
+																: item.icon.name
+														}
+														size={14}
+													/>
 												)}
 												<span>{item.name}</span>
 											</div>
 										),
-										onClick: item.onClick
+										onClick: () => handleNavChange(item)
 									})),
 									className: 'header_more_menu_items'
 								}}
