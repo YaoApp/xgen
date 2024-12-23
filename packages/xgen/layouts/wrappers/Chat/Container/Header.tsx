@@ -34,9 +34,11 @@ const Header: FC<HeaderProps> = ({
 	const menuContainerRef = useRef<HTMLDivElement>(null)
 	const measureContainerRef = useRef<HTMLDivElement>(null)
 	const itemWidthsRef = useRef<number[]>([])
-	const quick_items = (global.menus?.quick || []).filter((item) => item.path != '/chat')
+	const quick_items = (global.menus?.quick || []).filter(
+		(item) => item.path != '/chat' && item.path != 'open:sidebar'
+	)
 	const items = [...(global.menus?.items || []), ...(global.menus?.setting || [])].filter(
-		(item) => item.path != '/chat'
+		(item) => item.path != '/chat' && item.path != 'open:sidebar'
 	)
 
 	const nav_path = findNavPath(current_path, items)

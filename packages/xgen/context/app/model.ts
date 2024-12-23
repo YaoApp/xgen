@@ -105,6 +105,13 @@ export default class GlobalModel {
 				},
 				{
 					id: 2,
+					key: 'open:sidebar',
+					name: 'Open Dashboard',
+					icon: 'material-thumbnail_bar',
+					path: 'open:sidebar'
+				},
+				{
+					id: 3,
 					key: '/setting',
 					name: 'Settings',
 					path: '/setting',

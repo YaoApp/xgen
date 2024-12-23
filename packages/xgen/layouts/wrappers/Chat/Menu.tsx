@@ -37,7 +37,11 @@ const Menu: FC<Props> = ({ sidebarVisible, setSidebarVisible, openSidebar }) => 
 		if (menu.path === '/chat') {
 			setCurrentNav(0)
 			return
+		} else if (menu.path === 'open:sidebar') {
+			setSidebarVisible?.(true)
+			return
 		}
+
 		NavigateTo(menu.path)
 	}
 
