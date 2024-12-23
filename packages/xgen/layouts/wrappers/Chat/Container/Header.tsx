@@ -203,7 +203,7 @@ const Header: FC<HeaderProps> = ({
 														? item.icon
 														: item.icon?.name
 												}
-												size={14}
+												size={15}
 											/>
 										)}
 										<span>{item.name}</span>
@@ -229,7 +229,7 @@ const Header: FC<HeaderProps> = ({
 											: activeFunction.icon.name)) ||
 									'material-star'
 								}`}
-								size={14}
+								size={15}
 							/>
 							<span>{activeFunction ? activeFunction.name : 'Quick Launch'}</span>
 						</div>
@@ -246,7 +246,7 @@ const Header: FC<HeaderProps> = ({
 												? item.icon
 												: item.icon?.name
 										}
-										size={14}
+										size={15}
 									/>
 								)}
 								<span>{item.name}</span>
@@ -273,7 +273,7 @@ const Header: FC<HeaderProps> = ({
 												? item.icon
 												: item.icon.name
 										}
-										size={14}
+										size={15}
 									/>
 								)}
 								<span>{item.name}</span>
@@ -299,7 +299,7 @@ const Header: FC<HeaderProps> = ({
 																? item.icon
 																: item.icon.name
 														}
-														size={14}
+														size={15}
 													/>
 												)}
 												<span>{item.name}</span>
@@ -312,7 +312,7 @@ const Header: FC<HeaderProps> = ({
 								trigger={['hover']}
 							>
 								<div className='header_more_menu'>
-									<Icon name='material-more_horiz' size={14} />
+									<Icon name='material-more_horiz' size={15} />
 								</div>
 							</Dropdown>
 						)}
