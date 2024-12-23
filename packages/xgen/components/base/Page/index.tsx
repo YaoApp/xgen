@@ -17,6 +17,7 @@ import DevControls from './components/DevControls'
 const Index = (props: IProps) => {
 	const { children, title: page_title, className, style, actions = [], withRows, customAction, full } = props
 	const global = useGlobal()
+	const { layout } = global
 	const title = page_title ?? usePageTitle(toJS(global.menu), toJS(global.menu_key_path), global.current_nav)
 
 	const appEnableXterm =
@@ -38,7 +39,7 @@ const Index = (props: IProps) => {
 
 	const wrap_style = full
 		? ({
-				padding: '0 60px',
+				padding: layout && layout == 'Admin' ? '0 60px' : '0 32px',
 				maxWidth: '100%'
 		  } as CSSProperties)
 		: {}
@@ -53,12 +54,22 @@ const Index = (props: IProps) => {
 				className='page_content_wrap flex flex_column transition_normal'
 				style={wrap_style}
 			>
-				<header className='header w_100 border_box flex justify_between align_center'>
+				<header
+					className={clsx([
+						'header w_100 border_box flex justify_between align_center',
+						layout == 'Chat' ? 'header_chat' : ''
+					])}
+				>
 					<Left {...props_left}></Left>
 					<div className='options_wrap flex align_center'>
 						{customAction}
 						<Actions actions={actions}></Actions>
-						<DevControls enableXterm={enableXterm} enableAIEdit={enableAIEdit}></DevControls>
+						{layout == 'Admin' && (
+							<DevControls
+								enableXterm={enableXterm}
+								enableAIEdit={enableAIEdit}
+							></DevControls>
+						)}
 					</div>
 				</header>
 				<div className='page_wrap'>{children}</div>

@@ -13,7 +13,10 @@ import { Icon } from '@/widgets'
 import styles from './index.less'
 
 import type { IPropsActions } from '../../types'
+import { useGlobal } from '@/context/app'
 const Index = (props: IPropsActions) => {
+	const global = useGlobal()
+	const { layout } = global
 	const { namespace, primary, type, id, actions, data, disabledActionsAffix } = props
 	const [stick, setStick] = useState<boolean | undefined>(false)
 	const [loading, setLoading] = useState('')
@@ -22,6 +25,7 @@ const Index = (props: IPropsActions) => {
 	const onAction = useAction()
 
 	const unLoading = useMemoizedFn(() => setLoading(''))
+	const offsetTop = layout && layout == 'Admin' ? 11 : 65
 
 	useEffect(() => {
 		window.$app.Event.on(`${namespace}/form/actions/done`, unLoading)
@@ -44,7 +48,11 @@ const Index = (props: IPropsActions) => {
 	}, [actions, data, id, type])
 
 	return (
-		<Affix offsetTop={11} style={{ zIndex: disabledActionsAffix ? 0 : 101 }} onChange={(v) => setStick(v)}>
+		<Affix
+			offsetTop={offsetTop}
+			style={{ zIndex: disabledActionsAffix ? 0 : 101 }}
+			onChange={(v) => setStick(v)}
+		>
 			<div
 				className={clsx([
 					styles._local,
