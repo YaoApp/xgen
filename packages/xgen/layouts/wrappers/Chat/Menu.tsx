@@ -1,46 +1,13 @@
-import { FC, useState, useEffect } from 'react'
+import { FC, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { container } from 'tsyringe'
 import { GlobalModel } from '@/context/app'
 import { Tooltip } from 'antd'
-import { MessageOutlined, SettingOutlined, DashboardOutlined, RobotOutlined } from '@ant-design/icons'
+import { useNavigate } from 'react-router-dom'
 import clsx from 'clsx'
 import './menu.less'
-
-interface MenuItem {
-	id: number
-	name: string
-	icon: React.ReactNode
-	path?: string
-}
-
-// Test data for menu items
-const TEST_MENU_ITEMS: MenuItem[] = [
-	{
-		id: 1,
-		name: 'Chat with Assistant',
-		icon: <MessageOutlined />,
-		path: '/chat'
-	},
-	{
-		id: 2,
-		name: 'AI Assistants',
-		icon: <RobotOutlined />,
-		path: '/apps'
-	},
-	{
-		id: 3,
-		name: 'Admin Panel',
-		icon: <DashboardOutlined />,
-		path: '/settings'
-	},
-	{
-		id: 4,
-		name: 'Settings',
-		icon: <SettingOutlined />,
-		path: '/settings'
-	}
-]
+import { Icon } from '@/widgets'
+import { App } from '@/types'
 
 interface Props {
 	sidebarVisible?: boolean
@@ -51,12 +18,27 @@ interface Props {
 
 const Menu: FC<Props> = ({ sidebarVisible, setSidebarVisible, openSidebar }) => {
 	const global = container.resolve(GlobalModel)
-	const [currentNav, setCurrentNav] = useState(1)
+	const [currentNav, setCurrentNav] = useState(0)
+	const quick_items = global.menus?.quick || []
+	const navigate = useNavigate()
+	if (quick_items.length == 0) {
+		return null
+	}
 
-	const handleNavChange = (id: number) => {
-		const menuItem = TEST_MENU_ITEMS.find((item) => item.id === id)
-		id === 3 && openSidebar?.('/id=3', menuItem?.name)
-		id === 4 && setSidebarVisible?.(true)
+	const NavigateTo = (path: string) => {
+		navigate(path)
+		setSidebarVisible?.(true)
+	}
+
+	const handleNavChange = (menu: App.Menu) => {
+		// const menuItem = TEST_MENU_ITEMS.find((item) => item.id === id)
+		// id === 3 && openSidebar?.('/id=3', menuItem?.name)
+		// id === 4 && setSidebarVisible?.(true)
+		if (menu.path === '/chat') {
+			setCurrentNav(0)
+			return
+		}
+		NavigateTo(menu.path)
 	}
 
 	return (
@@ -69,13 +51,28 @@ const Menu: FC<Props> = ({ sidebarVisible, setSidebarVisible, openSidebar }) => 
 				</Tooltip>
 
 				<div className='menu-items'>
-					{TEST_MENU_ITEMS.map((menu) => (
-						<Tooltip key={menu.id} title={menu.name} placement='right'>
+					{quick_items.map((menu, index) => (
+						<Tooltip key={index} title={menu.name} placement='right'>
 							<div
-								className={clsx('menu-item', menu.id === currentNav && 'active')}
-								onClick={() => handleNavChange(menu.id)}
+								className={clsx('menu-item', index === currentNav && 'active')}
+								onClick={() => handleNavChange(menu)}
 							>
-								<span className='menu-icon'>{menu.icon}</span>
+								<span className='menu-icon'>
+									{menu.icon && (
+										<Icon
+											name={
+												typeof menu.icon === 'string'
+													? menu.icon
+													: menu.icon.name
+											}
+											size={
+												typeof menu.icon === 'string'
+													? 24
+													: menu.icon.size
+											}
+										/>
+									)}
+								</span>
 							</div>
 						</Tooltip>
 					))}

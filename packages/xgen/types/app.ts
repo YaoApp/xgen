@@ -233,8 +233,9 @@ export declare namespace App {
 	}
 
 	interface Menus {
-		items: Array<App.Menu>
-		setting: Array<App.Menu>
+		items: Array<App.Menu> // Main menu
+		setting: Array<App.Menu> // Setting menu
+		quick: Array<App.Menu> // Quick menu
 	}
 
 	interface ChatAttachment {

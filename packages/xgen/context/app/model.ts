@@ -19,7 +19,7 @@ export default class GlobalModel {
 	locale_messages = {} as LocaleMessages
 	app_info = {} as App.Info
 	user = (local.user || {}) as App.User
-	menus = (local.menus || { items: [], setting: {} }) as App.Menus
+	menus = (local.menus || { items: [], setting: {}, quick: [] }) as App.Menus
 	menu = (local.menu || []) as Array<App.Menu>
 
 	in_setting = (local.in_setting || false) as boolean
@@ -84,6 +84,33 @@ export default class GlobalModel {
 				idxkey++
 				if (item.children) setKeys(item.children, item.key, in_setting)
 			})
+		}
+
+		// Default quick menu
+		if (!menus.quick || menus.quick.length === 0) {
+			menus.quick = [
+				{
+					id: 0,
+					key: '/chat',
+					name: 'Chat with Assistant',
+					path: '/chat',
+					icon: 'material-sms'
+				},
+				{
+					id: 1,
+					key: '/assistants',
+					name: 'AI Assistants',
+					path: '/assistants',
+					icon: 'material-robot_2'
+				},
+				{
+					id: 2,
+					key: '/setting',
+					name: 'Settings',
+					path: '/setting',
+					icon: 'material-settings'
+				}
+			]
 		}
 
 		setKeys(menus.items, '', in_setting || false)

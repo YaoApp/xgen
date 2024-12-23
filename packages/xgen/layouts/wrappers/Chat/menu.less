@@ -71,20 +71,34 @@
 		cursor: pointer;
 		border-radius: var(--radius);
 		color: var(--color_text);
-		transition: all 0.3s ease;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		margin: 0 auto;
 
 		&:hover {
 			background: var(--color_bg_hover);
+			i {
+				color: var(--color_main) !important;
+				transform: scale(1.1);
+			}
 		}
 
 		&.active {
 			color: var(--color_main);
 			background: var(--color_bg_hover);
+			i {
+				color: var(--color_main) !important;
+			}
 		}
 
 		.menu-icon {
-			font-size: 20px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			i {
+				color: var(--color_text_grey);
+				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+			}
 		}
 	}
 }
