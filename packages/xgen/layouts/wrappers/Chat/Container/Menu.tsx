@@ -142,11 +142,11 @@ const Menu: FC<MenuProps> = ({ isVisible = true, onToggle, onSelect, activeId: i
 					/>
 				))}
 			</div>
-			{isVisible && (
+			{/* {isVisible && (
 				<button className='menu_toggle menu_toggle_close' onClick={() => onToggle()}>
 					<Icon name='material-first_page' size={16} />
 				</button>
-			)}
+			)} */}
 		</aside>
 	)
 }

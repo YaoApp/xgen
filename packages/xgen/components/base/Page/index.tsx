@@ -46,6 +46,7 @@ const Index = (props: IProps) => {
 	const props_left: IPropsLeft = {
 		title,
 		visible_menu: global.visible_menu,
+		layout: global.layout,
 		toggleVisibleMenu
 	}
 

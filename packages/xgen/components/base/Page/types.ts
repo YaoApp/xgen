@@ -20,6 +20,7 @@ export interface IProps {
 export interface IPropsLeft {
 	title: string | undefined
 	visible_menu: GlobalModel['visible_menu']
+	layout: GlobalModel['layout']
 	toggleVisibleMenu: () => void
 }
 

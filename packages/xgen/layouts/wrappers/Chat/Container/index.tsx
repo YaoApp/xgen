@@ -58,6 +58,20 @@ const Container: FC<PropsWithChildren<ContainerProps>> = ({
 		}
 	}, [isUserToggled])
 
+	useEffect(() => {
+		// Register event listener for external menu toggle
+		const handleExternalToggle = () => {
+			setIsUserToggled(true)
+			setIsMenuVisible((prev) => !prev)
+		}
+
+		window.$app.Event.on('app/toggleMenu', handleExternalToggle)
+
+		return () => {
+			window.$app.Event.off('app/toggleMenu', handleExternalToggle)
+		}
+	}, [])
+
 	const toggleMenu = () => {
 		setIsUserToggled(true)
 		setIsMenuVisible((prev) => !prev)
@@ -73,6 +87,14 @@ const Container: FC<PropsWithChildren<ContainerProps>> = ({
 	const nav_path = findNavPath(current_path, menuItems)
 	const current_menu = menuItems.find((item) => item.path === nav_path)
 	showMenu = (current_menu && current_menu?.children && current_menu?.children?.length > 0) || false
+
+	// Trigger toggleMenu when the menu is toggled
+	window.$app.Event.emit('app/onMenuChange', { isMenuVisible, showMenu })
+
+	useEffect(() => {
+		// Emit menu visibility change event
+		window.$app.Event.emit('app/onMenuChange', { isMenuVisible, showMenu })
+	}, [isMenuVisible])
 
 	let activeId = ''
 	const toMenuItems = (items: App.Menu[], hasParent: boolean = false): MenuItem[] => {
@@ -127,11 +149,11 @@ const Container: FC<PropsWithChildren<ContainerProps>> = ({
 				)}
 				<main className='content' ref={contentRef}>
 					<div className='content_wrapper'>{children}</div>
-					{showMenu && !isMenuVisible && (
+					{/* {showMenu && !isMenuVisible && (
 						<button className='menu_toggle menu_toggle_open' onClick={toggleMenu}>
 							<Icon name='material-menu' size={14} />
 						</button>
-					)}
+					)} */}
 				</main>
 			</div>
 		</div>
