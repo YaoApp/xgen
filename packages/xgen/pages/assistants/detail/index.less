@@ -1,0 +1,301 @@
+.container {
+	padding: 24px 20px;
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
+.loading,
+.error {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 400px;
+}
+
+.header {
+	margin-bottom: 24px;
+	padding: 16px 20px;
+	background: var(--color_bg_menu);
+	border-radius: 12px;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 16px;
+}
+
+.headerMain {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	flex-grow: 1;
+	min-width: 0;
+	min-width: 280px;
+}
+
+.headerInfo {
+	min-width: 0;
+	h1 {
+		margin: 0 0 8px;
+		font-size: 24px;
+		font-weight: 600;
+		color: var(--color_text);
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.tags {
+		display: flex;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+}
+
+.headerActions {
+	flex-shrink: 0;
+	:global {
+		.xgen-space {
+			.xgen-btn {
+				width: 100%;
+				min-width: 100px;
+				height: 32px;
+				padding: 0 12px;
+				font-size: 14px;
+
+				.anticon {
+					font-size: 14px;
+				}
+			}
+		}
+	}
+}
+
+.content {
+	background: var(--color_bg_menu);
+	padding: 32px;
+	border-radius: 12px;
+}
+
+.form {
+	max-width: 720px;
+	margin: 0 auto;
+
+	:global {
+		.xgen-form-item {
+			margin-bottom: 24px;
+
+			.xgen-form-item-control-input {
+				background-color: var(--color_bg_menu);
+			}
+		}
+
+		.xgen-form-item-label {
+			padding-bottom: 8px;
+
+			label {
+				font-size: 15px;
+				font-weight: 500;
+				color: var(--color_text);
+			}
+		}
+
+		.xgen-input,
+		.xgen-select-selector,
+		.xgen-input-textarea textarea {
+			padding: 8px 16px;
+			border-radius: 8px;
+			// border-color: var(--color_border);
+			// background-color: var(--color_bg);
+			color: var(--color_text);
+			transition: all 0.2s;
+
+			&:hover,
+			&:focus {
+				border-color: var(--color_main);
+				box-shadow: 0 0 0 2px rgba(var(--r), var(--g), var(--b), 0.1);
+			}
+
+			&::placeholder {
+				color: var(--color_text_grey);
+			}
+		}
+
+		.xgen-select-selector {
+			height: 40px !important;
+			.xgen-select-selection-item {
+				line-height: 38px;
+				color: var(--color_text);
+			}
+		}
+
+		.xgen-input {
+			height: 40px;
+		}
+
+		.xgen-switch {
+			background: var(--color_text_grey);
+			&-checked {
+				background: var(--color_main);
+			}
+		}
+
+		.xgen-form-item-control-input-content {
+			.xgen-space {
+				width: 100%;
+				justify-content: flex-end;
+			}
+		}
+	}
+}
+
+.actions {
+	margin-top: 40px;
+	padding-top: 24px;
+	border-top: 1px solid #f0f0f0;
+
+	:global {
+		.xgen-btn {
+			height: 32px;
+			padding: 0 12px;
+			font-size: 14px;
+			border-radius: 8px;
+
+			&-primary {
+				background: var(--color_main);
+				box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+			}
+		}
+	}
+}
+
+.section {
+	margin: 48px 0 24px;
+
+	h2 {
+		font-size: 20px;
+		font-weight: 600;
+		color: var(--color_text);
+		margin: 0 0 8px;
+	}
+}
+
+.sectionDesc {
+	color: var(--color_text_light);
+	margin: 0 0 24px;
+}
+
+.promptItem {
+	position: relative;
+	padding: 24px;
+	margin-bottom: 24px;
+	border-radius: 8px;
+	border: 2px dashed var(--color_border_light);
+	background-color: var(--color_bg_menu);
+
+	:global {
+		.xgen-form-item:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+.removePrompt {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	color: var(--color_text_grey);
+
+	&:hover {
+		color: var(--color_danger);
+	}
+}
+
+.switchGroup {
+	display: flex;
+	gap: 32px;
+	padding: 8px 0;
+	margin-bottom: 24px;
+
+	:global {
+		.xgen-form-item {
+			margin-bottom: 0;
+		}
+
+		.xgen-space {
+			font-size: 14px;
+		}
+
+		.xgen-switch {
+			margin-right: 8px;
+		}
+	}
+}
+
+.radioGroup {
+	display: flex;
+	gap: 48px;
+	margin-bottom: 24px;
+
+	:global {
+		.xgen-form-item {
+			margin-bottom: 0;
+		}
+
+		.xgen-form-item-control {
+			background-color: transparent;
+		}
+
+		.xgen-radio-group {
+			display: flex;
+			gap: 24px;
+		}
+
+		.xgen-radio-wrapper {
+			font-size: 14px;
+
+			.xgen-radio-inner {
+				background-color: transparent;
+				border-color: #d9d9d9;
+
+				&::after {
+					background-color: var(--color_main);
+				}
+			}
+
+			&-checked {
+				.xgen-radio-inner {
+					border-color: var(--color_main);
+				}
+			}
+		}
+	}
+}
+
+.avatarUpload {
+	position: relative;
+	cursor: pointer;
+	border-radius: 50%;
+	overflow: hidden;
+
+	&:hover {
+		.avatarOverlay {
+			opacity: 1;
+		}
+	}
+}
+
+.avatarOverlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	transition: opacity 0.2s;
+	color: #fff;
+	font-size: 20px;
+}

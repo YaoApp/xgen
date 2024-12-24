@@ -26,6 +26,20 @@ export interface Assistant {
 	mentionable: boolean
 	/** Creation timestamp */
 	created_at: string
+	/** Assistant options */
+	option?: Record<string, any>
+	/** Assistant prompts */
+	prompts?: any[]
+	/** Assistant flows */
+	flows?: any[]
+	/** Assistant files */
+	files?: any[]
+	/** Assistant functions */
+	functions?: any[]
+	/** Assistant permissions */
+	permissions?: any[]
+	/** Update timestamp */
+	updated_at?: string
 }
 
 interface Props {

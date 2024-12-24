@@ -127,7 +127,7 @@ const Index = () => {
 	}
 
 	const handleCardClick = (assistant: Assistant) => {
-		history.push(`/assistants/${assistant.assistant_id}`)
+		history.push(`/assistants/detail/${assistant.assistant_id}`)
 	}
 
 	const handleCreate = () => {
