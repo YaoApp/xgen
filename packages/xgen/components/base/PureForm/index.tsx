@@ -13,6 +13,7 @@ import styles from './index.less'
 
 import type { IPropsPureForm, IPropsActions, IPropsSections, IPropsReference } from './types'
 import Frame from '../Frame'
+import { useGlobal } from '@/context/app'
 
 const { useForm } = Form
 
@@ -43,6 +44,8 @@ const Index = (props: IPropsPureForm) => {
 	const { onLoadSync, reference, showSectionDivideLine } = form_props
 	const disabled = type === 'view'
 	const [visible_flat_content, setVisibleFlatContent] = useState(!!reference?.flatContent?.defaultOpen)
+	const global = useGlobal()
+	const { layout } = global
 
 	const toggleFlatContent = useMemoizedFn(() => setVisibleFlatContent(!visible_flat_content))
 
@@ -134,10 +137,15 @@ const Index = (props: IPropsPureForm) => {
 			])}
 			ref={form_container}
 		>
-			<div className='form_title_wrap w_100 border_box flex justify_between align_center relative'>
-				<span className='title no_wrap'>{title}</span>
-				<Actions {...props_actions}></Actions>
-			</div>
+			<If condition={layout != 'Chat' || parent == 'Modal'}>
+				<Then>
+					<div className='form_title_wrap w_100 border_box flex justify_between align_center relative'>
+						<span className='title no_wrap'>{title}</span>
+						<Actions {...props_actions}></Actions>
+					</div>
+				</Then>
+			</If>
+
 			<div className='form_content_container w_100 flex relative'>
 				<If condition={frame?.url && frame?.url != ''}>
 					<Then>

@@ -19,6 +19,9 @@ import type { Component } from '@/types'
 import type { IPropsPureForm } from '@/components/base/PureForm/types'
 import type { IPropsBreadcrumb, IPropsAnchor } from './types'
 import { Bind, Dot } from '@/utils'
+import { useGlobal } from '@/context/app'
+import { IPropsActions } from '../PureForm/types'
+import Actions from '../PureForm/components/Actions'
 
 const Index = (props: Component.FormComponent) => {
 	const { parent, parentNamespace, model, id, form, onBack } = props
@@ -28,6 +31,9 @@ const Index = (props: Component.FormComponent) => {
 	const hooks = useHooks(toJS(x.setting.hooks!), toJS(x.setting.fields), toJS(x.data))
 	const ref_container = useRef<HTMLDivElement>(null)
 	const [is_fullscreen, { toggleFullscreen }] = useFullscreen(ref_container)
+
+	const global = useGlobal()
+	const { layout } = global
 
 	const title = useMemo(() => {
 		if (x.setting?.config?.viewTitle && x.type === 'view') {
@@ -115,8 +121,29 @@ const Index = (props: Component.FormComponent) => {
 	}
 
 	if (parent === 'Page') {
+		// Form actions
+		let form_actions = undefined
+		if (layout == 'Chat' && props_form.parent != 'Modal') {
+			const props_actions: IPropsActions = {
+				namespace: props_form.namespace,
+				primary: props_form.primary,
+				type: props_form.type,
+				id: props_form.id,
+				actions: props_form.actions || [],
+				data: props_form.data,
+				disabledActionsAffix: true
+			}
+			form_actions = <Actions {...props_actions}></Actions>
+		}
+
 		return (
-			<Page className={clsx([styles._local, 'w_100'])} title={title} full={x.setting?.config?.full}>
+			<Page
+				className={clsx([styles._local, 'w_100'])}
+				title={title}
+				full={x.setting?.config?.full}
+				type={'Form'}
+				formActions={form_actions}
+			>
 				<div className='flex relative'>
 					<div className='w_100 flex flex_column'>
 						{!x.setting?.config?.hideBreadcrumb && (

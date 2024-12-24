@@ -13,9 +13,21 @@ import styles from './index.less'
 import type { CSSProperties } from 'react'
 import type { IProps, IPropsLeft } from './types'
 import DevControls from './components/DevControls'
+import { Else, If, Then } from 'react-if'
 
 const Index = (props: IProps) => {
-	const { children, title: page_title, className, style, actions = [], withRows, customAction, full } = props
+	const {
+		children,
+		title: page_title,
+		className,
+		style,
+		actions = [],
+		withRows,
+		customAction,
+		full,
+		type,
+		formActions
+	} = props
 	const global = useGlobal()
 	const { layout } = global
 	const title = page_title ?? usePageTitle(toJS(global.menu), toJS(global.menu_key_path), global.current_nav)
@@ -63,7 +75,16 @@ const Index = (props: IProps) => {
 					<Left {...props_left}></Left>
 					<div className='options_wrap flex align_center'>
 						{customAction}
-						<Actions actions={actions}></Actions>
+
+						<If condition={type != 'Form'}>
+							<Then>
+								<Actions actions={actions}></Actions>
+							</Then>
+							<Else>
+								<div className='w_100 flex justify_end align_center'>{formActions}</div>
+							</Else>
+						</If>
+
 						{layout == 'Admin' && (
 							<DevControls
 								enableXterm={enableXterm}

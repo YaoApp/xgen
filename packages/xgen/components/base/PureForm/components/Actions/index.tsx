@@ -1,7 +1,6 @@
 import { useMemoizedFn } from 'ahooks'
 import { Affix, Button } from 'antd'
 import clsx from 'clsx'
-import { debounce } from 'lodash-es'
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import { When } from 'react-if'
 
@@ -13,10 +12,7 @@ import { Icon } from '@/widgets'
 import styles from './index.less'
 
 import type { IPropsActions } from '../../types'
-import { useGlobal } from '@/context/app'
 const Index = (props: IPropsActions) => {
-	const global = useGlobal()
-	const { layout } = global
 	const { namespace, primary, type, id, actions, data, disabledActionsAffix } = props
 	const [stick, setStick] = useState<boolean | undefined>(false)
 	const [loading, setLoading] = useState('')
@@ -25,7 +21,7 @@ const Index = (props: IPropsActions) => {
 	const onAction = useAction()
 
 	const unLoading = useMemoizedFn(() => setLoading(''))
-	const offsetTop = layout && layout == 'Admin' ? 11 : 65
+	const offsetTop = 11
 
 	useEffect(() => {
 		window.$app.Event.on(`${namespace}/form/actions/done`, unLoading)
