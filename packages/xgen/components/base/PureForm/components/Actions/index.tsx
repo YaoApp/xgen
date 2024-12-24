@@ -13,6 +13,7 @@ import styles from './index.less'
 
 import type { IPropsActions } from '../../types'
 import { useGlobal } from '@/context/app'
+
 const Index = (props: IPropsActions) => {
 	const { namespace, primary, type, id, actions, data, disabledActionsAffix } = props
 	const [stick, setStick] = useState<boolean | undefined>(false)
@@ -31,7 +32,6 @@ const Index = (props: IPropsActions) => {
 
 		return () => {
 			window.$app.Event.off(`${namespace}/form/actions/done`, unLoading)
-
 			unLoading()
 		}
 	}, [namespace])
@@ -82,7 +82,6 @@ const Index = (props: IPropsActions) => {
 								icon={<Icon name={it.icon} size={isChat ? 12 : 15}></Icon>}
 								onClick={() => {
 									setLoading(`${it.title}-${index}`)
-
 									onAction({
 										namespace,
 										primary,

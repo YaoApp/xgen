@@ -43,7 +43,18 @@ const Index = (props: IPropsLeft) => {
 					</Then>
 				</If>
 			</a>
-			<span className='page_title'>{title}</span>
+			<span
+				className='page_title'
+				style={{
+					maxWidth: '200px',
+					overflow: 'hidden',
+					textOverflow: 'ellipsis',
+					whiteSpace: 'nowrap',
+					display: 'block'
+				}}
+			>
+				{title}
+			</span>
 		</div>
 	)
 }
