@@ -8,7 +8,7 @@ import { IPropsNeo } from '@/layouts/types'
 import clsx from 'clsx'
 import Menu from './Menu'
 import Container from './Container/index'
-import NeoPage, { NEO_PAGE_BREAKPOINT, NEO_PAGE_PADDING, NEO_PAGE_TOTAL_PADDING } from '@/layouts/components/Neo/Page'
+import NeoPage, { NEO_PAGE_BREAKPOINT, NEO_PAGE_PADDING } from '@/layouts/components/Neo/Page'
 import './style.less'
 
 const MAIN_CONTENT_MIN_WIDTH = 320
@@ -27,26 +27,26 @@ const getMaximizedWidth = () => {
 // Get responsive width settings based on screen size
 const getResponsiveWidths = () => {
 	const screenWidth = window.innerWidth
-	const halfScreen = Math.floor(screenWidth / 2)
+	const defaultWidth = screenWidth * 0.618
 	const maxAvailableWidth = getMaxWidth()
 
 	if (screenWidth >= 1920) {
 		return {
 			min: 480,
 			max: maxAvailableWidth,
-			default: Math.min(halfScreen, maxAvailableWidth)
+			default: Math.min(defaultWidth, maxAvailableWidth)
 		}
 	} else if (screenWidth >= 1440) {
 		return {
 			min: 400,
 			max: maxAvailableWidth,
-			default: Math.min(halfScreen, maxAvailableWidth)
+			default: Math.min(defaultWidth, maxAvailableWidth)
 		}
 	} else {
 		return {
 			min: 320,
 			max: maxAvailableWidth,
-			default: Math.min(halfScreen, maxAvailableWidth)
+			default: Math.min(defaultWidth, maxAvailableWidth)
 		}
 	}
 }

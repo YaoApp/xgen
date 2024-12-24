@@ -12,10 +12,6 @@ export const NEO_PAGE_BREAKPOINT = 460
 // Applied to both left and right sides when not in small screen mode
 export const NEO_PAGE_PADDING = 32
 
-// Total padding (in pixels) for both sides combined
-// Used in width calculations for responsive behavior
-export const NEO_PAGE_TOTAL_PADDING = NEO_PAGE_PADDING * 2
-
 const Index = (props: IPropsNeo) => {
 	const containerRef = useRef<HTMLDivElement>(null)
 	const [containerWidth, setContainerWidth] = useState<number>(0)
@@ -24,8 +20,8 @@ const Index = (props: IPropsNeo) => {
 		if (!containerRef.current) return
 
 		const resizeObserver = new ResizeObserver((entries) => {
-			const width = entries[0]?.contentRect.width
-			if (width) setContainerWidth(width)
+			const parentWidth = containerRef.current?.parentElement?.clientWidth
+			if (parentWidth) setContainerWidth(parentWidth)
 		})
 
 		resizeObserver.observe(containerRef.current)
@@ -34,7 +30,6 @@ const Index = (props: IPropsNeo) => {
 
 	// Simply check if the content width is below or equal to the breakpoint
 	const isSmallScreen = containerWidth <= NEO_PAGE_BREAKPOINT
-
 	const containerStyle = isSmallScreen
 		? {
 				borderRadius: 0,
