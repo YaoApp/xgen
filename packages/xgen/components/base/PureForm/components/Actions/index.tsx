@@ -12,6 +12,7 @@ import { Icon } from '@/widgets'
 import styles from './index.less'
 
 import type { IPropsActions } from '../../types'
+import { useGlobal } from '@/context/app'
 const Index = (props: IPropsActions) => {
 	const { namespace, primary, type, id, actions, data, disabledActionsAffix } = props
 	const [stick, setStick] = useState<boolean | undefined>(false)
@@ -19,6 +20,8 @@ const Index = (props: IPropsActions) => {
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled()
 	const onAction = useAction()
+	const global = useGlobal()
+	const isChat = global.layout === 'Chat'
 
 	const unLoading = useMemoizedFn(() => setLoading(''))
 	const offsetTop = 11
@@ -43,6 +46,14 @@ const Index = (props: IPropsActions) => {
 		return handle_actions?.filter((item) => !item.hideWhenEdit)
 	}, [actions, data, id, type])
 
+	const buttonStyle = isChat
+		? {
+				fontSize: 13,
+				height: 32,
+				padding: '0 12px'
+		  }
+		: {}
+
 	return (
 		<Affix
 			offsetTop={offsetTop}
@@ -66,7 +77,9 @@ const Index = (props: IPropsActions) => {
 									getDisabled(it.disabled),
 									loading !== '' && 'disabled'
 								])}
-								icon={<Icon name={it.icon} size={15}></Icon>}
+								style={buttonStyle}
+								size={isChat ? 'small' : 'middle'}
+								icon={<Icon name={it.icon} size={isChat ? 12 : 15}></Icon>}
 								onClick={() => {
 									setLoading(`${it.title}-${index}`)
 

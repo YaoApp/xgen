@@ -81,9 +81,7 @@ const Index = (props: IProps) => {
 							<Then>
 								<Actions actions={actions}></Actions>
 							</Then>
-							<Else>
-								<div className='w_100 flex justify_end align_center'>{formActions}</div>
-							</Else>
+							<Else>{formActions}</Else>
 						</If>
 
 						{layout == 'Admin' && (
