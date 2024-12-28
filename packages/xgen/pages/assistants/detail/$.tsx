@@ -6,10 +6,11 @@ import type { Assistant } from '@/layouts/components/Neo/components/AIChat/Card'
 import type { UploadChangeParam } from 'antd/es/upload'
 import type { UploadFile } from 'antd/es/upload/interface'
 import Tag from '@/layouts/components/Neo/components/AIChat/Tag'
-import BasicInfo from './components/BasicInfo'
-import KnowledgeFiles from './components/KnowledgeFiles'
+import General from './components/General'
+import Files from './components/Files'
 import Workflow from './components/Workflow'
-import CodeEditor from './components/CodeEditor'
+import Script from './components/Script'
+import Functions from './components/Functions'
 import styles from './index.less'
 
 const AssistantDetail = () => {
@@ -108,14 +109,14 @@ const AssistantDetail = () => {
 
 	const items = [
 		{
-			key: 'basic',
-			label: 'Basic Info',
-			children: <BasicInfo form={form} />
+			key: 'general',
+			label: 'General',
+			children: <General form={form} />
 		},
 		{
 			key: 'files',
-			label: 'Knowledge Files',
-			children: <KnowledgeFiles files={files} onFilesChange={setFiles} />
+			label: 'Files',
+			children: <Files files={files} onFilesChange={setFiles} />
 		},
 		{
 			key: 'workflow',
@@ -123,9 +124,14 @@ const AssistantDetail = () => {
 			children: <Workflow />
 		},
 		{
-			key: 'code',
-			label: 'Code',
-			children: <CodeEditor code={code} onChange={setCode} />
+			key: 'functions',
+			label: 'Functions',
+			children: <Functions />
+		},
+		{
+			key: 'script',
+			label: 'Script',
+			children: <Script code={code} onChange={setCode} />
 		}
 	]
 

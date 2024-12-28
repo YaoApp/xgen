@@ -1,14 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Editor from 'react-monaco-editor'
-
 import { Item } from '@/components'
 import { useGlobal } from '@/context/app'
 import vars from '@/styles/preset/vars'
-
 import styles from './index.less'
-
 import type { Component } from '@/types'
-
 import yaml from 'js-yaml'
 import type { EditorDidMount, monaco } from 'react-monaco-editor'
 import { message } from 'antd'
@@ -78,6 +74,23 @@ const Custom = window.$app.memo((props: ICustom) => {
 		setValue(props.value)
 	}, [props.value])
 
+	useEffect(() => {
+		const resizeObserver = new ResizeObserver(() => {
+			if (ref.current) {
+				ref.current.layout()
+			}
+		})
+
+		const container = document.querySelector(`.${styles.editor}`)
+		if (container) {
+			resizeObserver.observe(container)
+		}
+
+		return () => {
+			resizeObserver.disconnect()
+		}
+	}, [])
+
 	const onChange = (v: any) => {
 		if (!props.onChange) return
 		props.onChange(v)
@@ -121,30 +134,32 @@ const Custom = window.$app.memo((props: ICustom) => {
 	}
 
 	return (
-		<Editor
-			className={styles._local}
-			width='100%'
-			height={height}
-			language={language}
-			theme={theme}
-			options={{
-				readOnly: props.disabled,
-				wordWrap: 'on',
-				formatOnPaste: true,
-				formatOnType: true,
-				renderLineHighlight: 'none',
-				smoothScrolling: true,
-				padding: { top: 15 },
-				lineNumbersMinChars: 3,
-				minimap: { enabled: false },
-				lineNumbers: props.hideLineNumbers ? 'off' : 'on',
-				scrollbar: { verticalScrollbarSize: 8, horizontalSliderSize: 8, useShadows: false }
-			}}
-			value={value}
-			onChange={onChange}
-			editorDidMount={editorDidMount}
-			editorWillUnmount={editorWillUnmount}
-		></Editor>
+		<div className={styles.editor}>
+			<Editor
+				className={styles._local}
+				width='100%'
+				height={height}
+				language={language}
+				theme={theme}
+				options={{
+					readOnly: props.disabled,
+					wordWrap: 'on',
+					formatOnPaste: true,
+					formatOnType: true,
+					renderLineHighlight: 'none',
+					smoothScrolling: true,
+					padding: { top: 15 },
+					lineNumbersMinChars: 3,
+					minimap: { enabled: false },
+					lineNumbers: props.hideLineNumbers ? 'off' : 'on',
+					scrollbar: { verticalScrollbarSize: 8, horizontalSliderSize: 8, useShadows: false }
+				}}
+				value={value}
+				onChange={onChange}
+				editorDidMount={editorDidMount}
+				editorWillUnmount={editorWillUnmount}
+			/>
+		</div>
 	)
 })
 

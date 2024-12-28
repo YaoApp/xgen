@@ -1,44 +1,38 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import Editor from 'react-monaco-editor'
 import { useGlobal } from '@/context/app'
 import vars from '@/styles/preset/vars'
 import styles from '../index.less'
 
-const defaultWorkflow = {
-	version: '1.0',
-	name: 'Example Workflow',
-	description: 'This is an example workflow configuration',
-	triggers: [],
-	actions: [],
-	conditions: []
+const defaultFunctions = {
+	functions: [
+		{
+			name: 'example_function',
+			description: 'An example function',
+			parameters: {
+				type: 'object',
+				properties: {
+					param1: {
+						type: 'string',
+						description: 'First parameter'
+					},
+					param2: {
+						type: 'number',
+						description: 'Second parameter'
+					}
+				},
+				required: ['param1']
+			}
+		}
+	]
 }
 
-const Workflow = () => {
-	const [value, setValue] = useState(JSON.stringify(defaultWorkflow, null, 2))
+export default function Functions() {
+	const [value, setValue] = useState(JSON.stringify(defaultFunctions, null, 2))
 	const global = useGlobal()
 	const theme = global.theme === 'dark' ? 'x-dark' : 'x-light'
-	const editorRef = useRef<any>(null)
-
-	useEffect(() => {
-		const resizeObserver = new ResizeObserver(() => {
-			if (editorRef.current) {
-				editorRef.current.layout()
-			}
-		})
-
-		const container = document.querySelector(`.${styles.workflow}`)
-		if (container) {
-			resizeObserver.observe(container)
-		}
-
-		return () => {
-			resizeObserver.disconnect()
-		}
-	}, [])
 
 	const editorDidMount = (editor: any, monaco: any) => {
-		editorRef.current = editor
-
 		monaco.editor.defineTheme('x-dark', {
 			base: 'vs-dark',
 			inherit: true,
@@ -61,7 +55,7 @@ const Workflow = () => {
 	}
 
 	return (
-		<div className={styles.workflow}>
+		<div className={styles.functions}>
 			<Editor
 				width='100%'
 				height='100%'
@@ -85,5 +79,3 @@ const Workflow = () => {
 		</div>
 	)
 }
-
-export default Workflow

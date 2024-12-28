@@ -6,11 +6,11 @@ import styles from '../index.less'
 const { TextArea } = Input
 const { Option } = Select
 
-interface BasicInfoProps {
-	form: any
+interface GeneralProps {
+	form: FormInstance
 }
 
-export default function BasicInfo({ form }: { form: FormInstance }) {
+export default function General({ form }: GeneralProps) {
 	return (
 		<Form
 			form={form}

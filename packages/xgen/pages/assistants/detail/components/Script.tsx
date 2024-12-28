@@ -1,17 +1,18 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Editor from 'react-monaco-editor'
 import { useGlobal } from '@/context/app'
 import vars from '@/styles/preset/vars'
 import styles from '../index.less'
 
-interface CodeEditorProps {
+interface ScriptProps {
 	code: string
 	onChange: (code: string) => void
 }
 
-const AssistantCodeEditor: React.FC<CodeEditorProps> = ({ code, onChange }) => {
+const Script: React.FC<ScriptProps> = ({ code, onChange }) => {
 	const [value, setValue] = useState(code)
 	const global = useGlobal()
+	const editorRef = useRef<any>(null)
 
 	const theme = useMemo(() => (global.theme === 'dark' ? 'x-dark' : 'x-light'), [global.theme])
 
@@ -19,12 +20,31 @@ const AssistantCodeEditor: React.FC<CodeEditorProps> = ({ code, onChange }) => {
 		setValue(code)
 	}, [code])
 
+	useEffect(() => {
+		const resizeObserver = new ResizeObserver(() => {
+			if (editorRef.current) {
+				editorRef.current.layout()
+			}
+		})
+
+		const container = document.querySelector(`.${styles.script}`)
+		if (container) {
+			resizeObserver.observe(container)
+		}
+
+		return () => {
+			resizeObserver.disconnect()
+		}
+	}, [])
+
 	const handleChange = (newValue: string) => {
 		setValue(newValue)
 		onChange(newValue)
 	}
 
 	const editorDidMount = (editor: any, monaco: any) => {
+		editorRef.current = editor
+
 		monaco.editor.defineTheme('x-dark', {
 			base: 'vs-dark',
 			inherit: true,
@@ -47,10 +67,10 @@ const AssistantCodeEditor: React.FC<CodeEditorProps> = ({ code, onChange }) => {
 	}
 
 	return (
-		<div className={styles.codeEditor}>
+		<div className={styles.script}>
 			<Editor
 				width='100%'
-				height='calc(100vh - 300px)'
+				height='100%'
 				language='javascript'
 				theme={theme}
 				value={value}
@@ -72,4 +92,4 @@ const AssistantCodeEditor: React.FC<CodeEditorProps> = ({ code, onChange }) => {
 	)
 }
 
-export default AssistantCodeEditor
+export default Script
