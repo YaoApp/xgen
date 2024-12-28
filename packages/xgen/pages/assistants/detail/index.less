@@ -473,3 +473,148 @@
 		}
 	}
 }
+
+.prompts {
+	height: 100%;
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 24px;
+	background: var(--color_bg_menu);
+	border-radius: 12px;
+	display: flex;
+	flex-direction: column;
+
+	.promptsHeader {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 24px;
+		flex-shrink: 0;
+
+		h5 {
+			color: var(--color_text);
+			font-size: 15px;
+			font-weight: 500;
+		}
+
+		:global {
+			.xgen-btn.xgen-btn-primary {
+				height: 32px;
+				min-height: 32px;
+				padding: 0 12px;
+				font-size: 13px;
+				border-radius: 6px;
+				line-height: 1;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				font-weight: 400;
+				box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+				border: 1px solid var(--color_main);
+				background: var(--color_main);
+				color: #fff;
+
+				.anticon {
+					font-size: 13px;
+					margin-right: 3px;
+					position: relative;
+					top: 1px;
+				}
+
+				&:hover {
+					border-color: var(--color_main_hover);
+					background: var(--color_main_hover);
+				}
+			}
+		}
+	}
+
+	.promptsList {
+		flex: 1;
+		overflow-y: auto;
+
+		&::-webkit-scrollbar {
+			width: 6px;
+			height: 6px;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: var(--color_border);
+			border-radius: 3px;
+
+			&:hover {
+				background: var(--color_text_grey);
+			}
+		}
+
+		&::-webkit-scrollbar-track {
+			background: var(--color_border_soft);
+			border-radius: 3px;
+		}
+	}
+
+	.promptItem {
+		position: relative;
+		margin-bottom: 16px;
+		padding: 12px;
+		background: var(--color_bg_nav);
+		border-radius: 8px;
+		transition: background-color 0.2s;
+
+		&.dragging {
+			background: var(--color_border);
+		}
+
+		.promptItemHeader {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 8px;
+		}
+
+		.promptItemLeft {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+
+		.dragHandle {
+			cursor: move;
+			color: var(--color_text_grey);
+			font-size: 16px;
+			display: flex;
+			align-items: center;
+			padding: 4px;
+
+			&:hover {
+				color: var(--color_text);
+			}
+		}
+
+		:global {
+			.xgen-input {
+				background: transparent;
+			}
+
+			.xgen-select {
+				.xgen-select-selector {
+					background: transparent;
+					border-color: var(--color_border);
+				}
+
+				&.xgen-select-focused .xgen-select-selector {
+					border-color: var(--color_main);
+					box-shadow: 0 0 0 2px rgba(var(--r), var(--g), var(--b), 0.1);
+				}
+			}
+		}
+
+		.deleteBtn {
+			color: var(--color_text_grey);
+
+			&:hover {
+				color: var(--color_text);
+			}
+		}
+	}
+}

@@ -11,7 +11,13 @@ import Files from './components/Files'
 import Workflow from './components/Workflow'
 import Script from './components/Script'
 import Functions from './components/Functions'
+import Prompts from './components/Prompts'
 import styles from './index.less'
+
+interface Message {
+	role: 'system' | 'user' | 'assistant' | 'developer'
+	content: string
+}
 
 const AssistantDetail = () => {
 	const params = useParams<{ '*': string }>()
@@ -21,6 +27,7 @@ const AssistantDetail = () => {
 	const [avatarUrl, setAvatarUrl] = useState<string>('')
 	const [files, setFiles] = useState<UploadFile[]>([])
 	const [code, setCode] = useState<string>('')
+	const [prompts, setPrompts] = useState<Message[]>([])
 
 	// Use Form.useWatch to monitor form values
 	const name = Form.useWatch('name', form)
@@ -112,6 +119,11 @@ const AssistantDetail = () => {
 			key: 'general',
 			label: 'General',
 			children: <General form={form} />
+		},
+		{
+			key: 'prompts',
+			label: 'Prompts',
+			children: <Prompts value={prompts} onChange={setPrompts} />
 		},
 		{
 			key: 'files',
