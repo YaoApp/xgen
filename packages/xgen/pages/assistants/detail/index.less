@@ -618,3 +618,62 @@
 		}
 	}
 }
+
+.optionsList {
+	flex: 1;
+	overflow-y: auto;
+
+	&::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: var(--color_border);
+		border-radius: 3px;
+
+		&:hover {
+			background: var(--color_text_grey);
+		}
+	}
+
+	&::-webkit-scrollbar-track {
+		background: var(--color_border_soft);
+		border-radius: 3px;
+	}
+}
+
+.optionItem {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 12px;
+	padding: 12px;
+	background: var(--color_bg_nav);
+	border-radius: 8px;
+
+	.optionInputs {
+		flex: 1;
+		display: flex;
+		gap: 8px;
+
+		.xgen-input {
+			background: transparent;
+		}
+	}
+
+	.deleteBtn {
+		color: var(--color_text_grey);
+
+		&:hover {
+			color: var(--color_text);
+		}
+	}
+}
+
+.promptsSection {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	min-height: 0;
+}

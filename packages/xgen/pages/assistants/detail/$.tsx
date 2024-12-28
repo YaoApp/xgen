@@ -28,6 +28,7 @@ const AssistantDetail = () => {
 	const [files, setFiles] = useState<UploadFile[]>([])
 	const [code, setCode] = useState<string>('')
 	const [prompts, setPrompts] = useState<Message[]>([])
+	const [options, setOptions] = useState<{ key: string; value: string }[]>([])
 
 	// Use Form.useWatch to monitor form values
 	const name = Form.useWatch('name', form)
@@ -123,7 +124,9 @@ const AssistantDetail = () => {
 		{
 			key: 'prompts',
 			label: 'Prompts',
-			children: <Prompts value={prompts} onChange={setPrompts} />
+			children: (
+				<Prompts value={prompts} options={options} onChange={setPrompts} onOptionsChange={setOptions} />
+			)
 		},
 		{
 			key: 'files',
