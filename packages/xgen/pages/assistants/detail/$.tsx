@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useParams, history } from '@umijs/max'
-import { Spin, Form, Input, Select, Radio, Button, Space, message, Avatar, Upload } from 'antd'
-import { ArrowLeftOutlined, PlusOutlined, DeleteOutlined, SaveOutlined, CameraOutlined } from '@ant-design/icons'
+import { Spin, Form, Button, Space, message, Avatar, Upload, Tabs } from 'antd'
+import { ArrowLeftOutlined, SaveOutlined, CameraOutlined } from '@ant-design/icons'
 import type { Assistant } from '@/layouts/components/Neo/components/AIChat/Card'
 import type { UploadChangeParam } from 'antd/es/upload'
+import type { UploadFile } from 'antd/es/upload/interface'
 import Tag from '@/layouts/components/Neo/components/AIChat/Tag'
+import BasicInfo from './components/BasicInfo'
+import KnowledgeFiles from './components/KnowledgeFiles'
+import Workflow from './components/Workflow'
+import CodeEditor from './components/CodeEditor'
 import styles from './index.less'
-
-const { TextArea } = Input
-const { Option } = Select
 
 const AssistantDetail = () => {
 	const params = useParams<{ '*': string }>()
@@ -16,6 +18,8 @@ const AssistantDetail = () => {
 	const [loading, setLoading] = useState(true)
 	const [form] = Form.useForm()
 	const [avatarUrl, setAvatarUrl] = useState<string>('')
+	const [files, setFiles] = useState<UploadFile[]>([])
+	const [code, setCode] = useState<string>('')
 
 	// Use Form.useWatch to monitor form values
 	const name = Form.useWatch('name', form)
@@ -50,6 +54,7 @@ const AssistantDetail = () => {
 				}
 				form.setFieldsValue(data)
 				setAvatarUrl(data.avatar)
+				setCode('// Your assistant code here\n')
 			} catch (error) {
 				message.error('Failed to load assistant data')
 			}
@@ -65,7 +70,6 @@ const AssistantDetail = () => {
 		const { status, response } = info.file
 
 		if (status === 'done') {
-			// 这里使用模拟的响应，实际应该使用后端返回的URL
 			const newAvatarUrl = response?.url || `https://api.dicebear.com/7.x/bottts/svg?seed=${Date.now()}`
 			setAvatarUrl(newAvatarUrl)
 			form.setFieldValue('avatar', newAvatarUrl)
@@ -90,6 +94,10 @@ const AssistantDetail = () => {
 		}
 	}
 
+	const handleSaveCode = () => {
+		message.success('Code saved successfully')
+	}
+
 	if (loading) {
 		return (
 			<div className={styles.loading}>
@@ -97,6 +105,29 @@ const AssistantDetail = () => {
 			</div>
 		)
 	}
+
+	const items = [
+		{
+			key: 'basic',
+			label: 'Basic Info',
+			children: <BasicInfo form={form} />
+		},
+		{
+			key: 'files',
+			label: 'Knowledge Files',
+			children: <KnowledgeFiles files={files} onFilesChange={setFiles} />
+		},
+		{
+			key: 'workflow',
+			label: 'Workflow',
+			children: <Workflow />
+		},
+		{
+			key: 'code',
+			label: 'Code',
+			children: <CodeEditor code={code} onChange={setCode} />
+		}
+	]
 
 	return (
 		<div className={styles.container}>
@@ -143,138 +174,7 @@ const AssistantDetail = () => {
 			</div>
 
 			<div className={styles.content}>
-				<Form
-					form={form}
-					layout='vertical'
-					onFinish={handleSubmit}
-					className={styles.form}
-					requiredMark={false}
-					prefixCls='xgen'
-					labelCol={{ span: 24 }}
-					wrapperCol={{ span: 24 }}
-				>
-					<Form.Item
-						name='name'
-						label='Assistant Name'
-						rules={[{ required: true, message: 'Please input assistant name' }]}
-					>
-						<Input placeholder='Enter a descriptive name' />
-					</Form.Item>
-
-					<Form.Item
-						name='type'
-						label='Assistant Type'
-						rules={[{ required: true, message: 'Please select assistant type' }]}
-					>
-						<Select placeholder='What type of tasks will this assistant handle?'>
-							<Option value='coding'>Coding Assistant</Option>
-							<Option value='writing'>Writing Assistant</Option>
-							<Option value='analysis'>Analysis Assistant</Option>
-						</Select>
-					</Form.Item>
-
-					<Form.Item
-						name='description'
-						label='Description'
-						rules={[{ required: true, message: 'Please input description' }]}
-					>
-						<TextArea
-							autoSize={{ minRows: 4, maxRows: 6 }}
-							placeholder='Describe what this assistant can do and how it can help users...'
-						/>
-					</Form.Item>
-
-					<div className={styles.section}>
-						<h2>Prompts</h2>
-						<p className={styles.sectionDesc}>
-							Define the prompts that guide the assistant's behavior and responses.
-						</p>
-					</div>
-
-					<Form.List name='prompts'>
-						{(fields, { add, remove }) => (
-							<>
-								{fields.map(({ key, name, ...restField }) => (
-									<div key={key} className={styles.promptItem}>
-										<Form.Item
-											{...restField}
-											name={[name, 'role']}
-											label='Role'
-											rules={[
-												{ required: true, message: 'Role is required' }
-											]}
-										>
-											<Select placeholder='Select the role for this prompt'>
-												<Option value='system'>System</Option>
-												<Option value='user'>User</Option>
-												<Option value='assistant'>Assistant</Option>
-											</Select>
-										</Form.Item>
-										<Form.Item
-											{...restField}
-											name={[name, 'content']}
-											label='Content'
-											rules={[
-												{
-													required: true,
-													message: 'Content is required'
-												}
-											]}
-										>
-											<TextArea
-												autoSize={{ minRows: 4, maxRows: 8 }}
-												placeholder='Enter the prompt content...'
-											/>
-										</Form.Item>
-										<Button
-											type='text'
-											icon={<DeleteOutlined />}
-											onClick={() => remove(name)}
-											className={styles.removePrompt}
-										/>
-									</div>
-								))}
-								<Form.Item>
-									<Button
-										type='dashed'
-										onClick={() => add()}
-										icon={<PlusOutlined />}
-										block
-									>
-										Add Prompt
-									</Button>
-								</Form.Item>
-							</>
-						)}
-					</Form.List>
-
-					<Form.Item
-						name='connector'
-						label='AI Connector'
-						rules={[{ required: true, message: 'Please select AI connector' }]}
-					>
-						<Select placeholder='Select the AI connector to power this assistant'>
-							<Option value='OpenAI GPT-4'>OpenAI GPT-4</Option>
-							<Option value='Anthropic Claude'>Anthropic Claude</Option>
-							<Option value='Google Gemini Pro'>Google Gemini Pro</Option>
-						</Select>
-					</Form.Item>
-
-					<div className={styles.radioGroup}>
-						<Form.Item name='automated' label='Automation' className={styles.radioItem}>
-							<Radio.Group>
-								<Radio value={true}>Enable</Radio>
-								<Radio value={false}>Disable</Radio>
-							</Radio.Group>
-						</Form.Item>
-						<Form.Item name='mentionable' label='Mentions' className={styles.radioItem}>
-							<Radio.Group>
-								<Radio value={true}>Allow</Radio>
-								<Radio value={false}>Disallow</Radio>
-							</Radio.Group>
-						</Form.Item>
-					</div>
-				</Form>
+				<Tabs items={items} defaultActiveKey='basic' className={styles.tabs} size='large' type='card' />
 			</div>
 		</div>
 	)
