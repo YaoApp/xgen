@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import { useParams, history } from '@umijs/max'
 import { Spin, Form, Button, Space, message, Avatar, Upload, Tabs } from 'antd'
 import { ArrowLeftOutlined, SaveOutlined, CameraOutlined } from '@ant-design/icons'
-import type { Assistant } from '@/layouts/components/Neo/components/AIChat/Card'
 import type { UploadChangeParam } from 'antd/es/upload'
 import type { UploadFile } from 'antd/es/upload/interface'
+import { App } from '@/types'
+import useAIChat from '@/layouts/components/Neo/hooks/useAIChat'
 import Tag from '@/layouts/components/Neo/components/AIChat/Tag'
 import General from './components/General'
 import Files from './components/Files'
@@ -29,6 +30,7 @@ const AssistantDetail = () => {
 	const [code, setCode] = useState<string>('')
 	const [prompts, setPrompts] = useState<Message[]>([])
 	const [options, setOptions] = useState<{ key: string; value: string }[]>([])
+	const { findAssistant, saveAssistant } = useAIChat({})
 
 	// Use Form.useWatch to monitor form values
 	const name = Form.useWatch('name', form)
@@ -40,30 +42,29 @@ const AssistantDetail = () => {
 		const fetchAssistant = async () => {
 			setLoading(true)
 			try {
-				// Mock data fetch - replace with actual API call
-				await new Promise((resolve) => setTimeout(resolve, 1000))
-				const data = {
-					id: '1',
-					assistant_id: id as string,
-					type: 'coding',
-					name: 'Code Companion',
-					avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${id}`,
-					description: 'Specialized in writing clean, efficient code with best practices.',
-					connector: 'OpenAI GPT-4',
-					readonly: false,
-					automated: true,
-					mentionable: true,
-					created_at: new Date().toISOString(),
-					option: {},
-					prompts: [],
-					flows: [],
-					files: [],
-					functions: [],
-					permissions: []
+				if (!id) {
+					message.error('Invalid assistant ID')
+					history.push('/assistants')
+					return
 				}
+
+				const data = await findAssistant(id)
+				if (!data) {
+					message.error('Assistant not found')
+					history.push('/assistants')
+					return
+				}
+
 				form.setFieldsValue(data)
-				setAvatarUrl(data.avatar)
-				setCode('// Your assistant code here\n')
+				setAvatarUrl(data.avatar || '')
+				setCode(data.option?.code || '// Your assistant code here\n')
+				setPrompts(data.prompts || [])
+				setOptions(
+					Object.entries(data.option || {}).map(([key, value]) => ({
+						key,
+						value: String(value)
+					}))
+				)
 			} catch (error) {
 				message.error('Failed to load assistant data')
 			}
@@ -73,7 +74,7 @@ const AssistantDetail = () => {
 		if (id) {
 			fetchAssistant()
 		}
-	}, [id, form])
+	}, [id, form, findAssistant])
 
 	const handleAvatarChange = async (info: UploadChangeParam) => {
 		const { status, response } = info.file
@@ -92,10 +93,20 @@ const AssistantDetail = () => {
 		history.push('/assistants')
 	}
 
-	const handleSubmit = async (values: Assistant) => {
+	const handleSubmit = async (values: App.Assistant) => {
 		try {
-			// Mock API call - replace with actual API call
-			await new Promise((resolve) => setTimeout(resolve, 1000))
+			// Prepare the assistant data
+			const assistantData = {
+				...values,
+				assistant_id: id,
+				option: {
+					...Object.fromEntries(options.map(({ key, value }) => [key, value])),
+					code
+				},
+				prompts
+			}
+
+			await saveAssistant(assistantData)
 			message.success('Assistant updated successfully')
 			history.push('/assistants')
 		} catch (error) {
@@ -104,7 +115,23 @@ const AssistantDetail = () => {
 	}
 
 	const handleSaveCode = () => {
-		message.success('Code saved successfully')
+		form.validateFields().then(async (values) => {
+			try {
+				const assistantData = {
+					...values,
+					assistant_id: id,
+					option: {
+						...Object.fromEntries(options.map(({ key, value }) => [key, value])),
+						code
+					},
+					prompts
+				}
+				await saveAssistant(assistantData)
+				message.success('Code saved successfully')
+			} catch (error) {
+				message.error('Failed to save code')
+			}
+		})
 	}
 
 	if (loading) {
@@ -146,7 +173,7 @@ const AssistantDetail = () => {
 		{
 			key: 'script',
 			label: 'Script',
-			children: <Script code={code} onChange={setCode} />
+			children: <Script code={code} onChange={setCode} onSave={handleSaveCode} />
 		}
 	]
 

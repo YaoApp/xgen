@@ -1,52 +1,14 @@
 import { FC } from 'react'
 import { Avatar } from 'antd'
+import { App } from '@/types'
 import Tag from './Tag'
 import styles from './Card.less'
 
-export interface Assistant {
-	/** Unique identifier */
-	id: string
-	/** External assistant ID for API reference */
-	assistant_id: string
-	/** Assistant type (coding, writing, analysis) */
-	type: string
-	/** Display name */
-	name: string
-	/** Avatar URL */
-	avatar: string
-	/** Brief description of capabilities */
-	description: string
-	/** AI model connector (OpenAI, Claude, etc.) */
-	connector: string
-	/** Whether the assistant is read-only */
-	readonly: boolean
-	/** Whether the assistant supports automation */
-	automated: boolean
-	/** Whether the assistant can be mentioned in chats */
-	mentionable: boolean
-	/** Creation timestamp */
-	created_at: string
-	/** Assistant options */
-	option?: Record<string, any>
-	/** Assistant prompts */
-	prompts?: any[]
-	/** Assistant flows */
-	flows?: any[]
-	/** Assistant files */
-	files?: any[]
-	/** Assistant functions */
-	functions?: any[]
-	/** Assistant permissions */
-	permissions?: any[]
-	/** Update timestamp */
-	updated_at?: string
-}
-
 interface Props {
 	/** Assistant data */
-	data: Assistant
+	data: App.Assistant
 	/** Click handler for the card */
-	onClick?: (assistant: Assistant) => void
+	onClick?: (assistant: App.Assistant) => void
 }
 
 const Card: FC<Props> = ({ data, onClick }) => {

@@ -829,6 +829,65 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		return res?.data?.result || ''
 	})
 
+	/** Get Assistant List */
+	const getAssistants = useMemoizedFn(async (filter?: App.AssistantFilter) => {
+		if (!neo_api) return { data: [], page: 1, pagesize: 10, total: 0, last_page: 1 }
+
+		const params = new URLSearchParams()
+		params.append('token', getToken())
+
+		// Add filter parameters if provided
+		if (filter) {
+			if (filter.keywords) params.append('keywords', filter.keywords)
+			if (filter.page) params.append('page', filter.page.toString())
+			if (filter.pagesize) params.append('pagesize', filter.pagesize.toString())
+			if (filter.tags) params.append('tags', filter.tags.join(','))
+			if (filter.connector) params.append('connector', filter.connector)
+			if (filter.select) params.append('select', filter.select.join(','))
+			if (filter.mentionable !== undefined) params.append('mentionable', filter.mentionable.toString())
+			if (filter.automated !== undefined) params.append('automated', filter.automated.toString())
+		}
+
+		const endpoint = `${neo_api}/assistants?${params.toString()}`
+		const [err, res] = await to<{ data: App.AssistantResponse }>(axios.get(endpoint))
+		if (err) throw err
+
+		return res?.data || { data: [], page: 1, pagesize: 10, total: 0, last_page: 1 }
+	})
+
+	/** Find Assistant Detail */
+	const findAssistant = useMemoizedFn(async (assistantId: string) => {
+		if (!neo_api) return null
+
+		const endpoint = `${neo_api}/assistants/${assistantId}?token=${encodeURIComponent(getToken())}`
+		const [err, res] = await to<{ data: App.Assistant }>(axios.get(endpoint))
+		if (err) throw err
+
+		return res?.data || null
+	})
+
+	/** Save Assistant */
+	const saveAssistant = useMemoizedFn(async (assistant: Partial<App.Assistant>) => {
+		if (!neo_api) return null
+
+		const endpoint = `${neo_api}/assistants?token=${encodeURIComponent(getToken())}`
+		const [err, res] = await to<{ data: App.Assistant }>(axios.post(endpoint, assistant))
+		if (err) throw err
+
+		return res?.data || null
+	})
+
+	/** Delete Assistant */
+	const deleteAssistant = useMemoizedFn(async (assistantId: string) => {
+		if (!neo_api) return false
+
+		const endpoint = `${neo_api}/assistants/${assistantId}?token=${encodeURIComponent(getToken())}`
+		const [err] = await to(axios.delete(endpoint))
+		if (err) throw err
+
+		return true
+	})
+
 	return {
 		messages,
 		loading,
@@ -856,6 +915,10 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		generateTitle,
 		generatePrompts,
 		titleGenerating,
-		setTitleGenerating
+		setTitleGenerating,
+		getAssistants,
+		findAssistant,
+		saveAssistant,
+		deleteAssistant
 	}
 }

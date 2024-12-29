@@ -39,6 +39,41 @@ export declare namespace App {
 		description: string
 	}
 
+	/** Assistant related types */
+	interface Assistant {
+		assistant_id: string
+		name: string
+		type: string
+		tags?: string[]
+		mentionable?: boolean
+		automated?: boolean
+		avatar?: string
+		connector?: string
+		[key: string]: any
+	}
+
+	interface AssistantFilter {
+		keywords?: string
+		tags?: string[]
+		connector?: string
+		select?: string[]
+		mentionable?: boolean
+		automated?: boolean
+		page?: number
+		pagesize?: number
+	}
+
+	interface AssistantResponse {
+		data: Assistant[]
+		page: number
+		pagesize: number
+		total: number
+		last_page: number
+		pagecnt?: number
+		next?: number
+		prev?: number
+	}
+
 	type ChatAI = {
 		is_neo: boolean
 		text: string

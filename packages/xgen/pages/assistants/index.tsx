@@ -3,7 +3,9 @@ import { Button, Input, Spin, Tabs } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import { history } from '@umijs/max'
 import Icon from '@/widgets/Icon'
-import Card, { Assistant } from '@/layouts/components/Neo/components/AIChat/Card'
+import Card from '@/layouts/components/Neo/components/AIChat/Card'
+import useAIChat from '@/layouts/components/Neo/hooks/useAIChat'
+import { App } from '@/types'
 import styles from './index.less'
 
 const TYPES = [
@@ -13,86 +15,50 @@ const TYPES = [
 	{ key: 'analysis', label: 'Analysis' }
 ]
 
-// Mock data for development
-const mockAssistants: Assistant[] = Array.from({ length: 50 }).map((_, index) => {
-	const types = TYPES.slice(1) // Exclude 'all' from types
-	const type = types[Math.floor(Math.random() * types.length)]
-	const names = [
-		'Code Companion',
-		'Writing Expert',
-		'Data Analyst',
-		'Research Assistant',
-		'SQL Helper',
-		'Math Tutor',
-		'Python Expert',
-		'Document Writer',
-		'Report Generator',
-		'Web Developer'
-	]
-	const descriptions = [
-		'Specialized in writing clean, efficient code with best practices. Proficient in multiple programming languages and frameworks.',
-		'Expert in content creation, editing, and proofreading. Helps with articles, reports, and documentation.',
-		'Skilled in data analysis, visualization, and statistical modeling. Helps interpret complex datasets.',
-		'Assists with research, data collection, and analysis. Provides comprehensive insights and summaries.',
-		'Database expert helping with SQL queries, database design, and optimization strategies.',
-		'Helps with mathematical concepts, problem-solving, and equation analysis.',
-		'Python programming specialist with expertise in various libraries and frameworks.',
-		'Creates well-structured documents, technical specifications, and user guides.',
-		'Generates detailed reports from data, with charts and actionable insights.',
-		'Assists with web development, from frontend design to backend implementation.'
-	]
-
-	return {
-		id: `${index}`,
-		assistant_id: `ast_${Math.random().toString(36).substring(2, 15)}`,
-		type: type.key,
-		name: names[index % names.length],
-		avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${index}`,
-		description: descriptions[index % descriptions.length],
-		connector: ['OpenAI GPT-4', 'Anthropic Claude', 'Google Gemini Pro'][Math.floor(Math.random() * 3)],
-		readonly: Math.random() > 0.7,
-		automated: Math.random() > 0.3,
-		mentionable: true,
-		created_at: new Date(Date.now() - Math.random() * 10000000000).toISOString()
-	}
-})
-
 const Index = () => {
 	const [loading, setLoading] = useState(false)
 	const [search, setSearch] = useState('')
 	const [searchText, setSearchText] = useState('')
 	const [activeType, setActiveType] = useState('all')
 	const [page, setPage] = useState(1)
-	const [data, setData] = useState<Assistant[]>([])
+	const [data, setData] = useState<App.Assistant[]>([])
 	const containerRef = useRef<HTMLDivElement>(null)
 	const [hasMore, setHasMore] = useState(true)
+	const { getAssistants } = useAIChat({})
 
 	// Load data with pagination and filtering
 	const loadData = async (reset = false) => {
 		if (loading || (!hasMore && !reset)) return
 
 		setLoading(true)
-		await new Promise((resolve) => setTimeout(resolve, 1000))
+		try {
+			const newPage = reset ? 1 : page
+			const response = await getAssistants({
+				keywords: searchText,
+				page: newPage,
+				pagesize: 12,
+				tags: activeType !== 'all' ? [activeType] : undefined
+			})
 
-		const newPage = reset ? 1 : page
-		const filtered = mockAssistants.filter((item) => {
-			const matchSearch =
-				!searchText ||
-				item.name.toLowerCase().includes(searchText.toLowerCase()) ||
-				item.description.toLowerCase().includes(searchText.toLowerCase())
-			const matchType = activeType === 'all' || item.type === activeType
-			return matchSearch && matchType
-		})
+			const newData = Array.isArray(response) ? response : response?.data || []
 
-		const pageSize = 12
-		const start = (newPage - 1) * pageSize
-		const end = start + pageSize
-		const newData = filtered.slice(start, end)
+			if (reset) {
+				setData(newData)
+			} else {
+				setData((prevData) => [...prevData, ...newData])
+			}
 
-		setData(reset ? newData : [...data, ...newData])
-		setPage(newPage + 1)
-		setHasMore(end < filtered.length)
-		setLoading(false)
+			setPage(newPage + 1)
+			setHasMore(
+				Array.isArray(response)
+					? newData.length === 12
+					: newData.length > 0 && newPage < (response?.pagecnt || 1)
+			)
+		} catch (error) {
+			console.error('Failed to load assistants:', error)
+		} finally {
+			setLoading(false)
+		}
 	}
 
 	// Handle scroll for infinite loading
@@ -102,7 +68,7 @@ const Index = () => {
 
 		const handleScroll = () => {
 			const { scrollTop, scrollHeight, clientHeight } = container
-			if (scrollHeight - scrollTop - clientHeight < 50) {
+			if (scrollHeight - scrollTop - clientHeight < 50 && !loading && hasMore) {
 				loadData()
 			}
 		}
@@ -113,6 +79,9 @@ const Index = () => {
 
 	// Initial load and reload on filter change
 	useEffect(() => {
+		setData([])
+		setPage(1)
+		setHasMore(true)
 		loadData(true)
 	}, [searchText, activeType])
 
@@ -126,7 +95,7 @@ const Index = () => {
 		}
 	}
 
-	const handleCardClick = (assistant: Assistant) => {
+	const handleCardClick = (assistant: App.Assistant) => {
 		history.push(`/assistants/detail/${assistant.assistant_id}`)
 	}
 
@@ -166,23 +135,55 @@ const Index = () => {
 			</div>
 
 			<div className={styles.content} ref={containerRef}>
-				<div className={styles.grid}>
-					{data.map((item) => (
-						<div key={item.id} className={styles.gridItem}>
-							<Card data={item} onClick={handleCardClick} />
-						</div>
-					))}
-				</div>
-
-				{loading && (
+				{loading && data.length === 0 ? (
 					<div className={styles.loading}>
-						<Spin />
+						<Spin size='large' />
 					</div>
+				) : (
+					<>
+						{data.length > 0 && (
+							<div className={styles.grid}>
+								{data.map((item) => (
+									<div key={item.assistant_id} className={styles.gridItem}>
+										<Card
+											data={{
+												...item,
+												id: item.assistant_id,
+												description: item.description || '',
+												avatar:
+													item.avatar ||
+													`https://api.dicebear.com/7.x/bottts/svg?seed=${item.assistant_id}`,
+												created_at:
+													item.created_at ||
+													new Date().toISOString(),
+												readonly: item.readonly || false,
+												automated: item.automated || false,
+												mentionable: item.mentionable || false,
+												connector: item.connector || 'Unknown',
+												type: item.type || 'assistant'
+											}}
+											onClick={handleCardClick}
+										/>
+									</div>
+								))}
+							</div>
+						)}
+
+						{loading && data.length > 0 && (
+							<div className={styles.loading}>
+								<Spin />
+							</div>
+						)}
+
+						{!loading && !hasMore && data.length > 0 && (
+							<div className={styles.noMore}>No more data</div>
+						)}
+
+						{!loading && data.length === 0 && (
+							<div className={styles.empty}>No results found</div>
+						)}
+					</>
 				)}
-
-				{!loading && !hasMore && data.length > 0 && <div className={styles.noMore}>No more data</div>}
-
-				{!loading && data.length === 0 && <div className={styles.empty}>No results found</div>}
 			</div>
 		</div>
 	)

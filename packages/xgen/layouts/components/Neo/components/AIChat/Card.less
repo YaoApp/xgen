@@ -1,71 +1,63 @@
 .card {
 	background: var(--color_bg_menu);
-	border: 1px solid var(--color_border_soft);
 	border-radius: 12px;
 	padding: 16px;
 	cursor: pointer;
-	transition: all 0.3s ease;
+	transition: all 0.2s;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
 
 	&:hover {
 		transform: translateY(-2px);
-		box-shadow: var(--shadow);
-		border-color: rgba(var(--r), var(--g), var(--b), 0.2);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 	}
 
 	.header {
 		display: flex;
 		gap: 12px;
-		align-items: flex-start;
+		margin-bottom: 12px;
+	}
 
-		.info {
-			flex: 1;
-			min-width: 0;
+	.info {
+		flex: 1;
+		min-width: 0;
+	}
 
-			.name {
-				font-size: 16px;
-				font-weight: 500;
-				color: var(--color_text);
-				margin-bottom: 8px;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
+	.name {
+		font-size: 16px;
+		font-weight: 500;
+		color: var(--color_text);
+		margin-bottom: 8px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 
-			.type {
-				display: flex;
-				gap: 8px;
-				flex-wrap: wrap;
-
-				:global(.ant-tag) {
-					margin: 0;
-					border-radius: 12px;
-					padding: 0 10px;
-				}
-			}
-		}
+	.type {
+		display: flex;
+		gap: 8px;
+		flex-wrap: wrap;
 	}
 
 	.description {
-		color: var(--color_text_light);
-		font-size: 14px;
-		line-height: 1.5;
 		flex: 1;
+		font-size: 14px;
+		color: var(--color_text_grey);
+		margin-bottom: 16px;
 		display: -webkit-box;
-		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
 		overflow: hidden;
+		line-height: 1.5;
 	}
 
 	.footer {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		color: var(--color_text_grey);
 		font-size: 12px;
+		color: var(--color_text_grey);
 
 		.date {
 			color: var(--color_text_grey);
@@ -73,6 +65,7 @@
 
 		.connector {
 			color: var(--color_main);
+			font-weight: 500;
 		}
 	}
 }
