@@ -112,6 +112,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 	const [title, setTitle] = useState<string>('')
 	const [loading, setLoading] = useState(false)
 	const [attachments, setAttachments] = useState<App.ChatAttachment[]>([])
+	const [pendingCleanup, setPendingCleanup] = useState<App.ChatAttachment[]>([])
 	const uploadControllers = useRef<Map<string, AbortController>>(new Map())
 	const global = useGlobal()
 
@@ -222,6 +223,25 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 			})
 		}
 
+		// Clean up attachments after preparing content
+		const cleanupAttachments = () => {
+			setAttachments((prevAttachments) => {
+				// Clean up URL objects for non-pinned attachments
+				prevAttachments.forEach((attachment) => {
+					if (!attachment.pinned && attachment.thumbUrl) {
+						URL.revokeObjectURL(attachment.thumbUrl)
+					}
+				})
+
+				// Keep only pinned attachments
+				return prevAttachments.filter((attachment) => attachment.pinned)
+			})
+			setPendingCleanup([])
+		}
+
+		// Clean up attachments after content is prepared
+		cleanupAttachments()
+
 		const contentRaw = encodeURIComponent(JSON.stringify(content))
 		const contextRaw = encodeURIComponent(JSON.stringify(message.context))
 		const token = getToken()
@@ -254,7 +274,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					errorMessage = 'Connection failed: Please check your network connection'
 				}
 
-				setMessages((prevMessages) => [
+				setMessages((prevMessages: Array<App.ChatInfo>) => [
 					...prevMessages,
 					{
 						text: errorMessage,
@@ -264,7 +284,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				])
 			} catch (statusError) {
 				// If status check fails, show generic error
-				setMessages((prevMessages) => [
+				setMessages((prevMessages: Array<App.ChatInfo>) => [
 					...prevMessages,
 					{
 						text: 'Service unavailable, please try again later',
@@ -275,23 +295,6 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 			}
 			setLoading(false)
 		}
-
-		const cleanupAttachments = () => {
-			// Only cleanup non-pinned attachments
-			attachments.forEach((attachment) => {
-				if (!attachment.pinned && attachment.thumbUrl) {
-					URL.revokeObjectURL(attachment.thumbUrl)
-				}
-			})
-			// Keep pinned attachments, remove others
-			setAttachments(attachments.filter((att) => att.pinned))
-		}
-
-		// Directly try to establish EventSource connection
-		setupEventSource()
-
-		// Clean up attachments after request
-		cleanupAttachments()
 
 		function setupEventSource() {
 			// Close existing connection if any
@@ -326,6 +329,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					current_answer.actions = actions
 					setMessages([...messages])
 					setLoading(false)
+
 					es.close()
 					return
 				}
@@ -348,6 +352,9 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				es.close()
 			}
 		}
+
+		// Directly try to establish EventSource connection
+		setupEventSource()
 	})
 
 	/** Cancel the AI Chat **/
@@ -919,6 +926,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		getAssistants,
 		findAssistant,
 		saveAssistant,
-		deleteAssistant
+		deleteAssistant,
+		setPendingCleanup
 	}
 }

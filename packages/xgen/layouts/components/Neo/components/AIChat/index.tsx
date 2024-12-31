@@ -67,7 +67,8 @@ const AIChat = (props: AIChatProps) => {
 		formatFileName,
 		setAttachments,
 		getChat,
-		generatePrompts
+		generatePrompts,
+		setPendingCleanup
 	} = useAIChat({ chat_id, upload_options })
 	const [chat_context, setChatContext] = useState<App.ChatContext>({ placeholder: '', signal: '' })
 
@@ -130,33 +131,35 @@ const AIChat = (props: AIChatProps) => {
 			setInputValue('')
 			clearRef.current?.()
 
-			// 获取固定的附件
+			// Create a copy of current attachments
+			const currentAttachments = [...attachments]
+			// Get pinned attachments for later cleanup
 			const pinnedAttachments = attachments.filter((att) => att.pinned)
 
-			// Then send message with all current attachments
-			onSend?.(message, attachments)
-			setMessages([
-				...messages,
-				{
-					is_neo: false,
-					text: message,
-					attachments: attachments,
-					context: {
-						namespace: context.namespace,
-						stack: stack || '',
-						pathname,
-						formdata: context.data_item,
-						field: { name: field.name, bind: field.bind },
-						config: field.config,
-						signal: chat_context.signal,
-						chat_id: chat_id,
-						assistant_id: assistant_id
-					}
+			// Create new message
+			const newMessage = {
+				is_neo: false,
+				text: message,
+				attachments: currentAttachments,
+				context: {
+					namespace: context.namespace,
+					stack: stack || '',
+					pathname,
+					formdata: context.data_item,
+					field: { name: field.name, bind: field.bind },
+					config: field.config,
+					signal: chat_context.signal,
+					chat_id: chat_id,
+					assistant_id: assistant_id
 				}
-			])
+			}
 
-			// 在发送后设置附件为固定的附件
-			setAttachments(pinnedAttachments)
+			// Set pending cleanup for after message processing
+			setPendingCleanup(pinnedAttachments)
+
+			// Update messages to trigger getData
+			setMessages([...messages, newMessage])
+			onSend?.(message, currentAttachments)
 		}
 	}
 
