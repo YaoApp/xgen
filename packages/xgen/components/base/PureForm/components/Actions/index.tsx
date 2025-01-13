@@ -1,7 +1,6 @@
 import { useMemoizedFn } from 'ahooks'
 import { Affix, Button } from 'antd'
 import clsx from 'clsx'
-import { debounce } from 'lodash-es'
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import { When } from 'react-if'
 
@@ -13,6 +12,8 @@ import { Icon } from '@/widgets'
 import styles from './index.less'
 
 import type { IPropsActions } from '../../types'
+import { useGlobal } from '@/context/app'
+
 const Index = (props: IPropsActions) => {
 	const { namespace, primary, type, id, actions, data, disabledActionsAffix } = props
 	const [stick, setStick] = useState<boolean | undefined>(false)
@@ -20,15 +21,17 @@ const Index = (props: IPropsActions) => {
 	const getStyle = useActionStyle()
 	const getDisabled = useActionDisabled()
 	const onAction = useAction()
+	const global = useGlobal()
+	const isChat = global.layout === 'Chat'
 
 	const unLoading = useMemoizedFn(() => setLoading(''))
+	const offsetTop = 11
 
 	useEffect(() => {
 		window.$app.Event.on(`${namespace}/form/actions/done`, unLoading)
 
 		return () => {
 			window.$app.Event.off(`${namespace}/form/actions/done`, unLoading)
-
 			unLoading()
 		}
 	}, [namespace])
@@ -37,14 +40,26 @@ const Index = (props: IPropsActions) => {
 		const when_add = id === 0
 		const when_view = type === 'view'
 		const handle_actions = getTemplateValue(actions!, data || {})
-		if (when_add) return handle_actions.filter((item) => item.showWhenAdd)
-		if (when_view) return handle_actions.filter((item) => item.showWhenView)
+		if (when_add) return handle_actions?.filter((item) => item.showWhenAdd)
+		if (when_view) return handle_actions?.filter((item) => item.showWhenView)
 
 		return handle_actions?.filter((item) => !item.hideWhenEdit)
 	}, [actions, data, id, type])
 
+	const buttonStyle = isChat
+		? {
+				fontSize: 13,
+				height: 32,
+				padding: '0 12px'
+		  }
+		: {}
+
 	return (
-		<Affix offsetTop={11} style={{ zIndex: disabledActionsAffix ? 0 : 101 }} onChange={(v) => setStick(v)}>
+		<Affix
+			offsetTop={offsetTop}
+			style={{ zIndex: disabledActionsAffix ? 0 : 101 }}
+			onChange={(v) => setStick(v)}
+		>
 			<div
 				className={clsx([
 					styles._local,
@@ -62,10 +77,11 @@ const Index = (props: IPropsActions) => {
 									getDisabled(it.disabled),
 									loading !== '' && 'disabled'
 								])}
-								icon={<Icon name={it.icon} size={15}></Icon>}
+								style={buttonStyle}
+								size={isChat ? 'small' : 'middle'}
+								icon={<Icon name={it.icon} size={isChat ? 12 : 15}></Icon>}
 								onClick={() => {
 									setLoading(`${it.title}-${index}`)
-
 									onAction({
 										namespace,
 										primary,

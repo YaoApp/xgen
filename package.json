@@ -26,5 +26,9 @@
             "prettier": "^2.8.1",
             "turbo": "^1.7.2",
             "yorkie": "^2.0.0"
+      },
+      "dependencies": {
+            "@types/react-beautiful-dnd": "^13.1.8",
+            "react-beautiful-dnd": "^13.1.1"
       }
 }

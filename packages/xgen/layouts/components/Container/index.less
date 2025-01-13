@@ -7,8 +7,19 @@
 		width: calc(100vw - 80px);
 	}
 
+	&.no_nav {
+		margin-left: 0;
+		width: 100vw;
+	}
+
 	&.iframe {
 		padding-bottom: 0;
+	}
+
+	&.with_sidebar {
+		&.animating {
+			transition: padding-right 0.3s ease;
+		}
 	}
 }
 
@@ -21,7 +32,48 @@
 		width: calc(100vw - 92px);
 	}
 
+	&.no_nav {
+		margin-left: 0;
+		width: 100vw;
+	}
+
 	&.iframe {
 		padding-bottom: 0;
+	}
+
+	&.with_sidebar {
+		&.animating {
+			transition: padding-right 0.3s ease;
+		}
+	}
+}
+
+.right_sidebar {
+	position: fixed;
+	top: 0;
+	right: 0;
+	height: 100%;
+	background: var(--color-bg);
+	border-left: 1px solid var(--color_border);
+
+	&.animating {
+		transition: transform 0.3s ease;
+	}
+
+	&.hidden {
+		transform: translateX(100%);
+	}
+
+	.resize_handle {
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 5px;
+		cursor: col-resize;
+
+		&:hover {
+			background-color: var(--color_border_soft);
+		}
 	}
 }

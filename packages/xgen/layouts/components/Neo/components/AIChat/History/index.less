@@ -1,0 +1,239 @@
+.history {
+	display: none;
+	position: fixed;
+	background: var(--color_bg_menu);
+	border-radius: 8px;
+	box-shadow: var(--shadow);
+	width: 300px;
+	height: 400px;
+	z-index: 1050;
+	flex-direction: column;
+
+	&.visible {
+		display: flex;
+	}
+
+	.header {
+		display: flex;
+		align-items: center;
+		padding: 12px;
+		border-bottom: 1px solid var(--color_border_light);
+
+		.search {
+			flex: 1;
+			margin-right: 0;
+
+			:global {
+				.xgen-input {
+					height: var(--base_height) !important;
+					line-height: calc(var(--base_height) - 2px) !important;
+					border: 1px solid var(--color_border) !important;
+					border-radius: var(--radius) !important;
+					padding: 4px 11px !important;
+					transition: all 0.3s !important;
+
+					&:hover,
+					&:focus {
+						border-color: var(--color_main) !important;
+					}
+				}
+			}
+		}
+	}
+
+	.list {
+		flex: 1;
+		overflow-y: auto;
+		padding: 8px;
+		min-height: 0;
+
+		&::-webkit-scrollbar {
+			width: 6px;
+			height: 6px;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: var(--color_border);
+			border-radius: 3px;
+
+			&:hover {
+				background: var(--color_text_grey);
+			}
+		}
+
+		&::-webkit-scrollbar-track {
+			background: var(--color_border_soft);
+			border-radius: 3px;
+		}
+	}
+
+	.group {
+		margin-bottom: 4px;
+
+		.groupLabel {
+			font-size: 11px;
+			color: var(--color_text_grey);
+			margin-bottom: 2px;
+			padding: 0 4px;
+		}
+	}
+
+	.chatItem {
+		padding: 0px 6px;
+		border-radius: 6px;
+		cursor: pointer;
+		transition: background-color 0.3s;
+		display: flex;
+		align-items: center;
+		font-size: 13px;
+		height: 32px;
+
+		&:hover {
+			background-color: var(--color_border_soft);
+
+			.actions {
+				opacity: 1;
+			}
+		}
+
+		.titleText {
+			flex: 1;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			margin-right: 4px;
+			font-size: 13px;
+			color: var(--color_text);
+		}
+	}
+
+	.loadingMore {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 4px;
+		color: var(--color_text_grey);
+		font-size: 13px;
+
+		.spinner {
+			margin-right: 8px;
+			animation: spin 1s linear infinite;
+		}
+	}
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.editWrapper {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	width: 100%;
+
+	.ant-input {
+		flex: 1;
+		border: none !important;
+		padding: 0;
+		background: transparent;
+		color: var(--color_text);
+
+		&:focus {
+			box-shadow: none;
+		}
+	}
+
+	.editActions {
+		display: flex;
+		gap: 2px;
+		margin-left: auto;
+
+		button {
+			padding: 0;
+			width: 24px;
+			height: 24px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: var(--color_text_grey);
+			transition: all 0.2s ease;
+			background: transparent !important;
+
+			&:hover {
+				color: var(--color_main);
+			}
+
+			svg {
+				font-size: 14px;
+				transition: all 0.2s ease;
+			}
+		}
+	}
+}
+
+.titleText {
+	flex: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.actions {
+	display: flex;
+	gap: 2px;
+	opacity: 0;
+	transition: opacity 0.2s;
+	margin-left: auto;
+
+	.actionBtn {
+		padding: 0;
+		width: 24px;
+		height: 24px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--color_text_grey);
+		transition: all 0.2s ease;
+		background: transparent !important;
+
+		&:hover {
+			color: var(--color_main);
+			transform: scale(1.1);
+		}
+
+		svg {
+			font-size: 14px;
+			transition: all 0.2s ease;
+		}
+	}
+}
+
+.empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 32px 0;
+	color: var(--color_text_grey);
+
+	:global(.ant-empty) {
+		margin-bottom: 16px;
+	}
+
+	.emptyButton {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+
+		i {
+			margin-right: 4px;
+		}
+	}
+}

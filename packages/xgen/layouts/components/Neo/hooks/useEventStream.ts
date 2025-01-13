@@ -41,21 +41,21 @@ export default ({ api, studio }: Args) => {
 		if (err) return
 
 		if (res.command) setCmd(res.command)
-            if (!res?.data) return
-            
+		if (!res?.data) return
+
 		setMessages(res.data.map(({ role, content }) => ({ is_neo: role === 'assistant', text: content })))
 	}, [neo_api, studio_token])
 
 	useAsyncEffect(async () => {
 		if (!neo_api) return
 
-		const [err, res] = await to<Array<App.ChatCommand>>(
-			axios.get(`${neo_api}/commands?token=${encodeURIComponent(getToken())}${studio_token}`)
-		)
+		// const [err, res] = await to<Array<App.ChatCommand>>(
+		// 	axios.get(`${neo_api}/commands?token=${encodeURIComponent(getToken())}${studio_token}`)
+		// )
 
-		if (err) return
+		// if (err) return
 
-		setCommands(res)
+		setCommands([])
 	}, [neo_api, studio_token])
 
 	const getData = useMemoizedFn((message: App.ChatHuman) => {

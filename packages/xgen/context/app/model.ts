@@ -3,24 +3,23 @@ import { makeAutoObservable, reaction, toJS } from 'mobx'
 import { genConfig } from 'react-nice-avatar'
 import { singleton } from 'tsyringe'
 
-import { sleep } from '@/knife'
 import { Stack } from '@/models'
 import Service from '@/services/app'
 import { getCurrentMenuIndexs } from '@/utils'
 import { local } from '@yaoapp/storex'
 
 import type { AvatarFullConfig } from 'react-nice-avatar'
-
 import type { App, LocaleMessages } from '@/types'
 
 @singleton()
 export default class GlobalModel {
+	layout: App.Layout = 'Admin'
 	theme: App.Theme = 'light'
 	avatar = {} as AvatarFullConfig
 	locale_messages = {} as LocaleMessages
 	app_info = {} as App.Info
 	user = (local.user || {}) as App.User
-	menus = (local.menus || { items: [], setting: {} }) as App.Menus
+	menus = (local.menus || { items: [], setting: {}, quick: [] }) as App.Menus
 	menu = (local.menu || []) as Array<App.Menu>
 
 	in_setting = (local.in_setting || false) as boolean
@@ -29,7 +28,10 @@ export default class GlobalModel {
 	menu_selected_keys: Array<string> = (local.menu_key_path || []) as Array<string>
 	loading: boolean = false
 	visible_menu: boolean = true
+	hide_nav: boolean = false
 
+	// Global Neo Context
+	neo: App.Neo = { assistant_id: undefined, chat_id: undefined }
 	dataCache: Record<string, any> = {}
 
 	constructor(private service: Service, public stack: Stack) {
@@ -37,11 +39,14 @@ export default class GlobalModel {
 
 		const theme = (local.xgen_theme || 'light') as App.Theme
 		const avatar = local.avatar as AvatarFullConfig
+		const layout = (local.xgen_layout || 'Admin') as App.Layout
 
 		this.reactions()
 		this.getAppInfo()
 		this.setTheme(theme)
 		this.setAvatar(avatar)
+		this.setLayout(layout)
+		this.setNeo()
 	}
 
 	async getAppInfo() {
@@ -60,7 +65,6 @@ export default class GlobalModel {
 	}
 
 	async getUserMenu() {
-		console.log('getUserMenu')
 		const { res, err } = await this.service.getUserMenu<App.Menus>()
 		if (err) return Promise.reject()
 		this.setMenus(res)
@@ -80,6 +84,40 @@ export default class GlobalModel {
 				idxkey++
 				if (item.children) setKeys(item.children, item.key, in_setting)
 			})
+		}
+
+		// Default quick menu
+		if (!menus.quick || menus.quick.length === 0) {
+			menus.quick = [
+				{
+					id: 0,
+					key: '/chat',
+					name: 'Chat with Assistant',
+					path: '/chat',
+					icon: 'material-sms'
+				},
+				{
+					id: 1,
+					key: '/assistants',
+					name: 'AI Assistants',
+					path: '/assistants',
+					icon: 'material-robot_2'
+				},
+				{
+					id: 2,
+					key: 'open:sidebar',
+					name: 'Open Dashboard',
+					icon: 'material-thumbnail_bar',
+					path: 'open:sidebar'
+				},
+				{
+					id: 3,
+					key: '/setting',
+					name: 'Settings',
+					path: '/setting',
+					icon: 'material-settings'
+				}
+			]
 		}
 
 		setKeys(menus.items, '', in_setting || false)
@@ -121,6 +159,27 @@ export default class GlobalModel {
 				primaryColor: theme === 'light' ? '#3371fc' : '#4580ff'
 			}
 		})
+	}
+
+	setLayout(layout: App.Layout) {
+		this.layout = layout
+		local.xgen_layout = layout
+	}
+
+	setNeo(neo?: App.Neo | null) {
+		if (neo) {
+			this.neo = neo
+			return
+		}
+		this.neo = { assistant_id: undefined, chat_id: undefined }
+	}
+
+	setNeoChatId(chat_id: string) {
+		this.neo.chat_id = chat_id
+	}
+
+	setNeoAssistantId(assistant_id: string) {
+		this.neo.assistant_id = assistant_id
 	}
 
 	updateMenuStatus(itemkey_or_pathname: string) {

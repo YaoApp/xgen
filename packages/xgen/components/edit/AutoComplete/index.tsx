@@ -56,26 +56,34 @@ const Custom = window.$app.memo((props: ICustom) => {
 		setOptions(parseOptions(props.options))
 	}, [props.options])
 
+	const fetchOptions = (keywords?: string) => {
+		if (!xProps?.remote) return
+
+		const api = xProps.remote.api
+		const params = { ...xProps.remote.params }
+		if (keywords && keywords.length != 0) params['keywords'] = keywords
+		axios.get<any, AutoCompleteProps['options']>(api, { params })
+			.then((res) => {
+				setOptions(parseOptions(res))
+			})
+			.catch((err) => {
+				console.error('[AutoComplete] remote search error', err)
+			})
+	}
+
 	const onChange: AutoCompleteProps['onChange'] = (v) => {
 		// Trigger remote search
-		if (xProps?.remote) {
-			const api = xProps.remote.api
-			const params = { ...xProps.remote.params, ['keywords']: v }
-			axios.get<any, AutoCompleteProps['options']>(api, { params })
-				.then((res) => {
-					setOptions(parseOptions(res))
-				})
-				.catch((err) => {
-					console.error('[AutoComplete] remote search error', err)
-				})
-		}
+		fetchOptions(v)
 
 		if (!props.onChange) return
 
 		// @ts-ignore
 		props.onChange(v)
-
 		setValue(v)
+	}
+
+	const onFocus = () => {
+		fetchOptions()
 	}
 
 	return (
@@ -92,6 +100,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 			{...rest_props}
 			options={options}
 			onChange={onChange}
+			onFocus={onFocus}
 			showSearch={true}
 		></AutoComplete>
 	)

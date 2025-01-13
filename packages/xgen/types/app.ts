@@ -1,7 +1,31 @@
 import type { Action, Common } from '@/types'
 
 export declare namespace App {
+	/**
+	 * Layout type 布局类型
+	 * - Chat: AI Chat Interface (AI 对话界面)
+	 *   Button text: "Chat" / "对话"
+	 * - Admin: Admin Dashboard (管理后台)
+	 *   Button text: "Admin" / "后台"
+	 */
+	type Layout = 'Chat' | 'Admin'
+
 	type Theme = 'light' | 'dark'
+
+	/** Global Neo Context */
+	type Neo = { assistant_id?: string; chat_id?: string }
+
+	type ChatMessageType =
+		| 'text'
+		| 'image'
+		| 'audio'
+		| 'video'
+		| 'file'
+		| 'link'
+		| 'error'
+		| 'progress'
+		| 'page'
+		| 'widget'
 
 	type ChatCmd = {
 		id: string
@@ -15,18 +39,53 @@ export declare namespace App {
 		description: string
 	}
 
+	/** Assistant related types */
+	interface Assistant {
+		assistant_id: string
+		name: string
+		type: string
+		tags?: string[]
+		mentionable?: boolean
+		automated?: boolean
+		avatar?: string
+		connector?: string
+		[key: string]: any
+	}
+
+	interface AssistantFilter {
+		keywords?: string
+		tags?: string[]
+		connector?: string
+		select?: string[]
+		mentionable?: boolean
+		automated?: boolean
+		page?: number
+		pagesize?: number
+	}
+
+	interface AssistantResponse {
+		data: Assistant[]
+		page: number
+		pagesize: number
+		total: number
+		last_page: number
+		pagecnt?: number
+		next?: number
+		prev?: number
+	}
+
 	type ChatAI = {
 		is_neo: boolean
 		text: string
+		type?: ChatMessageType
 		done: boolean
-		confirm?: boolean
 		actions?: Array<Action.ActionParams>
-		command?: ChatCmd
 	}
 
 	type ChatHuman = {
 		is_neo: boolean
 		text: string
+		attachments?: ChatAttachment[]
 		context?: {
 			namespace: string
 			stack: string
@@ -35,10 +94,22 @@ export declare namespace App {
 			field?: Omit<Field, 'config'>
 			config?: Common.FieldDetail
 			signal?: ChatContext['signal']
+			chat_id?: string
+			assistant_id?: string
 		}
 	}
 
 	type ChatInfo = ChatHuman | ChatAI
+
+	/** Chat detail with history */
+	interface ChatDetail {
+		chat: Record<string, any>
+		history: Array<{
+			role: string
+			content: string
+			[key: string]: any
+		}>
+	}
 
 	type ChatHistory = {
 		command?: ChatCmd
@@ -121,13 +192,59 @@ export declare namespace App {
 			/** way of token storage */
 			storage: 'sessionStorage' | 'localStorage'
 		}
+
+		/** Application mode */
+		mode?: 'development' | 'production' | 'test'
+
 		optional?: {
 			/** remote api cache, default is true */
 			remoteCache?: boolean
 			/** neo config, for chatgpt service */
-			neo?: { api: string; studio?: boolean }
+			neo?: {
+				/** Neo stream API endpoint */
+				api: string
+
+				/**
+				 * Dock position
+				 * Options:
+				 * - `right-bottom`: Floats at the bottom-right corner.（default）
+				 * - `right-top`: Sticks to the top-right corner, clicking the button opens the chat window on the right side.
+				 * - `right`: Docked to the right side.
+				 */
+				dock?: 'right-bottom' | 'right-top' | 'right'
+
+				studio?: boolean // Will be deprecated
+
+				// AI Chatbot Name
+				name?: string
+			}
+
 			/** menu config, default is { layout:"2-columns", hide:false, showName:false }  */
 			menu?: { layout: '1-column' | '2-columns'; hide?: boolean; showName?: boolean }
+
+			/**
+			 * Developer-specific controls.
+			 */
+			devControls?: {
+				/**
+				 * Determines whether to show xterm links.
+				 * Default: `false`. Takes effect only in development mode.
+				 */
+				enableXterm?: boolean
+
+				/**
+				 * Enables the "Edit with AI" button.
+				 * Default: `false`. Takes effect only in development mode.
+				 */
+				enableAIEdit?: boolean
+
+				/**
+				 * ?? Planning, not implemented yet
+				 * Enables the "View Source Code" button.
+				 * Default: `false`. Takes effect only in development mode.
+				 */
+				enableViewSourceCode?: boolean
+			}
 		}
 	}
 
@@ -151,7 +268,39 @@ export declare namespace App {
 	}
 
 	interface Menus {
-		items: Array<App.Menu>
-		setting: Array<App.Menu>
+		items: Array<App.Menu> // Main menu
+		setting: Array<App.Menu> // Setting menu
+		quick: Array<App.Menu> // Quick menu
+	}
+
+	interface ChatAttachment {
+		name: string
+		type: string
+		url?: string
+		status?: 'uploading' | 'done' | 'error'
+		file_id?: string
+		bytes?: number
+		created_at?: number
+		filename?: string
+		content_type?: string
+		chat_id?: string
+		assistant_id?: string
+		thumbUrl?: string
+		blob?: Blob
+		pinned?: boolean
+	}
+
+	/** Options for creating a new chat */
+	interface NewChatOptions {
+		content?: string
+		attachments?: ChatAttachment[]
+	}
+
+	// Add Mention interface near the top with other basic types
+	interface Mention {
+		id: string
+		name: string
+		avatar?: string
+		type?: string
 	}
 }

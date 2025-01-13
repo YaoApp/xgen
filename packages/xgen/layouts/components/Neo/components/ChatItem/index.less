@@ -1,56 +1,156 @@
-._local {
-	margin-top: 18px;
+// Base message container styles
+.content {
+	display: flex;
+	gap: 8px;
+	width: auto;
+	max-width: 100%;
 
-	&.left_content {
-		:global {
-			.chat_content {
-				border-top-right-radius: 0;
-			}
-		}
+	// When content has right_content class (Human message)
+	&:has(.right_content) {
+		margin-left: auto;
+		flex-direction: row-reverse;
+		width: 100%;
+	}
+}
+
+// Base avatar styles
+.avatar {
+	width: 32px;
+	height: 32px;
+	min-width: 32px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	background: var(--color_bg_nav);
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		padding: 4px;
 	}
 
-	&.right_content {
-		:global {
-                  ::selection{
-                        background-color: white;
-                        color: black;
-                  }
+	:global(.logo) {
+		width: 100%;
+		height: 100%;
+		padding: 4px;
+	}
+}
 
-			.chat_content {
-				border-top-left-radius: 0;
-				background-color: var(--color_main);
-				color: white;
+// Base chat content styles
+:global(.chat_content) {
+	padding: 8px 12px;
+	border-radius: 12px;
+	flex: 1;
+	min-width: 0;
+	font-size: 13px;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	word-break: break-word;
+	overflow-wrap: break-word;
+	overflow-x: auto;
+	background-color: var(--color_bg_nav);
+}
 
-                        
-			}
-		}
+// AI Message styles (left side)
+.left_content {
+	margin-right: auto;
+	max-width: 100%;
+
+	.avatar {
+		flex: 0 0 24px;
+		background: var(--color_bg_nav);
+		color: #666;
 	}
 
-	:global {
-		.chat_content {
-			padding: 12px;
-			font-size: 13px;
-			background-color: var(--color_bg_nav);
-			border-radius: 12px;
-			white-space: pre-wrap;
-			word-break: break-all;
-			overflow-x: scroll;
+	:global(.chat_content) {
+		background: var(--color_bg_nav);
+	}
+}
+
+// Human Message styles (right side)
+.right_content {
+	margin-left: auto;
+	max-width: calc(100% - 42px);
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+
+	.avatar {
+		display: none;
+	}
+
+	:global(.chat_content) {
+		min-width: 0;
+		max-width: 100%;
+		width: auto;
+		background: var(--color_main);
+		color: white;
+	}
+
+	::selection {
+		background-color: white;
+		color: black;
+	}
+
+	// Right side attachments
+	.attachments {
+		align-items: flex-end;
+	}
+
+	.attachmentItem {
+		background: rgba(28, 100, 242, 0.08);
+
+		&:hover {
+			background: rgba(28, 100, 242, 0.12);
 		}
 
-		.confirm_wrap {
-			padding-top: 12px;
-
-                  .text{
-                        width: calc(100% - 60px);
-                  }
-
-			.btn_yes {
-                        width: 60px;
-
-				&:hover {
-					text-decoration: underline;
-				}
-			}
+		.attachmentIcon {
+			color: rgba(28, 100, 242, 0.65);
 		}
+
+		.attachmentName {
+			color: rgba(28, 100, 242, 0.85);
+		}
+	}
+}
+
+// Attachment styles
+.attachments {
+	margin-top: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 0 4px;
+}
+
+.attachmentItem {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 8px;
+	background: rgba(0, 0, 0, 0.04);
+	border-radius: 12px;
+	cursor: pointer;
+	transition: all 0.2s;
+	max-width: 300px;
+	font-size: 12px;
+
+	&:hover {
+		background: rgba(0, 0, 0, 0.08);
+	}
+
+	.attachmentIcon {
+		color: rgba(255, 255, 255, 0.85);
+	}
+
+	.attachmentName {
+		color: rgba(255, 255, 255, 0.85);
+		font-size: 12px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 }

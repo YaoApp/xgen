@@ -1,4 +1,4 @@
-import { Button, Switch } from 'antd'
+import { Button, Radio } from 'antd'
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
 
@@ -84,20 +84,44 @@ const Index = () => {
 
 				<div className='setting_item w_100 border_box flex justify_between align_center'>
 					<span className='name'>{messages.layout.setting.language.title}</span>
-					<Switch
-						checkedChildren='EN'
-						unCheckedChildren='中文'
-						checked={!is_cn}
-						onChange={(v) => setLocale(v ? 'en-US' : 'zh-CN')}
+					<Radio.Group
+						value={is_cn ? 'zh-CN' : 'en-US'}
+						onChange={(e) => setLocale(e.target.value)}
+						options={[
+							{ label: '中文', value: 'zh-CN' },
+							{ label: 'EN', value: 'en-US' }
+						]}
+						optionType='button'
+						buttonStyle='solid'
+						size='small'
 					/>
 				</div>
 				<div className='setting_item w_100 border_box flex justify_between align_center'>
 					<span className='name'>{messages.layout.setting.theme.title}</span>
-					<Switch
-						checkedChildren='light'
-						unCheckedChildren='dark'
-						checked={global.theme === 'light'}
-						onChange={(v) => global.setTheme(v ? 'light' : 'dark')}
+					<Radio.Group
+						value={global.theme}
+						onChange={(e) => global.setTheme(e.target.value)}
+						options={[
+							{ label: 'Light', value: 'light' },
+							{ label: 'Dark', value: 'dark' }
+						]}
+						optionType='button'
+						buttonStyle='solid'
+						size='small'
+					/>
+				</div>
+				<div className='setting_item w_100 border_box flex justify_between align_center'>
+					<span className='name'>Layout</span>
+					<Radio.Group
+						value={global.layout}
+						onChange={(e) => global.setLayout(e.target.value)}
+						options={[
+							{ label: 'Chat', value: 'Chat' },
+							{ label: 'Admin', value: 'Admin' }
+						]}
+						optionType='button'
+						buttonStyle='solid'
+						size='small'
 					/>
 				</div>
 			</div>

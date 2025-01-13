@@ -18,10 +18,10 @@ const Index = (props: IPropsLoader) => {
 					<div className={'bar'} style={{ width: humanReadable }}></div>
 				</div>
 				<div className={'text'}>
-					<span className={'percent'}>{events?.error ? events?.error.message : humanReadable}</span>
-					{(events?.progress?.total || 0) > 0 && !events?.error && (
+					<span className={clsx(['percent'])}>{events?.error ? '' : humanReadable}</span>
+					{((events?.progress?.total || 0) > 0 || events?.error) && (
 						<span>
-							{loadedMB}MB / {totalMB}MB
+							{events?.error ? events?.error.message : `${loadedMB}MB / ${totalMB}MB`}
 						</span>
 					)}
 				</div>

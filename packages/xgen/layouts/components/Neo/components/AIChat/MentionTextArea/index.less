@@ -1,0 +1,39 @@
+.mentionTextArea {
+	position: relative;
+	width: 100%;
+
+	.editor {
+		width: 100%;
+		min-height: 96px;
+		max-height: 384px;
+		overflow-y: auto;
+		border-radius: 8px;
+		padding: 8px 40px 8px 12px;
+		font-size: 14px;
+		line-height: 1.5;
+		color: var(--color_text);
+		outline: none;
+		white-space: pre-wrap;
+		word-break: break-word;
+		background: var(--color_bg_nav);
+		transition: all 0.3s ease;
+
+		&.empty:before {
+			content: attr(data-placeholder);
+			color: var(--color_text_grey);
+			position: absolute;
+			pointer-events: none;
+		}
+
+		&:focus {
+			background: var(--color_bg_nav);
+			box-shadow: 0 0 0 2.5px rgba(var(--r), var(--g), var(--b), 0.15);
+		}
+
+		.mention-tag {
+			color: var(--color_main);
+			user-select: all;
+			white-space: nowrap;
+		}
+	}
+}

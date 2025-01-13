@@ -1,6 +1,6 @@
 ._local {
 	width: 100%;
-      
+
 	&.with_rows {
 		width: calc(100% + 16px);
 
@@ -8,16 +8,20 @@
 			.header {
 				padding: 0 16px;
 			}
+
+			.header_chat {
+				padding: 0 40px;
+			}
 		}
 	}
 
 	:global {
-            .page_content_wrap{
-                  margin: 0 auto;
-                  padding: 0 32px;
-                  padding-bottom: 80px;
-                  max-width: var(--max_width);
-            }
+		.page_content_wrap {
+			margin: 0 auto;
+			padding: 0 32px;
+			padding-bottom: 80px;
+			max-width: var(--max_width);
+		}
 
 		.header {
 			position: sticky;
@@ -60,11 +64,9 @@
 				margin-right: -15px;
 
 				.option_item {
-					margin-left: 3px;
 					width: 36px;
 					height: 36px;
 					border-radius: 50%;
-
 					&:hover {
 						background-color: var(--color_bg_nav);
 					}
@@ -73,6 +75,15 @@
 						color: var(--color_text) !important;
 					}
 				}
+			}
+		}
+
+		.header_chat {
+			margin-bottom: 1px;
+			height: 79px;
+
+			.options_wrap {
+				margin-right: -6px;
 			}
 		}
 	}

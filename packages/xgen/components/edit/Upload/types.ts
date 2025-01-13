@@ -31,8 +31,7 @@ export interface CustomProps extends UploadProps, CommonProps {
 	api: string | { api: string; params: any }
 	placeholder?: string // the placeholder for the upload
 	placeholderIcon?: string | { name: string; size: number } // the placeholder icon for the upload
-	height?: number | string // the height for the upload
-	rows?: number // the rows for the upload. if set, height will be ignored
+	maxFilesize?: number | string // the max filesize for the upload
 	chunkSize?: number | string // the chunk size for the upload, if set, will use the chunk upload
 	previewURL?: string // the url for the preview image, if set, will use the preview image or video
 	useAppRoot?: boolean // if false, use the data root, else use the app root, default is false

@@ -55,6 +55,7 @@ export declare namespace Action {
 	}
 	type EventUnLoadingAI = {
 		key: `$namespace/$item.bind/unloading`
+		value?: any
 	}
 
 	interface ActionMap {

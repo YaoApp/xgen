@@ -10,7 +10,8 @@ interface IProps extends Omit<IPropsComponentCommon, 'data_item'>, Component.Bin
 const Index = (props: IProps) => {
 	const { namespace, primary, field_detail, form_bind, form_value, onSave } = props
 
-	if (!field_detail.view?.type) return <div className='line_clamp_2'>请设置字段的view属性</div>
+	if (!field_detail.view?.type)
+		return <div className='line_clamp_2'>Unknown view type: {field_detail.view?.type}</div>
 
 	const props_view_component = {
 		...field_detail.view.props,

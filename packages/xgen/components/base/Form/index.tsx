@@ -18,6 +18,10 @@ import Model from './model'
 import type { Component } from '@/types'
 import type { IPropsPureForm } from '@/components/base/PureForm/types'
 import type { IPropsBreadcrumb, IPropsAnchor } from './types'
+import { Bind, Dot } from '@/utils'
+import { useGlobal } from '@/context/app'
+import { IPropsActions } from '../PureForm/types'
+import Actions from '../PureForm/components/Actions'
 
 const Index = (props: Component.FormComponent) => {
 	const { parent, parentNamespace, model, id, form, onBack } = props
@@ -28,17 +32,27 @@ const Index = (props: Component.FormComponent) => {
 	const ref_container = useRef<HTMLDivElement>(null)
 	const [is_fullscreen, { toggleFullscreen }] = useFullscreen(ref_container)
 
+	const global = useGlobal()
+	const { layout } = global
+
 	const title = useMemo(() => {
 		if (x.setting?.config?.viewTitle && x.type === 'view') {
-			return x.setting.config.viewTitle
+			return Bind(x.setting.config.viewTitle, x.data) || x.setting.config.viewTitle
 		}
 
 		if (x.setting?.config?.editTitle && x.type === 'edit') {
-			return x.setting.config.editTitle
+			return Bind(x.setting.config.editTitle, x.data) || x.setting.config.editTitle
 		}
 
 		return page_title_prefix + x.setting.name
-	}, [page_title_prefix, x.setting.name, x.type, x.setting?.config?.viewTitle, x.setting?.config?.editTitle])
+	}, [
+		page_title_prefix,
+		x.setting.name,
+		x.type,
+		x.setting?.config?.viewTitle,
+		x.setting?.config?.editTitle,
+		x.data
+	])
 
 	const onFormBack = useMemoizedFn(() => {
 		if (onBack) {
@@ -107,8 +121,29 @@ const Index = (props: Component.FormComponent) => {
 	}
 
 	if (parent === 'Page') {
+		// Form actions
+		let form_actions = undefined
+		if (layout == 'Chat' && props_form.parent != 'Modal') {
+			const props_actions: IPropsActions = {
+				namespace: props_form.namespace,
+				primary: props_form.primary,
+				type: props_form.type,
+				id: props_form.id,
+				actions: props_form.actions || [],
+				data: props_form.data,
+				disabledActionsAffix: true
+			}
+			form_actions = <Actions {...props_actions}></Actions>
+		}
+
 		return (
-			<Page className={clsx([styles._local, 'w_100'])} title={title} full={x.setting?.config?.full}>
+			<Page
+				className={clsx([styles._local, 'w_100'])}
+				title={title}
+				full={x.setting?.config?.full}
+				type={'Form'}
+				formActions={form_actions}
+			>
 				<div className='flex relative'>
 					<div className='w_100 flex flex_column'>
 						{!x.setting?.config?.hideBreadcrumb && (

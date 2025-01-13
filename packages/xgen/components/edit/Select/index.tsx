@@ -67,13 +67,18 @@ const Custom = window.$app.memo((props: ICustom) => {
 		setValue(v)
 	}
 
-	// Merge the remote api for search
-	// props.search will be deprecated in the future
-	const defaultOnSearch: SelectProps['onSearch'] = (v) => {
-		// Trigger remote search
+	const fetchRemoteOptions = (selected?: any, keywords?: string) => {
 		if (xProps?.remote) {
 			const api = xProps.remote.api
-			const params = { ...xProps.remote.params, ['keywords']: v }
+			const params: Record<string, any> = { ...xProps.remote.params }
+			if (keywords && keywords != '') {
+				params['keywords'] = keywords.trim()
+			}
+
+			if (selected) {
+				params['selected'] = selected
+			}
+
 			axios.get<any, SelectProps['options']>(api, { params })
 				.then((res) => {
 					setOptions(parseOptions(res))
@@ -84,11 +89,26 @@ const Custom = window.$app.memo((props: ICustom) => {
 		}
 	}
 
+	const onClear = () => {
+		setValue(null)
+		fetchRemoteOptions()
+	}
+
+	const onFocus = () => {
+		fetchRemoteOptions(value) // Reset the options when focus
+	}
+
+	// Merge the remote api for search
+	// props.search will be deprecated in the future
+	const defaultOnSearch: SelectProps['onSearch'] = (v) => {
+		const selected = value ? (Array.isArray(value) ? value : [value]) : []
+		fetchRemoteOptions(selected, v)
+	}
+
 	if (rest_props.showSearch) {
 		rest_props.onSearch = rest_props.onSearch ? rest_props.onSearch : defaultOnSearch
 	}
 
-	const onClear = () => setValue(null)
 	return (
 		<Select
 			className={clsx([styles._local, props.mode === 'multiple' && styles.multiple])}
@@ -96,6 +116,7 @@ const Custom = window.$app.memo((props: ICustom) => {
 			placeholder={`${is_cn ? '请选择' : 'Please select '}${__name}`}
 			getPopupContainer={(node) => node.parentNode}
 			value={value}
+			onFocus={onFocus}
 			onChange={onChange}
 			onClear={onClear}
 			{...rest_props}
@@ -119,7 +140,6 @@ const Index = (props: IProps) => {
 
 	useLayoutEffect(() => {
 		x.remote.raw_props = props
-
 		x.remote.init()
 	}, [props])
 
