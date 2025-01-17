@@ -218,7 +218,8 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					created_at: attachment.created_at,
 					file_id: attachment.file_id,
 					chat_id: attachment.chat_id,
-					assistant_id: attachment.assistant_id
+					assistant_id: attachment.assistant_id,
+					description: attachment.description || undefined
 				})
 			})
 		}
@@ -380,7 +381,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 	}, [])
 
 	/** Upload files to Neo API **/
-	const uploadFile = useMemoizedFn(async (file: RcFile) => {
+	const uploadFile = useMemoizedFn(async (file: RcFile, handleVision: boolean = true) => {
 		const controller = new AbortController()
 		uploadControllers.current.set(file.name, controller)
 
@@ -391,6 +392,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		// Default options
 		const options = {
 			process_image: false,
+			vision: handleVision,
 			max_file_size: 10, // 10MB
 			allowed_types: ['image/*', '.pdf', '.doc', '.docx', '.txt'],
 			...upload_options

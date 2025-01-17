@@ -288,6 +288,7 @@ export declare namespace App {
 		thumbUrl?: string
 		blob?: Blob
 		pinned?: boolean
+		description?: string
 	}
 
 	/** Options for creating a new chat */

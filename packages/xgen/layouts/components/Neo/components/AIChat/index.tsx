@@ -267,7 +267,6 @@ const AIChat = (props: AIChatProps) => {
 				addAttachment(attachment)
 
 				const result = await uploadFile(file)
-
 				const updatedAttachment: App.ChatAttachment = {
 					...attachment,
 					status: 'done',
@@ -277,7 +276,8 @@ const AIChat = (props: AIChatProps) => {
 					bytes: result.bytes,
 					created_at: result.created_at,
 					filename: result.filename,
-					content_type: result.content_type
+					content_type: result.content_type,
+					description: result.description || null
 				}
 
 				removeAttachment(attachment)
