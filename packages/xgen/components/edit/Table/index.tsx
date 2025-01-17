@@ -10,17 +10,18 @@ import type { Component } from '@/types'
 interface IProps extends Component.PropsEditComponent {
 	model: IPropsTable['model']
 	query: IPropsTable['query']
+	hidePagination: IPropsTable['hidePagination']
 	itemProps?: { label?: string }
 }
 
 const Index = (props: IProps) => {
-	const { __name, itemProps, model, query } = props
+	const { __name, itemProps, model, query, hidePagination } = props
 
 	const props_table: IPropsTable = {
 		parent: 'Form',
 		model,
 		query: query ? query : {},
-		hidePagination: true
+		hidePagination: hidePagination
 	}
 
 	return (
