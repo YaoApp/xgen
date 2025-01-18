@@ -76,6 +76,7 @@ export declare namespace App {
 
 	type ChatAI = {
 		is_neo: boolean
+		is_new: boolean
 		text: string
 		type?: ChatMessageType
 		assistant_id?: string

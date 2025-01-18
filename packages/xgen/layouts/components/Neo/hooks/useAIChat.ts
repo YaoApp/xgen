@@ -278,6 +278,8 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					credentials: 'include',
 					headers: { Accept: 'application/json' }
 				})
+				if (response.status == 200 || response.status == 201) return
+
 				const data = await response.json().catch(() => ({ message: `HTTP ${response.status}` }))
 
 				let errorMessage = 'Network error, please try again later'
@@ -332,8 +334,16 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				const formated_data = ntry(() => JSON.parse(data)) as App.ChatAI
 				if (!formated_data) return
 
-				const { text, type, actions, done } = formated_data
+				const { text, type, actions, done, assistant_id, assistant_name, assistant_avatar, is_new } =
+					formated_data
 				const current_answer = messages[messages.length - 1] as App.ChatAI
+
+				// Set assistant info
+				if (assistant_id) current_answer.assistant_id = assistant_id
+				if (assistant_name) current_answer.assistant_name = assistant_name
+				if (assistant_avatar) current_answer.assistant_avatar = assistant_avatar
+				if (is_new) current_answer.is_new = is_new
+
 				if (done) {
 					if (text) {
 						current_answer.text = text
