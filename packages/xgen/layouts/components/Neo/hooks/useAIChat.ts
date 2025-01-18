@@ -131,22 +131,36 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 	}, [global.app_info.optional?.neo?.api])
 
 	/** Format chat message **/
-	const formatMessage = useMemoizedFn((role: string, content: string, chatId: string) => {
-		const baseMessage = { is_neo: role === 'assistant', context: { chat_id: chatId, assistant_id } }
+	const formatMessage = useMemoizedFn(
+		(
+			role: string,
+			content: string,
+			chatId: string,
+			assistant_id?: string,
+			assistant_name?: string,
+			assistant_avatar?: string
+		) => {
+			const baseMessage = {
+				is_neo: role === 'assistant',
+				context: { chat_id: chatId, assistant_id },
+				assistant_name,
+				assistant_avatar
+			}
 
-		// Check if content is potentially JSON
-		const trimmedContent = content.trim()
-		if (!trimmedContent.startsWith('{')) {
-			return { ...baseMessage, text: content }
-		}
+			// Check if content is potentially JSON
+			const trimmedContent = content.trim()
+			if (!trimmedContent.startsWith('{')) {
+				return { ...baseMessage, text: content }
+			}
 
-		try {
-			const parsedContent = JSON.parse(trimmedContent)
-			return { ...baseMessage, ...parsedContent }
-		} catch (e) {
-			return { ...baseMessage, text: content }
+			try {
+				const parsedContent = JSON.parse(trimmedContent)
+				return { ...baseMessage, ...parsedContent }
+			} catch (e) {
+				return { ...baseMessage, text: content }
+			}
 		}
-	})
+	)
 
 	/** Get AI Chat History **/
 	const getHistory = useMemoizedFn(async () => {
@@ -159,7 +173,13 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		if (err) return
 		if (!res?.data) return
 
-		setMessages(res.data.map(({ role, content }) => formatMessage(role, content, chat_id)))
+		console.log(`getHistory:`, res.data)
+
+		setMessages(
+			res.data.map(({ role, content, assistant_id, assistant_name, assistant_avatar }) =>
+				formatMessage(role, content, chat_id, assistant_id, assistant_name, assistant_avatar)
+			)
+		)
 	})
 
 	/** Handle title generation with progress updates **/
@@ -610,7 +630,10 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		if (!res?.data) return null
 
 		const chatInfo = res.data
-		const formattedMessages = chatInfo.history.map(({ role, content }) => formatMessage(role, content, chatId))
+		const formattedMessages = chatInfo.history.map(
+			({ role, content, assistant_id, assistant_name, assistant_avatar }) =>
+				formatMessage(role, content, chatId, assistant_id, assistant_name, assistant_avatar)
+		)
 
 		// Set messages directly in getChat
 		setMessages(formattedMessages)

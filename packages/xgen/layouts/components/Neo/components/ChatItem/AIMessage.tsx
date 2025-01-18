@@ -12,7 +12,7 @@ interface AIMessageProps {
 }
 
 const AIMessage = ({ chat_info, context, callback }: AIMessageProps) => {
-	const { text, type, actions } = chat_info
+	const { text, type, actions, assistant_name, assistant_avatar } = chat_info
 	const onAction = useAction()
 
 	const onExecActions = useMemoizedFn(() => {
@@ -22,9 +22,14 @@ const AIMessage = ({ chat_info, context, callback }: AIMessageProps) => {
 	return (
 		<div className={styles.content}>
 			<div className={styles.avatar}>
-				<Icon name='material-robot_2' color='primary' />
+				{assistant_avatar ? (
+					<img src={assistant_avatar} alt={assistant_name} />
+				) : (
+					<Icon name='material-robot_2' color='primary' />
+				)}
 			</div>
 			<div className={`border_box flex ${styles.left_content}`}>
+				{assistant_name && <div className={styles.assistant_name}>{assistant_name}</div>}
 				<div className='chat_content border_box'>
 					<NeoContent source={text} type={type} callback={callback} />
 				</div>
