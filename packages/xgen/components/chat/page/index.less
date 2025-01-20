@@ -1,0 +1,61 @@
+._local {
+	position: relative;
+	width: 100%;
+	min-width: 0;
+
+	.iframe_container {
+		width: 100%;
+		height: 100%;
+		position: relative;
+	}
+
+	.iframe {
+		width: 100%;
+		height: 100%;
+		border: 1px solid var(--color_border_light);
+		border-radius: var(--radius);
+		display: block;
+	}
+
+	.button_container {
+		position: absolute;
+		bottom: 24px;
+		right: 24px;
+		z-index: 100;
+		pointer-events: none;
+
+		.open_button {
+			pointer-events: auto;
+			width: 24px;
+			height: 24px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: var(--color_bg_hover);
+			border-radius: var(--radius);
+			color: var(--color_text);
+			cursor: pointer;
+
+			&:hover {
+				background-color: var(--color_bg_active);
+			}
+		}
+	}
+
+	:global {
+		.loading {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 1;
+		}
+	}
+}
+
+.iframe {
+	width: 100%;
+	min-height: 300px;
+	border: 1px solid var(--color_border_light);
+	border-radius: var(--radius);
+}

@@ -368,7 +368,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				if (assistant_name) current_answer.assistant_name = assistant_name
 				if (assistant_avatar) current_answer.assistant_avatar = assistant_avatar
 				if (is_new) current_answer.is_new = is_new
-				current_answer.type = type
+				current_answer.type = type || 'text'
 
 				if (done) {
 					if (text) {
@@ -377,6 +377,12 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					if (type) {
 						current_answer.type = type
 					}
+
+					if (props) {
+						current_answer.props = props
+					}
+
+					console.log(`done`, current_answer)
 
 					// If is the first message, generate title using SSE
 					if (messages.length === 2 && chat_id && current_answer.text) {
@@ -403,6 +409,8 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 						current_answer.text = current_answer.text + text
 					}
 				}
+
+				console.log(current_answer)
 
 				const message_new = [...messages]
 				if (message_new.length > 0) {

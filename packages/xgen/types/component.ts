@@ -46,7 +46,7 @@ export declare namespace Component {
 		onSave: (v: any) => void
 	}
 
-	interface PropsChatComponent extends Props {
+	interface PropsChatComponent {
 		id?: string
 		text?: string
 		[key: string]: any

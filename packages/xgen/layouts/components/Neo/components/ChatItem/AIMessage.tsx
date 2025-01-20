@@ -30,7 +30,7 @@ const AIMessage = ({ chat_info, context, callback }: AIMessageProps) => {
 	}
 
 	return (
-		<div className={styles.content}>
+		<>
 			<div className={styles.avatar}>
 				{assistant_avatar ? (
 					<img src={assistant_avatar} alt={assistant_name} />
@@ -38,7 +38,12 @@ const AIMessage = ({ chat_info, context, callback }: AIMessageProps) => {
 					<Icon name='material-robot_2' color='primary' />
 				)}
 			</div>
-			<div className={`border_box flex ${styles.left_content}`}>
+			<div
+				className={`border_box flex ${styles.left_content}`}
+				style={{
+					width: type == 'text' || type == 'error' ? 'auto' : '100%'
+				}}
+			>
 				{assistant_name && <div className={styles.assistant_name}>{assistant_name}</div>}
 				<div className='chat_content border_box'>
 					<Content
@@ -48,7 +53,7 @@ const AIMessage = ({ chat_info, context, callback }: AIMessageProps) => {
 					/>
 				</div>
 			</div>
-		</div>
+		</>
 	)
 }
 
