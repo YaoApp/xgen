@@ -16,24 +16,24 @@ import styles from './index.less'
 import { App } from '@/types'
 
 interface IProps {
-	source: string
+	chat_info: App.ChatAI
 	type?: App.ChatMessageType
 	callback?: () => void
 }
 
 const Index = (props: IProps) => {
-	const { source, type, callback } = props
+	const { chat_info, type, callback } = props
 	const [target, setTarget] = useState<any>()
 	const mdx_components = useMDXComponents(components)
 
 	useAsyncEffect(async () => {
 		// If there is an error, display the error message
 		if (type === 'error') {
-			setTarget(<div className={'error'}>{source}</div>)
+			setTarget(<div className={'error'}>{chat_info.text}</div>)
 			return
 		}
 
-		const vfile = new VFile(source)
+		const vfile = new VFile(chat_info.text)
 		const [err, compiled_source] = await to(
 			compile(vfile, {
 				format: 'md',
@@ -90,7 +90,7 @@ const Index = (props: IProps) => {
 
 		setTarget(Content)
 		callback?.()
-	}, [source])
+	}, [chat_info])
 
 	return <div className={clsx(styles._local)}>{target}</div>
 }

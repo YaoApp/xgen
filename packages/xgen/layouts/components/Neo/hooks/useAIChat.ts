@@ -350,8 +350,17 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				if (!formated_data) return
 
 				// data format handle
-				const { text, type, actions, done, assistant_id, assistant_name, assistant_avatar, is_new } =
-					formated_data
+				const {
+					text,
+					props,
+					type,
+					actions,
+					done,
+					assistant_id,
+					assistant_name,
+					assistant_avatar,
+					is_new
+				} = formated_data
 				const current_answer = messages[messages.length - 1] as App.ChatAI
 
 				// Set assistant info
@@ -359,6 +368,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				if (assistant_name) current_answer.assistant_name = assistant_name
 				if (assistant_avatar) current_answer.assistant_avatar = assistant_avatar
 				if (is_new) current_answer.is_new = is_new
+				current_answer.type = type
 
 				if (done) {
 					if (text) {
@@ -381,12 +391,19 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					return
 				}
 
-				if (!text) return
-				if (text.startsWith('\r')) {
-					current_answer.text = text.replace('\r', '')
-				} else {
-					current_answer.text = current_answer.text + text
+				if (!text && !props) return
+				if (props) {
+					current_answer.props = props
 				}
+
+				if (text) {
+					if (text.startsWith('\r')) {
+						current_answer.text = text.replace('\r', '')
+					} else {
+						current_answer.text = current_answer.text + text
+					}
+				}
+
 				const message_new = [...messages]
 				if (message_new.length > 0) {
 					message_new[message_new.length - 1] = { ...current_answer }

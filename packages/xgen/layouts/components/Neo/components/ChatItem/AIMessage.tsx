@@ -3,7 +3,8 @@ import { NeoContent } from '@/widgets'
 import { useAction } from '@/actions'
 import Icon from '@/widgets/Icon'
 import styles from './index.less'
-import type { App } from '@/types'
+import type { App, Component } from '@/types'
+import Content from './Content'
 
 interface AIMessageProps {
 	chat_info: App.ChatAI
@@ -12,12 +13,21 @@ interface AIMessageProps {
 }
 
 const AIMessage = ({ chat_info, context, callback }: AIMessageProps) => {
-	const { text, type, actions, assistant_name, assistant_avatar } = chat_info
+	const { text, props, type, actions, assistant_name, assistant_avatar } = chat_info
 	const onAction = useAction()
 
 	const onExecActions = useMemoizedFn(() => {
 		onAction({ ...context, it: { title: '', icon: '', action: actions! } })
 	})
+
+	// Function message (function call)
+	if (type === 'function') {
+		return <></>
+	}
+
+	if (type === 'loading') {
+		return <Content type={type} props={props as Component.PropsChatComponent} />
+	}
 
 	return (
 		<div className={styles.content}>
@@ -31,7 +41,7 @@ const AIMessage = ({ chat_info, context, callback }: AIMessageProps) => {
 			<div className={`border_box flex ${styles.left_content}`}>
 				{assistant_name && <div className={styles.assistant_name}>{assistant_name}</div>}
 				<div className='chat_content border_box'>
-					<NeoContent source={text} type={type} callback={callback} />
+					<NeoContent chat_info={chat_info} type={type} callback={callback} />
 				</div>
 			</div>
 		</div>

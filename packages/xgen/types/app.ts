@@ -26,6 +26,8 @@ export declare namespace App {
 		| 'progress'
 		| 'page'
 		| 'widget'
+		| 'function'
+		| 'loading'
 
 	type ChatCmd = {
 		id: string
@@ -79,11 +81,14 @@ export declare namespace App {
 		is_new: boolean
 		text: string
 		type?: ChatMessageType
+		function?: string
+		arguments?: string
+		props?: Record<string, any>
 		assistant_id?: string
 		assistant_name?: string
 		assistant_avatar?: string
-		done: boolean
 		actions?: Array<Action.ActionParams>
+		done: boolean
 	}
 
 	type ChatHuman = {
