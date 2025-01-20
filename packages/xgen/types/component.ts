@@ -47,6 +47,7 @@ export declare namespace Component {
 	}
 
 	interface PropsChatComponent extends Props {
+		id?: string
 		text?: string
 		[key: string]: any
 	}

@@ -41,7 +41,11 @@ const AIMessage = ({ chat_info, context, callback }: AIMessageProps) => {
 			<div className={`border_box flex ${styles.left_content}`}>
 				{assistant_name && <div className={styles.assistant_name}>{assistant_name}</div>}
 				<div className='chat_content border_box'>
-					<NeoContent chat_info={chat_info} type={type} callback={callback} />
+					<Content
+						type={type || 'text'}
+						text={text}
+						props={props as Component.PropsChatComponent}
+					/>
 				</div>
 			</div>
 		</div>
