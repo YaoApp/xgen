@@ -149,16 +149,31 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 
 			// Check if content is potentially JSON
 			const trimmedContent = content.trim()
-			if (!trimmedContent.startsWith('{')) {
-				return { ...baseMessage, text: content }
+
+			// Check if content is potentially JSON Array
+			if (trimmedContent.startsWith('[{')) {
+				try {
+					const parsedContent = JSON.parse(trimmedContent)
+					const res: App.ChatInfo[] = []
+					parsedContent.forEach((item: any) => {
+						res.push({ ...baseMessage, ...item })
+					})
+					return res
+				} catch (e) {
+					return [{ ...baseMessage, text: content }]
+				}
+
+				// Check if content is potentially JSON Object
+			} else if (trimmedContent.startsWith('{')) {
+				try {
+					const parsedContent = JSON.parse(trimmedContent)
+					return [{ ...baseMessage, ...parsedContent }]
+				} catch (e) {
+					return [{ ...baseMessage, text: content }]
+				}
 			}
 
-			try {
-				const parsedContent = JSON.parse(trimmedContent)
-				return { ...baseMessage, ...parsedContent }
-			} catch (e) {
-				return { ...baseMessage, text: content }
-			}
+			return [{ ...baseMessage, text: content }]
 		}
 	)
 
@@ -173,13 +188,13 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		if (err) return
 		if (!res?.data) return
 
-		console.log(`getHistory:`, res.data)
-
-		setMessages(
-			res.data.map(({ role, content, assistant_id, assistant_name, assistant_avatar }) =>
-				formatMessage(role, content, chat_id, assistant_id, assistant_name, assistant_avatar)
+		const formattedMessages: App.ChatInfo[] = []
+		res.data.forEach(({ role, content, assistant_id, assistant_name, assistant_avatar }) => {
+			formattedMessages.push(
+				...formatMessage(role, content, chat_id, assistant_id, assistant_name, assistant_avatar)
 			)
-		)
+		})
+		setMessages(formattedMessages)
 	})
 
 	/** Handle title generation with progress updates **/
@@ -334,6 +349,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				const formated_data = ntry(() => JSON.parse(data)) as App.ChatAI
 				if (!formated_data) return
 
+				// data format handle
 				const { text, type, actions, done, assistant_id, assistant_name, assistant_avatar, is_new } =
 					formated_data
 				const current_answer = messages[messages.length - 1] as App.ChatAI
@@ -640,10 +656,12 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		if (!res?.data) return null
 
 		const chatInfo = res.data
-		const formattedMessages = chatInfo.history.map(
-			({ role, content, assistant_id, assistant_name, assistant_avatar }) =>
-				formatMessage(role, content, chatId, assistant_id, assistant_name, assistant_avatar)
-		)
+		const formattedMessages: App.ChatInfo[] = []
+		chatInfo.history.forEach(({ role, content, assistant_id, assistant_name, assistant_avatar }) => {
+			formattedMessages.push(
+				...formatMessage(role, content, chat_id || '', assistant_id, assistant_name, assistant_avatar)
+			)
+		})
 
 		// Set messages directly in getChat
 		setMessages(formattedMessages)
