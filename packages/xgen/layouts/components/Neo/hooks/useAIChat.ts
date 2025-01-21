@@ -372,7 +372,6 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				// create new message if is_new is true
 				if (is_new) {
 					messages.push({ ...formated_data, is_neo: true })
-					console.log(`Create new message:`, formated_data)
 				}
 
 				// Set assistant info
