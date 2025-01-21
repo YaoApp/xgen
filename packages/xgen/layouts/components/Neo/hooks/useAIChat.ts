@@ -335,6 +335,13 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		}
 
 		function setupEventSource() {
+			// Save last assistant info
+			const last_assistant: {
+				assistant_id: string | null
+				assistant_name: string | null
+				assistant_avatar: string | null
+			} = { assistant_id: null, assistant_name: null, assistant_avatar: null }
+
 			// Close existing connection if any
 			event_source.current?.close()
 
@@ -359,17 +366,33 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					assistant_id,
 					assistant_name,
 					assistant_avatar,
-					is_new
+					new: is_new
 				} = formated_data
-				const current_answer = messages[messages.length - 1] as App.ChatAI
+
+				// create new message if is_new is true
+				if (is_new) {
+					messages.push({ ...formated_data, is_neo: true })
+					console.log(`Create new message:`, formated_data)
+				}
 
 				// Set assistant info
-				if (assistant_id) current_answer.assistant_id = assistant_id
-				if (assistant_name) current_answer.assistant_name = assistant_name
-				if (assistant_avatar) current_answer.assistant_avatar = assistant_avatar
-				if (is_new) current_answer.is_new = is_new
-				current_answer.type = type || 'text'
+				const current_answer = messages[messages.length - 1] as App.ChatAI
+				if (assistant_id) {
+					last_assistant.assistant_id = assistant_id
+				}
+				if (assistant_name) {
+					last_assistant.assistant_name = assistant_name
+				}
+				if (assistant_avatar) {
+					last_assistant.assistant_avatar = assistant_avatar
+				}
 
+				if (is_new) current_answer.new = is_new
+				current_answer.assistant_id = last_assistant.assistant_id || undefined
+				current_answer.assistant_name = last_assistant.assistant_name || undefined
+				current_answer.assistant_avatar = last_assistant.assistant_avatar || undefined
+
+				current_answer.type = type || 'text'
 				if (done) {
 					if (text) {
 						current_answer.text = text
@@ -381,8 +404,6 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					if (props) {
 						current_answer.props = props
 					}
-
-					console.log(`done`, current_answer)
 
 					// If is the first message, generate title using SSE
 					if (messages.length === 2 && chat_id && current_answer.text) {
@@ -409,8 +430,6 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 						current_answer.text = current_answer.text + text
 					}
 				}
-
-				console.log(current_answer)
 
 				const message_new = [...messages]
 				if (message_new.length > 0) {
