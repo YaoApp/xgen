@@ -334,6 +334,34 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 			setLoading(false)
 		}
 
+		function isFirstMessage(messages: App.ChatInfo[]) {
+			if (messages.length < 2) return false
+
+			// The first message is a user message
+			// The second message is an assistant message
+			// The rest of the messages are total assistant messages
+			const userMessage = messages[0]
+			const assistantMessage = messages[1]
+			if (messages.length === 2) {
+				return userMessage && assistantMessage
+			}
+
+			// The rest of the messages are total assistant messages
+			let resetUserMessageCount = 0
+			for (let i = 2; i < messages.length; i++) {
+				const message = messages[i]
+				if (!message.is_neo) {
+					resetUserMessageCount++
+				}
+
+				if (resetUserMessageCount > 0) {
+					return false
+				}
+			}
+
+			return true
+		}
+
 		function setupEventSource() {
 			// Save last assistant info
 			const last_assistant: {
@@ -405,7 +433,8 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					}
 
 					// If is the first message, generate title using SSE
-					if (messages.length === 2 && chat_id && current_answer.text) {
+					if (isFirstMessage(messages) && chat_id) {
+						console.log('isFirstMessage', messages)
 						handleTitleGeneration(messages, chat_id)
 					}
 
