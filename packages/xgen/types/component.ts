@@ -49,6 +49,8 @@ export declare namespace Component {
 	interface PropsChatComponent {
 		id?: string
 		text?: string
+		assistant_id?: string
+		chat_id: string
 		[key: string]: any
 	}
 

@@ -487,8 +487,8 @@ const AIChat = (props: AIChatProps) => {
 								context={context}
 								field={field}
 								chat_info={msg}
+								chat_id={chat_id}
 								callback={() => {}}
-								avatar={msg.is_neo ? botAvatar : undefined}
 							/>
 						))
 					)}

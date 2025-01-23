@@ -95,6 +95,7 @@ export declare namespace App {
 		is_neo: boolean
 		text: string
 		attachments?: ChatAttachment[]
+		assistant_id?: string
 		context?: {
 			namespace: string
 			stack: string

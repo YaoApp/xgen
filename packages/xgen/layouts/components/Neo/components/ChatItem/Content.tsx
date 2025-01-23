@@ -6,10 +6,12 @@ interface IProps {
 	type: App.ChatMessageType
 	text?: string
 	props?: Component.PropsChatComponent
+	assistant_id?: string
+	chat_id: string
 }
 
 const Index = (props: IProps) => {
-	const { type, text, props: component_props } = props
+	const { type, text, props: component_props, assistant_id, chat_id } = props
 
 	// Dynamically import the component
 	const Component = useMemo(() => {
@@ -25,7 +27,7 @@ const Index = (props: IProps) => {
 
 	return (
 		<Suspense fallback={null}>
-			<Component {...component_props} text={text} />
+			<Component text={text} assistant_id={assistant_id} chat_id={chat_id} {...component_props} />
 		</Suspense>
 	)
 }

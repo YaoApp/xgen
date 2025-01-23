@@ -7,13 +7,15 @@ import type { App, Component } from '@/types'
 import Content from './Content'
 
 interface AIMessageProps {
+	assistant_id?: string
+	chat_id: string
 	chat_info: App.ChatAI
 	context: App.Context
 	callback?: () => void
 }
 
-const AIMessage = ({ chat_info, context, callback }: AIMessageProps) => {
-	const { text, props, type, actions, assistant_name, assistant_avatar } = chat_info
+const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) => {
+	const { text, props, type, actions, assistant_id, assistant_name, assistant_avatar } = chat_info
 	const onAction = useAction()
 
 	const onExecActions = useMemoizedFn(() => {
@@ -26,7 +28,14 @@ const AIMessage = ({ chat_info, context, callback }: AIMessageProps) => {
 	}
 
 	if (type === 'loading') {
-		return <Content type={type} props={props as Component.PropsChatComponent} />
+		return (
+			<Content
+				assistant_id={assistant_id}
+				chat_id={chat_id}
+				type={type}
+				props={props as Component.PropsChatComponent}
+			/>
+		)
 	}
 
 	return (
@@ -49,6 +58,8 @@ const AIMessage = ({ chat_info, context, callback }: AIMessageProps) => {
 					<Content
 						type={type || 'text'}
 						text={text}
+						assistant_id={assistant_id}
+						chat_id={chat_id}
 						props={props as Component.PropsChatComponent}
 					/>
 				</div>

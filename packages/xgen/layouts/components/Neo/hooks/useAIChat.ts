@@ -143,6 +143,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 			const baseMessage = {
 				is_neo: role === 'assistant',
 				context: { chat_id: chatId, assistant_id },
+				assistant_id,
 				assistant_name,
 				assistant_avatar
 			}
@@ -987,6 +988,18 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		return res?.data || { data: [], page: 1, pagesize: 10, total: 0, last_page: 1 }
 	})
 
+	/** Call Assistant API */
+	const callAssistantAPI = useMemoizedFn(
+		async (assistantId: string, name: string, payload: Record<string, any>) => {
+			if (!neo_api) return null
+			const endpoint = `${neo_api}/assistants/${assistantId}/call?token=${encodeURIComponent(getToken())}`
+			const [err, res] = await to<{ data: any }>(axios.post(endpoint, { name, payload }))
+			if (err) throw err
+
+			return res || null
+		}
+	)
+
 	/** Find Assistant Detail */
 	const findAssistant = useMemoizedFn(async (assistantId: string) => {
 		if (!neo_api) return null
@@ -1052,6 +1065,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		findAssistant,
 		saveAssistant,
 		deleteAssistant,
+		callAssistantAPI,
 		setPendingCleanup
 	}
 }
