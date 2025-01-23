@@ -15,12 +15,7 @@ interface AIMessageProps {
 }
 
 const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) => {
-	const { text, props, type, actions, assistant_id, assistant_name, assistant_avatar } = chat_info
-	const onAction = useAction()
-
-	const onExecActions = useMemoizedFn(() => {
-		onAction({ ...context, it: { title: '', icon: '', action: actions! } })
-	})
+	const { text, props, type, assistant_id, assistant_name, assistant_avatar } = chat_info
 
 	// Function message (function call)
 	if (type === 'function') {

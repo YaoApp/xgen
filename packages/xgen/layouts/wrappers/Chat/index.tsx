@@ -10,6 +10,7 @@ import Menu from './Menu'
 import Container from './Container/index'
 import NeoPage, { NEO_PAGE_BREAKPOINT, NEO_PAGE_PADDING } from '@/layouts/components/Neo/Page'
 import './style.less'
+import { useNavigate } from '@umijs/max'
 
 const MAIN_CONTENT_MIN_WIDTH = 320
 const DEFAULT_WIDTH = 400
@@ -69,6 +70,47 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 		studio: global.app_info.optional?.neo?.studio,
 		dock: global.app_info.optional?.neo?.dock || 'right-bottom'
 	}
+	const navigate = useNavigate()
+
+	// Raise Event
+	useEffect(() => {
+		const handleToggleSidebar = () => {
+			if (sidebarVisible) {
+				setSidebarVisible(false)
+				return
+			}
+			setSidebarVisible(true)
+		}
+
+		const handleOpenSidebar = (detail: any) => {
+			if (detail) {
+				if (detail.url) {
+					setTemporaryLink(detail.url)
+					setIsTemporaryView(true)
+				}
+				if (detail.path) {
+					navigate(detail.path)
+				}
+				if (detail.title) setCurrentPageName(detail.title || detail.url)
+			}
+
+			setSidebarVisible(true)
+		}
+
+		const handleCloseSidebar = () => {
+			setSidebarVisible(false)
+		}
+
+		window.$app.Event.on('app/toggleSidebar', handleToggleSidebar)
+		window.$app.Event.on('app/openSidebar', handleOpenSidebar)
+		window.$app.Event.on('app/closeSidebar', handleCloseSidebar)
+
+		return () => {
+			window.$app.Event.off('app/toggleSidebar', handleToggleSidebar)
+			window.$app.Event.off('app/openSidebar', handleOpenSidebar)
+			window.$app.Event.off('app/closeSidebar', handleCloseSidebar)
+		}
+	}, [])
 
 	// Listen for window resize events
 	useEffect(() => {

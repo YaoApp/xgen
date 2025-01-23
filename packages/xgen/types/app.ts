@@ -28,6 +28,7 @@ export declare namespace App {
 		| 'widget'
 		| 'function'
 		| 'loading'
+		| 'action'
 
 	type ChatCmd = {
 		id: string
@@ -87,7 +88,7 @@ export declare namespace App {
 		assistant_id?: string
 		assistant_name?: string
 		assistant_avatar?: string
-		actions?: Array<Action.ActionParams>
+		// actions?: Array<Action.ActionParams>
 		done: boolean
 	}
 
