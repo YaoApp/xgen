@@ -1,0 +1,65 @@
+.confirm {
+	padding: 12px;
+	background: var(--color_bg_menu);
+	border-radius: var(--radius);
+	border: 1px solid var(--color_border_light);
+
+	.header {
+		margin-bottom: 16px;
+
+		.title {
+			font-size: 14px;
+			font-weight: 500;
+			color: var(--color_title);
+			margin-bottom: 4px;
+		}
+
+		.description {
+			font-size: 12px;
+			color: var(--color_text_light);
+		}
+	}
+
+	.actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: 8px;
+
+		.button {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			padding: 6px 16px;
+			border-radius: var(--radius);
+			font-size: 13px;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			border: 1px solid var(--color_border_light);
+
+			i {
+				display: flex;
+				align-items: center;
+			}
+
+			&.cancel {
+				background: var(--color_bg_light);
+				color: var(--color_text);
+
+				&:hover {
+					background: var(--color_bg_hover);
+				}
+			}
+
+			&.confirm {
+				background: var(--color_main);
+				color: white;
+				border-color: var(--color_main);
+
+				&:hover {
+					background: var(--color_main_hover);
+					border-color: var(--color_main_hover);
+				}
+			}
+		}
+	}
+}

@@ -14,7 +14,7 @@ interface IProps extends Component.PropsChatComponent {
 }
 
 const Index = (props: IProps) => {
-	const { url, query = {}, height = 300, data = {} } = props
+	const { url, query = {}, height = 300, data = {}, chat_id, assistant_id } = props
 	const [loading, setLoading] = useState(true)
 
 	const getToken = (): string => {
@@ -62,7 +62,7 @@ const Index = (props: IProps) => {
 
 	return (
 		<div className={styles._local} style={{ height }}>
-			{loading && <Loading />}
+			{loading && <Loading chat_id={chat_id} assistant_id={assistant_id} />}
 			<div className={styles.iframe_container}>
 				<iframe src={finalUrl} onLoad={handleIframeLoad} className={styles.iframe} />
 				<div className={styles.button_container}>
