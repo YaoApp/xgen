@@ -41,7 +41,7 @@
 				align-items: center;
 			}
 
-			&.cancel {
+			&.default {
 				background: var(--color_bg_light);
 				color: var(--color_text);
 
@@ -50,7 +50,7 @@
 				}
 			}
 
-			&.confirm {
+			&.primary {
 				background: var(--color_main);
 				color: white;
 				border-color: var(--color_main);
@@ -58,6 +58,28 @@
 				&:hover {
 					background: var(--color_main_hover);
 					border-color: var(--color_main_hover);
+				}
+			}
+
+			&.success {
+				background: var(--color_success);
+				color: white;
+				border-color: var(--color_success);
+
+				&:hover {
+					background: var(--color_success_hover);
+					border-color: var(--color_success_hover);
+				}
+			}
+
+			&.danger {
+				background: var(--color_danger);
+				color: white;
+				border-color: var(--color_danger);
+
+				&:hover {
+					background: var(--color_danger_hover);
+					border-color: var(--color_danger_hover);
 				}
 			}
 		}

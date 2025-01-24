@@ -4,17 +4,18 @@ import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import type { Action } from '@/types'
 import type { Component } from '@/types'
+import Text from '../text'
 
 interface IProps extends Component.PropsChatComponent {
 	title: string
-	description?: string
-	confirm: ButtonProps
-	cancel?: ButtonProps
+	text?: string
+	actions: Array<ButtonProps>
 }
 
 type ButtonProps = {
-	title?: string
+	title: string
 	icon?: string
+	style?: 'danger' | 'success' | 'primary' | 'default'
 	namespace: string
 	primary: string
 	action: Array<Action.ActionParams>
@@ -23,10 +24,8 @@ type ButtonProps = {
 }
 
 const Index = (props: IProps) => {
-	const { assistant_id, chat_id, title, description, cancel, confirm } = props
+	const { assistant_id, chat_id, title, text, actions } = props
 	const onAction = useAction()
-
-	console.log('confirm', props)
 
 	// Run action with namespace, primary, data_item, extra
 	const runAction = (button: ButtonProps) => {
@@ -47,19 +46,19 @@ const Index = (props: IProps) => {
 		<div className={styles.confirm}>
 			<div className={styles.header}>
 				<div className={styles.title}>{title}</div>
-				{description && <div className={styles.description}>{description}</div>}
+				{text && <Text assistant_id={assistant_id} chat_id={chat_id} text={text} />}
 			</div>
 			<div className={styles.actions}>
-				{cancel && (
-					<button className={clsx(styles.button, styles.cancel)} onClick={() => runAction(cancel)}>
-						{cancel.icon && <Icon name={cancel.icon} size={16} />}
-						<span>{cancel.title || 'Cancel'}</span>
+				{actions.map((action: ButtonProps, index: number) => (
+					<button
+						key={index}
+						className={clsx(styles.button, styles[action.style || 'default'])}
+						onClick={() => runAction(action)}
+					>
+						{action.icon && <Icon name={action.icon} size={16} />}
+						<span>{action.title || 'Cancel'}</span>
 					</button>
-				)}
-				<button className={clsx(styles.button, styles.confirm)} onClick={() => runAction(confirm)}>
-					{confirm.icon && <Icon name={confirm.icon} size={16} />}
-					<span>{confirm.title || 'Confirm'}</span>
-				</button>
+				))}
 			</div>
 		</div>
 	)
