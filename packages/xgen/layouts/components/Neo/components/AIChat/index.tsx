@@ -500,6 +500,33 @@ const AIChat = (props: AIChatProps) => {
 							/>
 							<span>{is_cn ? '加载历史消息...' : 'Loading message history...'}</span>
 						</div>
+					) : messages.length === 0 ? (
+						<div className={styles.placeholder}>
+							{placeholder?.description && (
+								<div className={styles.description}>{placeholder.description}</div>
+							)}
+							{placeholder?.prompts && placeholder.prompts.length > 0 && (
+								<div className={styles.prompts}>
+									<div className={styles.promptsHint}>
+										{is_cn ? '尝试这样问我' : 'Try asking me like this'}
+									</div>
+									{placeholder.prompts.map((prompt, index) => (
+										<div
+											key={index}
+											className={styles.promptItem}
+											onClick={() => setInputValue(prompt)}
+										>
+											{prompt}
+										</div>
+									))}
+								</div>
+							)}
+							{!placeholder?.description && !placeholder?.prompts && (
+								<div className={styles.defaultPlaceholder}>
+									{is_cn ? '开始一个新的对话' : 'Start a new conversation'}
+								</div>
+							)}
+						</div>
 					) : (
 						messages.map((msg, index) => (
 							<ChatItem

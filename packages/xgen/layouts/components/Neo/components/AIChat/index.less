@@ -5,6 +5,78 @@
 	min-height: 0;
 	background: var(--color_bg_menu);
 	overflow: hidden;
+	position: relative;
+
+	.placeholder {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 32px;
+		height: 100%;
+		gap: 24px;
+		width: 100%;
+		max-width: 600px;
+		margin: 0 auto;
+
+		.description {
+			font-size: 14px;
+			line-height: 1.6;
+			color: var(--color_text_grey);
+			opacity: 0.9;
+			text-align: left;
+			width: 100%;
+		}
+
+		.defaultPlaceholder {
+			font-size: 13px;
+			color: var(--color_text_grey);
+			opacity: 0.8;
+		}
+
+		.prompts {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			width: 100%;
+			background: var(--color_border_soft);
+			padding: 16px;
+			border-radius: var(--radius);
+
+			.promptsHint {
+				font-size: 13px;
+				color: var(--color_text);
+				font-weight: 500;
+				margin-bottom: 8px;
+				text-align: left;
+				opacity: 0.85;
+				padding-left: 2px;
+			}
+
+			.promptItem {
+				padding: 10px 14px;
+				background: var(--color_bg_menu);
+				border: 1px solid var(--color_border_light);
+				border-radius: var(--radius);
+				cursor: pointer;
+				transition: all 0.2s ease;
+				text-align: left;
+				font-size: 13px;
+				color: var(--color_text_light);
+
+				&:hover {
+					background: var(--color_bg_hover);
+					border-color: var(--color_border);
+					transform: translateY(-1px);
+					color: var(--color_text);
+				}
+
+				&:active {
+					transform: translateY(0);
+				}
+			}
+		}
+	}
 }
 
 @keyframes spin {
