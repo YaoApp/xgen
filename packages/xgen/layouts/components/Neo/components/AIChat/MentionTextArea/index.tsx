@@ -41,6 +41,7 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 		const editor = editorRef.current
 		if (editor && editor.innerText !== value) {
 			editor.innerText = value
+			setIsEmpty(!value.trim())
 		}
 	}, [value])
 
@@ -277,9 +278,8 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 		if (clear) {
 			clear(() => {
 				if (editorRef.current) {
-					editorRef.current.innerHTML = ''
+					editorRef.current.innerText = ''
 					setIsEmpty(true)
-					handleInput()
 				}
 			})
 		}
