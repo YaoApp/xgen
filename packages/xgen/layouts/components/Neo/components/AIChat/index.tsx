@@ -45,13 +45,14 @@ const AIChat = (props: AIChatProps) => {
 	const is_cn = locale === 'zh-CN'
 	const stack = global.stack.paths.join('/')
 
-	const { onSend, onClose, onNew, className, botAvatar, header, headerButtons, upload_options } = props
+	const { onSend, onClose, onNew, className, header, headerButtons, upload_options } = props
 	const [inputValue, setInputValue] = useState('')
 	const messagesEndRef = useRef<HTMLDivElement>(null)
-	const [chat_id, setChatId] = useState(global.neo.chat_id || 'hello')
+	const [chat_id, setChatId] = useState(global.neo.chat_id || '')
 	const [assistant_id, setAssistantId] = useState(global.neo.assistant_id)
 	const [currentPage, setCurrentPage] = useState(pathname.replace(/\/_menu.*/gi, '').toLowerCase())
 	const [initialized, setInitialized] = useState(false)
+	const [placeholder, setPlaceholder] = useState<App.ChatPlaceholder | undefined>(global.neo.placeholder)
 
 	const {
 		messages,
@@ -67,8 +68,10 @@ const AIChat = (props: AIChatProps) => {
 		formatFileName,
 		setAttachments,
 		getChat,
+		getLatestChat,
 		generatePrompts,
-		setPendingCleanup
+		setPendingCleanup,
+		makeChatID
 	} = useAIChat({ chat_id, upload_options })
 	const [chat_context, setChatContext] = useState<App.ChatContext>({ placeholder: '', signal: '' })
 
@@ -113,8 +116,16 @@ const AIChat = (props: AIChatProps) => {
 	// Load chat details when initialized
 	useEffect(() => {
 		const loadChat = async () => {
-			if (!initialized && chat_id) {
+			if (!initialized && chat_id != '') {
 				await getChat()
+				setInitialized(true)
+			}
+
+			// New chat
+			if (!initialized && !chat_id) {
+				// if res is not null, create a new chat
+				const res = await getLatestChat(assistant_id)
+				if (res) handleNewChat(res)
 				setInitialized(true)
 			}
 		}
@@ -189,12 +200,21 @@ const AIChat = (props: AIChatProps) => {
 	}, [pathname])
 
 	const handleNewChat = (options?: App.NewChatOptions) => {
-		const new_chat_id = `chat_${Date.now()}`
+		const new_chat_id = options?.chat_id || makeChatID()
 		setChatId(new_chat_id)
 		setMessages([])
 		setAttachments([])
 		global.setNeoChatId(new_chat_id)
-		setTitle(is_cn ? '未命名' : 'Untitled')
+
+		// Set placeholder
+		if (options?.placeholder) {
+			setPlaceholder(options?.placeholder)
+			global.setNeoPlaceholder(options?.placeholder)
+		}
+
+		// Title
+		const title = options?.placeholder?.title || (is_cn ? '新对话' : 'New Chat')
+		setTitle(title)
 
 		if (options?.content) {
 			setInputValue(options.content)

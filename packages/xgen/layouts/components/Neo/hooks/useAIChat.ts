@@ -755,11 +755,16 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 			if (filter.order) params.append('order', filter.order)
 		}
 
+		setLoading(true)
 		const endpoint = `${neo_api}/chats?${params.toString()}`
 		const [err, res] = await to<{ data: ChatResponse }>(axios.get(endpoint))
-		if (err) throw err
+		if (err) {
+			setLoading(false)
+			throw err
+		}
 
 		// Return the complete response data with pagination info
+		setLoading(false)
 		return {
 			groups: res?.data?.groups || [],
 			page: res?.data?.page || 1,
@@ -802,6 +807,49 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 			messages: formattedMessages,
 			title: chatInfo.chat.title || (is_cn ? '未命名' : 'Untitled')
 		}
+	})
+
+	/** Get the latest chat ID */
+	const getLatestChat = useMemoizedFn(async function (
+		assistant_id?: string
+	): Promise<{ chat_id: string; placeholder?: App.ChatPlaceholder } | null> {
+		if (!neo_api) return { chat_id: makeChatID(), placeholder: undefined }
+
+		const endpoint = `${neo_api}/chats/latest?token=${encodeURIComponent(getToken())}&assistant_id=${
+			assistant_id || ''
+		}`
+
+		const [err, res] = await to<{ data: App.ChatDetail | { placeholder: App.ChatPlaceholder } }>(
+			axios.get(endpoint)
+		)
+		if (err) {
+			message_.error('Failed to fetch the latest chat')
+			return null
+		}
+
+		if (!res?.data) return null
+
+		// New chat
+		if (typeof res.data === 'object' && 'placeholder' in res.data) {
+			return { chat_id: makeChatID(), placeholder: res.data.placeholder }
+		}
+
+		// Existing chat
+		const chatInfo = res.data
+		const formattedMessages: App.ChatInfo[] = []
+		chatInfo.history.forEach(({ role, content, assistant_id, assistant_name, assistant_avatar }) => {
+			formattedMessages.push(
+				...formatMessage(role, content, chat_id || '', assistant_id, assistant_name, assistant_avatar)
+			)
+		})
+
+		// Set messages directly in getChat
+		setMessages(formattedMessages)
+		setTitle(chatInfo.chat.title || (is_cn ? '未命名' : 'Untitled'))
+
+		// Set chat_id
+		global.setNeoChatId(chatInfo.chat.id)
+		return null
 	})
 
 	/** Update Chat **/
@@ -1091,6 +1139,13 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		return true
 	})
 
+	/** Make a chat ID */
+	const makeChatID = function () {
+		const random = Math.random().toString(36).substring(2, 15)
+		const ts = Date.now()
+		return `chat_${ts}_${random}`
+	}
+
 	return {
 		messages,
 		loading,
@@ -1106,8 +1161,10 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		cancelUpload,
 		formatFileName,
 		getHistory,
+		makeChatID,
 		getChats,
 		getChat,
+		getLatestChat,
 		updateChat,
 		title,
 		setTitle,
