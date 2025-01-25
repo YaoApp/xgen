@@ -42,6 +42,15 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 		if (editor && editor.innerText !== value) {
 			editor.innerText = value
 			setIsEmpty(!value.trim())
+
+			// Set cursor to end after value update
+			const range = document.createRange()
+			const selection = window.getSelection()
+			range.selectNodeContents(editor)
+			range.collapse(false)
+			selection?.removeAllRanges()
+			selection?.addRange(range)
+			editor.focus()
 		}
 	}, [value])
 
@@ -335,7 +344,16 @@ const MentionTextArea: React.FC<MentionTextAreaProps> = ({
 	useEffect(() => {
 		if (focus) {
 			focus(() => {
-				editorRef.current?.focus()
+				const editor = editorRef.current
+				if (editor) {
+					editor.focus()
+					const range = document.createRange()
+					const selection = window.getSelection()
+					range.selectNodeContents(editor)
+					range.collapse(false)
+					selection?.removeAllRanges()
+					selection?.addRange(range)
+				}
 			})
 		}
 	}, [focus])

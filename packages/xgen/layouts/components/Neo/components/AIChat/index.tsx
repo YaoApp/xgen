@@ -514,7 +514,10 @@ const AIChat = (props: AIChatProps) => {
 										<div
 											key={index}
 											className={styles.promptItem}
-											onClick={() => setInputValue(prompt)}
+											onClick={() => {
+												setInputValue(prompt)
+												focusRef.current?.()
+											}}
 										>
 											{prompt}
 										</div>
