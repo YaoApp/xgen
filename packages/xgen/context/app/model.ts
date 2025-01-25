@@ -39,13 +39,13 @@ export default class GlobalModel {
 
 		const theme = (local.xgen_theme || 'light') as App.Theme
 		const avatar = local.avatar as AvatarFullConfig
-		const layout = (local.xgen_layout || 'Admin') as App.Layout
+		// const layout = (local.xgen_layout || 'Admin') as App.Layout
 
 		this.reactions()
 		this.getAppInfo()
 		this.setTheme(theme)
 		this.setAvatar(avatar)
-		this.setLayout(layout)
+		// this.setLayout(layout)
 		this.setNeo()
 	}
 
@@ -56,10 +56,16 @@ export default class GlobalModel {
 
 		this.app_info = res
 
+		// API Prefix
 		window.$app.api_prefix = res.apiPrefix || '__yao'
 
+		// Storage
 		local.remote_cache = res.optional?.remoteCache ?? true
 		local.token_storage = res.token?.storage || 'sessionStorage'
+
+		// Default Layout
+		const layout = local.xgen_layout || res.optional?.layout || 'Admin'
+		this.setLayout(layout)
 
 		return Promise.resolve()
 	}

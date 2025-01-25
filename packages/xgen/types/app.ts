@@ -214,6 +214,9 @@ export declare namespace App {
 		mode?: 'development' | 'production' | 'test'
 
 		optional?: {
+			/** default layout */
+			layout?: Layout
+
 			/** remote api cache, default is true */
 			remoteCache?: boolean
 			/** neo config, for chatgpt service */
