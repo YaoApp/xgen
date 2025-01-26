@@ -11,7 +11,7 @@ const Index = (props: IProps) => {
 	const { text } = props
 
 	const cleanErrorMessage = (message: string) => {
-		return message.replace(/^Exception\|\d+:\s*/, '')
+		return message.replace(/^Error:\s*/, '').replace(/^Exception\|\d+:\s*/, '')
 	}
 
 	return (
