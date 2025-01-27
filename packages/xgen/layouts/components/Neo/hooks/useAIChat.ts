@@ -346,7 +346,15 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 			// The rest of the messages are total assistant messages
 			const userMessage = messages[0]
 			const assistantMessage = messages[1]
+			const lastMessage = messages[messages.length - 1]
+
 			if (messages.length === 2) {
+				// Validate the last message is not an error message
+
+				if (lastMessage.is_neo && (lastMessage as App.ChatAI).type == 'error') {
+					return false
+				}
+
 				return userMessage && assistantMessage
 			}
 
@@ -361,6 +369,11 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				if (resetUserMessageCount > 0) {
 					return false
 				}
+			}
+
+			// Validate the last message is not an error message
+			if (lastMessage.is_neo && (lastMessage as App.ChatAI).type == 'error') {
+				return false
 			}
 
 			return true
