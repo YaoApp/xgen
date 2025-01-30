@@ -415,7 +415,6 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 			es.onmessage = ({ data }: { data: string }) => {
 				const formated_data = ntry(() => JSON.parse(data)) as App.ChatAI
 				if (!formated_data) return
-
 				// data format handle
 				const {
 					text,
@@ -518,7 +517,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					return
 				}
 
-				if (!text && !props) return
+				if (!text && !props && !type) return
 				if (props) {
 					current_answer.props = props
 				}

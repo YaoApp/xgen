@@ -23,7 +23,7 @@ const Index = (props: IProps) => {
 			})
 			return component
 		})
-	}, [type, name])
+	}, [type])
 
 	return (
 		<Suspense fallback={null}>

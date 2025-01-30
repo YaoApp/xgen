@@ -15,7 +15,7 @@ interface AIMessageProps {
 }
 
 const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) => {
-	const { text, props, type, assistant_id, assistant_name, assistant_avatar } = chat_info
+	const { text, props = { chat_id }, type, assistant_id, assistant_name, assistant_avatar } = chat_info
 
 	// Function message (function call)
 	if (type === 'function') {
