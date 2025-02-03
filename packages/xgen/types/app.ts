@@ -26,7 +26,8 @@ export declare namespace App {
 		| 'progress'
 		| 'page'
 		| 'widget'
-		| 'function'
+		| 'tool'
+		| 'think'
 		| 'loading'
 		| 'action'
 
@@ -89,7 +90,8 @@ export declare namespace App {
 		assistant_name?: string
 		assistant_avatar?: string
 		// actions?: Array<Action.ActionParams>
-		done: boolean
+		done: boolean // Whether the message is done
+		delta?: boolean // Whether the message is a delta message
 	}
 
 	type ChatHuman = {

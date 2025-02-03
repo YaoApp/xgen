@@ -394,6 +394,25 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 			}
 		}
 
+		function getContent(
+			content: string,
+			type: string,
+			text: string,
+			delta: boolean,
+			is_new: boolean,
+			props: Record<string, any> | undefined
+		): string {
+			// Content value
+			if (delta) {
+				content = content + text
+				if (text?.startsWith('\r') || is_new) {
+					content = text.replace('\r', '')
+				}
+				return content
+			}
+			return text || ''
+		}
+
 		function setupEventSource() {
 			// Save last assistant info
 			const last_assistant: {
@@ -401,6 +420,9 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				assistant_name: string | null
 				assistant_avatar: string | null
 			} = { assistant_id: null, assistant_name: null, assistant_avatar: null }
+
+			let last_type: App.ChatMessageType | null = null
+			let content = ''
 
 			// Close existing connection if any
 			event_source.current?.close()
@@ -424,8 +446,11 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					assistant_id,
 					assistant_name,
 					assistant_avatar,
-					new: is_new
+					new: is_new,
+					delta
 				} = formated_data
+
+				content = getContent(content, type || 'text', text, delta || false, is_new, props)
 
 				// Action message (action call)
 				if (type === 'action') {
@@ -491,8 +516,8 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				current_answer.assistant_id = last_assistant.assistant_id || undefined
 				current_answer.assistant_name = last_assistant.assistant_name || undefined
 				current_answer.assistant_avatar = last_assistant.assistant_avatar || undefined
+				current_answer.type = type || last_type || 'text'
 
-				current_answer.type = type || 'text'
 				if (done) {
 					if (text) {
 						current_answer.text = text
@@ -507,12 +532,14 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 
 					// If is the first message, generate title using SSE
 					if (isFirstMessage(messages) && chat_id) {
-						handleTitleGeneration(messages, chat_id)
+						// handleTitleGeneration(messages, chat_id)
 					}
 
-					setMessages([...messages])
+					// Update the message if it has text or props
+					if ((text && text.length > 0) || props) {
+						setMessages([...messages])
+					}
 					setLoading(false)
-
 					es.close()
 					return
 				}
@@ -523,10 +550,19 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				}
 
 				if (text) {
-					if (text.startsWith('\r')) {
-						current_answer.text = text.replace('\r', '')
-					} else {
-						current_answer.text = current_answer.text + text
+					current_answer.text = content
+
+					// delta message is a partial message
+					if (delta) {
+						current_answer.text = content
+						if (type == 'think' || type == 'tool') {
+							current_answer.type = 'text'
+
+							// Closed tag
+							if (content.indexOf(`</${type}>`) == -1) {
+								current_answer.text += `</${type}>`
+							}
+						}
 					}
 				}
 

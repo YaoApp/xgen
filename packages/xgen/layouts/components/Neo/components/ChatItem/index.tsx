@@ -2,6 +2,7 @@ import styles from './index.less'
 import type { App } from '@/types'
 import AIMessage from './AIMessage'
 import HumanMessage from './HumanMessage'
+import { useEffect, useState } from 'react'
 
 interface ChatItemProps {
 	chat_info: App.ChatInfo
@@ -17,7 +18,12 @@ const ChatItem = ({ chat_info, context, field, callback, chat_id, assistant_id }
 	return (
 		<div className={styles.content}>
 			{isAIMessage(chat_info) ? (
-				<AIMessage chat_info={chat_info} context={context} callback={callback} chat_id={chat_id} />
+				<AIMessage
+					chat_info={chat_info as App.ChatAI}
+					context={context}
+					callback={callback}
+					chat_id={chat_id}
+				/>
 			) : (
 				<HumanMessage chat_info={chat_info as App.ChatHuman} />
 			)}
