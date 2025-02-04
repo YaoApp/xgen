@@ -448,6 +448,13 @@ const AIChat = (props: AIChatProps) => {
 					if (typeof text === 'string' && text.trim()) {
 						setInputValue(text)
 					}
+				},
+				onComplete: (text) => {
+					// Remove <think>....</think>
+					const parts = text.split('</think>')
+					if (parts.length > 1) {
+						setInputValue(parts[1].trim())
+					}
 				}
 			})
 

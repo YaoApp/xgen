@@ -82,6 +82,7 @@ export declare namespace App {
 		is_neo: boolean
 		new: boolean
 		text: string
+		id?: string
 		type?: ChatMessageType
 		function?: string
 		arguments?: string

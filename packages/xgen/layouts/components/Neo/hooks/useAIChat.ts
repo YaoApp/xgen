@@ -128,6 +128,29 @@ const processTagContent = (text: string, tagName: string) => {
 	})
 }
 
+/** Format text to MDX with proper tag handling */
+const formatToMDX = (text: string, tokens: Record<string, { pending: boolean }>) => {
+	let formattedText = text
+
+	Object.keys(tokens).forEach((token) => {
+		const tag = token.charAt(0).toUpperCase() + token.slice(1)
+		const pending = tokens[token]?.pending ? 'true' : 'false'
+
+		// First escape content inside the original tags
+		formattedText = processTagContent(formattedText, token)
+
+		// TrimRight uncompleted tags
+		formattedText = formattedText.replace(/<[^>]*$/, '')
+
+		// Then replace the tags with the new format
+		formattedText = formattedText
+			.replace(new RegExp(`<${token}>`, 'gi'), `<${tag} pending="${pending}">\n`)
+			.replace(new RegExp(`</${token}>`, 'gi'), `\n</${tag}>`)
+	})
+
+	return formattedText
+}
+
 export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 	const event_source = useRef<EventSource>()
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
@@ -152,6 +175,69 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		if (api.startsWith('http')) return api
 		return `/api/${window.$app.api_prefix}${api}`
 	}, [global.app_info.optional?.neo?.api])
+
+	/** Merge messages with same id */
+	const mergeMessages = useMemoizedFn((parsedContent: any[], baseMessage: any): App.ChatInfo[] => {
+		const res: App.ChatInfo[] = []
+
+		// Step 1: Group messages by ID
+		const messageGroups = new Map<string, any[]>()
+		parsedContent.forEach((item) => {
+			if (!item.id) {
+				let text =
+					item.type === 'think' || item.type === 'tool' ? item.props?.['text'] : item.text || ''
+
+				res.push({
+					...baseMessage,
+					...item,
+					type: 'text',
+					text: text
+				})
+				return
+			}
+			const group = messageGroups.get(item.id) || []
+			group.push(item)
+			messageGroups.set(item.id, group)
+		})
+
+		// Step 2 & 3: Process each group and merge into the last item
+		messageGroups.forEach((group) => {
+			const lastItem = group[group.length - 1]
+			let mergedText = ''
+
+			// Merge all items' text
+			group.forEach((item) => {
+				if (item.type === 'think' || item.type === 'tool') {
+					let text = item.props?.['text'] || ''
+					if (item.type == 'tool') {
+						text = text.replace(/\{/g, '%7B')
+					}
+					mergedText += '\n' + text
+				} else {
+					mergedText += '\n' + item.text || ''
+				}
+			})
+
+			// Create final message based on last item's type
+			const finalMessage = {
+				...baseMessage,
+				...lastItem,
+				type: 'text',
+				text: formatToMDX(mergedText, {
+					think: { pending: false },
+					tool: { pending: false }
+				})
+			}
+
+			// Remove props if exists
+			if (finalMessage.props) {
+				delete finalMessage.props
+			}
+
+			res.push(finalMessage)
+		})
+		return res
+	})
 
 	/** Format chat message **/
 	const formatMessage = useMemoizedFn(
@@ -178,11 +264,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 			if (trimmedContent.startsWith('[{')) {
 				try {
 					const parsedContent = JSON.parse(trimmedContent)
-					const res: App.ChatInfo[] = []
-					parsedContent.forEach((item: any) => {
-						res.push({ ...baseMessage, ...item })
-					})
-					return res
+					return mergeMessages(parsedContent, baseMessage)
 				} catch (e) {
 					return [{ ...baseMessage, text: content }]
 				}
@@ -239,6 +321,13 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				onComplete: async (finalTitle) => {
 					// Use the final complete title
 					generatedTitle = finalTitle
+					// Remove <think>....</think>
+					finalTitle = finalTitle.replace(/<think>.*?<\/think>/g, '')
+					const parts = finalTitle.split('</think>')
+					if (parts.length > 1) {
+						finalTitle = parts[1]
+					}
+
 					setTitle(finalTitle)
 
 					// Update the chat with the generated title
@@ -552,7 +641,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 
 					// If is the first message, generate title using SSE
 					if (isFirstMessage(messages) && chat_id) {
-						// handleTitleGeneration(messages, chat_id)
+						handleTitleGeneration(messages, chat_id)
 					}
 
 					// Update the message if it has text or props
@@ -594,22 +683,8 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 						}
 					}
 
-					// format the text to be a valid mdx
-					Object.keys(tokens).forEach((token) => {
-						const tag = token.charAt(0).toUpperCase() + token.slice(1)
-						const pending = tokens[token]?.pending ? 'true' : 'false'
-
-						// First escape content inside the original tags
-						current_answer.text = processTagContent(current_answer.text, token)
-
-						// TrimRight uncompleted tags
-						current_answer.text = current_answer.text.replace(/<[^>]*$/, '')
-
-						// Then replace the tags with the new format
-						current_answer.text = current_answer.text
-							.replace(new RegExp(`<${token}>`, 'gi'), `<${tag} pending="${pending}">\n`)
-							.replace(new RegExp(`</${token}>`, 'gi'), `\n</${tag}>`)
-					})
+					// Format the text to be a valid MDX
+					current_answer.text = formatToMDX(current_answer.text, tokens)
 				}
 
 				const message_new = [...messages]
@@ -1144,6 +1219,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 						options.onProgress?.(result)
 					}
 					if (done) {
+						options.onComplete?.(result)
 						es.close()
 						resolve(result)
 					}
