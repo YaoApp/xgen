@@ -109,6 +109,25 @@ type GenerateOptions = {
 	onComplete?: (finalText: string) => void | Promise<void>
 }
 
+// HTML escape helper function
+const escapeHtml = (text: string) => {
+	return text
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#039;')
+}
+
+// Process content between tags
+const processTagContent = (text: string, tagName: string) => {
+	// Look for content between opening and closing tags, using positive lookbehind and lookahead
+	const regex = new RegExp(`(?<=<${tagName}>)(.*?)(?=<\/${tagName}>)`, 'gis')
+	return text.replace(regex, (content) => {
+		return escapeHtml(content)
+	})
+}
+
 export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 	const event_source = useRef<EventSource>()
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
@@ -579,9 +598,17 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					Object.keys(tokens).forEach((token) => {
 						const tag = token.charAt(0).toUpperCase() + token.slice(1)
 						const pending = tokens[token]?.pending ? 'true' : 'false'
+
+						// First escape content inside the original tags
+						current_answer.text = processTagContent(current_answer.text, token)
+
+						// TrimRight uncompleted tags
+						current_answer.text = current_answer.text.replace(/<[^>]*$/, '')
+
+						// Then replace the tags with the new format
 						current_answer.text = current_answer.text
-							.replace(`<${token}>`, `<${tag} pending="${pending}">\n`)
-							.replace(`</${token}>`, `\n</${tag}>`)
+							.replace(new RegExp(`<${token}>`, 'gi'), `<${tag} pending="${pending}">\n`)
+							.replace(new RegExp(`</${token}>`, 'gi'), `\n</${tag}>`)
 					})
 				}
 

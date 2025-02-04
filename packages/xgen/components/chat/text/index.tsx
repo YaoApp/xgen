@@ -31,7 +31,6 @@ const components = {
 		)
 	},
 	Tool: function (props: any) {
-		console.log('Tool', props)
 		const { pending = 'false', chat_id } = props
 		const pendingBool = pending == 'true'
 		return (
@@ -89,8 +88,8 @@ const Index = (props: IProps) => {
 		)
 
 		if (err) {
-			console.log(`text`, text)
-			setContent(<div className={'error'}>{err.message}</div>)
+			console.error(err)
+			console.log(`original text:\n`, text)
 			return
 		}
 
