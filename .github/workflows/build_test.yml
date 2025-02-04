@@ -44,6 +44,11 @@ jobs:
                   - name: Install
                     run: pnpm install --no-frozen-lockfile
 
+                  - name: Inspect editorjs_plugins dependencies
+                    run: cd packages/editorjs_plugins && pnpm ls
+
+                  - name: Inspect xgen dependencies
+                    run: cd packages/xgen && pnpm ls
+
                   - name: Test Build
                     run: pnpm run build
-                 
