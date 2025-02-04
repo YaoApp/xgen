@@ -97,7 +97,7 @@
             "vfile": "^5.3.7"
       },
       "devDependencies": {
-            "@swc/core": "1.10.12",
+            "@swc/core": "1.3.32",
             "@types/less": "^3.0.3",
             "@types/lodash-es": "^4.17.6",
             "@types/mustache": "^4.2.2",
