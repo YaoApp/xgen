@@ -29,9 +29,10 @@ interface IProps extends Component.PropsChatComponent {
 const Index = (props: IProps) => {
 	const { text, chat_id, pending, children } = props
 	const is_cn = getLocale() === 'zh-CN'
+	let content = ''
 
-	let content = getTextFromHtml(children) || text || (is_cn ? '工具调用请求' : 'Tool call request')
 	if (!pending) {
+		content = getTextFromHtml(children) || text || (is_cn ? '工具调用请求' : 'Tool call request')
 		try {
 			content = content.replace(/%7B/g, '{').replace(/%7D/g, '}')
 			const json = JSON.parse(content)
@@ -43,19 +44,20 @@ const Index = (props: IProps) => {
 
 	return (
 		<div>
-			{pending && (
+			{pending ? (
 				<Loading
 					chat_id={chat_id}
-					placeholder={is_cn ? '正在调用...' : 'Calling'}
+					placeholder={is_cn ? '工具调用中' : 'Calling'}
 					icon='material-slow_motion_video'
 				/>
+			) : (
+				<div className={styles.tool}>
+					<span className={styles.icon}>
+						<Icon name='material-slow_motion_video' size={16} />
+					</span>
+					<span>{content}</span>
+				</div>
 			)}
-			<div className={styles.tool}>
-				<span className={styles.icon}>
-					<Icon name='material-slow_motion_video' size={16} />
-				</span>
-				<span>{content}</span>
-			</div>
 		</div>
 	)
 }
