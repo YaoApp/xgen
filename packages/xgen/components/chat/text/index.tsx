@@ -10,15 +10,36 @@ import { compile, run } from '@mdx-js/mdx'
 import { useMDXComponents } from '@mdx-js/react'
 import styles from './index.less'
 import Code from './Code'
+import Think from '../think'
+import Tool from '../tool'
 import type { Component } from '@/types'
 
 interface IProps extends Component.PropsChatComponent {
-	id?: string
+	chat_id: string
 	text: string
 }
 
 const components = {
-	code: Code
+	code: Code,
+	Think: function (props: any) {
+		const { pending = 'false', chat_id } = props
+		const pendingBool = pending == 'true'
+		return (
+			<Think pending={pendingBool} chat_id={chat_id}>
+				{props.children || 'Thinking...'}
+			</Think>
+		)
+	},
+	Tool: function (props: any) {
+		console.log('Tool', props)
+		const { pending = 'false', chat_id } = props
+		const pendingBool = pending == 'true'
+		return (
+			<Tool pending={pendingBool} chat_id={chat_id}>
+				{props.children || 'Calling...'}
+			</Tool>
+		)
+	}
 }
 
 const Index = (props: IProps) => {
@@ -28,9 +49,10 @@ const Index = (props: IProps) => {
 
 	useAsyncEffect(async () => {
 		const vfile = new VFile(text)
+
 		const [err, compiledSource] = await to(
 			compile(vfile, {
-				format: 'md',
+				format: 'mdx',
 				outputFormat: 'function-body',
 				providerImportSource: '@mdx-js/react',
 				remarkPlugins: [remarkGfm],
@@ -67,12 +89,13 @@ const Index = (props: IProps) => {
 		)
 
 		if (err) {
+			console.log(`text`, text)
 			setContent(<div className={'error'}>{err.message}</div>)
 			return
 		}
 
 		if (!compiledSource) return
-		compiledSource.value = (compiledSource.value as string).replaceAll('%7B', '{')
+		// compiledSource.value = (compiledSource.value as string).replaceAll('%7B', '{')
 
 		const { default: Content } = await run(compiledSource, {
 			...JsxRuntime,

@@ -11,6 +11,7 @@ import { RcFile } from 'antd/es/upload'
 import { getLocale } from '@umijs/max'
 import type { Action } from '@/types'
 import { useAction } from '@/actions'
+import { t } from '@wangeditor/editor'
 
 type Args = {
 	/** the assistant id to use for the chat **/
@@ -549,6 +550,10 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 					current_answer.props = props
 				}
 
+				const tokens: Record<string, { pending: boolean }> = {
+					think: { pending: false },
+					tool: { pending: false }
+				}
 				if (text) {
 					current_answer.text = content
 
@@ -557,13 +562,27 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 						current_answer.text = content
 						if (type == 'think' || type == 'tool') {
 							current_answer.type = 'text'
-
-							// Closed tag
+							// check if the tag is closed
 							if (content.indexOf(`</${type}>`) == -1) {
+								tokens[type].pending = true
 								current_answer.text += `</${type}>`
+							}
+
+							// Tools escape { to %7B
+							if (type == 'tool') {
+								current_answer.text = current_answer.text.replace(/{/g, '%7B')
 							}
 						}
 					}
+
+					// format the text to be a valid mdx
+					Object.keys(tokens).forEach((token) => {
+						const tag = token.charAt(0).toUpperCase() + token.slice(1)
+						const pending = tokens[token]?.pending ? 'true' : 'false'
+						current_answer.text = current_answer.text
+							.replace(`<${token}>`, `<${tag} pending="${pending}">\n`)
+							.replace(`</${token}>`, `\n</${tag}>`)
+					})
 				}
 
 				const message_new = [...messages]

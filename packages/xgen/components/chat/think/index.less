@@ -1,10 +1,35 @@
 .think {
 	color: var(--color_text_grey);
 	font-size: 12px;
+	padding: 12px 16px;
+	margin: 8px 0;
+	border-left: 4px solid var(--color_border);
+	background: var(--color_bg_light);
+	border-radius: var(--radius);
+}
+
+.header {
 	display: flex;
-	gap: 4px;
 	align-items: center;
+	gap: 8px;
+	color: var(--color_text_grey);
+	font-size: 12px;
 	padding: 4px 0;
+}
+
+.toggle {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	color: var(--color_text_grey);
+	&:hover {
+		color: var(--color_text);
+	}
+}
+
+.collapsed {
+	display: none;
 }
 
 .icon {
