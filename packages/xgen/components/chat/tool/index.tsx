@@ -47,7 +47,7 @@ const Index = (props: IProps) => {
 			{pending ? (
 				<Loading
 					chat_id={chat_id}
-					placeholder={is_cn ? '工具调用中' : 'Calling'}
+					placeholder={is_cn ? '工具调用请求' : 'Tool call request'}
 					icon='material-slow_motion_video'
 				/>
 			) : (
