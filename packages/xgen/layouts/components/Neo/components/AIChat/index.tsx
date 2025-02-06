@@ -125,7 +125,8 @@ const AIChat = (props: AIChatProps) => {
 			if (!initialized && !chat_id) {
 				// if res is not null, create a new chat
 				const res = await getLatestChat(assistant_id)
-				if (res) handleNewChat(res)
+				res && !res.exist && handleNewChat(res) // new chat
+				res && res.exist && setChatId(res.chat_id) // existing chat
 				setInitialized(true)
 			}
 		}

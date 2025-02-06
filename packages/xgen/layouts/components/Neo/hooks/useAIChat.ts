@@ -981,8 +981,8 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 	/** Get the latest chat ID */
 	const getLatestChat = useMemoizedFn(async function (
 		assistant_id?: string
-	): Promise<{ chat_id: string; placeholder?: App.ChatPlaceholder } | null> {
-		if (!neo_api) return { chat_id: makeChatID(), placeholder: undefined }
+	): Promise<{ chat_id: string; placeholder?: App.ChatPlaceholder; exist?: boolean } | null> {
+		if (!neo_api) return { chat_id: makeChatID(), placeholder: undefined, exist: false }
 
 		const endpoint = `${neo_api}/chats/latest?token=${encodeURIComponent(getToken())}&assistant_id=${
 			assistant_id || ''
@@ -1017,8 +1017,8 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		setTitle(chatInfo.chat.title || (is_cn ? '未命名' : 'Untitled'))
 
 		// Set chat_id
-		global.setNeoChatId(chatInfo.chat.id)
-		return null
+		global.setNeoChatId(chatInfo.chat.chat_id)
+		return { chat_id: chatInfo.chat.chat_id, exist: true }
 	})
 
 	/** Update Chat **/
