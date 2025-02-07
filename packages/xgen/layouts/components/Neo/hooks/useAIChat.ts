@@ -218,6 +218,12 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 				}
 			})
 
+			// if message type is not text, tool, think, then append directly
+			if (lastItem.type != 'text' && lastItem.type != 'tool' && lastItem.type != 'think') {
+				res.push({ ...baseMessage, ...lastItem })
+				return
+			}
+
 			// Create final message based on last item's type
 			const finalMessage = {
 				...baseMessage,
