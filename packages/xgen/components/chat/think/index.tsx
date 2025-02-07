@@ -15,7 +15,7 @@ interface IProps extends Component.PropsChatComponent {
 const Index = (props: IProps) => {
 	const { chat_id, pending, text, children } = props
 	const is_cn = getLocale() === 'zh-CN'
-	const [isCollapsed, setIsCollapsed] = useState(false)
+	const [isCollapsed, setIsCollapsed] = useState(pending ? false : true)
 
 	const toggleCollapse = () => {
 		setIsCollapsed(!isCollapsed)
