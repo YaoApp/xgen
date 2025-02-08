@@ -49,16 +49,18 @@ const Index = (props: IProps) => {
 				{text && <Text assistant_id={assistant_id} chat_id={chat_id} text={text} />}
 			</div>
 			<div className={styles.actions}>
-				{actions.map((action: ButtonProps, index: number) => (
-					<button
-						key={index}
-						className={clsx(styles.button, styles[action.style || 'default'])}
-						onClick={() => runAction(action)}
-					>
-						{action.icon && <Icon name={action.icon} size={16} />}
-						<span>{action.title || 'Cancel'}</span>
-					</button>
-				))}
+				{actions &&
+					actions.length > 0 &&
+					actions.map((action: ButtonProps, index: number) => (
+						<button
+							key={index}
+							className={clsx(styles.button, styles[action.style || 'default'])}
+							onClick={() => runAction(action)}
+						>
+							{action.icon && <Icon name={action.icon} size={16} />}
+							<span>{action.title || 'Cancel'}</span>
+						</button>
+					))}
 			</div>
 		</div>
 	)
