@@ -5,11 +5,14 @@
 	padding-right: 12px;
 	border-right: 1px solid var(--color_border_light);
 	position: relative;
+	width: 160px;
 
 	.avatarWrapper {
 		display: flex;
 		align-items: center;
 		gap: 8px;
+		flex: 1;
+		min-width: 0;
 
 		.avatar {
 			width: 20px;
@@ -19,12 +22,46 @@
 			transform: scale(1.2);
 			background-color: var(--color_bg_hover);
 			transform-origin: center;
+			flex-shrink: 0;
+		}
+
+		.loadingAvatar {
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			background: linear-gradient(
+				90deg,
+				var(--color_bg_hover) 25%,
+				var(--color_border_light) 37%,
+				var(--color_bg_hover) 63%
+			);
+			background-size: 400% 100%;
+			flex-shrink: 0;
+			animation: shimmer 1.4s ease infinite;
+		}
+
+		.loadingName {
+			height: 12px;
+			width: 60px;
+			background: linear-gradient(
+				90deg,
+				var(--color_bg_hover) 25%,
+				var(--color_border_light) 37%,
+				var(--color_bg_hover) 63%
+			);
+			background-size: 400% 100%;
+			border-radius: 4px;
+			animation: shimmer 1.4s ease infinite;
 		}
 
 		.assistantName {
 			font-size: 12px;
 			color: var(--color_text);
 			font-weight: 500;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			min-width: 0;
 		}
 	}
 
@@ -38,6 +75,7 @@
 		width: 16px;
 		height: 16px;
 		border-radius: 50%;
+		flex-shrink: 0;
 
 		&.disabled {
 			cursor: not-allowed;
@@ -55,5 +93,14 @@
 		.deleteBtn {
 			background: var(--color_border_light);
 		}
+	}
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0 50%;
 	}
 }

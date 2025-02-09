@@ -56,6 +56,13 @@ export declare namespace App {
 		[key: string]: any
 	}
 
+	interface AssistantSummary {
+		assistant_id?: string
+		assistant_name?: string
+		assistant_avatar?: string
+		assistant_deleteable?: boolean
+	}
+
 	interface AssistantFilter {
 		keywords?: string
 		tags?: string[]
@@ -117,7 +124,15 @@ export declare namespace App {
 
 	/** Chat detail with history */
 	interface ChatDetail {
-		chat: Record<string, any>
+		chat: {
+			assistant_id?: string
+			assistant_name?: string
+			assistant_avatar?: string
+			assistant_deleteable?: boolean
+			placeholder?: ChatPlaceholder
+
+			[key: string]: any
+		}
 		history: Array<{
 			role: string
 			content: string

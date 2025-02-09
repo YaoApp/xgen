@@ -1,20 +1,26 @@
 import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import clsx from 'clsx'
+import { App } from '@/types'
 
 interface AssistantProps {
-	assistant: {
-		assistant_id: string
-		assistant_name: string
-		assistant_avatar?: string
-		canDelete?: boolean
-	}
+	assistant: App.AssistantSummary | undefined
 	loading?: boolean
 	onDelete?: () => void
 }
 
 const Assistant = ({ assistant, loading, onDelete }: AssistantProps) => {
-	const { assistant_name, assistant_avatar } = assistant
+	const { assistant_id, assistant_name, assistant_avatar, assistant_deleteable } = assistant || {}
+	if (!assistant_id || assistant_id == '' || loading) {
+		return (
+			<div className={styles.assistantInfo}>
+				<div className={styles.avatarWrapper}>
+					<div className={styles.loadingAvatar} />
+					<div className={styles.loadingName} />
+				</div>
+			</div>
+		)
+	}
 
 	return (
 		<div className={styles.assistantInfo}>
@@ -24,17 +30,18 @@ const Assistant = ({ assistant, loading, onDelete }: AssistantProps) => {
 					alt='Assistant'
 					className={styles.avatar}
 				/>
-				<div className={styles.assistantName}>{assistant_name}</div>
+				<div className={styles.assistantName} title={assistant_name}>
+					{assistant_name}
+				</div>
 			</div>
-			{assistant.canDelete ||
-				(assistant.canDelete === undefined && (
-					<div
-						className={clsx(styles.deleteBtn, { [styles.disabled]: loading })}
-						onClick={!loading ? onDelete : undefined}
-					>
-						<Icon name='material-close' size={12} />
-					</div>
-				))}
+			{(assistant_deleteable || assistant_deleteable === undefined) && (
+				<div
+					className={clsx(styles.deleteBtn, { [styles.disabled]: loading })}
+					onClick={!loading ? onDelete : undefined}
+				>
+					<Icon name='material-close' size={12} />
+				</div>
+			)}
 		</div>
 	)
 }

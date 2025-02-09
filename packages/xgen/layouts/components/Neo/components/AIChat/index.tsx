@@ -50,12 +50,13 @@ const AIChat = (props: AIChatProps) => {
 	const [inputValue, setInputValue] = useState('')
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const [chat_id, setChatId] = useState(global.neo.chat_id || '')
-	const [assistant_id, setAssistantId] = useState(global.neo.assistant_id)
+	// const [assistant_id, setAssistantId] = useState(global.neo.assistant_id)
 	const [currentPage, setCurrentPage] = useState(pathname.replace(/\/_menu.*/gi, '').toLowerCase())
 	const [initialized, setInitialized] = useState(false)
 	const [placeholder, setPlaceholder] = useState<App.ChatPlaceholder | undefined>(global.neo.placeholder)
 
 	const {
+		assistant,
 		messages,
 		loading,
 		title,
@@ -102,7 +103,7 @@ const AIChat = (props: AIChatProps) => {
 					config: v.config,
 					signal: chat_context.signal,
 					chat_id: chat_id,
-					assistant_id: assistant_id
+					assistant_id: assistant?.assistant_id || ''
 				}
 			}
 		])
@@ -125,7 +126,7 @@ const AIChat = (props: AIChatProps) => {
 			// New chat
 			if (!initialized && !chat_id) {
 				// if res is not null, create a new chat
-				const res = await getLatestChat(assistant_id)
+				const res = await getLatestChat(assistant?.assistant_id || '')
 				res && !res.exist && handleNewChat(res) // new chat
 				res && res.exist && setChatId(res.chat_id) // existing chat
 				setInitialized(true)
@@ -163,7 +164,7 @@ const AIChat = (props: AIChatProps) => {
 					config: field.config,
 					signal: chat_context.signal,
 					chat_id: chat_id,
-					assistant_id: assistant_id
+					assistant_id: assistant?.assistant_id || ''
 				}
 			}
 
@@ -482,9 +483,9 @@ const AIChat = (props: AIChatProps) => {
 
 	// Add mock data for assistant
 	const mockAssistant = {
-		assistant_id: assistant_id || 'default-neo',
-		assistant_name: 'Neo Assistant',
-		assistant_avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Neo'
+		assistant_id: assistant?.assistant_id || 'default-neo',
+		assistant_name: assistant?.assistant_name || 'Neo Assistant',
+		assistant_avatar: assistant?.assistant_avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=Neo'
 		// canDelete: false
 	}
 
@@ -569,7 +570,11 @@ const AIChat = (props: AIChatProps) => {
 					<div className={styles.currentPage}>
 						{/* Assistant Info Section */}
 						<div className={styles.leftSection}>
-							<Assistant assistant={mockAssistant} loading={loading} onDelete={() => {}} />
+							<Assistant
+								assistant={assistant || {}}
+								loading={loading}
+								onDelete={() => {}}
+							/>
 							{/* Current Page Info */}
 							{showCurrentPage && currentPage && (
 								<div className={styles.pageInfo}>

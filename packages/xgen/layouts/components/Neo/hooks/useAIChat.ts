@@ -151,15 +151,18 @@ const formatToMDX = (text: string, tokens: Record<string, { pending: boolean }>)
 	return formattedText
 }
 
-export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
+export default ({ chat_id, upload_options = {} }: Args) => {
 	const event_source = useRef<EventSource>()
+	const global = useGlobal()
 	const [messages, setMessages] = useState<Array<App.ChatInfo>>([])
+	const [assistant, setAssistant] = useState<App.AssistantSummary | undefined>(undefined)
+
 	const [title, setTitle] = useState<string>('')
 	const [loading, setLoading] = useState(false)
 	const [attachments, setAttachments] = useState<App.ChatAttachment[]>([])
 	const [pendingCleanup, setPendingCleanup] = useState<App.ChatAttachment[]>([])
 	const uploadControllers = useRef<Map<string, AbortController>>(new Map())
-	const global = useGlobal()
+	const [assistant_id, setAssistantId] = useState<string | undefined>('')
 
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
@@ -175,6 +178,12 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		if (api.startsWith('http')) return api
 		return `/api/${window.$app.api_prefix}${api}`
 	}, [global.app_info.optional?.neo?.api])
+
+	/** Update assistant **/
+	const updateAssistant = useMemoizedFn(async (assistant: App.AssistantSummary) => {
+		setAssistant(assistant)
+		setAssistantId(assistant.assistant_id)
+	})
 
 	/** Merge messages with same id */
 	const mergeMessages = useMemoizedFn((parsedContent: any[], baseMessage: any): App.ChatInfo[] => {
@@ -978,6 +987,9 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		setMessages(formattedMessages)
 		setTitle(chatInfo.chat.title || (is_cn ? '未命名' : 'Untitled'))
 
+		// Update assistant
+		updateAssistant(res.data.chat as App.AssistantSummary)
+
 		return {
 			messages: formattedMessages,
 			title: chatInfo.chat.title || (is_cn ? '未命名' : 'Untitled')
@@ -1006,6 +1018,8 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 
 		// New chat
 		if (typeof res.data === 'object' && 'placeholder' in res.data) {
+			// Update assistant
+			updateAssistant(res.data as App.AssistantSummary)
 			return { chat_id: makeChatID(), placeholder: res.data.placeholder }
 		}
 
@@ -1021,6 +1035,9 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 		// Set messages directly in getChat
 		setMessages(formattedMessages)
 		setTitle(chatInfo.chat.title || (is_cn ? '未命名' : 'Untitled'))
+
+		// Update assistant
+		updateAssistant(chatInfo.chat)
 
 		// Set chat_id
 		global.setNeoChatId(chatInfo.chat.chat_id)
@@ -1325,6 +1342,7 @@ export default ({ assistant_id, chat_id, upload_options = {} }: Args) => {
 	return {
 		messages,
 		loading,
+		assistant,
 		setMessages,
 		cancel,
 		uploadFile,
