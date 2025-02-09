@@ -57,6 +57,7 @@ const AIChat = (props: AIChatProps) => {
 
 	const {
 		assistant,
+		loadingChat,
 		messages,
 		loading,
 		title,
@@ -65,6 +66,7 @@ const AIChat = (props: AIChatProps) => {
 		cancel,
 		uploadFile,
 		attachments,
+		resetAssistant,
 		removeAttachment,
 		addAttachment,
 		formatFileName,
@@ -481,14 +483,6 @@ const AIChat = (props: AIChatProps) => {
 		}
 	}
 
-	// Add mock data for assistant
-	const mockAssistant = {
-		assistant_id: assistant?.assistant_id || 'default-neo',
-		assistant_name: assistant?.assistant_name || 'Neo Assistant',
-		assistant_avatar: assistant?.assistant_avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=Neo'
-		// canDelete: false
-	}
-
 	return (
 		<div className={clsx(styles.aiChat, className)}>
 			{header || (
@@ -572,8 +566,8 @@ const AIChat = (props: AIChatProps) => {
 						<div className={styles.leftSection}>
 							<Assistant
 								assistant={assistant || {}}
-								loading={loading}
-								onDelete={() => {}}
+								loading={loadingChat}
+								onDelete={resetAssistant}
 							/>
 							{/* Current Page Info */}
 							{showCurrentPage && currentPage && (

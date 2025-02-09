@@ -2,6 +2,7 @@ import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import clsx from 'clsx'
 import { App } from '@/types'
+import { useGlobal } from '@/context/app'
 
 interface AssistantProps {
 	assistant: App.AssistantSummary | undefined
@@ -10,8 +11,8 @@ interface AssistantProps {
 }
 
 const Assistant = ({ assistant, loading, onDelete }: AssistantProps) => {
-	const { assistant_id, assistant_name, assistant_avatar, assistant_deleteable } = assistant || {}
-	if (!assistant_id || assistant_id == '' || loading) {
+	const { assistant_name, assistant_avatar, assistant_deleteable } = assistant || {}
+	if (loading) {
 		return (
 			<div className={styles.assistantInfo}>
 				<div className={styles.avatarWrapper}>

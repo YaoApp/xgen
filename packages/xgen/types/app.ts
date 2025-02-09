@@ -231,6 +231,11 @@ export declare namespace App {
 		/** Application mode */
 		mode?: 'development' | 'production' | 'test'
 
+		/** default assistant */
+		agent?: {
+			default?: AssistantSummary
+		}
+
 		optional?: {
 			/** default layout */
 			layout?: Layout

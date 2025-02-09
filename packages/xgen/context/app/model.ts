@@ -16,6 +16,7 @@ export default class GlobalModel {
 	layout: App.Layout = 'Admin'
 	theme: App.Theme = 'light'
 	avatar = {} as AvatarFullConfig
+	default_assistant = {} as App.AssistantSummary
 	locale_messages = {} as LocaleMessages
 	app_info = {} as App.Info
 	user = (local.user || {}) as App.User
@@ -66,6 +67,9 @@ export default class GlobalModel {
 		// Default Layout
 		const layout = local.xgen_layout || res.optional?.layout || 'Admin'
 		this.setLayout(layout)
+
+		// Default Assistant
+		this.setDefaultAssistant(res.agent?.default || {})
 
 		return Promise.resolve()
 	}
@@ -141,6 +145,11 @@ export default class GlobalModel {
 		local.current_nav = current_nav
 	}
 
+	setDefaultAssistant(assistant: App.AssistantSummary) {
+		this.default_assistant = assistant
+		local.default_assistant = assistant
+	}
+
 	setInSetting(in_setting: boolean) {
 		this.in_setting = in_setting
 		local.in_setting = in_setting
@@ -177,7 +186,7 @@ export default class GlobalModel {
 			this.neo = neo
 			return
 		}
-		this.neo = { assistant_id: undefined, chat_id: undefined, placeholder: undefined }
+		this.neo = { chat_id: undefined, placeholder: undefined }
 	}
 
 	setNeoChatId(chat_id: string) {
