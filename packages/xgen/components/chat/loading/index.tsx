@@ -31,7 +31,10 @@ const Index = (props: IProps) => {
 				</span>
 			)}
 			{placeholder && <span className={styles.placeholder}>{placeholder}</span>}
-			<span className={styles.dots}>{dots}</span>
+			<span className={styles.dots}>
+				{dots}
+				<span style={{ opacity: 0 }}>...</span>
+			</span>
 		</div>
 	)
 }

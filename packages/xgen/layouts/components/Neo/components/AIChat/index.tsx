@@ -556,139 +556,144 @@ const AIChat = (props: AIChatProps) => {
 
 			{/* Input Area */}
 			<div className={styles.inputArea}>
-				{((showCurrentPage && currentPage) || attachments.length > 0) && (
-					<div className={styles.contextArea}>
-						{showCurrentPage && currentPage && (
-							<div className={styles.currentPage}>
+				<div className={styles.contextArea}>
+					<div className={styles.currentPage}>
+						{/* Assistant Info Section */}
+						<div className={styles.leftSection}>
+							<div className={styles.assistantInfo}>
+								<div className={styles.avatarWrapper}>
+									<img
+										src='https://api.dicebear.com/7.x/bottts/svg?seed=Neo'
+										alt='Assistant'
+										className={styles.avatar}
+									/>
+									<div className={styles.assistantName}>Neo Assistant</div>
+								</div>
+								<div className={styles.deleteBtn}>
+									<Icon name='material-close' size={12} />
+								</div>
+							</div>
+
+							{/* Current Page Info */}
+							{showCurrentPage && currentPage && (
 								<div className={styles.pageInfo}>
 									<Icon name='icon-link-2' size={12} className='pageIcon' />
 									{currentPage}
 								</div>
-								{loading && (
-									<div className={styles.loadingContainer}>
-										<svg
-											width='8'
-											height='8'
-											viewBox='0 0 8 8'
-											fill='currentColor'
-											xmlns='http://www.w3.org/2000/svg'
-										>
-											<circle cx='4' cy='4' r='4' />
-										</svg>
-									</div>
-								)}
-							</div>
-						)}
+							)}
+						</div>
 
-						{attachments.length > 0 && (
-							<div className={styles.attachmentsArea}>
-								<div className={styles.attachmentsList}>
-									{attachments.map((attachment, index) => (
-										<div key={index} className={clsx(styles.attachmentItem)}>
-											<div
-												className={styles.deleteBtn}
-												onClick={(e) => {
-													e.stopPropagation()
-													removeAttachment(attachment)
-												}}
-											>
-												<Icon name='material-close' size={12} />
-											</div>
-											<div
-												className={clsx(styles.attachmentContent, {
-													[styles.uploading]:
-														attachment.status === 'uploading'
-												})}
-												onClick={() => handleFileClick(attachment)}
-											>
-												<div className={styles.attachmentThumb}>
-													{attachment.type === 'URL' ? (
-														<div
-															className={
-																styles.attachmentTypeIcon
-															}
-														>
-															<Icon
-																name='icon-link'
-																size={10}
-															/>
-														</div>
-													) : attachment.thumbUrl ? (
-														<img
-															src={attachment.thumbUrl}
-															alt={attachment.name}
-														/>
-													) : (
-														<div
-															className={clsx(
-																styles.attachmentTypeIcon,
-																{
-																	[styles.longType]:
-																		attachment
-																			.type
-																			.length >=
-																		4
-																}
-															)}
-														>
-															{attachment.type.slice(0, 3)}
-														</div>
-													)}
-													{attachment.status === 'uploading' && (
-														<div
-															className={
-																styles.uploadingOverlay
-															}
-														>
-															<Icon
-																name='icon-loader'
-																size={16}
-																className={
-																	styles.spinner
-																}
-															/>
-														</div>
-													)}
-												</div>
-												<div
-													className={styles.attachmentName}
-													title={attachment.name}
-												>
-													{attachment.name.length > 15
-														? `${attachment.name.slice(
-																0,
-																12
-														  )}...`
-														: attachment.name}
-												</div>
-												<div
-													className={clsx(styles.pinBtn, {
-														[styles.pinned]: attachment.pinned
-													})}
-													onClick={(e) => {
-														e.stopPropagation()
-														const updatedAttachments =
-															attachments.map((att) =>
-																att === attachment
-																	? {
-																			...att,
-																			pinned: !att.pinned
-																	  }
-																	: att
-															)
-														setAttachments(updatedAttachments)
-													}}
-												>
-													<Icon name='material-keep' size={12} />
-												</div>
-											</div>
-										</div>
-									))}
-								</div>
+						{/* Status Indicator */}
+						{loading && (
+							<div className={styles.loadingContainer}>
+								<svg
+									width='8'
+									height='8'
+									viewBox='0 0 8 8'
+									fill='currentColor'
+									xmlns='http://www.w3.org/2000/svg'
+								>
+									<circle cx='4' cy='4' r='4' />
+								</svg>
 							</div>
 						)}
 					</div>
-				)}
+
+					{/* Attachments Area */}
+					{attachments.length > 0 && (
+						<div className={styles.attachmentsArea}>
+							<div className={styles.attachmentsList}>
+								{attachments.map((attachment, index) => (
+									<div key={index} className={clsx(styles.attachmentItem)}>
+										<div
+											className={styles.deleteBtn}
+											onClick={(e) => {
+												e.stopPropagation()
+												removeAttachment(attachment)
+											}}
+										>
+											<Icon name='material-close' size={12} />
+										</div>
+										<div
+											className={clsx(styles.attachmentContent, {
+												[styles.uploading]:
+													attachment.status === 'uploading'
+											})}
+											onClick={() => handleFileClick(attachment)}
+										>
+											<div className={styles.attachmentThumb}>
+												{attachment.type === 'URL' ? (
+													<div
+														className={
+															styles.attachmentTypeIcon
+														}
+													>
+														<Icon name='icon-link' size={10} />
+													</div>
+												) : attachment.thumbUrl ? (
+													<img
+														src={attachment.thumbUrl}
+														alt={attachment.name}
+													/>
+												) : (
+													<div
+														className={clsx(
+															styles.attachmentTypeIcon,
+															{
+																[styles.longType]:
+																	attachment.type
+																		.length >= 4
+															}
+														)}
+													>
+														{attachment.type.slice(0, 3)}
+													</div>
+												)}
+												{attachment.status === 'uploading' && (
+													<div className={styles.uploadingOverlay}>
+														<Icon
+															name='icon-loader'
+															size={16}
+															className={styles.spinner}
+														/>
+													</div>
+												)}
+											</div>
+											<div
+												className={styles.attachmentName}
+												title={attachment.name}
+											>
+												{attachment.name.length > 15
+													? `${attachment.name.slice(0, 12)}...`
+													: attachment.name}
+											</div>
+											<div
+												className={clsx(styles.pinBtn, {
+													[styles.pinned]: attachment.pinned
+												})}
+												onClick={(e) => {
+													e.stopPropagation()
+													const updatedAttachments =
+														attachments.map((att) =>
+															att === attachment
+																? {
+																		...att,
+																		pinned: !att.pinned
+																  }
+																: att
+														)
+													setAttachments(updatedAttachments)
+												}}
+											>
+												<Icon name='material-keep' size={12} />
+											</div>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+					)}
+				</div>
 
 				<div className={styles.inputWrapper}>
 					<MentionTextArea
