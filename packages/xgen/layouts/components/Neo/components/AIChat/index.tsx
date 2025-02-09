@@ -66,6 +66,7 @@ const AIChat = (props: AIChatProps) => {
 		cancel,
 		uploadFile,
 		attachments,
+		updateAssistant,
 		resetAssistant,
 		removeAttachment,
 		addAttachment,
@@ -229,6 +230,13 @@ const AIChat = (props: AIChatProps) => {
 			options.attachments.forEach((attachment) => {
 				addAttachment(attachment)
 			})
+		}
+
+		// Reset the assistant
+		if (options?.assistant) {
+			updateAssistant(options?.assistant)
+		} else {
+			resetAssistant()
 		}
 
 		// Focus using the new method
@@ -567,7 +575,10 @@ const AIChat = (props: AIChatProps) => {
 							<Assistant
 								assistant={assistant || {}}
 								loading={loadingChat}
-								onDelete={resetAssistant}
+								onDelete={() => {
+									resetAssistant()
+									focusRef.current?.() // focus on the input
+								}}
 							/>
 							{/* Current Page Info */}
 							{showCurrentPage && currentPage && (

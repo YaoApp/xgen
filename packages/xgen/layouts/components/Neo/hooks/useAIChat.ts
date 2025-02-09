@@ -1400,6 +1400,7 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 		generatePrompts,
 		titleGenerating,
 		resetAssistant,
+		updateAssistant,
 		setTitleGenerating,
 		getAssistants,
 		findAssistant,

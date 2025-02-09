@@ -338,6 +338,7 @@ export declare namespace App {
 	interface NewChatOptions {
 		content?: string
 		chat_id?: string
+		assistant?: AssistantSummary
 		attachments?: ChatAttachment[]
 		placeholder?: ChatPlaceholder
 	}
