@@ -15,6 +15,7 @@ import ChatItem from '../ChatItem'
 import { isValidUrl } from '@/utils'
 import DefaultHeader from './Header'
 import MentionTextArea from './MentionTextArea'
+import Assistant from './Assistant'
 
 interface AIChatProps {
 	messages?: App.ChatInfo[]
@@ -479,6 +480,14 @@ const AIChat = (props: AIChatProps) => {
 		}
 	}
 
+	// Add mock data for assistant
+	const mockAssistant = {
+		assistant_id: assistant_id || 'default-neo',
+		assistant_name: 'Neo Assistant',
+		assistant_avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Neo'
+		// canDelete: false
+	}
+
 	return (
 		<div className={clsx(styles.aiChat, className)}>
 			{header || (
@@ -560,20 +569,7 @@ const AIChat = (props: AIChatProps) => {
 					<div className={styles.currentPage}>
 						{/* Assistant Info Section */}
 						<div className={styles.leftSection}>
-							<div className={styles.assistantInfo}>
-								<div className={styles.avatarWrapper}>
-									<img
-										src='https://api.dicebear.com/7.x/bottts/svg?seed=Neo'
-										alt='Assistant'
-										className={styles.avatar}
-									/>
-									<div className={styles.assistantName}>Neo Assistant</div>
-								</div>
-								<div className={styles.deleteBtn}>
-									<Icon name='material-close' size={12} />
-								</div>
-							</div>
-
+							<Assistant assistant={mockAssistant} loading={loading} onDelete={() => {}} />
 							{/* Current Page Info */}
 							{showCurrentPage && currentPage && (
 								<div className={styles.pageInfo}>
