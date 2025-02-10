@@ -219,9 +219,9 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 			group.forEach((item) => {
 				if (item.type === 'think' || item.type === 'tool') {
 					let text = item.props?.['text'] || ''
-					if (item.type == 'tool') {
-						text = text.replace(/\{/g, '%7B')
-					}
+					// if (item.type == 'tool') {
+					// 	text = text.replace(/\{/g, '%7B')
+					// }
 					mergedText += '\n' + text
 				} else {
 					mergedText += '\n' + item.text || ''
