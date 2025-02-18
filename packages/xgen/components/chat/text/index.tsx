@@ -96,13 +96,17 @@ const Index = (props: IProps) => {
 		if (!compiledSource) return
 		// compiledSource.value = (compiledSource.value as string).replaceAll('%7B', '{')
 
-		const { default: Content } = await run(compiledSource, {
-			...JsxRuntime,
-			Fragment,
-			useMDXComponents: () => mdxComponents
-		})
-
-		setContent(Content)
+		try {
+			const { default: Content } = await run(compiledSource, {
+				...JsxRuntime,
+				Fragment,
+				useMDXComponents: () => mdxComponents
+			})
+			setContent(Content)
+		} catch (err) {
+			console.error(err)
+			console.log(`original text:\n`, text)
+		}
 	}, [text])
 
 	return <div className={styles._local}>{content}</div>
