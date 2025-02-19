@@ -1,0 +1,118 @@
+._local {
+	:global {
+		.mermaid-diagram {
+			background: var(--color_bg_menu);
+			padding: 24px;
+			border-radius: var(--radius);
+			margin: 16px 0;
+			overflow-x: auto;
+			border: 1px solid var(--color_border);
+			font-size: 12px;
+			line-height: 1.5;
+
+			svg {
+				display: block;
+				margin: 0 auto;
+				max-width: 100%;
+				height: auto;
+				padding: 8px;
+
+				// 节点样式
+				.node rect,
+				.node circle,
+				.node ellipse,
+				.node polygon,
+				.node path {
+					fill: var(--color_bg_menu);
+					stroke: var(--color_main);
+					stroke-width: 1px;
+					rx: 4px;
+					ry: 4px;
+				}
+
+				// 文本样式
+				.label {
+					color: var(--color_text);
+				}
+
+				.nodeLabel {
+					font-size: 12px;
+				}
+
+				// 连线样式
+				.edgePath path {
+					stroke: var(--color_main);
+					stroke-width: 1px;
+				}
+
+				.edgeLabel {
+					font-size: 12px;
+				}
+
+				// 箭头样式
+				.arrowheadPath {
+					fill: var(--color_main);
+					stroke-width: 1px;
+				}
+
+				// 聚合框样式
+				.cluster rect {
+					fill: var(--color_bg_hover);
+					stroke: var(--color_border);
+					stroke-width: 1px;
+					rx: var(--radius);
+					ry: var(--radius);
+				}
+
+				// 文本样式统一
+				text {
+					font-size: 12px;
+					fill: var(--color_text);
+				}
+
+				// 图表整体布局
+				.nodes .node {
+					margin: 8px;
+				}
+			}
+		}
+
+		.mermaid-error {
+			background: var(--color_danger_bg);
+			border: 1px solid var(--color_danger);
+			padding: 16px;
+			border-radius: var(--radius);
+			margin: 16px 0;
+			font-size: 12px;
+			line-height: 1.5;
+
+			.error-message {
+				color: var(--color_danger);
+				font-weight: 500;
+				margin-bottom: 12px;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+
+				.error-icon {
+					font-size: 12px;
+				}
+			}
+
+			.error-code {
+				margin-top: 8px;
+				padding: 12px;
+				background: var(--color_bg_hover);
+				border-radius: var(--radius);
+				overflow-x: auto;
+				font-family: monospace;
+				font-size: 12px;
+				line-height: 1.5;
+				white-space: pre-wrap;
+				word-break: break-all;
+				color: var(--color_text);
+				border: 1px solid var(--color_border);
+			}
+		}
+	}
+}

@@ -10,6 +10,7 @@ import { compile, run } from '@mdx-js/mdx'
 import { useMDXComponents } from '@mdx-js/react'
 import styles from './index.less'
 import Code from './Code'
+import Mermaid from './Mermaid'
 import Think from '../think'
 import Tool from '../tool'
 import type { Component } from '@/types'
@@ -20,7 +21,33 @@ interface IProps extends Component.PropsChatComponent {
 }
 
 const components = {
-	code: Code,
+	code: function (props: any) {
+		if (props?.className?.includes('language-mermaid')) {
+			const chart = props.raw || props.children || ''
+			// 预处理 Mermaid 内容
+			const processedChart = chart
+				.split('\n')
+				.map((line: string) => {
+					// 处理节点定义行
+					if (line.includes('[') && line.includes(']')) {
+						return line.replace(/\[([^\]]+)\]/g, (match, content) => {
+							// 如果内容已经被引号包裹，则不再添加引号
+							if (content.startsWith('"') && content.endsWith('"')) {
+								return `[${content}]`
+							}
+							return `["${content}"]`
+						})
+					}
+					return line
+				})
+				.filter(Boolean) // 移除空行
+				.join('\n')
+				.trim()
+
+			return <Mermaid chart={processedChart} />
+		}
+		return <Code {...props} />
+	},
 	Think: function (props: any) {
 		const { pending = 'false', chat_id } = props
 		const pendingBool = pending == 'true'
@@ -47,8 +74,16 @@ const Index = (props: IProps) => {
 	const mdxComponents = useMDXComponents(components)
 
 	useAsyncEffect(async () => {
-		const vfile = new VFile(text)
+		// Preprocess text to handle mermaid diagrams and complex markdown
+		const preprocessedText = text
+			// Handle special characters in table cells
+			.replace(
+				/\|([^|\n]*[<>][^|\n]*)\|/g,
+				(_, content) =>
+					`|${content.replace(/[<>]/g, (match: string) => (match === '<' ? '&lt;' : '&gt;'))}|`
+			)
 
+		const vfile = new VFile(preprocessedText)
 		const [err, compiledSource] = await to(
 			compile(vfile, {
 				format: 'mdx',
@@ -69,6 +104,28 @@ const Index = (props: IProps) => {
 								if (codeEl.tagName !== 'code') return
 								node.raw = codeEl.children?.[0].value
 							}
+
+							// Handle mermaid code blocks
+							if (
+								node?.type === 'element' &&
+								node?.tagName === 'code' &&
+								node?.properties?.className?.includes('language-mermaid')
+							) {
+								node.properties.raw = node.children?.[0]?.value
+							}
+
+							if (node?.type === 'element' && ['Think', 'Tool'].includes(node?.tagName)) {
+								node.properties = Object.entries(node.properties || {}).reduce<
+									Record<string, any>
+								>((acc, [key, value]) => {
+									if (key === 'pending' && typeof value === 'string') {
+										acc[key] = value === 'true'
+									} else {
+										acc[key] = value
+									}
+									return acc
+								}, {})
+							}
 						})
 					},
 					rehypeHighlight.bind(null, { ignoreMissing: true }),
@@ -88,13 +145,12 @@ const Index = (props: IProps) => {
 		)
 
 		if (err) {
-			console.error(err)
+			console.error(`parse mdx error: ${err.message || err}`)
 			console.log(`original text:\n`, text)
 			return
 		}
 
 		if (!compiledSource) return
-		// compiledSource.value = (compiledSource.value as string).replaceAll('%7B', '{')
 
 		try {
 			const { default: Content } = await run(compiledSource, {
@@ -105,7 +161,7 @@ const Index = (props: IProps) => {
 			})
 			setContent(Content)
 		} catch (err) {
-			console.error(err)
+			console.error(`run mdx error: ${err}`)
 			console.log(`original text:\n`, text)
 		}
 	}, [text, chat_id])
