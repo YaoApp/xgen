@@ -71,7 +71,7 @@ const Index = (props: IProps) => {
 							}
 						})
 					},
-					rehypeHighlight,
+					rehypeHighlight.bind(null, { ignoreMissing: true }),
 					() => (tree) => {
 						visit(tree, (node) => {
 							if (node?.type === 'element' && node?.tagName === 'pre') {
