@@ -42,8 +42,8 @@ const components = {
 }
 
 const Index = (props: IProps) => {
-	const { text } = props
-	const [content, setContent] = useState<any>()
+	const { text, chat_id } = props
+	const [content, setContent] = useState<any>('')
 	const mdxComponents = useMDXComponents(components)
 
 	useAsyncEffect(async () => {
@@ -100,14 +100,15 @@ const Index = (props: IProps) => {
 			const { default: Content } = await run(compiledSource, {
 				...JsxRuntime,
 				Fragment,
-				useMDXComponents: () => mdxComponents
+				useMDXComponents: () => mdxComponents,
+				chat_id
 			})
 			setContent(Content)
 		} catch (err) {
 			console.error(err)
 			console.log(`original text:\n`, text)
 		}
-	}, [text])
+	}, [text, chat_id])
 
 	return <div className={styles._local}>{content}</div>
 }
