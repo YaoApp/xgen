@@ -7,12 +7,25 @@
 	font-size: 12px;
 }
 
+:global {
+	.language-math {
+		color: #ff6600 !important;
+		max-width: calc(100% - 24px) !important;
+
+		.katex {
+			display: inline-block;
+			width: auto;
+			max-width: 100%;
+			word-break: break-word;
+		}
+	}
+}
+
 .code_block {
 	border-radius: var(--radius);
 	border: 1px solid var(--color_border_soft);
 	background: var(--color_bg_menu);
 	margin: 12px 0;
-
 	:global {
 		.code_header_wrap {
 			height: 37px;

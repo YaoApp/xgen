@@ -14,6 +14,8 @@ import Mermaid from './Mermaid'
 import Think from '../think'
 import Tool from '../tool'
 import type { Component } from '@/types'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
 
 interface IProps extends Component.PropsChatComponent {
 	chat_id: string
@@ -75,13 +77,15 @@ const Index = (props: IProps) => {
 
 	useAsyncEffect(async () => {
 		// Preprocess text to handle mermaid diagrams and complex markdown
-		const preprocessedText = text
+		const preprocessedText = (text || '')
 			// Handle special characters in table cells
 			.replace(
 				/\|([^|\n]*[<>][^|\n]*)\|/g,
 				(_, content) =>
 					`|${content.replace(/[<>]/g, (match: string) => (match === '<' ? '&lt;' : '&gt;'))}|`
 			)
+			.replace(/\{/g, '\\{')
+			.replace(/\}/g, '\\}')
 
 		const vfile = new VFile(preprocessedText)
 		const [err, compiledSource] = await to(
@@ -89,7 +93,8 @@ const Index = (props: IProps) => {
 				format: 'mdx',
 				outputFormat: 'function-body',
 				providerImportSource: '@mdx-js/react',
-				remarkPlugins: [remarkGfm],
+				development: false,
+				remarkPlugins: [remarkGfm, remarkMath],
 				rehypePlugins: [
 					() => (tree) => {
 						visit(tree, (node) => {
@@ -103,6 +108,8 @@ const Index = (props: IProps) => {
 								const [codeEl] = node.children
 								if (codeEl.tagName !== 'code') return
 								node.raw = codeEl.children?.[0].value
+									?.replace(/\\{/g, '{')
+									.replace(/\\}/g, '}')
 							}
 
 							// Handle mermaid code blocks
@@ -112,6 +119,8 @@ const Index = (props: IProps) => {
 								node?.properties?.className?.includes('language-mermaid')
 							) {
 								node.properties.raw = node.children?.[0]?.value
+									?.replace(/\\{/g, '{')
+									.replace(/\\}/g, '}')
 							}
 
 							if (node?.type === 'element' && ['Think', 'Tool'].includes(node?.tagName)) {
@@ -128,7 +137,16 @@ const Index = (props: IProps) => {
 							}
 						})
 					},
+					// Replace \{ => { and \} => }
+					() => (tree) => {
+						visit(tree, (node) => {
+							if (node?.type === 'text') {
+								node.value = node.value.replace(/\\{/g, '{').replace(/\\}/g, '}')
+							}
+						})
+					},
 					rehypeHighlight.bind(null, { ignoreMissing: true }),
+
 					() => (tree) => {
 						visit(tree, (node) => {
 							if (node?.type === 'element' && node?.tagName === 'pre') {
@@ -139,7 +157,8 @@ const Index = (props: IProps) => {
 								}
 							}
 						})
-					}
+					},
+					rehypeKatex
 				]
 			})
 		)
