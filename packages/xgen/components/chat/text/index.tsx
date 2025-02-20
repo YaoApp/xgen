@@ -91,7 +91,7 @@ const Index = (props: IProps) => {
 	const { text, chat_id } = props
 	const [content, setContent] = useState<any>('')
 	const mdxComponents = useMDXComponents(components)
-	console.log('text', escape(text))
+	// console.log('text', escape(text))
 
 	useAsyncEffect(async () => {
 		const vfile = new VFile(escape(text))
