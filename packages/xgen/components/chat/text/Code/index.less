@@ -9,14 +9,23 @@
 
 :global {
 	.language-math {
-		color: #ff6600 !important;
-		max-width: calc(100% - 24px) !important;
-
+		max-width: 100%;
 		.katex {
 			display: inline-block;
 			width: auto;
 			max-width: 100%;
 			word-break: break-word;
+
+			.katex-html {
+				display: none;
+			}
+
+			.hide-tail {
+				overflow: hidden;
+				svg {
+					max-width: 100%;
+				}
+			}
 		}
 	}
 }
