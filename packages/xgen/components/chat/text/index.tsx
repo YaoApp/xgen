@@ -87,8 +87,6 @@ const Index = (props: IProps) => {
 			.replace(/\{/g, '\\{')
 			.replace(/\}/g, '\\}')
 
-		console.log(preprocessedText)
-
 		const vfile = new VFile(preprocessedText)
 		const [err, compiledSource] = await to(
 			compile(vfile, {
