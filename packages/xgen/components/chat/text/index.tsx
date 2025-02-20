@@ -70,31 +70,38 @@ const components = {
 	}
 }
 
+const escape = (text?: string) => {
+	return text
+		?.replace(
+			/\|([^|\n]*[<>][^|\n]*)\|/g,
+			(_, content) => `|${content.replace(/[<>]/g, (match: string) => (match === '<' ? '&lt;' : '&gt;'))}|`
+		)
+		.replace(/\r/g, '') // remove \r
+		.replace(/\{/g, '\\{')
+		.replace(/\}/g, '\\}')
+		.replace(/\$\$[\n\r]+/g, '$$\n')
+		.replace(/[\n\r]+\$\$/g, '\n$$')
+}
+
+const unescape = (text?: string) => {
+	return text?.replace(/\\{/g, '{').replace(/\\}/g, '}')
+}
+
 const Index = (props: IProps) => {
 	const { text, chat_id } = props
 	const [content, setContent] = useState<any>('')
 	const mdxComponents = useMDXComponents(components)
+	console.log('text', escape(text))
 
 	useAsyncEffect(async () => {
-		// Preprocess text to handle mermaid diagrams and complex markdown
-		const preprocessedText = (text || '')
-			// Handle special characters in table cells
-			.replace(
-				/\|([^|\n]*[<>][^|\n]*)\|/g,
-				(_, content) =>
-					`|${content.replace(/[<>]/g, (match: string) => (match === '<' ? '&lt;' : '&gt;'))}|`
-			)
-			.replace(/\{/g, '\\{')
-			.replace(/\}/g, '\\}')
-
-		const vfile = new VFile(preprocessedText)
+		const vfile = new VFile(escape(text))
 		const [err, compiledSource] = await to(
 			compile(vfile, {
 				format: 'mdx',
 				outputFormat: 'function-body',
 				providerImportSource: '@mdx-js/react',
 				development: false,
-				remarkPlugins: [remarkGfm, remarkMath],
+				remarkPlugins: [remarkGfm, [remarkMath, { strict: true }]],
 				rehypePlugins: [
 					() => (tree) => {
 						visit(tree, (node) => {
@@ -107,20 +114,7 @@ const Index = (props: IProps) => {
 							if (node?.type === 'element' && node?.tagName === 'pre') {
 								const [codeEl] = node.children
 								if (codeEl.tagName !== 'code') return
-								node.raw = codeEl.children?.[0].value
-									?.replace(/\\{/g, '{')
-									.replace(/\\}/g, '}')
-							}
-
-							// Handle mermaid code blocks
-							if (
-								node?.type === 'element' &&
-								node?.tagName === 'code' &&
-								node?.properties?.className?.includes('language-mermaid')
-							) {
-								node.properties.raw = node.children?.[0]?.value
-									?.replace(/\\{/g, '{')
-									.replace(/\\}/g, '}')
+								node.raw = unescape(codeEl.children?.[0].value)
 							}
 
 							if (node?.type === 'element' && ['Think', 'Tool'].includes(node?.tagName)) {
@@ -141,12 +135,10 @@ const Index = (props: IProps) => {
 					() => (tree) => {
 						visit(tree, (node) => {
 							if (node?.type === 'text') {
-								node.value = node.value.replace(/\\{/g, '{').replace(/\\}/g, '}')
+								node.value = unescape(node.value)
 							}
 						})
 					},
-					rehypeHighlight.bind(null, { ignoreMissing: true }),
-
 					() => (tree) => {
 						visit(tree, (node) => {
 							if (node?.type === 'element' && node?.tagName === 'pre') {
@@ -158,7 +150,21 @@ const Index = (props: IProps) => {
 							}
 						})
 					},
-					rehypeKatex
+					[rehypeKatex, { output: 'mathml', strict: true, throwOnError: false }],
+					rehypeHighlight.bind(null, { ignoreMissing: true }),
+
+					() => (tree) => {
+						visit(tree, (node) => {
+							// Handle mermaid code blocks
+							if (
+								node?.type === 'element' &&
+								node?.tagName === 'code' &&
+								node?.properties?.className?.includes('language-mermaid')
+							) {
+								node.properties.raw = unescape(node.children?.[0]?.value)
+							}
+						})
+					}
 				]
 			})
 		)
