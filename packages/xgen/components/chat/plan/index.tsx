@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import styles from './index.less'
 import type { Component } from '@/types'
-
+import Text from '../text'
 interface IProps extends Component.PropsChatComponent {
 	id: string
 	title: string
@@ -17,7 +17,7 @@ interface IProps extends Component.PropsChatComponent {
 type ITaskStatus = 'created' | 'running' | 'completed' | 'failed' | 'destroyed'
 
 const Plan = (props: IProps) => {
-	const { title, description, tasks } = props
+	const { title, description, tasks, assistant_id, chat_id } = props
 
 	// Sort tasks by order
 	const sortedTasks = [...tasks].sort((a, b) => a.order - b.order)
@@ -26,7 +26,11 @@ const Plan = (props: IProps) => {
 		<div className={styles.plan}>
 			<div className={styles.header}>
 				<div className={styles.title}>{title}</div>
-				{description && <div className={styles.description}>{description}</div>}
+				{description && (
+					<div className={styles.description}>
+						<Text assistant_id={assistant_id} chat_id={chat_id} text={description} />
+					</div>
+				)}
 			</div>
 
 			<div className={styles.tasks}>
