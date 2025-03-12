@@ -599,6 +599,15 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 						return
 					}
 
+					// Run action
+					runAction(
+						action as Array<Action.ActionParams>,
+						namespace || 'chat',
+						primary || 'id',
+						data_item || {},
+						extra
+					)
+
 					// Close event source if done
 					if (done) {
 						setLoading(false)
@@ -609,15 +618,6 @@ export default ({ chat_id, upload_options = {} }: Args) => {
 							handleTitleGeneration(messages, chat_id)
 						}
 					}
-
-					// Run action
-					runAction(
-						action as Array<Action.ActionParams>,
-						namespace || 'chat',
-						primary || 'id',
-						data_item || {},
-						extra
-					)
 					return
 				}
 
