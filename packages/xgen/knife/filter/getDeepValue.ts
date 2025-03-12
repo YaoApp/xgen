@@ -5,9 +5,9 @@ type Params = {
 }
 
 const Index = (param: Key | Params, data_item: any) => {
-	if (!param) return 
-	if (!data_item) return 
-	if (!Object.keys(data_item).length) return 
+	if (!param) return
+	if (!data_item) return
+	if (!Object.keys(data_item).length) return
 
 	if (typeof param === 'string') {
 		let real_param = param
@@ -20,8 +20,8 @@ const Index = (param: Key | Params, data_item: any) => {
 			const indexs = real_param.split('.')
 
 			return indexs.reduce((total: any, it: any) => {
+				if (total === null || total === undefined) return undefined
 				total = total[it]
-
 				return total
 			}, data_item)
 		}
