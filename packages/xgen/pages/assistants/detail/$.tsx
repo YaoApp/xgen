@@ -332,7 +332,7 @@ const AssistantDetail = () => {
 								{built_in && (
 									<Tooltip title={is_cn ? '系统内建' : 'Built-in'}>
 										<span className={styles.statusIcon}>
-											<Icon name='icon-package' size={16} color='#722ed1' />
+											<Icon name='icon-package' size={16} color='#b37feb' />
 										</span>
 									</Tooltip>
 								)}

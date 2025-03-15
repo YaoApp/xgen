@@ -221,10 +221,6 @@ const Index = () => {
 							</div>
 						)}
 
-						{!loading && !hasMore && data.length > 0 && (
-							<div className={styles.noMore}>{is_cn ? '没有更多数据' : 'No more data'}</div>
-						)}
-
 						{!loading && data.length === 0 && (
 							<div className={styles.empty}>
 								{is_cn ? '未找到结果' : 'No results found'}
