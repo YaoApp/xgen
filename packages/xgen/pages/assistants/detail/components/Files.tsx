@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Table, Button, Upload, Space, Typography } from 'antd'
+import { Table, Button, Upload, Space, Typography, Form } from 'antd'
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import type { UploadFile } from 'antd/es/upload/interface'
+import { getLocale } from '@umijs/max'
 import styles from '../index.less'
 
 const { Title } = Typography
@@ -34,16 +35,20 @@ const testFiles: UploadFile[] = Array.from({ length: 100 }, (_, index) => {
 
 export default function Files({ files: propFiles, onFilesChange }: FilesProps) {
 	const [files, setFiles] = useState<UploadFile[]>(testFiles)
+	const locale = getLocale()
+	const is_cn = locale === 'zh-CN'
+	const [form] = Form.useForm()
+	const readonly = Form.useWatch('readonly', form)
 
 	const columns = [
 		{
-			title: 'Name',
+			title: is_cn ? '名称' : 'Name',
 			dataIndex: 'name',
 			key: 'name',
 			ellipsis: true
 		},
 		{
-			title: 'Size',
+			title: is_cn ? '大小' : 'Size',
 			dataIndex: 'size',
 			key: 'size',
 			width: 120,
@@ -58,27 +63,30 @@ export default function Files({ files: propFiles, onFilesChange }: FilesProps) {
 			}
 		},
 		{
-			title: 'Action',
+			title: is_cn ? '操作' : 'Action',
 			key: 'action',
 			width: 80,
-			render: (_: any, record: UploadFile) => (
-				<Button
-					type='text'
-					icon={<DeleteOutlined />}
-					onClick={() => handleRemove(record)}
-					style={{ color: 'var(--color_text_grey)' }}
-				/>
-			)
+			render: (_: any, record: UploadFile) =>
+				readonly ? null : (
+					<Button
+						type='text'
+						icon={<DeleteOutlined />}
+						onClick={() => handleRemove(record)}
+						style={{ color: 'var(--color_text_grey)' }}
+					/>
+				)
 		}
 	]
 
 	const handleRemove = (file: UploadFile) => {
+		if (readonly) return
 		const newFiles = files.filter((item) => item.uid !== file.uid)
 		setFiles(newFiles)
 		onFilesChange(newFiles)
 	}
 
 	const handleUpload = (info: any) => {
+		if (readonly) return
 		const newFiles = [...files, ...info.fileList]
 		setFiles(newFiles)
 		onFilesChange(newFiles)
@@ -88,19 +96,21 @@ export default function Files({ files: propFiles, onFilesChange }: FilesProps) {
 		<div className={styles.files}>
 			<div className={styles.filesHeader}>
 				<Title level={5} style={{ margin: 0, fontWeight: 500 }}>
-					Assistant Files
+					{is_cn ? '助手文件' : 'Assistant Files'}
 				</Title>
-				<Upload
-					multiple
-					fileList={[]}
-					beforeUpload={() => false}
-					onChange={handleUpload}
-					showUploadList={false}
-				>
-					<Button type='primary' icon={<UploadOutlined />}>
-						Upload
-					</Button>
-				</Upload>
+				{!readonly && (
+					<Upload
+						multiple
+						fileList={[]}
+						beforeUpload={() => false}
+						onChange={handleUpload}
+						showUploadList={false}
+					>
+						<Button type='primary' icon={<UploadOutlined />}>
+							{is_cn ? '上传' : 'Upload'}
+						</Button>
+					</Upload>
+				)}
 			</div>
 			<div className={styles.filesTable}>
 				<Table

@@ -49,6 +49,8 @@ export declare namespace App {
 		name: string
 		type: string
 		tags?: string[]
+		built_in?: boolean
+		readonly?: boolean
 		mentionable?: boolean
 		automated?: boolean
 		avatar?: string

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Form, Input, Button, Space, Select, Divider } from 'antd'
 import { PlusOutlined, DeleteOutlined, HolderOutlined } from '@ant-design/icons'
+import { getLocale } from '@umijs/max'
 import {
 	DragDropContext,
 	Droppable,
@@ -35,8 +36,13 @@ interface PromptsProps {
 export default function Prompts({ value = [], options = [], onChange, onOptionsChange }: PromptsProps) {
 	const [messages, setMessages] = useState<Message[]>(value)
 	const [optionItems, setOptionItems] = useState<OptionItem[]>(options)
+	const locale = getLocale()
+	const is_cn = locale === 'zh-CN'
+	const [form] = Form.useForm()
+	const readonly = Form.useWatch('readonly', form)
 
 	const handleAdd = () => {
+		if (readonly) return
 		const newMessage: Message = { role: 'system', content: '' }
 		const newMessages = [...messages, newMessage]
 		setMessages(newMessages)
@@ -44,6 +50,7 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 	}
 
 	const handleAddOption = () => {
+		if (readonly) return
 		const newOption: OptionItem = { key: '', value: '' }
 		const newOptions = [...optionItems, newOption]
 		setOptionItems(newOptions)
@@ -51,18 +58,21 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 	}
 
 	const handleRemove = (index: number) => {
+		if (readonly) return
 		const newMessages = messages.filter((_, i) => i !== index)
 		setMessages(newMessages)
 		onChange?.(newMessages)
 	}
 
 	const handleRemoveOption = (index: number) => {
+		if (readonly) return
 		const newOptions = optionItems.filter((_, i) => i !== index)
 		setOptionItems(newOptions)
 		onOptionsChange?.(newOptions)
 	}
 
 	const handleContentChange = (index: number, content: string) => {
+		if (readonly) return
 		const newMessages = [...messages]
 		newMessages[index] = { ...newMessages[index], content }
 		setMessages(newMessages)
@@ -70,6 +80,7 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 	}
 
 	const handleOptionChange = (index: number, field: 'key' | 'value', value: string) => {
+		if (readonly) return
 		const newOptions = [...optionItems]
 		newOptions[index] = { ...newOptions[index], [field]: value }
 		setOptionItems(newOptions)
@@ -77,6 +88,7 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 	}
 
 	const handleRoleChange = (index: number, role: Message['role']) => {
+		if (readonly) return
 		const newMessages = [...messages]
 		newMessages[index] = { ...newMessages[index], role }
 		setMessages(newMessages)
@@ -84,7 +96,7 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 	}
 
 	const handleDragEnd = (result: DropResult) => {
-		if (!result.destination) return
+		if (readonly || !result.destination) return
 
 		const items = Array.from(messages)
 		const [reorderedItem] = items.splice(result.source.index, 1)
@@ -94,14 +106,32 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 		onChange?.(items)
 	}
 
+	// 获取角色的本地化名称
+	const getRoleLabel = (role: string) => {
+		switch (role) {
+			case 'system':
+				return is_cn ? '系统' : 'System'
+			case 'user':
+				return is_cn ? '用户' : 'User'
+			case 'assistant':
+				return is_cn ? '助手' : 'Assistant'
+			case 'developer':
+				return is_cn ? '开发者' : 'Developer'
+			default:
+				return role
+		}
+	}
+
 	return (
 		<div className={styles.prompts}>
 			<div className={styles.promptsSection}>
 				<div className={styles.promptsHeader}>
-					<h5>Messages</h5>
-					<Button type='primary' icon={<PlusOutlined />} onClick={handleAdd}>
-						Add Message
-					</Button>
+					<h5>{is_cn ? '消息' : 'Messages'}</h5>
+					{!readonly && (
+						<Button type='primary' icon={<PlusOutlined />} onClick={handleAdd}>
+							{is_cn ? '添加消息' : 'Add Message'}
+						</Button>
+					)}
 				</div>
 				<DragDropContext onDragEnd={handleDragEnd}>
 					<Droppable droppableId='messages'>
@@ -116,6 +146,7 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 										key={index}
 										draggableId={`message-${index}`}
 										index={index}
+										isDragDisabled={readonly}
 									>
 										{(
 											provided: DraggableProvided,
@@ -130,12 +161,16 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 											>
 												<div className={styles.promptItemHeader}>
 													<div className={styles.promptItemLeft}>
-														<div
-															{...provided.dragHandleProps}
-															className={styles.dragHandle}
-														>
-															<HolderOutlined />
-														</div>
+														{!readonly && (
+															<div
+																{...provided.dragHandleProps}
+																className={
+																	styles.dragHandle
+																}
+															>
+																<HolderOutlined />
+															</div>
+														)}
 														<Select
 															value={message.role}
 															onChange={(role) =>
@@ -145,27 +180,40 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 																)
 															}
 															style={{ width: 120 }}
+															disabled={readonly}
 														>
 															<Option value='system'>
-																System
+																{is_cn
+																	? '系统'
+																	: 'System'}
 															</Option>
 															<Option value='user'>
-																User
+																{is_cn
+																	? '用户'
+																	: 'User'}
 															</Option>
 															<Option value='assistant'>
-																Assistant
+																{is_cn
+																	? '助手'
+																	: 'Assistant'}
 															</Option>
 															<Option value='developer'>
-																Developer
+																{is_cn
+																	? '开发者'
+																	: 'Developer'}
 															</Option>
 														</Select>
 													</div>
-													<Button
-														type='text'
-														icon={<DeleteOutlined />}
-														onClick={() => handleRemove(index)}
-														className={styles.deleteBtn}
-													/>
+													{!readonly && (
+														<Button
+															type='text'
+															icon={<DeleteOutlined />}
+															onClick={() =>
+																handleRemove(index)
+															}
+															className={styles.deleteBtn}
+														/>
+													)}
 												</div>
 												<TextArea
 													value={message.content}
@@ -175,8 +223,15 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 															e.target.value
 														)
 													}
-													placeholder={`Enter ${message.role} message...`}
+													placeholder={
+														is_cn
+															? `输入${getRoleLabel(
+																	message.role
+															  )}消息...`
+															: `Enter ${message.role} message...`
+													}
 													autoSize={{ minRows: 3, maxRows: 6 }}
+													disabled={readonly}
 												/>
 											</div>
 										)}
@@ -193,10 +248,12 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 
 			<div className={styles.promptsSection}>
 				<div className={styles.promptsHeader}>
-					<h5>Options</h5>
-					<Button type='primary' icon={<PlusOutlined />} onClick={handleAddOption}>
-						Add Option
-					</Button>
+					<h5>{is_cn ? '选项' : 'Options'}</h5>
+					{!readonly && (
+						<Button type='primary' icon={<PlusOutlined />} onClick={handleAddOption}>
+							{is_cn ? '添加选项' : 'Add Option'}
+						</Button>
+					)}
 				</div>
 				<div className={styles.optionsList}>
 					{optionItems.map((item, index) => (
@@ -205,22 +262,26 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 								<Input
 									value={item.key}
 									onChange={(e) => handleOptionChange(index, 'key', e.target.value)}
-									placeholder='Name'
+									placeholder={is_cn ? '名称' : 'Name'}
+									disabled={readonly}
 								/>
 								<Input
 									value={item.value}
 									onChange={(e) =>
 										handleOptionChange(index, 'value', e.target.value)
 									}
-									placeholder='Value'
+									placeholder={is_cn ? '值' : 'Value'}
+									disabled={readonly}
 								/>
 							</div>
-							<Button
-								type='text'
-								icon={<DeleteOutlined />}
-								onClick={() => handleRemoveOption(index)}
-								className={styles.deleteBtn}
-							/>
+							{!readonly && (
+								<Button
+									type='text'
+									icon={<DeleteOutlined />}
+									onClick={() => handleRemoveOption(index)}
+									className={styles.deleteBtn}
+								/>
+							)}
 						</div>
 					))}
 				</div>

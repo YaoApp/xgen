@@ -3,12 +3,14 @@ import Editor from 'react-monaco-editor'
 import { useGlobal } from '@/context/app'
 import vars from '@/styles/preset/vars'
 import styles from '../index.less'
+import { getLocale } from '@umijs/max'
+import { Form } from 'antd'
 
-const defaultFunctions = {
-	functions: [
+const defaultTools = {
+	tools: [
 		{
-			name: 'example_function',
-			description: 'An example function',
+			name: 'example_tool',
+			description: 'An example tool',
 			parameters: {
 				type: 'object',
 				properties: {
@@ -27,10 +29,14 @@ const defaultFunctions = {
 	]
 }
 
-export default function Functions() {
-	const [value, setValue] = useState(JSON.stringify(defaultFunctions, null, 2))
+export default function Tools() {
+	const [value, setValue] = useState(JSON.stringify(defaultTools, null, 2))
 	const global = useGlobal()
 	const theme = global.theme === 'dark' ? 'x-dark' : 'x-light'
+	const locale = getLocale()
+	const is_cn = locale === 'zh-CN'
+	const [form] = Form.useForm()
+	const readonly = Form.useWatch('readonly', form)
 
 	const editorDidMount = (editor: any, monaco: any) => {
 		monaco.editor.defineTheme('x-dark', {
@@ -62,7 +68,7 @@ export default function Functions() {
 				language='json'
 				theme={theme}
 				value={value}
-				onChange={setValue}
+				onChange={readonly ? undefined : setValue}
 				editorDidMount={editorDidMount}
 				options={{
 					wordWrap: 'on',
@@ -73,7 +79,8 @@ export default function Functions() {
 					padding: { top: 15 },
 					lineNumbersMinChars: 3,
 					minimap: { enabled: false },
-					scrollbar: { verticalScrollbarSize: 8, horizontalSliderSize: 8, useShadows: false }
+					scrollbar: { verticalScrollbarSize: 8, horizontalSliderSize: 8, useShadows: false },
+					readOnly: readonly
 				}}
 			/>
 		</div>

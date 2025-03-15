@@ -1,21 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button, Input, Spin, Tabs } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
-import { history } from '@umijs/max'
+import { history, getLocale } from '@umijs/max'
 import Icon from '@/widgets/Icon'
 import Card from '@/layouts/components/Neo/components/AIChat/Card'
 import useAIChat from '@/layouts/components/Neo/hooks/useAIChat'
 import { App } from '@/types'
 import styles from './index.less'
 
-const TYPES = [
-	{ key: 'all', label: 'All' },
-	{ key: 'coding', label: 'Coding' },
-	{ key: 'writing', label: 'Writing' },
-	{ key: 'analysis', label: 'Analysis' }
-]
-
 const Index = () => {
+	const locale = getLocale()
+	const is_cn = locale === 'zh-CN'
+
 	const [loading, setLoading] = useState(false)
 	const [search, setSearch] = useState('')
 	const [searchText, setSearchText] = useState('')
@@ -24,7 +20,49 @@ const Index = () => {
 	const [data, setData] = useState<App.Assistant[]>([])
 	const containerRef = useRef<HTMLDivElement>(null)
 	const [hasMore, setHasMore] = useState(true)
-	const { getAssistants } = useAIChat({})
+	const [tags, setTags] = useState<{ key: string; label: string }[]>([
+		{ key: 'all', label: is_cn ? '全部' : 'All' }
+	])
+	const [tagsLoading, setTagsLoading] = useState(true)
+
+	const { getAssistants, getAssistantTags } = useAIChat({})
+
+	// Load tags
+	useEffect(() => {
+		const loadTags = async () => {
+			try {
+				const response = await getAssistantTags()
+
+				// Transform the string array into the required format
+				let formattedTags: { key: string; label: string }[] = [
+					{ key: 'all', label: is_cn ? '全部' : 'All' }
+				]
+
+				if (Array.isArray(response)) {
+					// If response is an array of strings, transform each string into an object
+					if (typeof response[0] === 'string') {
+						const tagObjects = response.map((tag: string) => ({
+							key: tag,
+							label: tag
+						}))
+						formattedTags = [{ key: 'all', label: is_cn ? '全部' : 'All' }, ...tagObjects]
+					}
+					// If response is already an array of objects with key and label, use it directly
+					else if (response[0] && typeof response[0] === 'object' && 'key' in response[0]) {
+						formattedTags = response
+					}
+				}
+
+				setTags(formattedTags)
+			} catch (error) {
+				console.error(is_cn ? '加载助手标签失败:' : 'Failed to load assistant tags:', error)
+			} finally {
+				setTagsLoading(false)
+			}
+		}
+
+		loadTags()
+	}, [is_cn])
 
 	// Load data with pagination and filtering
 	const loadData = async (reset = false) => {
@@ -55,7 +93,7 @@ const Index = () => {
 					: newData.length > 0 && newPage < (response?.pagecnt || 1)
 			)
 		} catch (error) {
-			console.error('Failed to load assistants:', error)
+			console.error(is_cn ? '加载助手失败:' : 'Failed to load assistants:', error)
 		} finally {
 			setLoading(false)
 		}
@@ -106,30 +144,34 @@ const Index = () => {
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
-				<h1 className={styles.title}>AI Assistants</h1>
+				<h1 className={styles.title}>{is_cn ? 'AI 助手' : 'AI Assistants'}</h1>
 				<div className={styles.searchWrapper}>
 					<Input
 						size='large'
 						prefix={<SearchOutlined />}
-						placeholder='Search AI assistants...'
+						placeholder={is_cn ? '搜索 AI 助手...' : 'Search AI assistants...'}
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
 						onKeyPress={handleKeyPress}
 						className={styles.search}
 					/>
 					<Button type='primary' size='large' onClick={handleSearch}>
-						Search
+						{is_cn ? '搜索' : 'Search'}
 					</Button>
 				</div>
 				<div className={styles.tabsWrapper}>
-					<Tabs
-						activeKey={activeType}
-						onChange={setActiveType}
-						items={TYPES.map((type) => ({ key: type.key, label: type.label }))}
-					/>
+					{tagsLoading ? (
+						<Spin size='small' />
+					) : (
+						<Tabs
+							activeKey={activeType}
+							onChange={setActiveType}
+							items={tags.map((type) => ({ key: type.key, label: type.label }))}
+						/>
+					)}
 					<div className={styles.createTab} onClick={handleCreate}>
 						<Icon name='material-add' size={18} />
-						<span>Create</span>
+						<span>{is_cn ? '创建' : 'Create'}</span>
 					</div>
 				</div>
 			</div>
@@ -159,7 +201,9 @@ const Index = () => {
 												readonly: item.readonly || false,
 												automated: item.automated || false,
 												mentionable: item.mentionable || false,
-												connector: item.connector || 'Unknown',
+												connector:
+													item.connector ||
+													(is_cn ? '未知' : 'Unknown'),
 												type: item.type || 'assistant'
 											}}
 											onClick={handleCardClick}
@@ -176,11 +220,13 @@ const Index = () => {
 						)}
 
 						{!loading && !hasMore && data.length > 0 && (
-							<div className={styles.noMore}>No more data</div>
+							<div className={styles.noMore}>{is_cn ? '没有更多数据' : 'No more data'}</div>
 						)}
 
 						{!loading && data.length === 0 && (
-							<div className={styles.empty}>No results found</div>
+							<div className={styles.empty}>
+								{is_cn ? '未找到结果' : 'No results found'}
+							</div>
 						)}
 					</>
 				)}
