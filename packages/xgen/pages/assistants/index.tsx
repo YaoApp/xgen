@@ -144,7 +144,13 @@ const Index = () => {
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
-				<h1 className={styles.title}>{is_cn ? 'AI 助手' : 'AI Assistants'}</h1>
+				<div className={styles.titleContainer}>
+					<h1 className={styles.title}>{is_cn ? 'AI 助手' : 'AI Assistants'}</h1>
+					<div className={styles.createIcon} onClick={handleCreate}>
+						<Icon name='material-add' size={24} />
+						<span className={styles.createText}>{is_cn ? '创建' : 'Create'}</span>
+					</div>
+				</div>
 				<div className={styles.searchWrapper}>
 					<Input
 						size='large'
@@ -169,10 +175,6 @@ const Index = () => {
 							items={tags.map((type) => ({ key: type.key, label: type.label }))}
 						/>
 					)}
-					<div className={styles.createTab} onClick={handleCreate}>
-						<Icon name='material-add' size={18} />
-						<span>{is_cn ? '创建' : 'Create'}</span>
-					</div>
 				</div>
 			</div>
 
