@@ -1,0 +1,104 @@
+/* Import styles from detail page */
+@import '../detail/index.less';
+
+/* Styles specific to create page */
+.simpleFormContainer {
+	background: var(--color_bg_menu);
+	border-radius: 12px;
+	padding: 24px;
+	width: 100%; /* Match the breadcrumb width */
+	margin: 0 auto;
+}
+
+.formContent {
+	width: 100%;
+	max-width: 800px; /* Match the width in the screenshot */
+	margin: 0 auto;
+}
+
+.formHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 24px;
+	width: 100%;
+}
+
+.formTitle {
+	font-size: 20px;
+	font-weight: 600;
+	color: var(--color_text);
+	margin: 0; /* Remove default margin */
+}
+
+/* Form styles */
+.form {
+	width: 100%;
+
+	:global {
+		.xgen-form-item {
+			width: 100%;
+		}
+
+		.xgen-form-item-control-input,
+		.xgen-form-item-control-input-content {
+			width: 100%;
+		}
+
+		/* Ensure the textarea and other inputs have proper width */
+		.xgen-input,
+		.xgen-input-textarea,
+		.xgen-select {
+			width: 100%;
+		}
+	}
+}
+
+.promptsSection {
+	margin-top: 24px;
+	margin-bottom: 24px;
+	width: 100%;
+
+	h3 {
+		font-size: 16px;
+		font-weight: 600;
+		margin-bottom: 16px;
+		color: var(--color_text);
+	}
+}
+
+.promptsContainer {
+	width: 100%;
+	display: block;
+
+	/* Ensure the prompts component takes full width */
+	:global {
+		.xgen-form-item {
+			width: 100%;
+		}
+
+		.xgen-form-item-control-input,
+		.xgen-form-item-control-input-content {
+			width: 100%;
+		}
+
+		/* Ensure the textarea and other inputs have proper width */
+		.xgen-input,
+		.xgen-input-textarea,
+		.xgen-select {
+			width: 100%;
+		}
+	}
+}
+
+.formActions {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 24px;
+	padding-top: 16px;
+	border-top: 1px solid var(--color_border_soft);
+
+	button {
+		min-width: 100px;
+	}
+}

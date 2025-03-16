@@ -1,0 +1,107 @@
+/* Import styles from detail page */
+@import '../detail/index.less';
+
+/* Styles specific to create page */
+.simpleFormContainer {
+	background: var(--color_bg_menu);
+	border-radius: 12px;
+	padding: 0; /* Remove padding to allow header to extend to edges */
+	width: 100%; /* Match the breadcrumb width */
+	margin: 0 auto;
+}
+
+.formContent {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.formHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 16px; /* Equal padding on all sides */
+	width: 100%;
+	border-bottom: 1px solid var(--color_border_soft); /* Add border to create title bar effect */
+
+	button {
+		display: flex;
+		align-items: center;
+
+		:global {
+			.anticon {
+				margin-left: 8px;
+				font-size: 14px;
+			}
+		}
+	}
+}
+
+.formTitle {
+	font-size: 20px;
+	font-weight: 600;
+	color: var(--color_text);
+	margin: 0; /* Remove default margin */
+}
+
+/* Form styles */
+.form {
+	width: 100%;
+	padding: 24px 36px; /* Increased left and right padding */
+	max-width: 800px;
+	margin: 0 auto;
+
+	:global {
+		.xgen-form-item {
+			width: 100%;
+		}
+
+		.xgen-form-item-control-input,
+		.xgen-form-item-control-input-content {
+			width: 100%;
+		}
+
+		/* Ensure the textarea and other inputs have proper width */
+		.xgen-input,
+		.xgen-input-textarea,
+		.xgen-select {
+			width: 100%;
+		}
+	}
+}
+
+.promptsSection {
+	margin-top: 24px;
+	margin-bottom: 24px;
+	width: 100%;
+
+	h3 {
+		font-size: 16px;
+		font-weight: 600;
+		margin-bottom: 16px;
+		color: var(--color_text);
+	}
+}
+
+.promptsContainer {
+	width: 100%;
+	display: block;
+
+	/* Ensure the prompts component takes full width */
+	:global {
+		.xgen-form-item {
+			width: 100%;
+		}
+
+		.xgen-form-item-control-input,
+		.xgen-form-item-control-input-content {
+			width: 100%;
+		}
+
+		/* Ensure the textarea and other inputs have proper width */
+		.xgen-input,
+		.xgen-input-textarea,
+		.xgen-select {
+			width: 100%;
+		}
+	}
+}
