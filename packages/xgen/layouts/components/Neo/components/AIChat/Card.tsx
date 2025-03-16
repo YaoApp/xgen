@@ -23,7 +23,18 @@ const Card: FC<Props> = ({ data, onClick, onChatClick }) => {
 	// Handle chat button click without triggering the card click
 	const handleChatClick = (e: React.MouseEvent) => {
 		e.stopPropagation()
-		onChatClick?.(data)
+		const options: App.NewChatOptions = {
+			assistant: {
+				assistant_id: data.assistant_id,
+				assistant_name: data.name,
+				assistant_avatar: data.avatar,
+				assistant_deleteable: data.mentionable
+			},
+			placeholder: data.placeholder || undefined
+		}
+
+		// Trigger the new chat event
+		window.$app.Event.emit('app/neoNewChat', options)
 	}
 
 	return (

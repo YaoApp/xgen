@@ -208,10 +208,24 @@ const AssistantDetail = () => {
 			})
 	}
 
-	const handleChatClick = () => {
-		// 实现聊天功能
-		message.info(is_cn ? '开始与助手聊天' : 'Start chatting with assistant')
-		// 这里可以添加跳转到聊天页面的逻辑
+	// Handle chat button click without triggering the card click
+	const handleChatClick = (e: React.MouseEvent) => {
+		e.stopPropagation()
+
+		// Get current form values
+		const formValues = form.getFieldsValue()
+		const options: App.NewChatOptions = {
+			assistant: {
+				assistant_id: id,
+				assistant_name: formValues.name,
+				assistant_avatar: avatarUrl,
+				assistant_deleteable: formValues.mentionable
+			},
+			placeholder: formValues.placeholder || undefined
+		}
+
+		// Trigger the new chat event
+		window.$app.Event.emit('app/neoNewChat', options)
 	}
 
 	if (loading) {
