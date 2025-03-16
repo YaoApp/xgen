@@ -63,6 +63,12 @@ export declare namespace App {
 		assistant_name?: string
 		assistant_avatar?: string
 		assistant_deleteable?: boolean
+		placeholder?: ChatPlaceholder
+	}
+
+	interface Connectors {
+		options: Array<{ label: string; value: string }>
+		mapping: Record<string, string>
 	}
 
 	interface AssistantFilter {
@@ -236,6 +242,7 @@ export declare namespace App {
 		/** default assistant */
 		agent?: {
 			default?: AssistantSummary
+			connectors?: Array<{ label: string; value: string }>
 		}
 
 		optional?: {

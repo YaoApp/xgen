@@ -17,6 +17,7 @@ export default class GlobalModel {
 	theme: App.Theme = 'light'
 	avatar = {} as AvatarFullConfig
 	default_assistant = {} as App.AssistantSummary
+	connectors = {} as App.Connectors
 	locale_messages = {} as LocaleMessages
 	app_info = {} as App.Info
 	user = (local.user || {}) as App.User
@@ -70,6 +71,9 @@ export default class GlobalModel {
 
 		// Default Assistant
 		this.setDefaultAssistant(res.agent?.default || {})
+
+		// Connectors
+		this.setConnectors(res.agent?.connectors || [])
 
 		return Promise.resolve()
 	}
@@ -148,6 +152,16 @@ export default class GlobalModel {
 	setDefaultAssistant(assistant: App.AssistantSummary) {
 		this.default_assistant = assistant
 		local.default_assistant = assistant
+	}
+
+	setConnectors(connectors: Array<{ label: string; value: string }>) {
+		this.connectors = {
+			options: connectors,
+			mapping: connectors.reduce((acc: Record<string, string>, connector) => {
+				acc[connector.value] = connector.label
+				return acc
+			}, {})
+		}
 	}
 
 	setInSetting(in_setting: boolean) {

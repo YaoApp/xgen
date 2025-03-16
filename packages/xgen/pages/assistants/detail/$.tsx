@@ -15,6 +15,7 @@ import Files from './components/Files'
 import Tools from './components/Tools'
 import Prompts from './components/Prompts'
 import styles from './index.less'
+import { useGlobal } from '@/context/app'
 
 interface Message {
 	role: 'system' | 'user' | 'assistant' | 'developer'
@@ -26,6 +27,9 @@ const AssistantDetail = () => {
 	const id = params['*'] || ''
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
+
+	const global = useGlobal()
+	const { default_assistant, connectors } = global
 
 	const [loading, setLoading] = useState(true)
 	const [form] = Form.useForm()
@@ -219,7 +223,7 @@ const AssistantDetail = () => {
 				assistant_id: id,
 				assistant_name: formValues.name,
 				assistant_avatar: avatarUrl,
-				assistant_deleteable: formValues.mentionable
+				assistant_deleteable: id !== default_assistant.assistant_id
 			},
 			placeholder: formValues.placeholder || undefined
 		}
@@ -294,7 +298,7 @@ const AssistantDetail = () => {
 				</Breadcrumb>
 				<Button
 					className={styles.backButton}
-					icon={<ArrowLeftOutlined style={{ fontSize: '14px' }} />}
+					icon={<ArrowLeftOutlined style={{ fontSize: '12px' }} />}
 					type='text'
 					onClick={handleBack}
 					title={is_cn ? '返回' : 'Back'}
@@ -341,7 +345,9 @@ const AssistantDetail = () => {
 							<div className={styles.description}>{description}</div>
 						</div>
 						<div className={styles.headerMeta}>
-							{connector && <div className={styles.connector}>{connector}</div>}
+							{connector && (
+								<div className={styles.connector}>{connectors.mapping[connector]}</div>
+							)}
 							<div className={styles.statusIcons}>
 								{built_in && (
 									<Tooltip title={is_cn ? '系统内建' : 'Built-in'}>

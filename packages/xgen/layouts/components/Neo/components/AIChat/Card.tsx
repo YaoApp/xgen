@@ -5,7 +5,8 @@ import Tag from './Tag'
 import styles from './Card.less'
 import { getLocale } from '@umijs/max'
 import Icon from '@/widgets/Icon'
-
+import { useGlobal } from '@/context/app'
+import { toJS } from 'mobx'
 interface Props {
 	/** Assistant data */
 	data: App.Assistant
@@ -19,6 +20,8 @@ const Card: FC<Props> = ({ data, onClick, onChatClick }) => {
 	// Get current locale using the same method as in useAIChat.ts
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
+	const global = useGlobal()
+	const { default_assistant, connectors } = global
 
 	// Handle chat button click without triggering the card click
 	const handleChatClick = (e: React.MouseEvent) => {
@@ -28,7 +31,7 @@ const Card: FC<Props> = ({ data, onClick, onChatClick }) => {
 				assistant_id: data.assistant_id,
 				assistant_name: data.name,
 				assistant_avatar: data.avatar,
-				assistant_deleteable: data.mentionable
+				assistant_deleteable: data.assistant_id !== default_assistant.assistant_id
 			},
 			placeholder: data.placeholder || undefined
 		}
@@ -100,7 +103,9 @@ const Card: FC<Props> = ({ data, onClick, onChatClick }) => {
 					>
 						{is_cn ? '聊天' : 'Chat'}
 					</Button>
-					{data.connector && <div className={styles.connector}>{data.connector}</div>}
+					{data.connector && (
+						<div className={styles.connector}>{connectors.mapping[data.connector]}</div>
+					)}
 				</div>
 			</div>
 		</div>

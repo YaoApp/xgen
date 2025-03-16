@@ -53,7 +53,9 @@ const AIChat = (props: AIChatProps) => {
 	// const [assistant_id, setAssistantId] = useState(global.neo.assistant_id)
 	const [currentPage, setCurrentPage] = useState(pathname.replace(/\/_menu.*/gi, '').toLowerCase())
 	const [initialized, setInitialized] = useState(false)
-	const [placeholder, setPlaceholder] = useState<App.ChatPlaceholder | undefined>(global.neo.placeholder)
+	const [placeholder, setPlaceholder] = useState<App.ChatPlaceholder | undefined>(
+		global.default_assistant?.placeholder
+	)
 
 	const {
 		assistant,
@@ -141,6 +143,13 @@ const AIChat = (props: AIChatProps) => {
 	const clearRef = useRef<(() => void) | null>(null)
 	const focusRef = useRef<(() => void) | null>(null)
 
+	/** Reset Assistant **/
+	const handleResetAssistant = useMemoizedFn(() => {
+		resetAssistant()
+		setPlaceholder(global.default_assistant?.placeholder)
+	})
+
+	/** Send Message **/
 	const handleSend = () => {
 		const message = inputValue.trim()
 		if (message) {
@@ -215,7 +224,6 @@ const AIChat = (props: AIChatProps) => {
 		// Set placeholder
 		if (options?.placeholder) {
 			setPlaceholder(options?.placeholder)
-			global.setNeoPlaceholder(options?.placeholder)
 		}
 
 		// Title
@@ -236,7 +244,7 @@ const AIChat = (props: AIChatProps) => {
 		if (options?.assistant) {
 			updateAssistant(options?.assistant)
 		} else {
-			resetAssistant()
+			handleResetAssistant()
 		}
 
 		// Focus using the new method
@@ -576,7 +584,7 @@ const AIChat = (props: AIChatProps) => {
 								assistant={assistant || {}}
 								loading={loadingChat}
 								onDelete={() => {
-									resetAssistant()
+									handleResetAssistant()
 									focusRef.current?.() // focus on the input
 								}}
 							/>
