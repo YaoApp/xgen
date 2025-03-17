@@ -52,14 +52,11 @@ const AssistantCreate = () => {
 			const assistantData = {
 				...values,
 				avatar: avatarUrl,
-				tags: ['general'],
+				type: 'assistant',
 				mentionable: true,
-				automated: false,
+				automated: true,
 				built_in: false,
 				readonly: false,
-				option: {
-					...Object.fromEntries(options.map(({ key, value }) => [key, value]))
-				},
 				prompts
 			}
 

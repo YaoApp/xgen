@@ -3,6 +3,19 @@ import axios from 'axios'
 import to from 'await-to-js'
 import { App } from '@/types'
 import { useMemoizedFn } from 'ahooks'
+const defaultSelectFields = [
+	'assistant_id',
+	'automated',
+	'avatar',
+	'connector',
+	'description',
+	'mentionable',
+	'name',
+	'readonly',
+	'sort',
+	'tags',
+	'type'
+]
 
 export const createAssistantManagement = (
 	neo_api: string | undefined,
@@ -29,17 +42,18 @@ export const createAssistantManagement = (
 		const params = new URLSearchParams()
 		params.append('token', getToken())
 
-		// Add filter parameters if provided
-		if (filter) {
-			if (filter.keywords) params.append('keywords', filter.keywords)
-			if (filter.page) params.append('page', filter.page.toString())
-			if (filter.pagesize) params.append('pagesize', filter.pagesize.toString())
-			if (filter.tags) params.append('tags', filter.tags.join(','))
-			if (filter.connector) params.append('connector', filter.connector)
-			if (filter.select) params.append('select', filter.select.join(','))
-			if (filter.mentionable !== undefined) params.append('mentionable', filter.mentionable.toString())
-			if (filter.automated !== undefined) params.append('automated', filter.automated.toString())
-		}
+		// Default filter values
+		filter = filter || {}
+		filter.select = filter.select || defaultSelectFields
+
+		if (filter.select) params.append('select', filter.select.join(','))
+		if (filter.keywords) params.append('keywords', filter.keywords)
+		if (filter.page) params.append('page', filter.page.toString())
+		if (filter.pagesize) params.append('pagesize', filter.pagesize.toString())
+		if (filter.tags) params.append('tags', filter.tags.join(','))
+		if (filter.connector) params.append('connector', filter.connector)
+		if (filter.mentionable !== undefined) params.append('mentionable', filter.mentionable.toString())
+		if (filter.automated !== undefined) params.append('automated', filter.automated.toString())
 
 		const endpoint = `${neo_api}/assistants?${params.toString()}`
 		const [err, res] = await to<{ data: App.AssistantResponse }>(axios.get(endpoint))
