@@ -105,3 +105,40 @@
 		}
 	}
 }
+
+.placeholderSection {
+	margin-top: 24px;
+	margin-bottom: 24px;
+	width: 100%;
+
+	h3 {
+		font-size: 16px;
+		font-weight: 600;
+		margin-bottom: 16px;
+		color: var(--color_text);
+	}
+}
+
+.placeholderContainer {
+	width: 100%;
+	display: block;
+
+	/* Ensure the placeholder component takes full width */
+	:global {
+		.xgen-form-item {
+			width: 100%;
+		}
+
+		.xgen-form-item-control-input,
+		.xgen-form-item-control-input-content {
+			width: 100%;
+		}
+
+		/* Ensure the textarea and other inputs have proper width */
+		.xgen-input,
+		.xgen-input-textarea,
+		.xgen-select {
+			width: 100%;
+		}
+	}
+}

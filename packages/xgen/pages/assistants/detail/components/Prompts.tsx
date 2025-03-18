@@ -187,7 +187,7 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 																	? '系统'
 																	: 'System'}
 															</Option>
-															<Option value='user'>
+															{/* <Option value='user'>
 																{is_cn
 																	? '用户'
 																	: 'User'}
@@ -196,7 +196,7 @@ export default function Prompts({ value = [], options = [], onChange, onOptionsC
 																{is_cn
 																	? '助手'
 																	: 'Assistant'}
-															</Option>
+															</Option> */}
 															<Option value='developer'>
 																{is_cn
 																	? '开发者'

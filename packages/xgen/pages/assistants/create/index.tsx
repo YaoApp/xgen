@@ -5,6 +5,7 @@ import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons'
 import { App } from '@/types'
 import useAIChat from '@/layouts/components/Neo/hooks/useAIChat'
 import Prompts from '../detail/components/Prompts'
+import ChatPlaceholder from '../detail/components/ChatPlaceholder'
 import styles from './index.less'
 import { useGlobal } from '@/context/app'
 
@@ -27,8 +28,10 @@ const AssistantCreate = () => {
 	const [form] = Form.useForm()
 	const [prompts, setPrompts] = useState<Message[]>([])
 	const [options, setOptions] = useState<{ key: string; value: string }[]>([])
+	const [placeholder, setPlaceholder] = useState<App.ChatPlaceholder>({})
 	const aiChatRef = useRef<any>(null)
 	const { saveAssistant } = useAIChat({})
+	const description = Form.useWatch('description', form)
 
 	// Initialize aiChatRef immediately
 	if (!aiChatRef.current) {
@@ -39,6 +42,22 @@ const AssistantCreate = () => {
 	useEffect(() => {
 		aiChatRef.current = { saveAssistant }
 	}, [saveAssistant])
+
+	// Update placeholder when description changes
+	useEffect(() => {
+		if (!description || placeholder?.description) return
+
+		const assistantName = form.getFieldValue('name') || ''
+		const greeting = is_cn
+			? `你好，我是${assistantName}，${description}`
+			: `Hello, I'm ${assistantName}, ${description}`
+
+		setPlaceholder((prev) => ({
+			...prev,
+			title: prev.title || (is_cn ? '新对话' : 'New Chat'),
+			description: greeting
+		}))
+	}, [description, is_cn, placeholder, form])
 
 	const handleBack = () => {
 		history.push('/assistants')
@@ -58,7 +77,8 @@ const AssistantCreate = () => {
 				automated: true,
 				built_in: false,
 				readonly: false,
-				prompts
+				prompts,
+				placeholder
 			}
 
 			const result = await aiChatRef.current.saveAssistant(assistantData)
@@ -202,6 +222,13 @@ const AssistantCreate = () => {
 									onChange={setPrompts}
 									onOptionsChange={setOptions}
 								/>
+							</div>
+						</div>
+
+						<div className={styles.placeholderSection}>
+							<h3>{is_cn ? '对话占位符' : 'Chat Placeholder'}</h3>
+							<div className={styles.placeholderContainer}>
+								<ChatPlaceholder value={placeholder} onChange={setPlaceholder} />
 							</div>
 						</div>
 					</Form>

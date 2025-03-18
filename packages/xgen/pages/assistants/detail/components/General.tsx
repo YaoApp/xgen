@@ -1,26 +1,15 @@
-import { Form, Radio, Input, Select, Tag as AntTag } from 'antd'
+import { Form, Radio, Input, Select, Tag as AntTag, Popconfirm, Button } from 'antd'
 import type { FormInstance } from 'antd'
 import { getLocale } from '@umijs/max'
 import { useEffect, useState } from 'react'
 import styles from '../index.less'
 import useAIChat from '@/layouts/components/Neo/hooks/useAIChat'
 import { useGlobal } from '@/context/app'
+import ChatPlaceholder from './ChatPlaceholder'
+import { DeleteOutlined } from '@ant-design/icons'
 
 const { TextArea } = Input
 const { Option } = Select
-
-// 默认标签列表，实际应用中应该从 API 获取
-const defaultTags = [
-	'coding',
-	'writing',
-	'analysis',
-	'research',
-	'translation',
-	'data',
-	'creative',
-	'education',
-	'productivity'
-]
 
 interface GeneralProps {
 	form: FormInstance
@@ -158,22 +147,24 @@ export default function General({ form }: GeneralProps) {
 							/>
 						)}
 					</div>
-					<div className={styles.tagSuggestions}>
-						<div className={styles.suggestionsTitle}>
-							{is_cn ? '推荐标签' : 'Suggested Tags'}:
+					{!readonly && (
+						<div className={styles.tagSuggestions}>
+							<div className={styles.suggestionsTitle}>
+								{is_cn ? '推荐标签' : 'Suggested Tags'}:
+							</div>
+							<div className={styles.suggestionsList}>
+								{tags.map((tag) => (
+									<AntTag
+										key={tag}
+										onClick={() => handleTagClick(tag)}
+										className={styles.suggestionTag}
+									>
+										{tag}
+									</AntTag>
+								))}
+							</div>
 						</div>
-						<div className={styles.suggestionsList}>
-							{tags.map((tag) => (
-								<AntTag
-									key={tag}
-									onClick={() => handleTagClick(tag)}
-									className={styles.suggestionTag}
-								>
-									{tag}
-								</AntTag>
-							))}
-						</div>
-					</div>
+					)}
 				</div>
 			</Form.Item>
 
@@ -218,19 +209,23 @@ export default function General({ form }: GeneralProps) {
 
 			<div className='radio-group-container'>
 				<Form.Item label={is_cn ? '自动化' : 'Automation'} name='automated' initialValue={true}>
-					<Radio.Group>
+					<Radio.Group style={{ whiteSpace: 'nowrap' }}>
 						<Radio value={true}>{is_cn ? '启用' : 'Enable'}</Radio>
 						<Radio value={false}>{is_cn ? '禁用' : 'Disable'}</Radio>
 					</Radio.Group>
 				</Form.Item>
 
 				<Form.Item label={is_cn ? '提及' : 'Mentions'} name='mentionable' initialValue={true}>
-					<Radio.Group>
+					<Radio.Group style={{ whiteSpace: 'nowrap' }}>
 						<Radio value={true}>{is_cn ? '允许' : 'Allow'}</Radio>
 						<Radio value={false}>{is_cn ? '不允许' : 'Disallow'}</Radio>
 					</Radio.Group>
 				</Form.Item>
 			</div>
+
+			<Form.Item label={is_cn ? '对话占位符' : 'Chat Placeholder'} name='placeholder' initialValue={{}}>
+				<ChatPlaceholder readonly={readonly} />
+			</Form.Item>
 
 			{/* Hidden fields for built_in and readonly */}
 			<Form.Item name='built_in' hidden>
@@ -240,6 +235,42 @@ export default function General({ form }: GeneralProps) {
 			<Form.Item name='readonly' hidden>
 				<Input type='hidden' />
 			</Form.Item>
+
+			{/* Danger Zone */}
+			{!readonly && (
+				<Form.Item label={is_cn ? '危险操作' : 'Danger Zone'}>
+					<Popconfirm
+						title={
+							<>
+								<div>
+									{is_cn
+										? '确定要删除这个助手吗？'
+										: 'Are you sure you want to delete this assistant?'}
+								</div>
+								<div
+									style={{
+										fontSize: '12px',
+										color: 'var(--color_text_grey)'
+									}}
+								>
+									{is_cn ? '删除后无法恢复' : 'This action cannot be undone'}
+								</div>
+							</>
+						}
+						onConfirm={() => window.$app.Event.emit('assistant/delete')}
+						okText={is_cn ? '确定' : 'Yes'}
+						cancelText={is_cn ? '取消' : 'No'}
+					>
+						<Button
+							danger
+							type='primary'
+							icon={<DeleteOutlined style={{ fontSize: '14px' }} />}
+						>
+							{is_cn ? '删除助手' : 'Delete Assistant'}
+						</Button>
+					</Popconfirm>
+				</Form.Item>
+			)}
 		</Form>
 	)
 }

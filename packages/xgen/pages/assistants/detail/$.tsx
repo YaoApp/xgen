@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useParams, history, getLocale } from '@umijs/max'
-import { Spin, Form, Button, Space, message, Avatar, Upload, Tabs, Tooltip, Breadcrumb } from 'antd'
-import { ArrowLeftOutlined, SaveOutlined, CameraOutlined, MessageOutlined } from '@ant-design/icons'
+import { Spin, Form, Button, Space, message, Avatar, Upload, Tabs, Tooltip, Breadcrumb, Popconfirm } from 'antd'
+import { ArrowLeftOutlined, SaveOutlined, CameraOutlined, MessageOutlined, DeleteOutlined } from '@ant-design/icons'
 import type { UploadChangeParam } from 'antd/es/upload'
 import type { UploadFile } from 'antd/es/upload/interface'
 import { App } from '@/types'
@@ -39,19 +39,14 @@ const AssistantDetail = () => {
 	const [prompts, setPrompts] = useState<Message[]>([])
 	const [options, setOptions] = useState<{ key: string; value: string }[]>([])
 	const aiChatRef = useRef<any>(null)
-	const { findAssistant, saveAssistant } = useAIChat({})
+	const { findAssistant, saveAssistant, deleteAssistant } = useAIChat({})
 	const fetchedRef = useRef(false)
 	const previousIdRef = useRef<string>('')
 
 	// Initialize aiChatRef immediately
 	if (!aiChatRef.current) {
-		aiChatRef.current = { findAssistant, saveAssistant }
+		aiChatRef.current = { findAssistant, saveAssistant, deleteAssistant }
 	}
-
-	// Keep aiChatRef updated with latest functions
-	useEffect(() => {
-		aiChatRef.current = { findAssistant, saveAssistant }
-	}, [findAssistant, saveAssistant])
 
 	// Use Form.useWatch to monitor form values
 	const name = Form.useWatch('name', form)
@@ -62,6 +57,31 @@ const AssistantDetail = () => {
 	const connector = Form.useWatch('connector', form)
 	const tags = Form.useWatch('tags', form)
 	const description = Form.useWatch('description', form)
+
+	useEffect(() => {
+		aiChatRef.current = { findAssistant, saveAssistant, deleteAssistant }
+	}, [findAssistant, saveAssistant, deleteAssistant])
+
+	// Add event listener for delete action
+	useEffect(() => {
+		const handleDelete = async () => {
+			if (readonly) return
+			try {
+				await aiChatRef.current.deleteAssistant(id)
+				message.success(is_cn ? '助手删除成功' : 'Assistant deleted successfully')
+				fetchedRef.current = false
+				previousIdRef.current = ''
+				history.push('/assistants')
+			} catch (error) {
+				message.error(is_cn ? '删除助手失败' : 'Failed to delete assistant')
+			}
+		}
+
+		window.$app.Event.on('assistant/delete', handleDelete)
+		return () => {
+			window.$app.Event.off('assistant/delete', handleDelete)
+		}
+	}, [id, readonly, is_cn])
 
 	useEffect(() => {
 		// If the ID hasn't changed, don't refetch
@@ -161,20 +181,13 @@ const AssistantDetail = () => {
 			const assistantData = {
 				...values,
 				assistant_id: id,
-				option: {
-					...Object.fromEntries(options.map(({ key, value }) => [key, value])),
-					code
-				},
-				prompts
+				type: 'assistant',
+				prompts: prompts || [],
+				options: Object.fromEntries(options.map(({ key, value }) => [key, value])) || {}
 			}
 
 			await aiChatRef.current.saveAssistant(assistantData)
 			message.success(is_cn ? '助手更新成功' : 'Assistant updated successfully')
-
-			// Reset refs before redirecting
-			fetchedRef.current = false
-			previousIdRef.current = ''
-			history.push('/assistants')
 		} catch (error) {
 			message.error(is_cn ? '更新助手失败' : 'Failed to update assistant')
 		}
@@ -189,11 +202,9 @@ const AssistantDetail = () => {
 					const assistantData = {
 						...values,
 						assistant_id: id,
-						option: {
-							...Object.fromEntries(options.map(({ key, value }) => [key, value])),
-							code
-						},
-						prompts
+						type: 'assistant',
+						prompts: prompts || [],
+						options: Object.fromEntries(options.map(({ key, value }) => [key, value])) || {}
 					}
 
 					await aiChatRef.current.saveAssistant(assistantData)
@@ -382,7 +393,7 @@ const AssistantDetail = () => {
 					<div className={styles.leftButton}>
 						<Button
 							type='primary'
-							icon={<Icon name='icon-message-circle' size={14} />}
+							icon={<MessageOutlined style={{ fontSize: '14px' }} />}
 							onClick={handleChatClick}
 						>
 							{is_cn ? '聊天' : 'Chat'}
@@ -393,7 +404,15 @@ const AssistantDetail = () => {
 							<Button
 								type='primary'
 								icon={<SaveOutlined style={{ fontSize: '14px' }} />}
-								onClick={form.submit}
+								onClick={() => {
+									form.validateFields()
+										.then((values) => {
+											handleSubmit(values)
+										})
+										.catch((errorInfo) => {
+											console.log('Validation failed:', errorInfo)
+										})
+								}}
 							>
 								{is_cn ? '保存' : 'Save'}
 							</Button>
@@ -403,7 +422,15 @@ const AssistantDetail = () => {
 			</div>
 
 			<div className={styles.content}>
-				<Tabs items={items} defaultActiveKey='basic' className={styles.tabs} size='large' type='card' />
+				<Form form={form} className={styles.form}>
+					<Tabs
+						items={items}
+						defaultActiveKey='general'
+						className={styles.tabs}
+						size='large'
+						type='card'
+					/>
+				</Form>
 			</div>
 		</div>
 	)

@@ -8,6 +8,26 @@ import useAIChat from '@/layouts/components/Neo/hooks/useAIChat'
 import { App } from '@/types'
 import styles from './index.less'
 
+// Helper function to generate default placeholder data
+const generateDefaultPlaceholder = (assistant: App.Assistant, is_cn: boolean): App.ChatPlaceholder => {
+	if (assistant.placeholder && Object.keys(assistant.placeholder).length > 0) {
+		return assistant.placeholder
+	}
+
+	const name = assistant.name || ''
+	const description = assistant.description || ''
+
+	return {
+		title: is_cn ? '新对话' : 'New Chat',
+		description: description
+			? is_cn
+				? `你好，我是${name}，${description}`
+				: `Hello, I'm ${name}, ${description}`
+			: '',
+		prompts: []
+	}
+}
+
 const Index = () => {
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
@@ -78,7 +98,18 @@ const Index = () => {
 				tags: activeType !== 'all' ? [activeType] : undefined
 			})
 
-			const newData = Array.isArray(response) ? response : response?.data || []
+			let newData = Array.isArray(response) ? response : response?.data || []
+
+			// Add default placeholder for assistants that don't have one
+			newData = newData.map((assistant) => {
+				if (!assistant.placeholder || Object.keys(assistant.placeholder).length === 0) {
+					return {
+						...assistant,
+						placeholder: generateDefaultPlaceholder(assistant, is_cn)
+					}
+				}
+				return assistant
+			})
 
 			if (reset) {
 				setData(newData)
@@ -134,6 +165,10 @@ const Index = () => {
 	}
 
 	const handleCardClick = (assistant: App.Assistant) => {
+		// Ensure assistant has placeholder data before redirecting
+		if (!assistant.placeholder || Object.keys(assistant.placeholder).length === 0) {
+			assistant.placeholder = generateDefaultPlaceholder(assistant, is_cn)
+		}
 		history.push(`/assistants/detail/${assistant.assistant_id}`)
 	}
 
