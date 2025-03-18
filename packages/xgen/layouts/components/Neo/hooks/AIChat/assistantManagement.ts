@@ -10,6 +10,7 @@ const defaultSelectFields = [
 	'connector',
 	'description',
 	'mentionable',
+	'placeholder',
 	'name',
 	'readonly',
 	'sort',

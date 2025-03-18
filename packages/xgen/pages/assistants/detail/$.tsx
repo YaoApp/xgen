@@ -90,11 +90,6 @@ const AssistantDetail = () => {
 					return
 				}
 
-				// 如果数据中有 type 但没有 tags，将 type 转换为 tags
-				if (data.type && (!data.tags || data.tags.length === 0)) {
-					data.tags = [data.type]
-				}
-
 				// Ensure built_in and readonly are properly processed as boolean values
 				if (data.built_in !== undefined) {
 					data.built_in = Boolean(data.built_in)
@@ -334,13 +329,15 @@ const AssistantDetail = () => {
 						<div className={styles.headerInfo}>
 							<h1 style={{ whiteSpace: 'nowrap' }}>{name}</h1>
 							<div className={styles.tags}>
-								{tags &&
-									tags.length > 0 &&
-									tags.map((tag: string, index: number) => (
-										<Tag key={index} variant='auto'>
-											{tag}
-										</Tag>
-									))}
+								{(() => {
+									return Array.isArray(tags)
+										? tags.map((tag: string, index: number) => (
+												<Tag key={index} variant='auto'>
+													{tag}
+												</Tag>
+										  ))
+										: null
+								})()}
 							</div>
 							<div className={styles.description}>{description}</div>
 						</div>

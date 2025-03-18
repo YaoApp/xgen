@@ -19,6 +19,7 @@ interface Message {
 const AssistantCreate = () => {
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
+	const [formTitle, setFormTitle] = useState(is_cn ? '新助手' : 'New Assistant')
 
 	const global = useGlobal()
 	const { connectors } = global
@@ -106,9 +107,7 @@ const AssistantCreate = () => {
 			<div className={styles.simpleFormContainer}>
 				<div className={styles.formContent}>
 					<div className={styles.formHeader}>
-						<h2 className={styles.formTitle}>
-							{is_cn ? '创建新助手' : 'Create New Assistant'}
-						</h2>
+						<h2 className={styles.formTitle}>{formTitle}</h2>
 						<Button type='primary' onClick={() => form.submit()} htmlType='submit'>
 							{is_cn ? '创建' : 'Create'} <ArrowRightOutlined />
 						</Button>
@@ -167,6 +166,10 @@ const AssistantCreate = () => {
 						>
 							<Input
 								placeholder={is_cn ? '输入一个描述性名称' : 'Enter a descriptive name'}
+								onChange={(e) => {
+									const name = e.target.value.trim()
+									setFormTitle(name || (is_cn ? '新助手' : 'New Assistant'))
+								}}
 							/>
 						</Form.Item>
 

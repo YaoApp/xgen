@@ -3,6 +3,8 @@ import type { FormInstance } from 'antd'
 import { getLocale } from '@umijs/max'
 import { useEffect, useState } from 'react'
 import styles from '../index.less'
+import useAIChat from '@/layouts/components/Neo/hooks/useAIChat'
+import { useGlobal } from '@/context/app'
 
 const { TextArea } = Input
 const { Option } = Select
@@ -28,20 +30,44 @@ export default function General({ form }: GeneralProps) {
 	const locale = getLocale()
 	const is_cn = locale === 'zh-CN'
 	const readonly = Form.useWatch('readonly', form)
-	const [tags, setTags] = useState<string[]>(defaultTags)
+	const [tags, setTags] = useState<string[]>([])
 	const [inputVisible, setInputVisible] = useState(false)
 	const [inputValue, setInputValue] = useState('')
+	const { getAssistantTags } = useAIChat({})
+	const global = useGlobal()
+	const { connectors } = global
 
-	// 模拟从 API 获取标签列表
+	// 从 API 获取标签列表
 	useEffect(() => {
-		// 实际应用中，这里应该调用 API 获取标签列表
-		// 例如：fetchTags().then(tags => setTags(tags))
-		// 这里使用默认标签列表
+		const fetchTags = async () => {
+			try {
+				const response = await getAssistantTags()
+				if (Array.isArray(response)) {
+					setTags(response)
+				}
+			} catch (error) {
+				console.error('Failed to fetch tags:', error)
+				// 如果 API 调用失败，使用默认标签
+				setTags([
+					'coding',
+					'writing',
+					'analysis',
+					'research',
+					'translation',
+					'data',
+					'creative',
+					'education',
+					'productivity'
+				])
+			}
+		}
+		fetchTags()
 	}, [])
 
 	const handleClose = (removedTag: string) => {
 		if (readonly) return
-		const newTags = form.getFieldValue('tags').filter((tag: string) => tag !== removedTag)
+		const currentTags = form.getFieldValue('tags')
+		const newTags = Array.isArray(currentTags) ? currentTags.filter((tag: string) => tag !== removedTag) : []
 		form.setFieldValue('tags', newTags)
 	}
 
@@ -51,9 +77,11 @@ export default function General({ form }: GeneralProps) {
 
 	const handleInputConfirm = () => {
 		if (readonly) return
-		if (inputValue && !form.getFieldValue('tags')?.includes(inputValue)) {
-			const newTags = [...(form.getFieldValue('tags') || []), inputValue]
-			form.setFieldValue('tags', newTags)
+		const currentTags = form.getFieldValue('tags')
+		if (inputValue && Array.isArray(currentTags) && !currentTags.includes(inputValue)) {
+			form.setFieldValue('tags', [...currentTags, inputValue])
+		} else if (inputValue) {
+			form.setFieldValue('tags', [inputValue])
 		}
 		setInputVisible(false)
 		setInputValue('')
@@ -66,7 +94,11 @@ export default function General({ form }: GeneralProps) {
 
 	const handleTagClick = (tag: string) => {
 		if (readonly) return
-		const currentTags = form.getFieldValue('tags') || []
+		const currentTags = form.getFieldValue('tags')
+		if (!Array.isArray(currentTags)) {
+			form.setFieldValue('tags', [tag])
+			return
+		}
 		if (currentTags.includes(tag)) return
 		form.setFieldValue('tags', [...currentTags, tag])
 	}
@@ -90,28 +122,24 @@ export default function General({ form }: GeneralProps) {
 				<Input placeholder={is_cn ? '输入一个描述性名称' : 'Enter a descriptive name'} />
 			</Form.Item>
 
-			<Form.Item
-				name='tags'
-				label={is_cn ? '标签' : 'Tags'}
-				rules={[
-					{
-						required: true,
-						message: is_cn ? '请至少选择一个标签' : 'Please select at least one tag'
-					}
-				]}
-			>
+			<Form.Item name='tags' label={is_cn ? '标签' : 'Tags'}>
 				<div className={styles.tagsContainer}>
 					<div className={styles.selectedTags}>
-						{form.getFieldValue('tags')?.map((tag: string) => (
-							<AntTag
-								key={tag}
-								closable={!readonly}
-								onClose={() => handleClose(tag)}
-								className={styles.tagItem}
-							>
-								{tag}
-							</AntTag>
-						))}
+						{(() => {
+							const formTags = form.getFieldValue('tags')
+							return Array.isArray(formTags)
+								? formTags.map((tag: string) => (
+										<AntTag
+											key={tag}
+											closable={!readonly}
+											onClose={() => handleClose(tag)}
+											className={styles.tagItem}
+										>
+											{tag}
+										</AntTag>
+								  ))
+								: null
+						})()}
 						{!readonly && !inputVisible && (
 							<AntTag onClick={showInput} className={styles.tagPlus}>
 								+ {is_cn ? '新标签' : 'New Tag'}
@@ -175,10 +203,16 @@ export default function General({ form }: GeneralProps) {
 							? '选择为此助手提供支持的AI连接器'
 							: 'Select the AI connector to power this assistant'
 					}
+					showSearch
+					filterOption={(input, option) =>
+						(option?.children as unknown as string).toLowerCase().includes(input.toLowerCase())
+					}
 				>
-					<Option value='OpenAI GPT-4'>OpenAI GPT-4</Option>
-					<Option value='Anthropic Claude'>Anthropic Claude</Option>
-					<Option value='Google Gemini Pro'>Google Gemini Pro</Option>
+					{Object.keys(connectors?.mapping || {}).map((key) => (
+						<Option key={key} value={key}>
+							{connectors.mapping[key]}
+						</Option>
+					))}
 				</Select>
 			</Form.Item>
 
