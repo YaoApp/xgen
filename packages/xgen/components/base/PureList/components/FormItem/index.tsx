@@ -19,14 +19,14 @@ const Index = (props: IPropsFormItem) => {
 			</When>
 			<X
 				type='edit'
-				name={item.edit.type}
+				name={item.edit?.type || 'Input'}
 				__shadow='pure-list'
 				__shadow_host_ref={__shadow_host_ref}
 				props={{
-					...item.edit.props,
+					...item.edit?.props,
 					__namespace: '',
 					__primary: '',
-					__type: item.edit.type,
+					__type: item.edit?.type,
 					__bind: item.bind,
 					__name: item.name,
 					__data_item: null,

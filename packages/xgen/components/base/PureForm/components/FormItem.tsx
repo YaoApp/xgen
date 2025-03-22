@@ -32,20 +32,20 @@ const Index = (props: IPropsFormItem) => {
 	}, [namespace, item])
 
 	const show_ai = useMemo(
-		() => global.app_info.optional?.neo?.api && item.edit.props?.ai && !aiExclude[item.edit.type],
-		[global.app_info.optional?.neo?.api, item.edit.props?.ai]
+		() => global.app_info.optional?.neo?.api && item.edit?.props?.ai && !aiExclude[item.edit?.type],
+		[global.app_info.optional?.neo?.api, item.edit?.props?.ai]
 	)
 
 	const disabled_props = useMemo(() => {
 		if (type === 'view') return { disabled: true }
 
-		const disabled = item.edit.props?.disabled
+		const disabled = item.edit?.props?.disabled
 
 		if (typeof disabled === 'undefined') return {}
 		if (typeof disabled === 'string') return { disabled: disabled === 'true' || disabled === '1' }
 
 		return { disabled }
-	}, [type, item.edit.props?.disabled])
+	}, [type, item.edit?.props?.disabled])
 
 	const showAI = useMemoizedFn(() => setVisible(true))
 
@@ -72,7 +72,7 @@ const Index = (props: IPropsFormItem) => {
 		<div className='field_ask_wrap flex'>
 			<TextArea
 				className='input_ask'
-				placeholder={item.edit.props?.ai?.placeholder}
+				placeholder={item.edit?.props?.ai?.placeholder}
 				bordered
 				autoFocus
 				autoSize
@@ -118,16 +118,16 @@ const Index = (props: IPropsFormItem) => {
 			)}
 			<X
 				type='edit'
-				name={item.edit.type}
+				name={item.edit?.type || 'Input'}
 				props={{
-					...item.edit.props,
+					...item.edit?.props,
 					...disabled_props,
 					__namespace: namespace,
 					__primary: primary,
 					__type: type,
 					__bind: item.bind,
 					__name: item.name,
-					__hidelabel: item.edit.hideLabel || item.hideLabel || undefined
+					__hidelabel: item.edit?.hideLabel || item.hideLabel || undefined
 				}}
 			></X>
 		</Col>
