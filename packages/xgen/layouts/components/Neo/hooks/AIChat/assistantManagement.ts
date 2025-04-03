@@ -75,10 +75,10 @@ export const createAssistantManagement = (
 	}
 
 	/** Call Assistant API */
-	const callAssistantAPI = async (assistantId: string, name: string, payload: Record<string, any>) => {
+	const callAssistantAPI = async (assistantId: string, name: string, args: any[] = []) => {
 		if (!neo_api) return null
 		const endpoint = `${neo_api}/assistants/${assistantId}/call?token=${encodeURIComponent(getToken())}`
-		const [err, res] = await to<{ data: any }>(axios.post(endpoint, { name, payload }))
+		const [err, res] = await to<{ data: any }>(axios.post(endpoint, { name, args }))
 		if (err) throw err
 
 		return res || null

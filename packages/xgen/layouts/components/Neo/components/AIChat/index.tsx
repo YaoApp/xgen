@@ -16,6 +16,7 @@ import { isValidUrl } from '@/utils'
 import DefaultHeader from './Header'
 import MentionTextArea from './MentionTextArea'
 import Assistant from './Assistant'
+import { callbackify } from 'util'
 
 interface AIChatProps {
 	messages?: App.ChatInfo[]
@@ -78,6 +79,7 @@ const AIChat = (props: AIChatProps) => {
 		getLatestChat,
 		generatePrompts,
 		setPendingCleanup,
+		callAssistantAPI,
 		makeChatID
 	} = useAIChat({ chat_id, upload_options })
 	const [chat_context, setChatContext] = useState<App.ChatContext>({ placeholder: '', signal: '' })
@@ -255,21 +257,43 @@ const AIChat = (props: AIChatProps) => {
 		onNew?.()
 	}
 
+	/** Handle Execute **/
+	const handleExecute = async function (payload: { assistant_id?: string; method: string; args?: any[] }) {
+		let { assistant_id, method, args } = payload
+		if (!assistant_id) {
+			assistant_id = assistant?.assistant_id
+		}
+
+		if (!assistant_id) {
+			console.error('[app/neoExecute] assistant_id is required')
+			return
+		}
+
+		if (!method) {
+			console.error('[app/neoExecute] method is required')
+			return
+		}
+
+		if (!args) args = []
+		return callAssistantAPI(assistant_id, method, args)
+	}
+
 	/** Register Events **/
 	useLayoutEffect(() => {
 		const events = window.$app.Event
 		events.on('app/getContext', getContext)
 		events.on('app/getField', getField)
 
-		/** Create a new chat */
-		events.on('app/neoNewChat', handleNewChat)
+		events.on('app/neoNewChat', handleNewChat) // Create a new chat
+		events.on('app/neoExecute', handleExecute) // Handle execute server-side methods
 
 		return () => {
 			events.off('app/getContext', getContext)
 			events.off('app/getField', getField)
 			events.off('app/neoNewChat', handleNewChat)
+			events.off('app/neoExecute', handleExecute)
 		}
-	}, [])
+	}, [assistant])
 
 	const handleOnNew = useMemoizedFn(() => {
 		handleNewChat()
