@@ -6,7 +6,7 @@ import Icon from '@/widgets/Icon'
 import clsx from 'clsx'
 import './header.less'
 import { App } from '@/types'
-import { useLocation, useNavigate } from '@umijs/max'
+import { getLocale, useLocation, useNavigate } from '@umijs/max'
 import { findNavPath } from './Utils'
 
 interface HeaderProps {
@@ -27,6 +27,8 @@ const Header: FC<HeaderProps> = ({
 }) => {
 	const global = container.resolve(GlobalModel)
 	const current_path = useLocation().pathname
+	const locale = getLocale()
+	const is_cn = locale === 'zh-CN'
 
 	const [activeMenuId, setActiveMenuId] = useState<string>(current_path)
 	const [activeCommonFunctionId, setActiveCommonFunctionId] = useState<string>(current_path)
@@ -320,11 +322,12 @@ const Header: FC<HeaderProps> = ({
 				</div>
 
 				<div className='header_right'>
-					<Tooltip title='Terminal'>
+					<Tooltip title={is_cn ? 'AI 助手' : 'AI Assistants'}>
 						<Button
 							type='text'
 							className='header_icon_btn'
-							icon={<Icon name='material-terminal' size={16} />}
+							icon={<Icon name='material-assistant' size={16} />}
+							onClick={() => navigate('/assistants')}
 						/>
 					</Tooltip>
 					<Button
