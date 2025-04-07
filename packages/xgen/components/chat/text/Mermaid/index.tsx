@@ -42,14 +42,22 @@ interface Props {
 const Mermaid = ({ chart }: Props) => {
 	const elementRef = useRef<HTMLDivElement>(null)
 	const [svg, setSvg] = useState<string>('')
-	const [error, setError] = useState<string>('')
-	const [key, setKey] = useState(0) // Add a key for forcing re-render
+	const [error, setError] = useState<string | null>(null)
+	const [isProcessing, setIsProcessing] = useState(false)
 	const is_cn = getLocale() === 'zh-CN'
 
+	// Debounce the chart updates
 	useEffect(() => {
+		let timeoutId: NodeJS.Timeout
 		let mounted = true
+
 		const renderDiagram = async () => {
 			if (!elementRef.current || !chart) return
+
+			// Skip if already processing
+			if (isProcessing) return
+
+			setIsProcessing(true)
 			try {
 				// Clean and prepare the chart content
 				const cleanChart = chart
@@ -69,7 +77,7 @@ const Mermaid = ({ chart }: Props) => {
 
 				try {
 					// Reset error state before attempting new render
-					if (mounted) setError('')
+					if (mounted) setError(null)
 
 					// Parse the chart first to validate syntax
 					await mermaid.parse(cleanChart)
@@ -78,24 +86,32 @@ const Mermaid = ({ chart }: Props) => {
 					const { svg } = await mermaid.render(id, cleanChart)
 					if (mounted) {
 						setSvg(svg)
-						setKey((prev) => prev + 1) // Force re-render on successful update
 					}
 				} finally {
 					// Clean up
 					tempContainer.remove()
 				}
-			} catch (error: any) {
-				console.error('Failed to render mermaid diagram:', error)
+			} catch (err: any) {
+				console.error('Failed to render mermaid diagram:', err)
 				if (!mounted) return
 
-				// Just set empty SVG and error message without displaying the error details
-				setSvg('')
-				setError(is_cn ? '图表渲染失败' : 'Failed to render diagram')
+				// Extract meaningful error message
+				let errorMessage = err.message || (is_cn ? '图表渲染失败' : 'Failed to render diagram')
+				if (errorMessage.includes('Syntax error')) {
+					errorMessage = is_cn ? '语法错误' : 'Syntax error in diagram'
+				}
+				setError(errorMessage)
+				setSvg('') // Clear any previous SVG
+			} finally {
+				setIsProcessing(false)
 			}
 		}
 
-		renderDiagram()
+		// Debounce render attempts
+		timeoutId = setTimeout(renderDiagram, 300)
+
 		return () => {
+			clearTimeout(timeoutId)
 			mounted = false
 		}
 	}, [chart, is_cn])
@@ -103,20 +119,64 @@ const Mermaid = ({ chart }: Props) => {
 	if (error) {
 		return (
 			<div className={styles._local}>
-				<div className='mermaid-error'>
-					<div className='error-message'>
-						<span className='error-icon'>⚠️</span>
+				<div
+					className='mermaid-error'
+					style={{
+						padding: '12px',
+						border: '1px solid #ffccc7',
+						borderRadius: '4px',
+						backgroundColor: '#fff2f0',
+						marginBottom: '16px'
+					}}
+				>
+					<div
+						className='error-message'
+						style={{
+							display: 'flex',
+							alignItems: 'center',
+							marginBottom: '8px',
+							color: '#cf1322',
+							fontSize: '12px'
+						}}
+					>
+						<span className='error-icon' style={{ marginRight: '8px' }}>
+							⚠️
+						</span>
 						{error}
 					</div>
-					<pre className='error-code'>{chart}</pre>
+					<pre
+						className='error-code'
+						style={{
+							margin: 0,
+							padding: '8px',
+							backgroundColor: 'rgba(0, 0, 0, 0.04)',
+							borderRadius: '2px',
+							fontSize: '12px',
+							overflow: 'auto'
+						}}
+					>
+						{chart}
+					</pre>
 				</div>
 			</div>
 		)
 	}
 
 	return (
-		<div className={styles._local} key={key}>
-			<div ref={elementRef} className='mermaid-diagram' dangerouslySetInnerHTML={{ __html: svg }} />
+		<div className={styles._local}>
+			{isProcessing ? (
+				<div
+					style={{
+						padding: '20px',
+						textAlign: 'center',
+						color: '#666'
+					}}
+				>
+					{is_cn ? '正在渲染图表...' : 'Rendering diagram...'}
+				</div>
+			) : (
+				<div ref={elementRef} className='mermaid-diagram' dangerouslySetInnerHTML={{ __html: svg }} />
+			)}
 		</div>
 	)
 }
