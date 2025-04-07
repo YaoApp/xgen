@@ -86,20 +86,11 @@ const Mermaid = ({ chart }: Props) => {
 				}
 			} catch (error: any) {
 				console.error('Failed to render mermaid diagram:', error)
-				// if (!mounted) return
+				if (!mounted) return
 
-				// let errorMessage = is_cn ? '图表语法错误' : 'Chart syntax error'
-				// if (error?.str) {
-				// 	// Clean up error message
-				// 	errorMessage = error.str
-				// 		.replace(/mermaid version \d+\.\d+\.\d+/g, '')
-				// 		.replace(/Syntax error in text/g, is_cn ? '语法错误' : 'Syntax error')
-				// 		.trim()
-				// } else if (error?.message) {
-				// 	errorMessage = error.message
-				// }
-				// setError(errorMessage)
-				// setSvg('')
+				// Just set empty SVG and error message without displaying the error details
+				setSvg('')
+				setError(is_cn ? '图表渲染失败' : 'Failed to render diagram')
 			}
 		}
 
