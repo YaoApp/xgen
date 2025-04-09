@@ -73,16 +73,6 @@ const Index = () => {
 
 			<div className='setting_items w_100 border_box flex flex_column mt_20'>
 				<div className='setting_item w_100 border_box flex justify_between align_center'>
-					<span className='name'>{messages.layout.setting.system.name}</span>
-					<span className='desc'>{global.app_info?.name}</span>
-				</div>
-
-				<div className='setting_item w_100 border_box flex justify_between align_center'>
-					<span className='name'>{messages.layout.setting.system.version}</span>
-					<span className='desc'>{global.app_info?.version}</span>
-				</div>
-
-				<div className='setting_item w_100 border_box flex justify_between align_center'>
 					<span className='name'>{messages.layout.setting.language.title}</span>
 					<Radio.Group
 						value={is_cn ? 'zh-CN' : 'en-US'}
@@ -111,7 +101,7 @@ const Index = () => {
 					/>
 				</div>
 				<div className='setting_item w_100 border_box flex justify_between align_center'>
-					<span className='name'>Layout</span>
+					<span className='name'>{is_cn ? '布局' : 'Layout'}</span>
 					<Radio.Group
 						value={global.layout}
 						onChange={(e) => global.setLayout(e.target.value)}
@@ -124,6 +114,82 @@ const Index = () => {
 						size='small'
 					/>
 				</div>
+			</div>
+
+			{/* System Info */}
+			<div className='w_100 flex justify_center align_center' style={{ marginTop: 32, marginBottom: 12 }}>
+				<span style={{ fontSize: '16px', fontWeight: 500, color: 'var(--color_text)' }}>
+					{is_cn ? '应用信息' : 'App Info'}
+				</span>
+			</div>
+			<div className='setting_items w_100 border_box flex flex_column mt_10'>
+				<div className='setting_item w_100 border_box flex justify_between align_center'>
+					<span className='name'>{is_cn ? '应用名称' : 'App Name'}</span>
+					<span className='desc'>{global.app_info?.name}</span>
+				</div>
+
+				{global.app_info?.description && (
+					<div className='setting_item w_100 border_box flex justify_between align_center'>
+						<span className='desc'>{global.app_info?.description}</span>
+					</div>
+				)}
+
+				{global.app_info?.version && (
+					<div className='setting_item w_100 border_box flex justify_between align_center'>
+						<span className='name'>{is_cn ? '应用版本' : 'App Version'}</span>
+						<span className='desc'>{global.app_info?.version}</span>
+					</div>
+				)}
+
+				{global.app_info?.yao?.version && (
+					<div className='setting_item w_100 border_box flex justify_between align_center'>
+						<span className='name'>{is_cn ? 'Yao 版本' : 'Yao Version'}</span>
+						<span className='desc'>
+							<a href='https://yaoapps.com' target='_blank'>
+								{global.app_info?.yao?.version}
+								{global.app_info?.yao?.prversion &&
+									`(${global.app_info?.yao?.prversion})`}
+							</a>
+						</span>
+					</div>
+				)}
+			</div>
+
+			{/* Developer Title */}
+			<div className='w_100 flex justify_center align_center' style={{ marginTop: 32, marginBottom: 12 }}>
+				<span style={{ fontSize: '16px', fontWeight: 500, color: 'var(--color_text)' }}>
+					{is_cn ? '开发者' : 'Developer'}
+				</span>
+			</div>
+			<div className='setting_items w_100 border_box flex flex_column mt_10'>
+				<div className='setting_item w_100 border_box flex justify_between align_center'>
+					<span className='name'>{is_cn ? '开发者' : 'Developer'}</span>
+					<span className='desc'>{global.developer.name}</span>
+				</div>
+
+				{global.developer.info && (
+					<div className='setting_item w_100 border_box flex justify_between align_center'>
+						<span className='desc'>{global.developer.info}</span>
+					</div>
+				)}
+
+				{global.developer.email && (
+					<div className='setting_item w_100 border_box flex justify_between align_center'>
+						<span className='name'>{is_cn ? '邮箱' : 'Email'}</span>
+						<span className='desc'>{global.developer.email}</span>
+					</div>
+				)}
+
+				{global.developer.homepage && (
+					<div className='setting_item w_100 border_box flex justify_between align_center'>
+						<span className='name'>{is_cn ? '主页' : 'Homepage'}</span>
+						<span className='desc'>
+							<a href={global.developer.homepage} target='_blank'>
+								{global.developer.homepage}
+							</a>
+						</span>
+					</div>
+				)}
 			</div>
 		</div>
 	)

@@ -32,6 +32,8 @@ export default class GlobalModel {
 	visible_menu: boolean = true
 	hide_nav: boolean = false
 
+	developer = {} as App.Developer
+
 	// Global Neo Context
 	neo: App.Neo = { assistant_id: undefined, chat_id: undefined, placeholder: undefined }
 	dataCache: Record<string, any> = {}
@@ -74,6 +76,9 @@ export default class GlobalModel {
 
 		// Connectors
 		this.setConnectors(res.agent?.connectors || [])
+
+		// Developer
+		this.setDeveloper(res.developer || {})
 
 		return Promise.resolve()
 	}
@@ -152,6 +157,11 @@ export default class GlobalModel {
 	setDefaultAssistant(assistant: App.AssistantSummary) {
 		this.default_assistant = assistant
 		local.default_assistant = assistant
+	}
+
+	setDeveloper(developer: App.Developer) {
+		this.developer = developer
+		local.developer = developer
 	}
 
 	setConnectors(connectors: Array<{ label: string; value: string }>) {

@@ -12,6 +12,14 @@ export declare namespace App {
 
 	type Theme = 'light' | 'dark'
 
+	type Developer = {
+		id?: string
+		name?: string
+		info?: string
+		email?: string
+		homepage?: string
+	}
+
 	/** Global Neo Context */
 	type Neo = { assistant_id?: string; chat_id?: string; placeholder?: ChatPlaceholder }
 
@@ -209,6 +217,15 @@ export declare namespace App {
 
 		/** Application version */
 		version?: string
+
+		/** Yao version */
+		yao?: {
+			version?: string
+			prversion?: string
+		}
+
+		/** Application developer */
+		developer?: Developer
 
 		/** Application description */
 		description?: string
