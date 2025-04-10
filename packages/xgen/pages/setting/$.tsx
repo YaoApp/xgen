@@ -52,6 +52,22 @@ const Index = () => {
 		/>
 	)
 
+	// Parse the yao prversion
+	const yaoInfo: {
+		version?: string
+		prversion?: string
+		buildTime?: string
+		commit?: string
+	} = global.app_info?.yao || {
+		version: 'unknown',
+		prversion: 'unknown',
+		buildTime: 'unknown',
+		commit: 'unknown'
+	}
+
+	// Parse the yao prversion
+	yaoInfo.commit = yaoInfo.prversion?.split?.('-')?.[0] || 'unknown'
+	yaoInfo.buildTime = yaoInfo.prversion ? yaoInfo.prversion.substring((yaoInfo.commit + '-').length) : 'unknown'
 	return (
 		<div className={clsx([styles._local, 'w_100 border_box flex flex_column'])}>
 			<div className='setting_items w_100 border_box flex flex_column'>
@@ -118,71 +134,109 @@ const Index = () => {
 
 			{/* System Info */}
 			<div className='w_100 flex justify_center align_center' style={{ marginTop: 32, marginBottom: 12 }}>
-				<span style={{ fontSize: '16px', fontWeight: 500, color: 'var(--color_text)' }}>
-					{is_cn ? '应用信息' : 'App Info'}
+				<span style={{ fontSize: '16px', fontWeight: 500, color: 'var(--color_title)' }}>
+					{global.app_info?.name || (is_cn ? '应用信息' : 'App Info')}
 				</span>
 			</div>
-			<div className='setting_items w_100 border_box flex flex_column mt_10'>
-				<div className='setting_item w_100 border_box flex justify_between align_center'>
-					<span className='name'>{is_cn ? '应用名称' : 'App Name'}</span>
-					<span className='desc'>{global.app_info?.name}</span>
+			{global.app_info?.description && (
+				<div
+					className='w_100'
+					style={{
+						marginBottom: 24,
+						padding: '0 24px'
+					}}
+				>
+					<span
+						style={{
+							fontSize: 15,
+							color: 'var(--color_placeholder)',
+							display: 'block',
+							lineHeight: 1.6
+						}}
+					>
+						{global.app_info?.description}
+					</span>
 				</div>
-
-				{global.app_info?.description && (
-					<div className='setting_item w_100 border_box flex justify_between align_center'>
-						<span className='desc'>{global.app_info?.description}</span>
-					</div>
-				)}
-
+			)}
+			<div className='setting_items w_100 border_box flex flex_column mt_10'>
 				{global.app_info?.version && (
 					<div className='setting_item w_100 border_box flex justify_between align_center'>
-						<span className='name'>{is_cn ? '应用版本' : 'App Version'}</span>
+						<span className='name' style={{ minWidth: 80 }}>
+							{is_cn ? '应用版本' : 'App Version'}
+						</span>
 						<span className='desc'>{global.app_info?.version}</span>
 					</div>
 				)}
 
-				{global.app_info?.yao?.version && (
-					<div className='setting_item w_100 border_box flex justify_between align_center'>
-						<span className='name'>{is_cn ? 'Yao 版本' : 'Yao Version'}</span>
-						<span className='desc'>
-							<a href='https://yaoapps.com' target='_blank'>
-								{global.app_info?.yao?.version}
-								{global.app_info?.yao?.prversion &&
-									`(${global.app_info?.yao?.prversion})`}
-							</a>
+				<div className='setting_item w_100 border_box flex justify_between align_center'>
+					<span className='name' style={{ minWidth: 80 }}>
+						{is_cn ? 'Yao 版本' : 'Yao Version'}
+					</span>
+					<span
+						className='desc'
+						style={{
+							display: 'flex',
+							justifyContent: 'space-between',
+							width: '100%',
+							alignItems: 'center'
+						}}
+					>
+						<span
+							style={{
+								fontSize: 12,
+								color: 'var(--color_text_secondary)'
+							}}
+						>
+							Built: {yaoInfo.buildTime}, Commit: {yaoInfo.commit}{' '}
 						</span>
-					</div>
-				)}
+						<a href='https://yaoapps.com' target='_blank'>
+							{yaoInfo.version}
+						</a>
+					</span>
+				</div>
 			</div>
 
 			{/* Developer Title */}
 			<div className='w_100 flex justify_center align_center' style={{ marginTop: 32, marginBottom: 12 }}>
-				<span style={{ fontSize: '16px', fontWeight: 500, color: 'var(--color_text)' }}>
-					{is_cn ? '开发者' : 'Developer'}
+				<span style={{ fontSize: '16px', fontWeight: 500, color: 'var(--color_title)' }}>
+					{global.developer.name ? global.developer.name : is_cn ? '开发者' : 'Developer'}
 				</span>
 			</div>
-			<div className='setting_items w_100 border_box flex flex_column mt_10'>
-				<div className='setting_item w_100 border_box flex justify_between align_center'>
-					<span className='name'>{is_cn ? '开发者' : 'Developer'}</span>
-					<span className='desc'>{global.developer.name}</span>
+			{global.developer.info && (
+				<div
+					className='w_100'
+					style={{
+						marginBottom: 24,
+						padding: '0 24px'
+					}}
+				>
+					<span
+						style={{
+							fontSize: 15,
+							color: 'var(--color_placeholder)',
+							display: 'block',
+							lineHeight: 1.6
+						}}
+					>
+						{global.developer.info}
+					</span>
 				</div>
-
-				{global.developer.info && (
-					<div className='setting_item w_100 border_box flex justify_between align_center'>
-						<span className='desc'>{global.developer.info}</span>
-					</div>
-				)}
-
+			)}
+			<div className='setting_items w_100 border_box flex flex_column mt_10'>
 				{global.developer.email && (
 					<div className='setting_item w_100 border_box flex justify_between align_center'>
-						<span className='name'>{is_cn ? '邮箱' : 'Email'}</span>
+						<span className='name' style={{ minWidth: 80 }}>
+							{is_cn ? '邮箱' : 'Email'}
+						</span>
 						<span className='desc'>{global.developer.email}</span>
 					</div>
 				)}
 
 				{global.developer.homepage && (
 					<div className='setting_item w_100 border_box flex justify_between align_center'>
-						<span className='name'>{is_cn ? '主页' : 'Homepage'}</span>
+						<span className='name' style={{ minWidth: 80 }}>
+							{is_cn ? '主页' : 'Homepage'}
+						</span>
 						<span className='desc'>
 							<a href={global.developer.homepage} target='_blank'>
 								{global.developer.homepage}
