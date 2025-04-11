@@ -258,12 +258,14 @@ const AssistantDetail = () => {
 			children: (
 				<Prompts value={prompts} options={options} onChange={setPrompts} onOptionsChange={setOptions} />
 			)
-		},
+		}
+		/** 暂时注释掉 Files
 		{
 			key: 'files',
 			label: is_cn ? '文件' : 'Files',
 			children: <Files files={files} onFilesChange={setFiles} />
-		},
+		}
+		*/
 		/* 暂时注释掉 Workflow
 		{
 			key: 'workflow',
@@ -271,11 +273,13 @@ const AssistantDetail = () => {
 			children: <Workflow />
 		},
 		*/
+		/** 暂时注释掉 Tools
 		{
 			key: 'tools',
 			label: is_cn ? '工具' : 'Tools',
 			children: <Tools />
 		}
+		*/
 		/* 暂时注释掉 Script
 		{
 			key: 'script',
