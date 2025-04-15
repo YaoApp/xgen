@@ -92,17 +92,65 @@ const Index = (props: IProps) => {
 	}, [__value])
 
 	if (props?.format) {
+		const formatTime = (val: string | number): string => {
+			// Handle number type (potential timestamp)
+			if (typeof val === 'number') {
+				// If it's a decimal number or too small to be a timestamp, return as is
+				if (!Number.isInteger(val) || val < 1) {
+					return val.toString()
+				}
+
+				try {
+					// For Unix timestamps (seconds)
+					if (val < 10000000000) {
+						const m = moment.unix(val)
+						if (m.isValid()) {
+							return m.format(props.format)
+						}
+					}
+					// For millisecond timestamps
+					else {
+						const m = moment(val)
+						if (m.isValid()) {
+							return m.format(props.format)
+						}
+					}
+				} catch {
+					// If any error occurs during parsing, return original value
+					return val.toString()
+				}
+				return val.toString()
+			}
+
+			// Handle string type
+			if (typeof val === 'string') {
+				try {
+					const m = moment(val, moment.ISO_8601)
+					if (m.isValid()) {
+						return m.format(props.format)
+					}
+				} catch {
+					// If parsing fails, return original value
+					return val
+				}
+				return val
+			}
+
+			// For any other type, return as string
+			return String(val)
+		}
+
 		if (Array.isArray(value)) {
 			return (
 				<span style={style}>
-					<span>{moment(value[0]).format(props.format)}</span>
+					<span>{formatTime(value[0])}</span>
 					<span className='ml_6 mr_6'>-</span>
-					<span>{moment(value[1]).format(props.format)}</span>
+					<span>{formatTime(value[1])}</span>
 				</span>
 			)
 		}
 
-		return <span style={style}>{moment(value).format(props.format)}</span>
+		return <span style={style}>{formatTime(value)}</span>
 	}
 
 	return <span style={style}>{value}</span>

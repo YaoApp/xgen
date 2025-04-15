@@ -5,7 +5,7 @@ import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import { getLocale } from '@umijs/max'
 import { useMemoizedFn } from 'ahooks'
-import useAIChat, { ChatGroup, ChatResponse } from '../../../hooks/useAIChat'
+import useAIChat from '../../../hooks/useAIChat'
 import clsx from 'clsx'
 import { Empty } from 'antd'
 
@@ -17,7 +17,7 @@ interface HistoryProps {
 }
 
 const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
-	const [chatGroups, setChatGroups] = useState<ChatGroup[]>([])
+	const [chatGroups, setChatGroups] = useState<any[]>([])
 	const [loading, setLoading] = useState(false)
 	const [keywords, setKeywords] = useState('')
 	const [page, setPage] = useState(1)
@@ -40,9 +40,7 @@ const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
 	const loadChats = useMemoizedFn(async (search?: string, pageNum: number = 1) => {
 		setLoading(true)
 		try {
-			const response: ChatResponse = await getChats(
-				search ? { keywords: search, page: pageNum } : { page: pageNum }
-			)
+			const response: any = await getChats(search ? { keywords: search, page: pageNum } : { page: pageNum })
 			if (pageNum === 1) {
 				setChatGroups(response.groups)
 			} else {
@@ -173,10 +171,10 @@ const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
 					</div>
 				) : (
 					<>
-						{chatGroups.map((group, index) => (
+						{chatGroups?.map((group: any, index: number) => (
 							<div key={index} className={styles.group}>
 								<div className={styles.groupLabel}>{group.label}</div>
-								{group.chats.map((chat) => (
+								{group.chats?.map((chat: any) => (
 									<div
 										key={chat.chat_id}
 										className={styles.chatItem}
@@ -193,10 +191,13 @@ const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
 											<div className={styles.editWrapper}>
 												<Input
 													autoFocus
-													defaultValue={editingChat.title}
+													defaultValue={editingChat?.title}
 													onChange={(e) =>
 														setEditingChat({
-															...editingChat,
+															id: editingChat?.id || '',
+															title:
+																editingChat?.title ||
+																'',
 															tempTitle: e.target.value
 														})
 													}
@@ -205,7 +206,7 @@ const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
 														e.stopPropagation()
 														handleUpdateTitle(
 															chat.chat_id,
-															editingChat.tempTitle
+															editingChat?.tempTitle || ''
 														)
 													}}
 													onKeyDown={(e) => {
@@ -228,7 +229,8 @@ const History = ({ visible, onClose, onSelect, triggerRef }: HistoryProps) => {
 															e.stopPropagation()
 															handleUpdateTitle(
 																chat.chat_id,
-																editingChat.tempTitle
+																editingChat?.tempTitle ||
+																	''
 															)
 														}}
 														icon={

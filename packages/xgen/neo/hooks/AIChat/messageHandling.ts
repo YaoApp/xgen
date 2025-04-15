@@ -9,64 +9,92 @@ import { formatToMDX } from './utils'
  */
 export const mergeMessages = (parsedContent: any[], baseMessage: any): App.ChatInfo[] => {
 	const res: App.ChatInfo[] = []
+	const processedIds = new Map<string, number>() // Track which IDs we've seen and their position
 
-	// Step 1: Group messages by ID
-	const messageGroups = new Map<string, any[]>()
-	parsedContent.forEach((item) => {
+	// Process messages in original order
+	parsedContent.forEach((item, index) => {
 		if (!item.id) {
-			let text = item.type === 'think' || item.type === 'tool' ? item.props?.['text'] : item.text || ''
-
-			res.push({
-				...baseMessage,
-				...item,
-				type: 'text',
-				text: text
-			})
-			return
-		}
-		const group = messageGroups.get(item.id) || []
-		group.push(item)
-		messageGroups.set(item.id, group)
-	})
-
-	// Step 2 & 3: Process each group and merge into the last item
-	messageGroups.forEach((group) => {
-		const lastItem = group[group.length - 1]
-		let mergedText = ''
-
-		// Merge all items' text
-		group.forEach((item) => {
+			// For items without ID, add them directly
+			let text = ''
 			if (item.type === 'think' || item.type === 'tool') {
-				let text = item.props?.['text'] || ''
-				mergedText += '\n' + text
+				text = (item as any).props?.['text'] || ''
+				res.push({
+					...baseMessage,
+					...item,
+					type: 'text',
+					text
+				})
 			} else {
-				mergedText += '\n' + item.text || ''
+				// For non-text types, preserve the original type and props
+				res.push({
+					...baseMessage,
+					...item
+				})
 			}
-		})
-
-		// If message type is not text, tool, think, then append directly
-		if (lastItem.type != 'text' && lastItem.type != 'tool' && lastItem.type != 'think') {
-			res.push({ ...baseMessage, ...lastItem })
 			return
 		}
 
-		// Create final message based on last item's type
-		const finalMessage = {
-			...baseMessage,
-			...lastItem,
-			type: 'text',
-			text: formatToMDX(mergedText, {
-				think: { pending: false },
-				tool: { pending: false }
-			})
-		}
+		// If we've seen this ID before, merge with the previous message
+		if (processedIds.has(item.id)) {
+			const prevIndex = processedIds.get(item.id)!
+			const prevMessage = res[prevIndex] as any
 
-		// Remove props if exists
-		if (finalMessage.props) {
-			delete finalMessage.props
-		}
+			// Merge text content
+			let newText = ''
+			if (item.type === 'think' || item.type === 'tool') {
+				newText = (item as any).props?.['text'] || ''
 
-		res.push(finalMessage)
+				prevMessage.text = formatToMDX(prevMessage.text + '\n' + newText, {
+					think: { pending: false },
+					tool: { pending: false }
+				})
+
+				// Update properties while keeping text type
+				Object.assign(prevMessage, {
+					...item,
+					type: 'text',
+					text: prevMessage.text
+				})
+
+				// Remove props for text type messages
+				if ('props' in prevMessage) {
+					delete prevMessage.props
+				}
+			} else {
+				// For non-text types, update with the latest properties
+				Object.assign(prevMessage, {
+					...item
+				})
+			}
+		} else {
+			// First time seeing this ID
+			if (item.type === 'think' || item.type === 'tool') {
+				let text = (item as any).props?.['text'] || ''
+				const newMessage = {
+					...baseMessage,
+					...item,
+					type: 'text',
+					text: formatToMDX(text, {
+						think: { pending: false },
+						tool: { pending: false }
+					})
+				}
+
+				// Remove props for text type messages
+				if ('props' in newMessage) {
+					delete (newMessage as any).props
+				}
+
+				res.push(newMessage)
+			} else {
+				// For non-text types, preserve the original type and props
+				res.push({
+					...baseMessage,
+					...item
+				})
+			}
+			processedIds.set(item.id, res.length - 1)
+		}
 	})
 	return res
 }
