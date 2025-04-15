@@ -56,10 +56,15 @@ interface IProps {
 	id: string
 	logs: ILog[]
 	title?: string
+	tabItems?: {
+		key: string
+		label: string
+		children: React.ReactNode | null
+	}[]
 }
 
 const Log = (props: IProps) => {
-	const { id, logs, title } = props
+	const { id, logs, title, tabItems: customTabItems } = props
 	const { visibleLogId, closeLog } = useContext(LogContext)
 	const is_cn = getLocale() === 'zh-CN'
 	const [isMaximized, setIsMaximized] = useState(false)
@@ -82,7 +87,7 @@ const Log = (props: IProps) => {
 		)}`
 	}
 
-	const tabItems = [
+	const defaultTabItems = [
 		{
 			key: 'console',
 			label: is_cn ? '控制台' : 'Console',
@@ -99,6 +104,8 @@ const Log = (props: IProps) => {
 			children: null
 		}
 	]
+
+	const tabItems = customTabItems || defaultTabItems
 
 	return (
 		<Modal

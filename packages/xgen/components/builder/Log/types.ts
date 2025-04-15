@@ -1,8 +1,6 @@
 export interface ILog {
 	id: string
-	console: Log[]
-	request: Log[]
-	response: Log[]
+	[key: string]: string | Log[]
 }
 
 export type LogLevel = 'info' | 'error' | 'warn'

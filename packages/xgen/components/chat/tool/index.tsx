@@ -4,8 +4,8 @@ import Loading from '../loading'
 import styles from './index.less'
 import type { Component } from '@/types'
 import { Icon } from '@/widgets'
-import { LogButton, LogProvider } from '../log'
-import Log from '../log'
+import { LogButton, LogProvider } from '../../builder/Log'
+import Log from '../../builder/Log'
 
 const getTextFromHtml = (html: React.ReactNode): string => {
 	if (typeof html === 'string') {
@@ -157,17 +157,46 @@ const Index = (props: IProps) => {
 				id: props.chat_id,
 				console: generateLogEntries(100),
 				request: generateLogEntries(100),
-				response: generateLogEntries(100)
+				response: generateLogEntries(100),
+				debug: generateLogEntries(100)
 			}
 		]
 	}
 
 	const mockLogs = generateMockLogs()
 
+	const customTabItems = [
+		{
+			key: 'console',
+			label: is_cn ? '控制台输出' : 'Console Output',
+			children: null
+		},
+		{
+			key: 'request',
+			label: is_cn ? '请求数据' : 'Request Data',
+			children: null
+		},
+		{
+			key: 'response',
+			label: is_cn ? '响应结果' : 'Response Result',
+			children: null
+		},
+		{
+			key: 'debug',
+			label: is_cn ? '调试信息' : 'Debug Info',
+			children: null
+		}
+	]
+
 	return (
 		<LogProvider>
 			<ToolContent {...props} />
-			<Log id={props.chat_id} logs={mockLogs} title={is_cn ? '工具调用请求' : 'Tool call request'} />
+			<Log
+				id={props.chat_id}
+				logs={mockLogs}
+				title={is_cn ? '工具调用请求' : 'Tool call request'}
+				tabItems={customTabItems}
+			/>
 		</LogProvider>
 	)
 }
