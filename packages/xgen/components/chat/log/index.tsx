@@ -158,7 +158,7 @@ const Log = (props: IProps) => {
 											<Icon name='material-warning' size={14} />
 										)}
 										{item.level === 'error' && (
-											<Icon name='material-error' size={14} />
+											<Icon name='material-dangerous' size={14} />
 										)}
 									</span>
 									<span className={styles.message}>
