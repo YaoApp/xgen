@@ -4,13 +4,39 @@
 	display: flex;
 	gap: 4px;
 	align-items: center;
-	padding: 4px 0;
+	min-height: 20px;
+	cursor: pointer;
+	transition: color 0.2s;
+	flex: 1;
+
+	&:hover {
+		color: var(--color_text);
+	}
 }
 
 .icon {
-	color: var(--color_text_grey);
+	color: inherit;
 	display: flex;
 	align-items: center;
+	line-height: 1;
+}
+
+.arrowIcon {
+	color: var(--color_text_grey);
+	margin-left: auto;
+	transition: color 0.2s;
+	line-height: 1;
+
+	:hover > & {
+		color: var(--color_text);
+	}
+}
+
+.actions {
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 }
 
 .placeholder {
@@ -20,4 +46,8 @@
 .dots {
 	min-width: 20px;
 	display: inline-block;
+}
+
+.logButton {
+	margin-left: auto;
 }

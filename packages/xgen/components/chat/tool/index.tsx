@@ -4,6 +4,8 @@ import Loading from '../loading'
 import styles from './index.less'
 import type { Component } from '@/types'
 import { Icon } from '@/widgets'
+import { LogButton, LogProvider } from '../log'
+import Log from '../log'
 
 const getTextFromHtml = (html: React.ReactNode): string => {
 	if (typeof html === 'string') {
@@ -34,7 +36,7 @@ const sizeHumanize = (size: number) => {
 	return `${(size / 1024).toFixed(2)} KB`
 }
 
-const Index = (props: IProps) => {
+const ToolContent = (props: IProps) => {
 	const { text: text_, chat_id, pending, children, props: props_ } = props
 	const is_cn = getLocale() === 'zh-CN'
 	const text = props_?.text || text_
@@ -68,23 +70,45 @@ const Index = (props: IProps) => {
 		// }
 	}
 
-	return (
-		<div>
-			{pending ? (
-				<Loading
-					chat_id={chat_id}
-					placeholder={is_cn ? `工具调用请求 ${size}` : `Tool call request ${size}`}
-					icon='material-slow_motion_video'
-				/>
-			) : (
-				<div className={styles.tool}>
-					<span className={styles.icon}>
-						<Icon name='material-slow_motion_video' size={16} />
-					</span>
-					<span>{content}</span>
-				</div>
-			)}
+	const innerContent = pending ? (
+		<Loading
+			chat_id={chat_id}
+			placeholder={is_cn ? `工具调用请求 ${size}` : `Tool call request ${size}`}
+			icon='material-slow_motion_video'
+		/>
+	) : (
+		<div className={styles.tool}>
+			<span className={styles.icon}>
+				<Icon name='material-slow_motion_video' size={16} />
+			</span>
+			<span>{content}</span>
 		</div>
+	)
+
+	return (
+		<LogButton id={chat_id}>
+			{innerContent}
+			<Icon name='material-chevron_right' size={16} className={styles.arrowIcon} />
+		</LogButton>
+	)
+}
+
+const Index = (props: IProps) => {
+	// Mock logs data for now - you should replace this with real data
+	const mockLogs = [
+		{
+			id: props.chat_id,
+			console: [{ datetime: new Date(), message: 'Console log example' }],
+			request: [{ datetime: new Date(), message: 'Request log example' }],
+			response: [{ datetime: new Date(), message: 'Response log example' }]
+		}
+	]
+
+	return (
+		<LogProvider>
+			<ToolContent {...props} />
+			<Log id={props.chat_id} logs={mockLogs} />
+		</LogProvider>
 	)
 }
 
