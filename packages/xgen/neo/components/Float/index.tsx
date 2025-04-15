@@ -14,7 +14,7 @@ import { ChatItem } from '../components'
 import { useEventStream } from '../hooks'
 import styles from './index.less'
 
-import type { IPropsNeo } from '../../../types'
+import type { IPropsNeo } from '../../layouts/types'
 import type { App, Common } from '@/types'
 
 const { TextArea } = Input

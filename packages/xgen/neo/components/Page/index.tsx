@@ -1,6 +1,6 @@
-import AIChat from '../components/AIChat'
+import AIChat from '../AIChat'
 import styles from './index.less'
-import type { IPropsNeo } from '../../../types'
+import type { IPropsNeo } from '../../../layouts/types'
 import { useRef, useEffect, useState } from 'react'
 import clsx from 'clsx'
 

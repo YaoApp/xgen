@@ -2,10 +2,10 @@ import { Button } from 'antd'
 import { Plus, X } from 'phosphor-react'
 import { useState } from 'react'
 
-import AIChat from '../components/AIChat'
+import AIChat from '../AIChat'
 import { mockMessages, mockContextFiles } from './mock'
 import styles from './index.less'
-import type { IPropsNeo } from '../../../types'
+import type { IPropsNeo } from '../../../layouts/types'
 
 const Index = (props: IPropsNeo) => {
 	const { stack, api, studio, dock } = props

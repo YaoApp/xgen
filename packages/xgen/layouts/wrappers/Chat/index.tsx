@@ -8,7 +8,7 @@ import { IPropsNeo } from '@/layouts/types'
 import clsx from 'clsx'
 import Menu from './Menu'
 import Container from './Container/index'
-import NeoPage, { NEO_PAGE_BREAKPOINT, NEO_PAGE_PADDING } from '@/layouts/components/Neo/Page'
+import NeoPage, { NEO_PAGE_BREAKPOINT, NEO_PAGE_PADDING } from '@/neo/components/Page'
 import './style.less'
 import { useNavigate } from '@umijs/max'
 

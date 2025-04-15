@@ -16,7 +16,11 @@ export const proxy = {
 	'/api': { target: 'http://127.0.0.1:5099', changeOrigin: true },
 	'/components': { target: 'http://127.0.0.1:5099', changeOrigin: true },
 	'/assets': { target: 'http://127.0.0.1:5099', changeOrigin: true },
-	'/iframe': { target: 'http://127.0.0.1:5099', changeOrigin: true }
+	'/iframe': { target: 'http://127.0.0.1:5099', changeOrigin: true },
+	'/ai': { target: 'http://127.0.0.1:5099', changeOrigin: true },
+	'/docs': { target: 'http://127.0.0.1:5099', changeOrigin: true },
+	'/tools': { target: 'http://127.0.0.1:5099', changeOrigin: true },
+	'/admin': { target: 'http://127.0.0.1:5099', changeOrigin: true }
 }
 
 export const conventionRoutes = {
