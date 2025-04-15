@@ -94,20 +94,80 @@ const ToolContent = (props: IProps) => {
 }
 
 const Index = (props: IProps) => {
-	// Mock logs data for now - you should replace this with real data
-	const mockLogs = [
-		{
-			id: props.chat_id,
-			console: [{ datetime: new Date(), message: 'Console log example' }],
-			request: [{ datetime: new Date(), message: 'Request log example' }],
-			response: [{ datetime: new Date(), message: 'Response log example' }]
+	const is_cn = getLocale() === 'zh-CN'
+
+	// 生成随机日志
+	const generateMockLogs = () => {
+		const messages = {
+			info: [
+				'Application started',
+				'Loading configuration...',
+				'Database connected successfully',
+				'Cache initialized',
+				'Processing request',
+				'Request completed',
+				'GET /api/users',
+				'POST /api/data',
+				'GET /api/status',
+				'200 OK - Success'
+			],
+			warn: [
+				'Memory usage above 80%',
+				'High CPU usage detected',
+				'Rate limit approaching',
+				'Slow query detected',
+				'429 Too Many Requests',
+				'Cache miss rate high'
+			],
+			error: [
+				"Failed to connect to database\nTypeError: Cannot read properties of undefined (reading 'connect')\n    at Database.connect (/src/database.ts:42:10)",
+				'Internal Server Error\nError: Database query failed\nError: timeout of 5000ms exceeded\n    at QueryTimeout (/src/db/query.ts:78:23)',
+				'ValidationError: Invalid request payload\n    at validatePayload (/src/validators.ts:156:12)',
+				'Error: Connection refused\n    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1146:16)',
+				'ReferenceError: variable is not defined\n    at processRequest (/src/middleware/validation.ts:45:8)'
+			]
 		}
-	]
+
+		const getRandomMessage = (level: keyof typeof messages) => {
+			const msgs = messages[level]
+			return msgs[Math.floor(Math.random() * msgs.length)]
+		}
+
+		const getRandomLevel = (): 'info' | 'warn' | 'error' => {
+			const weights = { info: 0.7, warn: 0.2, error: 0.1 }
+			const rand = Math.random()
+			if (rand < weights.info) return 'info'
+			if (rand < weights.info + weights.warn) return 'warn'
+			return 'error'
+		}
+
+		const generateLogEntries = (count: number) => {
+			return Array.from({ length: count }, (_, i) => {
+				const level = getRandomLevel()
+				return {
+					datetime: new Date(Date.now() - (count - i) * 1000), // 每条日志间隔1秒
+					message: getRandomMessage(level),
+					level: level
+				}
+			})
+		}
+
+		return [
+			{
+				id: props.chat_id,
+				console: generateLogEntries(100),
+				request: generateLogEntries(100),
+				response: generateLogEntries(100)
+			}
+		]
+	}
+
+	const mockLogs = generateMockLogs()
 
 	return (
 		<LogProvider>
 			<ToolContent {...props} />
-			<Log id={props.chat_id} logs={mockLogs} />
+			<Log id={props.chat_id} logs={mockLogs} title={is_cn ? '工具调用请求' : 'Tool call request'} />
 		</LogProvider>
 	)
 }

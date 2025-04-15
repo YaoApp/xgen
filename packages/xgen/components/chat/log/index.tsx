@@ -55,68 +55,48 @@ export const LogButton = ({ id, children }: LogButtonProps) => {
 interface IProps {
 	id: string
 	logs: ILog[]
+	title?: string
 }
 
 const Log = (props: IProps) => {
-	const { id, logs } = props
+	const { id, logs, title } = props
 	const { visibleLogId, closeLog } = useContext(LogContext)
 	const is_cn = getLocale() === 'zh-CN'
 	const [isMaximized, setIsMaximized] = useState(false)
+	const [activeTab, setActiveTab] = useState('console')
+
+	const formatDateTime = (date: Date) => {
+		const options = {
+			hour: '2-digit',
+			minute: '2-digit',
+			second: '2-digit',
+			hour12: false
+		} as const
+
+		if (is_cn) {
+			return `${date.getMonth() + 1}月${date.getDate()}日 ${date.toLocaleTimeString('zh-CN', options)}`
+		}
+		return `${date.toLocaleString('en-US', { month: 'short', day: 'numeric' })} ${date.toLocaleTimeString(
+			'en-US',
+			options
+		)}`
+	}
 
 	const tabItems = [
 		{
 			key: 'console',
 			label: is_cn ? '控制台' : 'Console',
-			children: (
-				<div className={styles.logContent}>
-					{logs
-						.find((log) => log.id === id)
-						?.console.map((item: Log, index: number) => (
-							<div key={index} className={styles.logItem}>
-								<span className={styles.datetime}>
-									{new Date(item.datetime).toLocaleString()}
-								</span>
-								<span className={styles.message}>{item.message}</span>
-							</div>
-						))}
-				</div>
-			)
+			children: null
 		},
 		{
 			key: 'request',
 			label: is_cn ? '请求' : 'Request',
-			children: (
-				<div className={styles.logContent}>
-					{logs
-						.find((log) => log.id === id)
-						?.request.map((item: Log, index: number) => (
-							<div key={index} className={styles.logItem}>
-								<span className={styles.datetime}>
-									{new Date(item.datetime).toLocaleString()}
-								</span>
-								<span className={styles.message}>{item.message}</span>
-							</div>
-						))}
-				</div>
-			)
+			children: null
 		},
 		{
 			key: 'response',
 			label: is_cn ? '响应' : 'Response',
-			children: (
-				<div className={styles.logContent}>
-					{logs
-						.find((log) => log.id === id)
-						?.response.map((item: Log, index: number) => (
-							<div key={index} className={styles.logItem}>
-								<span className={styles.datetime}>
-									{new Date(item.datetime).toLocaleString()}
-								</span>
-								<span className={styles.message}>{item.message}</span>
-							</div>
-						))}
-				</div>
-			)
+			children: null
 		}
 	]
 
@@ -124,7 +104,15 @@ const Log = (props: IProps) => {
 		<Modal
 			title={
 				<div className={styles.modalHeader}>
-					<span>{is_cn ? '日志查看器' : 'Log Viewer'}</span>
+					<div className={styles.headerTitle}>{title || (is_cn ? '日志查看器' : 'Log Viewer')}</div>
+					<div className={styles.headerTabs}>
+						<Tabs
+							items={tabItems}
+							className={styles.logTabs}
+							activeKey={activeTab}
+							onChange={setActiveTab}
+						/>
+					</div>
 					<div className={styles.headerActions}>
 						<Icon
 							name={isMaximized ? 'material-fullscreen_exit' : 'material-fullscreen'}
@@ -152,7 +140,48 @@ const Log = (props: IProps) => {
 			wrapClassName={isMaximized ? styles.maximizedWrapper : undefined}
 		>
 			<div className={styles.logContainer}>
-				<Tabs items={tabItems} className={styles.logTabs} />
+				<div className={styles.logContent}>
+					{(() => {
+						const currentLog = logs.find((log) => log.id === id)
+						const logEntries = currentLog?.[activeTab as keyof ILog]
+						return Array.isArray(logEntries) ? (
+							logEntries.map((item: Log, index: number) => (
+								<div key={index} className={clsx(styles.logItem, styles[item.level])}>
+									<span className={styles.datetime}>
+										{formatDateTime(new Date(item.datetime))}
+									</span>
+									<span className={styles.levelIcon}>
+										{item.level === 'info' && (
+											<Icon name='material-info' size={14} />
+										)}
+										{item.level === 'warn' && (
+											<Icon name='material-warning' size={14} />
+										)}
+										{item.level === 'error' && (
+											<Icon name='material-error' size={14} />
+										)}
+									</span>
+									<span className={styles.message}>
+										{item.level === 'error' ? (
+											<div className={styles.errorMessage}>
+												{item.message}
+											</div>
+										) : (
+											<div className={styles.messageContent}>
+												{item.message}
+											</div>
+										)}
+									</span>
+								</div>
+							))
+						) : (
+							<div className={styles.emptyLog}>
+								<Icon name='material-description' size={24} />
+								<span>{is_cn ? '暂无日志' : 'No logs available'}</span>
+							</div>
+						)
+					})()}
+				</div>
 			</div>
 		</Modal>
 	)

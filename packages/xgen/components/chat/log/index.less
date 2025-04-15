@@ -24,6 +24,15 @@
 		.xgen-modal-close {
 			display: none;
 		}
+
+		.xgen-modal-header {
+			padding: 8px 16px;
+		}
+
+		.xgen-modal-body {
+			overflow: hidden;
+			padding: 16px;
+		}
 	}
 
 	&.maximized {
@@ -48,15 +57,25 @@
 
 				&-body {
 					flex: 1;
-					overflow: auto;
+					overflow: hidden;
 					padding: 24px;
 				}
 
 				&-header {
-					padding: 16px 24px;
+					padding: 8px 16px;
 					border-bottom: 1px solid var(--color_border);
 				}
 			}
+		}
+
+		.logContainer {
+			max-width: none;
+			height: 100%;
+		}
+
+		.logContent {
+			max-height: none;
+			height: 100%;
 		}
 	}
 }
@@ -76,21 +95,35 @@
 
 .modalHeader {
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
-}
+	height: 32px;
 
-.headerActions {
-	display: flex;
-	gap: 6px;
-	align-items: center;
+	.headerTitle {
+		font-size: 14px;
+		color: var(--color_text);
+		flex-shrink: 0;
+		margin-right: 24px;
+	}
+
+	.headerTabs {
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		min-width: 0;
+	}
+
+	.headerActions {
+		display: flex;
+		gap: 6px;
+		align-items: center;
+		margin-left: 24px;
+	}
 }
 
 .actionIcon {
 	cursor: pointer;
 	color: var(--color_text_grey);
 	transition: color 0.2s;
-	font-size: 14px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -115,31 +148,34 @@
 .logTabs {
 	:global {
 		.xgen-tabs-nav {
-			margin: 0 0 16px 0;
+			margin: 0;
 			border: none;
-			padding-top: 8px;
+			min-width: 0;
+			min-height: unset;
+			line-height: 1;
 
 			.xgen-tabs-nav-wrap {
-				display: flex;
 				justify-content: center;
 			}
 
 			.xgen-tabs-nav-list {
 				background: var(--color_bg_nav);
-				padding: 4px;
+				padding: 2px;
 				border-radius: var(--radius);
 				width: auto;
 			}
 
 			.xgen-tabs-tab {
 				margin: 0 !important;
-				padding: 4px 12px;
+				padding: 3px 10px;
 				background: transparent;
 				border: none;
 				border-radius: var(--radius);
 				transition: all 0.2s;
-				font-size: 13px;
+				font-size: 12px;
 				color: var(--color_text);
+				line-height: 1.5;
+				min-height: unset;
 
 				+ .xgen-tabs-tab {
 					margin-left: 2px !important;
@@ -165,36 +201,123 @@
 		}
 
 		.xgen-tabs-content {
-			background: transparent;
+			display: none;
 		}
 	}
 }
 
 .logContent {
-	background: var(--color_bg_nav);
-	border-radius: var(--radius);
-	padding: 12px;
 	min-height: 200px;
+	max-height: calc(80vh - 120px);
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+
+	&::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: var(--color_title_grey);
+		border-radius: 3px;
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: var(--color_title);
+	}
 }
 
 .logItem {
 	display: flex;
-	gap: 12px;
-	padding: 4px 0;
+	align-items: flex-start;
+	gap: 6px;
+	padding: 6px 16px;
 	font-size: 13px;
-	border-bottom: 1px solid var(--color_border_soft);
+	transition: background-color 0.2s;
 
-	&:last-child {
-		border-bottom: none;
+	&:nth-child(even) {
+		background-color: var(--color_bg_nav);
+	}
+
+	&:hover {
+		background-color: var(--color_bg_hover);
+	}
+
+	&.info {
+		.levelIcon {
+			color: var(--color_info);
+		}
+		.messageContent {
+			color: var(--color_text);
+		}
+	}
+
+	&.warn {
+		.levelIcon {
+			color: var(--color_warning);
+		}
+		.messageContent {
+			color: var(--color_warning);
+		}
+	}
+
+	&.error {
+		.levelIcon {
+			color: var(--color_danger);
+		}
+		.errorMessage {
+			color: var(--color_danger);
+			white-space: pre-wrap;
+			word-break: break-all;
+			font-family: var(--font_mono);
+		}
 	}
 }
 
 .datetime {
 	color: var(--color_text_grey);
 	white-space: nowrap;
+	flex-shrink: 0;
+	font-family: var(--font_mono);
+	font-size: 12px;
+	line-height: 20px;
+	min-width: 110px;
+}
+
+.levelIcon {
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+	width: 14px;
+	justify-content: center;
+	margin-right: 1px;
+	line-height: 20px;
+	height: 20px;
 }
 
 .message {
-	color: var(--color_text);
+	flex: 1;
+	min-width: 0;
+	line-height: 20px;
+}
+
+.messageContent {
 	word-break: break-all;
+	white-space: pre-wrap;
+	font-family: var(--font_mono);
+}
+
+.emptyLog {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	color: var(--color_text_grey);
+	padding: 32px;
+
+	.icon {
+		opacity: 0.5;
+	}
 }
