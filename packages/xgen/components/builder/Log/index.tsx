@@ -3,9 +3,10 @@ import { getLocale } from '@umijs/max'
 import clsx from 'clsx'
 import styles from './index.less'
 import type { Component } from '@/types'
-import type { ILog, Log } from './types'
+import type { ILog, LogItem, LogTabItem } from './types'
 import { Icon } from '@/widgets'
 import { createContext, useContext, useState } from 'react'
+import { FormatDateTime } from '@/utils'
 
 interface LogContextType {
 	openLog: (id: string) => void
@@ -54,13 +55,9 @@ export const LogButton = ({ id, children }: LogButtonProps) => {
 
 interface IProps {
 	id: string
-	logs: ILog[]
+	logs: ILog
 	title?: string
-	tabItems?: {
-		key: string
-		label: string
-		children: React.ReactNode | null
-	}[]
+	tabItems?: LogTabItem[]
 }
 
 const Log = (props: IProps) => {
@@ -69,23 +66,6 @@ const Log = (props: IProps) => {
 	const is_cn = getLocale() === 'zh-CN'
 	const [isMaximized, setIsMaximized] = useState(false)
 	const [activeTab, setActiveTab] = useState('console')
-
-	const formatDateTime = (date: Date) => {
-		const options = {
-			hour: '2-digit',
-			minute: '2-digit',
-			second: '2-digit',
-			hour12: false
-		} as const
-
-		if (is_cn) {
-			return `${date.getMonth() + 1}月${date.getDate()}日 ${date.toLocaleTimeString('zh-CN', options)}`
-		}
-		return `${date.toLocaleString('en-US', { month: 'short', day: 'numeric' })} ${date.toLocaleTimeString(
-			'en-US',
-			options
-		)}`
-	}
 
 	const defaultTabItems = [
 		{
@@ -149,13 +129,12 @@ const Log = (props: IProps) => {
 			<div className={styles.logContainer}>
 				<div className={styles.logContent}>
 					{(() => {
-						const currentLog = logs.find((log) => log.id === id)
-						const logEntries = currentLog?.[activeTab as keyof ILog]
+						const logEntries = logs[activeTab]
 						return Array.isArray(logEntries) ? (
-							logEntries.map((item: Log, index: number) => (
+							logEntries.map((item: LogItem, index: number) => (
 								<div key={index} className={clsx(styles.logItem, styles[item.level])}>
 									<span className={styles.datetime}>
-										{formatDateTime(new Date(item.datetime))}
+										{FormatDateTime(new Date(item.datetime), is_cn)}
 									</span>
 									<span className={styles.levelIcon}>
 										{item.level === 'info' && (

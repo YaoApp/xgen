@@ -97,19 +97,35 @@
 	display: flex;
 	align-items: center;
 	height: 32px;
+	position: relative;
 
 	.headerTitle {
 		font-size: 14px;
 		color: var(--color_text);
 		flex-shrink: 0;
 		margin-right: 24px;
+		max-width: 300px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		position: absolute;
+		left: 0;
 	}
 
 	.headerTabs {
 		flex: 1;
 		display: flex;
 		justify-content: center;
-		min-width: 0;
+		align-items: center;
+		width: 100%;
+		position: absolute;
+		left: 0;
+		right: 0;
+		pointer-events: none;
+
+		:global(.xgen-tabs) {
+			pointer-events: auto;
+		}
 	}
 
 	.headerActions {
@@ -117,6 +133,8 @@
 		gap: 6px;
 		align-items: center;
 		margin-left: 24px;
+		position: absolute;
+		right: 0;
 	}
 }
 
@@ -304,6 +322,13 @@
 .messageContent {
 	word-break: break-all;
 	white-space: pre-wrap;
+	font-family: var(--font_mono);
+}
+
+.errorMessage {
+	color: var(--color_danger);
+	white-space: pre-wrap;
+	word-break: break-all;
 	font-family: var(--font_mono);
 }
 
