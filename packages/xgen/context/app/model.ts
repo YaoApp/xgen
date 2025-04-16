@@ -31,6 +31,7 @@ export default class GlobalModel {
 	loading: boolean = false
 	visible_menu: boolean = true
 	hide_nav: boolean = false
+	visible_log_window: boolean = false
 
 	developer = {} as App.Developer
 
@@ -261,6 +262,10 @@ export default class GlobalModel {
 		reaction(
 			() => this.menu_selected_keys,
 			(v) => (local.menu_selected_keys = v)
+		)
+		reaction(
+			() => this.visible_log_window,
+			(v) => (local.visible_log_window = v)
 		)
 	}
 

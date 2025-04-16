@@ -1,4 +1,4 @@
-import { Input, Button, Upload, message } from 'antd'
+import { Button, Upload, message } from 'antd'
 import { UploadChangeParam, UploadFile, UploadProps, RcFile } from 'antd/es/upload'
 import clsx from 'clsx'
 import { UploadSimple, Sparkle } from 'phosphor-react'

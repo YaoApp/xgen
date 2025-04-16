@@ -81,8 +81,8 @@ const parseLogs = (props: IProps, is_cn: boolean) => {
 	const text = props_?.text || text_
 	const consoleLogs: LogItem[] = []
 	const outputLogs: LogItem[] = []
-	const begin = (props_?.begin && props_?.begin != 'null') || props?.begin || 0
-	const end = (props_?.end && props_?.end != 'null') || props?.end || 0
+	const begin = parseInt(props_?.begin || props?.begin || '0') / 1000 / 1000
+	const end = parseInt(props_?.end || props?.end || '0') / 1000 / 1000
 
 	let title = is_cn ? '生成工具调用' : 'Generating Tool Call'
 	let content = getTextFromHtml(children) || text || (is_cn ? '生成工具调用' : 'Generating Tool Call')
@@ -93,7 +93,7 @@ const parseLogs = (props: IProps, is_cn: boolean) => {
 		.replace(/&quot;/g, '"')
 
 	outputLogs.push({
-		datetime: end ? new Date(end / 1000) : begin ? new Date(begin / 1000) : new Date(),
+		datetime: end ? new Date(end) : begin ? new Date(begin) : new Date(),
 		message: content,
 		level: 'info'
 	})
@@ -105,14 +105,14 @@ const parseLogs = (props: IProps, is_cn: boolean) => {
 	}
 
 	consoleLogs.push({
-		datetime: begin ? new Date(begin / 1000) : new Date(),
+		datetime: begin ? new Date(begin) : new Date(),
 		message: is_cn ? `生成工具调用请求 ${size}` : `Generating Tool Call Request (${size})`,
 		level: 'info'
 	})
 
 	if (!pending) {
 		consoleLogs.push({
-			datetime: end ? new Date(end / 1000) : new Date(),
+			datetime: end ? new Date(end) : new Date(),
 			message: is_cn ? `生成完毕` : `Tool Call Request Generated`,
 			level: 'info'
 		})

@@ -6,6 +6,7 @@ import type { ILog, LogItem, LogTabItem } from './types'
 import { Icon } from '@/widgets'
 import { createContext, useContext, useState } from 'react'
 import { FormatDateTime } from '@/utils'
+import { useGlobal } from '@/context/app'
 
 interface LogContextType {
 	openLog: (id: string) => void
@@ -64,7 +65,6 @@ const Log = (props: IProps) => {
 	const { visibleLogId, closeLog } = useContext(LogContext)
 	const is_cn = getLocale() === 'zh-CN'
 	const [isMaximized, setIsMaximized] = useState(false)
-	const [activeTab, setActiveTab] = useState('console')
 
 	const defaultTabItems = [
 		{
@@ -85,6 +85,11 @@ const Log = (props: IProps) => {
 	]
 
 	const tabItems = customTabItems || defaultTabItems
+	const [activeTab, setActiveTab] = useState(tabItems?.[0]?.key || 'console')
+
+	console.log('_____')
+	console.log(visibleLogId, id)
+	console.log('_____')
 
 	return (
 		<Modal
