@@ -43,8 +43,11 @@ export const mergeMessages = (parsedContent: any[], baseMessage: any): App.ChatI
 			let newText = ''
 			if (item.type === 'think' || item.type === 'tool') {
 				newText = (item as any).props?.['text'] || ''
-
-				prevMessage.text = formatToMDX(prevMessage.text + '\n' + newText, {
+				const tool_id = item.props?.id || item.tool_id || ''
+				const begin = item.props?.begin || item.begin || 0
+				const end = item.props?.end || item.end || 0
+				const props = { ...(item.props || {}), id: tool_id, begin, end }
+				prevMessage.text = formatToMDX(props, prevMessage.text + '\n' + newText, {
 					think: { pending: false },
 					tool: { pending: false }
 				})
@@ -70,11 +73,15 @@ export const mergeMessages = (parsedContent: any[], baseMessage: any): App.ChatI
 			// First time seeing this ID
 			if (item.type === 'think' || item.type === 'tool') {
 				let text = (item as any).props?.['text'] || ''
+				const tool_id = item.props?.id || item.tool_id || ''
+				const begin = item.props?.begin || item.begin || 0
+				const end = item.props?.end || item.end || 0
+				const props = { ...(item.props || {}), id: tool_id, begin, end }
 				const newMessage = {
 					...baseMessage,
 					...item,
 					type: 'text',
-					text: formatToMDX(text, {
+					text: formatToMDX(props, text, {
 						think: { pending: false },
 						tool: { pending: false }
 					})
@@ -185,7 +192,11 @@ export const getContent = (
 export interface ProcessAIChatDataParams {
 	// Raw data and content
 	/** Raw data string from event source */
-	data: string
+	// data: string
+
+	/** Formated data object */
+	formated_data: App.ChatAI
+
 	/** Current accumulated content */
 	content: string
 
@@ -240,7 +251,7 @@ export interface ProcessAIChatDataParams {
  */
 export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 	const {
-		data,
+		formated_data,
 		content,
 		messages,
 		last_assistant,
@@ -269,12 +280,11 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 		}
 	}
 
-	// Parse data from event source
-	const formated_data = JSON.parse(data) as App.ChatAI
-	if (!formated_data) return content
-
 	// Extract data properties from the parsed message
 	const {
+		tool_id,
+		begin,
+		end,
 		text,
 		props,
 		type,
@@ -356,6 +366,11 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 	current_answer.assistant_avatar = last_assistant.assistant_avatar || undefined
 	current_answer.type = type || current_answer.type || 'text'
 
+	// Update tool ID
+	if (tool_id) {
+		current_answer.tool_id = tool_id
+	}
+
 	// Update assistant information in the global state if all required fields are present
 	if (last_assistant.assistant_id && last_assistant.assistant_name && last_assistant.assistant_avatar) {
 		updateAssistant({
@@ -421,7 +436,9 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 		}
 
 		// Format the text to be valid MDX with proper tag handling
-		current_answer.text = formatToMDX(current_answer.text, tokens)
+		const tool_id = current_answer.tool_id || ''
+		const props = { ...(current_answer.props || {}), id: tool_id, begin, end }
+		current_answer.text = formatToMDX(props, current_answer.text, tokens)
 	}
 
 	// Update the messages state with the modified current answer

@@ -22,51 +22,59 @@ interface IProps extends Component.PropsChatComponent {
 	text: string
 }
 
-const components = {
-	code: function (props: any) {
-		if (props?.className?.includes('language-mermaid')) {
-			const chart = props.raw || props.children || ''
-			// 预处理 Mermaid 内容
-			const processedChart = chart
-				.split('\n')
-				.map((line: string) => {
-					// 处理节点定义行
-					if (line.includes('[') && line.includes(']')) {
-						return line.replace(/\[([^\]]+)\]/g, (match, content) => {
-							// 如果内容已经被引号包裹，则不再添加引号
-							if (content.startsWith('"') && content.endsWith('"')) {
-								return `[${content}]`
-							}
-							return `["${content}"]`
-						})
-					}
-					return line
-				})
-				.filter(Boolean) // 移除空行
-				.join('\n')
-				.trim()
+const components = (chat_id: string) => {
+	return {
+		code: function (props: any) {
+			if (props?.className?.includes('language-mermaid')) {
+				const chart = props.raw || props.children || ''
+				// 预处理 Mermaid 内容
+				const processedChart = chart
+					.split('\n')
+					.map((line: string) => {
+						// 处理节点定义行
+						if (line.includes('[') && line.includes(']')) {
+							return line.replace(/\[([^\]]+)\]/g, (match, content) => {
+								// 如果内容已经被引号包裹，则不再添加引号
+								if (content.startsWith('"') && content.endsWith('"')) {
+									return `[${content}]`
+								}
+								return `["${content}"]`
+							})
+						}
+						return line
+					})
+					.filter(Boolean) // 移除空行
+					.join('\n')
+					.trim()
 
-			return <Mermaid chart={processedChart} />
+				return <Mermaid chart={processedChart} chat_id={chat_id} />
+			}
+			return <Code {...props} chat_id={chat_id} />
+		},
+		Think: function (props: any) {
+			const { pending = 'false' } = props
+			const pendingBool = pending == 'true'
+			const id = props.id || ''
+			const begin = props.begin || 0
+			const end = props.end || 0
+			return (
+				<Think pending={pendingBool} chat_id={chat_id} id={id} begin={begin} end={end}>
+					{props.children || 'Thinking...'}
+				</Think>
+			)
+		},
+		Tool: function (props: any) {
+			const { pending = 'false' } = props
+			const pendingBool = pending == 'true'
+			const id = props.id || ''
+			const begin = props.begin || 0
+			const end = props.end || 0
+			return (
+				<Tool pending={pendingBool} chat_id={chat_id} id={id} begin={begin} end={end}>
+					{props.children || 'Calling...'}
+				</Tool>
+			)
 		}
-		return <Code {...props} />
-	},
-	Think: function (props: any) {
-		const { pending = 'false', chat_id } = props
-		const pendingBool = pending == 'true'
-		return (
-			<Think pending={pendingBool} chat_id={chat_id}>
-				{props.children || 'Thinking...'}
-			</Think>
-		)
-	},
-	Tool: function (props: any) {
-		const { pending = 'false', chat_id } = props
-		const pendingBool = pending == 'true'
-		return (
-			<Tool pending={pendingBool} chat_id={chat_id}>
-				{props.children || 'Calling...'}
-			</Tool>
-		)
 	}
 }
 
@@ -90,9 +98,7 @@ const unescape = (text?: string) => {
 const Index = (props: IProps) => {
 	const { text, chat_id } = props
 	const [content, setContent] = useState<any>('')
-	const mdxComponents = useMDXComponents(components)
-	// console.log('text', escape(text))
-
+	const mdxComponents = useMDXComponents(components(chat_id))
 	useAsyncEffect(async () => {
 		const vfile = new VFile(escape(text))
 		const [err, compiledSource] = await to(
@@ -117,18 +123,18 @@ const Index = (props: IProps) => {
 								node.raw = unescape(codeEl.children?.[0].value)
 							}
 
-							if (node?.type === 'element' && ['Think', 'Tool'].includes(node?.tagName)) {
-								node.properties = Object.entries(node.properties || {}).reduce<
-									Record<string, any>
-								>((acc, [key, value]) => {
-									if (key === 'pending' && typeof value === 'string') {
-										acc[key] = value === 'true'
-									} else {
-										acc[key] = value
-									}
-									return acc
-								}, {})
-							}
+							// if (node?.type === 'element' && ['Think', 'Tool'].includes(node?.tagName)) {
+							// 	node.properties = Object.entries(node.properties || {}).reduce<
+							// 		Record<string, any>
+							// 	>((acc, [key, value]) => {
+							// 		if (key === 'pending' && typeof value === 'string') {
+							// 			acc[key] = value === 'true'
+							// 		} else {
+							// 			acc[key] = value
+							// 		}
+							// 		return acc
+							// 	}, {})
+							// }
 						})
 					},
 					// Replace \{ => { and \} => }

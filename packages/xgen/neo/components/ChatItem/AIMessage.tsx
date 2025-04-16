@@ -15,13 +15,7 @@ interface AIMessageProps {
 }
 
 const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) => {
-	const { text, props = { chat_id }, type, assistant_id, assistant_name, assistant_avatar } = chat_info
-
-	// Function message (function call)
-	if (type === 'function') {
-		return <></>
-	}
-
+	const { tool_id, text, props = { chat_id }, type, assistant_id, assistant_name, assistant_avatar } = chat_info
 	if (type === 'loading') {
 		return (
 			<Content
@@ -51,6 +45,7 @@ const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) =>
 				{assistant_name && <div className={styles.assistant_name}>{assistant_name}</div>}
 				<div className='chat_content border_box'>
 					<Content
+						tool_id={tool_id}
 						type={type || 'text'}
 						text={text}
 						assistant_id={assistant_id}

@@ -8,10 +8,26 @@ interface IProps {
 	props?: Component.PropsChatComponent
 	assistant_id?: string
 	chat_id: string
+	tool_id?: string
 }
 
 const Index = (props: IProps) => {
-	const { type, text, props: component_props, assistant_id, chat_id } = props
+	const { tool_id, type, text, assistant_id, chat_id } = props
+	let { props: component_props } = props
+
+	if (!component_props) {
+		component_props = { chat_id: chat_id }
+	}
+
+	// Update chat ID
+	if (!component_props.chat_id) {
+		component_props.chat_id = chat_id
+	}
+
+	// Update tool ID
+	if (tool_id && tool_id != '' && (!component_props.id || component_props.id == '')) {
+		component_props.id = tool_id
+	}
 
 	// Dynamically import the component
 	const Component = useMemo(() => {
@@ -27,7 +43,13 @@ const Index = (props: IProps) => {
 
 	return (
 		<Suspense fallback={null}>
-			<Component text={text} assistant_id={assistant_id} chat_id={chat_id} {...component_props} />
+			<Component
+				text={text}
+				tool_id={tool_id}
+				assistant_id={assistant_id}
+				{...component_props}
+				chat_id={chat_id || component_props.chat_id || ''}
+			/>
 		</Suspense>
 	)
 }

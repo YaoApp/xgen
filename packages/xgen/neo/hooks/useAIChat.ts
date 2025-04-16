@@ -227,7 +227,7 @@ export default ({ chat_id, upload_options = {} }: AIHookArgs) => {
 				if (!formated_data) return
 
 				content = processAIChatData({
-					data,
+					formated_data,
 					content,
 					messages,
 					last_assistant,

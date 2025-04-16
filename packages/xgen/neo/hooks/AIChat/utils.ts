@@ -20,9 +20,8 @@ export const processTagContent = (text: string, tagName: string) => {
 }
 
 /** Format text to MDX with proper tag handling */
-export const formatToMDX = (text: string, tokens: Record<string, { pending: boolean }>) => {
+export const formatToMDX = (props: Record<string, any>, text: string, tokens: Record<string, { pending: boolean }>) => {
 	let formattedText = text
-
 	Object.keys(tokens).forEach((token) => {
 		const tag = token.charAt(0).toUpperCase() + token.slice(1)
 		const pending = tokens[token]?.pending ? 'true' : 'false'
@@ -33,9 +32,25 @@ export const formatToMDX = (text: string, tokens: Record<string, { pending: bool
 		// TrimRight uncompleted tags
 		formattedText = formattedText.replace(/<[^>]*$/, '')
 
+		let formattedProps = ''
+		if (props) {
+			for (const key in props) {
+				if (key == 'text') continue
+				let value = null
+				if (typeof props[key] === 'string') {
+					value = props[key]
+				} else if (typeof props[key] === 'boolean') {
+					value = props[key] ? 'true' : 'false'
+				} else if (typeof props[key] === 'number') {
+					value = props[key].toString()
+				}
+				formattedProps += `${key}="${value}" `
+			}
+		}
+
 		// Then replace the tags with the new format
 		formattedText = formattedText
-			.replace(new RegExp(`<${token}>`, 'gi'), `<${tag} pending="${pending}">\n`)
+			.replace(new RegExp(`<${token}>`, 'gi'), `<${tag} pending="${pending}" ${formattedProps}>\n`)
 			.replace(new RegExp(`</${token}>`, 'gi'), `\n</${tag}>`)
 	})
 

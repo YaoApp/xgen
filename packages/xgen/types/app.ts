@@ -106,6 +106,9 @@ export declare namespace App {
 		new: boolean
 		text: string
 		id?: string
+		tool_id?: string // tool_id for the message
+		begin?: number // begin for the message
+		end?: number // end for the message
 		type?: ChatMessageType
 		function?: string
 		arguments?: string

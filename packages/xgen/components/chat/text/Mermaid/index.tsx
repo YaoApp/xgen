@@ -37,9 +37,10 @@ mermaid.initialize({
 
 interface Props {
 	chart: string
+	chat_id: string
 }
 
-const Mermaid = ({ chart }: Props) => {
+const Mermaid = ({ chart, chat_id }: Props) => {
 	const elementRef = useRef<HTMLDivElement>(null)
 	const [svg, setSvg] = useState<string>('')
 	const [error, setError] = useState<string | null>(null)

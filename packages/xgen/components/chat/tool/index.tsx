@@ -25,6 +25,9 @@ const getTextFromHtml = (html: React.ReactNode): string => {
 }
 
 interface IProps extends Component.PropsChatComponent {
+	id?: string
+	begin?: number
+	end?: number
 	text?: string
 	chat_id: string
 	pending?: boolean
@@ -32,8 +35,8 @@ interface IProps extends Component.PropsChatComponent {
 	children?: React.ReactNode
 }
 
-const ToolContent = (props: { chat_id: string; pending?: boolean; size: string; title: string }) => {
-	const { chat_id, pending, size, title } = props
+const ToolContent = (props: { id: string; chat_id: string; pending?: boolean; size: string; title: string }) => {
+	const { id, chat_id, pending, size, title } = props
 	const is_cn = getLocale() === 'zh-CN'
 	const innerContent = pending ? (
 		<Loading
@@ -51,7 +54,7 @@ const ToolContent = (props: { chat_id: string; pending?: boolean; size: string; 
 	)
 
 	return (
-		<LogButton id={chat_id}>
+		<LogButton id={id}>
 			{innerContent}
 			<Icon name='material-chevron_right' size={16} className={styles.arrowIcon} />
 		</LogButton>
@@ -78,6 +81,9 @@ const parseLogs = (props: IProps, is_cn: boolean) => {
 	const text = props_?.text || text_
 	const consoleLogs: LogItem[] = []
 	const outputLogs: LogItem[] = []
+	const begin = (props_?.begin && props_?.begin != 'null') || props?.begin || 0
+	const end = (props_?.end && props_?.end != 'null') || props?.end || 0
+
 	let title = is_cn ? '生成工具调用' : 'Generating Tool Call'
 	let content = getTextFromHtml(children) || text || (is_cn ? '生成工具调用' : 'Generating Tool Call')
 	content = content
@@ -87,7 +93,7 @@ const parseLogs = (props: IProps, is_cn: boolean) => {
 		.replace(/&quot;/g, '"')
 
 	outputLogs.push({
-		datetime: new Date(),
+		datetime: end ? new Date(end / 1000) : begin ? new Date(begin / 1000) : new Date(),
 		message: content,
 		level: 'info'
 	})
@@ -99,14 +105,14 @@ const parseLogs = (props: IProps, is_cn: boolean) => {
 	}
 
 	consoleLogs.push({
-		datetime: new Date(),
+		datetime: begin ? new Date(begin / 1000) : new Date(),
 		message: is_cn ? `生成工具调用请求 ${size}` : `Generating Tool Call Request (${size})`,
 		level: 'info'
 	})
 
 	if (!pending) {
 		consoleLogs.push({
-			datetime: new Date(),
+			datetime: end ? new Date(end / 1000) : new Date(),
 			message: is_cn ? `生成完毕` : `Tool Call Request Generated`,
 			level: 'info'
 		})
@@ -121,13 +127,15 @@ const parseLogs = (props: IProps, is_cn: boolean) => {
 }
 
 const Index = (props: IProps) => {
+	const { id } = props
 	const is_cn = getLocale() === 'zh-CN'
 	const { title, size, consoleLogs, outputLogs } = parseLogs(props, is_cn)
+	if (!id) return null
 	return (
 		<LogProvider>
-			<ToolContent {...props} size={size} title={title} />
+			<ToolContent {...props} id={id} size={size} title={title} />
 			<Log
-				id={props.chat_id}
+				id={id}
 				logs={{ console: consoleLogs, output: outputLogs }}
 				title={title}
 				tabItems={getTabItems(is_cn)}

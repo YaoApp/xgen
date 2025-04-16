@@ -6,6 +6,9 @@ import styles from './index.less'
 import type { Component } from '@/types'
 
 interface IProps extends Component.PropsChatComponent {
+	id?: string
+	begin?: number
+	end?: number
 	text?: string
 	chat_id: string
 	pending?: boolean
