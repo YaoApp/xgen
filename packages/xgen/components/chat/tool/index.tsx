@@ -4,7 +4,7 @@ import Loading from '../loading'
 import styles from './index.less'
 import type { Component } from '@/types'
 import { Icon } from '@/widgets'
-import { LogButton, openLogWindow, updateLogData, isLogWindowOpen } from '../../builder/Log'
+import { openLogWindow, updateLogData, isLogWindowOpen } from '../../builder/Log'
 import { LogItem, LogTabItem } from '@/components/builder/Log/types'
 import { SizeHumanize, FormatDateTime } from '@/utils'
 
@@ -51,16 +51,12 @@ const ToolContent = (props: ToolContentProps) => {
 	const is_cn = getLocale() === 'zh-CN'
 
 	// Initial open of log window
-	const handleLogClick = React.useCallback(
-		(logId: string) => {
-			openLogWindow(logId, {
-				logs,
-				title,
-				tabItems: getTabItems(is_cn)
-			})
-		},
-		[logs, title, is_cn]
-	)
+	const handleLogClick = (logId: string) =>
+		openLogWindow(logId, {
+			logs,
+			title,
+			tabItems: getTabItems(is_cn)
+		})
 
 	const innerContent = pending ? (
 		<Loading
@@ -78,10 +74,9 @@ const ToolContent = (props: ToolContentProps) => {
 	)
 
 	return (
-		<LogButton id={id} onClick={handleLogClick}>
+		<div onClick={() => handleLogClick(id)} style={{ cursor: 'pointer' }}>
 			{innerContent}
-			<Icon name='material-chevron_right' size={16} className={styles.arrowIcon} />
-		</LogButton>
+		</div>
 	)
 }
 

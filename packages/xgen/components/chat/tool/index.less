@@ -4,7 +4,7 @@
 	display: flex;
 	gap: 4px;
 	align-items: center;
-	min-height: 20px;
+	min-height: 24px;
 	cursor: pointer;
 	transition: color 0.2s;
 	flex: 1;
@@ -41,6 +41,10 @@
 
 .placeholder {
 	color: var(--color_text_grey);
+
+	:hover > & {
+		color: var(--color_text);
+	}
 }
 
 .dots {
