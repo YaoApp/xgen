@@ -13,6 +13,7 @@ export const mergeMessages = (parsedContent: any[], baseMessage: any): App.ChatI
 
 	// Process messages in original order
 	parsedContent.forEach((item, index) => {
+		item.done = true
 		if (!item.id) {
 			// For items without ID, add them directly
 			let text = ''
@@ -344,6 +345,12 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 
 	// Create new message if is_new flag is set
 	if (is_new) {
+		// Mark the last message as done
+		if (messages.length > 0 && (messages[messages.length - 1] as App.ChatInfo).is_neo) {
+			messages[messages.length - 1] = { ...messages[messages.length - 1], done: true }
+		}
+
+		// Create new message
 		messages.push({ ...formated_data, is_neo: true })
 	}
 
@@ -392,13 +399,26 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 			current_answer.props = props
 		}
 
+		// Check previous messages if is neo not mark as done, when done == true break
+		let fix_done = false
+		for (let i = messages.length - 1; i >= 0; i--) {
+			const message = messages[i]
+			if (message.is_neo) {
+				if ((message as App.ChatAI).done) {
+					break
+				}
+				fix_done = true
+				messages[i] = { ...message, done: true }
+			}
+		}
+
 		// Generate title for the first message if needed
 		if (isFirstMessage(messages) && chat_id) {
 			handleTitleGeneration(messages, chat_id)
 		}
 
-		// Update messages state if there's text or props
-		if ((text && text.length > 0) || props) {
+		// Update messages state if there's text or props or fix_done
+		if ((text && text.length > 0) || props || fix_done) {
 			setMessages([...messages])
 		}
 		setLoading(false)

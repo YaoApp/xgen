@@ -5,6 +5,8 @@ import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import type { App, Component } from '@/types'
 import Content from './Content'
+import { getLocale } from '@umijs/max'
+import { useEffect } from 'react'
 
 interface AIMessageProps {
 	assistant_id?: string
@@ -15,7 +17,18 @@ interface AIMessageProps {
 }
 
 const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) => {
-	const { tool_id, text, props = { chat_id }, type, assistant_id, assistant_name, assistant_avatar } = chat_info
+	const locale = getLocale()
+	const is_cn = locale === 'zh-CN'
+	const {
+		tool_id,
+		text,
+		props = { chat_id },
+		type,
+		assistant_id,
+		assistant_name,
+		assistant_avatar,
+		done
+	} = chat_info
 	if (type === 'loading') {
 		return (
 			<Content
@@ -26,6 +39,8 @@ const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) =>
 			/>
 		)
 	}
+
+	const show_pending = !done
 
 	return (
 		<>
@@ -53,6 +68,18 @@ const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) =>
 						props={props as Component.PropsChatComponent}
 					/>
 				</div>
+				{/* Loading status */}
+				{show_pending && (
+					<div
+						className={styles.actions}
+						onClick={() => {
+							console.log('OK')
+						}}
+					>
+						<Icon name='material-more_horiz' size={14} className='mr_2' />
+						{is_cn ? '生成中' : 'Generating'}
+					</div>
+				)}
 			</div>
 		</>
 	)
