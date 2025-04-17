@@ -25,22 +25,15 @@ const Index = (props: IProps) => {
 	}
 
 	const content = children || text || (is_cn ? '思考中...' : 'Thinking...')
-
+	const title = pending ? (is_cn ? '思考中...' : 'Thinking...') : is_cn ? '思考' : 'Think'
 	return (
 		<div>
 			<div className={styles.header}>
-				{pending ? (
-					<Loading chat_id={chat_id} placeholder={'Thinking'} icon='material-psychology_alt' />
-				) : (
-					<span className={styles.toggle} onClick={toggleCollapse}>
-						<Icon name='material-psychology_alt' size={16} />
-						<span>{is_cn ? '思考' : 'Think'}</span>
-						<Icon
-							name={isCollapsed ? 'material-chevron_right' : 'material-expand_more'}
-							size={16}
-						/>
-					</span>
-				)}
+				<span className={styles.toggle} onClick={toggleCollapse}>
+					<Icon name='material-psychology_alt' size={16} />
+					<span>{title}</span>
+					<Icon name={isCollapsed ? 'material-chevron_right' : 'material-expand_more'} size={16} />
+				</span>
 			</div>
 			<div className={`${styles.think} ${isCollapsed ? styles.collapsed : ''}`}>{content}</div>
 		</div>

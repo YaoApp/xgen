@@ -5,12 +5,23 @@
 	gap: 4px;
 	align-items: center;
 	min-height: 24px;
+	transition: color 0.2s;
+	flex: 1;
+}
+
+.tool_done {
+	color: var(--color_text_grey);
+	font-size: 12px;
+	display: flex;
+	gap: 4px;
+	align-items: center;
+	min-height: 24px;
 	cursor: pointer;
 	transition: color 0.2s;
 	flex: 1;
 
 	&:hover {
-		color: var(--color_text);
+		color: var(--color_primary);
 	}
 }
 
@@ -26,10 +37,6 @@
 	margin-left: auto;
 	transition: color 0.2s;
 	line-height: 1;
-
-	:hover > & {
-		color: var(--color_text);
-	}
 }
 
 .actions {
@@ -41,10 +48,6 @@
 
 .placeholder {
 	color: var(--color_text_grey);
-
-	:hover > & {
-		color: var(--color_text);
-	}
 }
 
 .dots {

@@ -20,9 +20,10 @@ import rehypeKatex from 'rehype-katex'
 interface IProps extends Component.PropsChatComponent {
 	chat_id: string
 	text: string
+	done?: boolean
 }
 
-const components = (chat_id: string) => {
+const components = (chat_id: string, done?: boolean) => {
 	return {
 		code: function (props: any) {
 			if (props?.className?.includes('language-mermaid')) {
@@ -58,7 +59,7 @@ const components = (chat_id: string) => {
 			const begin = props.begin || 0
 			const end = props.end || 0
 			return (
-				<Think pending={pendingBool} chat_id={chat_id} id={id} begin={begin} end={end}>
+				<Think pending={pendingBool} chat_id={chat_id} id={id} begin={begin} end={end} done={done}>
 					{props.children || 'Thinking...'}
 				</Think>
 			)
@@ -70,7 +71,7 @@ const components = (chat_id: string) => {
 			const begin = props.begin || 0
 			const end = props.end || 0
 			return (
-				<Tool pending={pendingBool} chat_id={chat_id} id={id} begin={begin} end={end}>
+				<Tool pending={pendingBool} chat_id={chat_id} id={id} begin={begin} end={end} done={done}>
 					{props.children || 'Calling...'}
 				</Tool>
 			)
@@ -96,9 +97,9 @@ const unescape = (text?: string) => {
 }
 
 const Index = (props: IProps) => {
-	const { text, chat_id } = props
+	const { text, chat_id, done } = props
 	const [content, setContent] = useState<any>('')
-	const mdxComponents = useMDXComponents(components(chat_id))
+	const mdxComponents = useMDXComponents(components(chat_id, done))
 	useAsyncEffect(async () => {
 		const vfile = new VFile(escape(text))
 		const [err, compiledSource] = await to(
@@ -195,7 +196,7 @@ const Index = (props: IProps) => {
 			console.error(`run mdx error: ${err}`)
 			console.log(`original text:\n`, text)
 		}
-	}, [text, chat_id])
+	}, [text, chat_id, done])
 
 	return <div className={styles._local}>{content}</div>
 }

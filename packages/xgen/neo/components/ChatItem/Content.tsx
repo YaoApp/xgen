@@ -4,6 +4,7 @@ import { lazy, Suspense, useMemo } from 'react'
 
 interface IProps {
 	type: App.ChatMessageType
+	done?: boolean
 	text?: string
 	props?: Component.PropsChatComponent
 	assistant_id?: string
@@ -12,7 +13,7 @@ interface IProps {
 }
 
 const Index = (props: IProps) => {
-	const { tool_id, type, text, assistant_id, chat_id } = props
+	const { tool_id, type, text, assistant_id, chat_id, done } = props
 	let { props: component_props } = props
 
 	if (!component_props) {
@@ -49,6 +50,7 @@ const Index = (props: IProps) => {
 				assistant_id={assistant_id}
 				{...component_props}
 				chat_id={chat_id || component_props.chat_id || ''}
+				done={done}
 			/>
 		</Suspense>
 	)

@@ -25,6 +25,7 @@ const getTextFromHtml = (html: React.ReactNode): string => {
 
 interface IProps extends Component.PropsChatComponent {
 	id?: string
+	done?: boolean
 	begin?: number
 	end?: number
 	text?: string
@@ -40,6 +41,7 @@ interface ToolContentProps {
 	pending?: boolean
 	size: string
 	title: string
+	done?: boolean
 	logs: {
 		console: LogItem[]
 		output: LogItem[]
@@ -47,7 +49,7 @@ interface ToolContentProps {
 }
 
 const ToolContent = (props: ToolContentProps) => {
-	const { id, chat_id, pending, size, title, logs } = props
+	const { id, chat_id, pending, size, title, logs, done } = props
 	const is_cn = getLocale() === 'zh-CN'
 
 	// Initial open of log window
@@ -58,14 +60,8 @@ const ToolContent = (props: ToolContentProps) => {
 			tabItems: getTabItems(is_cn)
 		})
 
-	const innerContent = pending ? (
-		<Loading
-			chat_id={chat_id}
-			placeholder={is_cn ? `工具调用请求 ${size}` : `Generating Tool Call Request (${size})`}
-			icon='material-slow_motion_video'
-		/>
-	) : (
-		<div className={styles.tool}>
+	const innerContent = (
+		<div className={done ? styles.tool_done : styles.tool}>
 			<span className={styles.icon}>
 				<Icon name='material-slow_motion_video' size={16} />
 			</span>
@@ -74,7 +70,10 @@ const ToolContent = (props: ToolContentProps) => {
 	)
 
 	return (
-		<div onClick={() => handleLogClick(id)} style={{ cursor: 'pointer' }}>
+		<div
+			onClick={!done ? undefined : () => handleLogClick(id)}
+			style={{ cursor: !done ? 'default' : 'pointer' }}
+		>
 			{innerContent}
 		</div>
 	)
@@ -146,7 +145,7 @@ const parseLogs = (props: IProps, is_cn: boolean) => {
 }
 
 const Index = (props: IProps) => {
-	const { id } = props
+	const { id, done } = props
 	const is_cn = getLocale() === 'zh-CN'
 
 	// Memoize the parsed logs to prevent unnecessary re-renders
@@ -175,6 +174,7 @@ const Index = (props: IProps) => {
 			id={id}
 			size={size}
 			title={title}
+			done={done}
 			logs={{
 				console: consoleLogs,
 				output: outputLogs

@@ -25,6 +25,7 @@ export declare namespace App {
 
 	type ChatMessageType =
 		| 'text'
+		| 'plan'
 		| 'image'
 		| 'audio'
 		| 'video'

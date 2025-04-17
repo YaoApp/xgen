@@ -7,6 +7,7 @@ import type { App, Component } from '@/types'
 import Content from './Content'
 import { getLocale } from '@umijs/max'
 import { useEffect } from 'react'
+import Loading from '@/widgets/Loading'
 
 interface AIMessageProps {
 	assistant_id?: string
@@ -17,8 +18,6 @@ interface AIMessageProps {
 }
 
 const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) => {
-	const locale = getLocale()
-	const is_cn = locale === 'zh-CN'
 	const {
 		tool_id,
 		text,
@@ -40,7 +39,16 @@ const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) =>
 		)
 	}
 
+	// Show loading status
 	const show_pending = !done
+
+	// Clickable for tool, plan, progress
+	const clickable = tool_id && tool_id != ''
+
+	// Load more details
+	const handleLoadMore = () => {
+		console.log('Show Pending details', tool_id)
+	}
 
 	return (
 		<>
@@ -65,19 +73,18 @@ const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) =>
 						text={text}
 						assistant_id={assistant_id}
 						chat_id={chat_id}
+						done={done}
 						props={props as Component.PropsChatComponent}
 					/>
 				</div>
+
 				{/* Loading status */}
 				{show_pending && (
 					<div
-						className={styles.actions}
-						onClick={() => {
-							console.log('OK')
-						}}
+						className={`${clickable ? styles.actions_clickable : styles.actions}`}
+						onClick={clickable ? handleLoadMore : undefined}
 					>
-						<Icon name='material-more_horiz' size={14} className='mr_2' />
-						{is_cn ? '生成中' : 'Generating'}
+						<Loading size={14} />
 					</div>
 				)}
 			</div>
