@@ -226,6 +226,10 @@ export default class GlobalModel {
 		this.neo.placeholder = placeholder
 	}
 
+	setVisibleLogWindow(visible: boolean) {
+		this.visible_log_window = visible
+	}
+
 	updateMenuStatus(itemkey_or_pathname: string) {
 		const { hit, current_nav, paths, keys } = getCurrentMenuIndexs(
 			itemkey_or_pathname,
@@ -262,10 +266,6 @@ export default class GlobalModel {
 		reaction(
 			() => this.menu_selected_keys,
 			(v) => (local.menu_selected_keys = v)
-		)
-		reaction(
-			() => this.visible_log_window,
-			(v) => (local.visible_log_window = v)
 		)
 	}
 

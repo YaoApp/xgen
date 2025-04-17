@@ -1,17 +1,17 @@
-export interface ILog {
-	[key: string]: string | LogItem[]
-}
+export type LogLevel = 'info' | 'warn' | 'error'
 
-export type LogLevel = 'info' | 'error' | 'warn'
-
-export type LogItem = {
-	datetime: Date
-	message: string
+export interface LogItem {
 	level: LogLevel
+	message: string
+	datetime: string
 }
 
-export type LogTabItem = {
+export interface LogTabItem {
 	key: string
 	label: string
-	children?: React.ReactNode | null | undefined
+	children: null
+}
+
+export interface ILog {
+	[key: string]: LogItem[]
 }

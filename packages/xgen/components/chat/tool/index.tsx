@@ -4,10 +4,9 @@ import Loading from '../loading'
 import styles from './index.less'
 import type { Component } from '@/types'
 import { Icon } from '@/widgets'
-import { LogButton, LogProvider } from '../../builder/Log'
-import Log from '../../builder/Log'
+import { LogButton, openLogWindow, updateLogData, isLogWindowOpen } from '../../builder/Log'
 import { LogItem, LogTabItem } from '@/components/builder/Log/types'
-import { SizeHumanize } from '@/utils'
+import { SizeHumanize, FormatDateTime } from '@/utils'
 
 const funRe = /"function"\s*:\s*"(\w+)"/
 const getTextFromHtml = (html: React.ReactNode): string => {
@@ -35,9 +34,34 @@ interface IProps extends Component.PropsChatComponent {
 	children?: React.ReactNode
 }
 
-const ToolContent = (props: { id: string; chat_id: string; pending?: boolean; size: string; title: string }) => {
-	const { id, chat_id, pending, size, title } = props
+interface ToolContentProps {
+	id: string
+	chat_id: string
+	pending?: boolean
+	size: string
+	title: string
+	logs: {
+		console: LogItem[]
+		output: LogItem[]
+	}
+}
+
+const ToolContent = (props: ToolContentProps) => {
+	const { id, chat_id, pending, size, title, logs } = props
 	const is_cn = getLocale() === 'zh-CN'
+
+	// Initial open of log window
+	const handleLogClick = React.useCallback(
+		(logId: string) => {
+			openLogWindow(logId, {
+				logs,
+				title,
+				tabItems: getTabItems(is_cn)
+			})
+		},
+		[logs, title, is_cn]
+	)
+
 	const innerContent = pending ? (
 		<Loading
 			chat_id={chat_id}
@@ -54,7 +78,7 @@ const ToolContent = (props: { id: string; chat_id: string; pending?: boolean; si
 	)
 
 	return (
-		<LogButton id={id}>
+		<LogButton id={id} onClick={handleLogClick}>
 			{innerContent}
 			<Icon name='material-chevron_right' size={16} className={styles.arrowIcon} />
 		</LogButton>
@@ -93,7 +117,7 @@ const parseLogs = (props: IProps, is_cn: boolean) => {
 		.replace(/&quot;/g, '"')
 
 	outputLogs.push({
-		datetime: end ? new Date(end) : begin ? new Date(begin) : new Date(),
+		datetime: FormatDateTime(end ? new Date(end) : begin ? new Date(begin) : new Date()),
 		message: content,
 		level: 'info'
 	})
@@ -105,14 +129,14 @@ const parseLogs = (props: IProps, is_cn: boolean) => {
 	}
 
 	consoleLogs.push({
-		datetime: begin ? new Date(begin) : new Date(),
+		datetime: FormatDateTime(begin ? new Date(begin) : new Date()),
 		message: is_cn ? `生成工具调用请求 ${size}` : `Generating Tool Call Request (${size})`,
 		level: 'info'
 	})
 
 	if (!pending) {
 		consoleLogs.push({
-			datetime: end ? new Date(end) : new Date(),
+			datetime: FormatDateTime(end ? new Date(end) : new Date()),
 			message: is_cn ? `生成完毕` : `Tool Call Request Generated`,
 			level: 'info'
 		})
@@ -129,18 +153,38 @@ const parseLogs = (props: IProps, is_cn: boolean) => {
 const Index = (props: IProps) => {
 	const { id } = props
 	const is_cn = getLocale() === 'zh-CN'
-	const { title, size, consoleLogs, outputLogs } = parseLogs(props, is_cn)
+
+	// Memoize the parsed logs to prevent unnecessary re-renders
+	const parsedData = React.useMemo(() => parseLogs(props, is_cn), [props, is_cn])
+	const { title, size, consoleLogs, outputLogs } = parsedData
+
+	// Update log window when data changes if window is open
+	React.useEffect(() => {
+		if (id && isLogWindowOpen(id)) {
+			updateLogData(id, {
+				logs: {
+					console: consoleLogs,
+					output: outputLogs
+				},
+				title,
+				tabItems: getTabItems(is_cn)
+			})
+		}
+	}, [id, consoleLogs, outputLogs, title, is_cn])
+
 	if (!id) return null
+
 	return (
-		<LogProvider>
-			<ToolContent {...props} id={id} size={size} title={title} />
-			<Log
-				id={id}
-				logs={{ console: consoleLogs, output: outputLogs }}
-				title={title}
-				tabItems={getTabItems(is_cn)}
-			/>
-		</LogProvider>
+		<ToolContent
+			{...props}
+			id={id}
+			size={size}
+			title={title}
+			logs={{
+				console: consoleLogs,
+				output: outputLogs
+			}}
+		/>
 	)
 }
 
