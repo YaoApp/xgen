@@ -1,13 +1,10 @@
-import { useMemoizedFn } from 'ahooks'
-import { NeoContent } from '@/widgets'
-import { useAction } from '@/actions'
 import Icon from '@/widgets/Icon'
 import styles from './index.less'
 import type { App, Component } from '@/types'
 import Content from './Content'
 import { getLocale } from '@umijs/max'
-import { useEffect } from 'react'
 import Loading from '@/widgets/Loading'
+import { OpenDetail, UpdateDetail } from './detail'
 
 interface AIMessageProps {
 	assistant_id?: string
@@ -18,6 +15,7 @@ interface AIMessageProps {
 }
 
 const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) => {
+	const locale = getLocale()
 	const {
 		tool_id,
 		text,
@@ -43,11 +41,19 @@ const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) =>
 	const show_pending = !done
 
 	// Clickable for tool, plan, progress
-	const clickable = tool_id && tool_id != ''
+	const clickable = (tool_id && tool_id != '') || (props && props.id && props.id != '')
 
 	// Load more details
-	const handleLoadMore = () => {
-		console.log('Show Pending details', tool_id)
+	const openDetail = () => {
+		const id = props?.id || tool_id || ''
+		if (!id) return
+		OpenDetail(id, type, { ...props, id, text, done, locale })
+	}
+
+	// Update Detail
+	if (clickable) {
+		const id = props?.id || tool_id || ''
+		UpdateDetail(id, type, { ...props, id, text, done, locale })
 	}
 
 	return (
@@ -82,7 +88,7 @@ const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) =>
 				{show_pending && (
 					<div
 						className={`${clickable ? styles.actions_clickable : styles.actions}`}
-						onClick={clickable ? handleLoadMore : undefined}
+						onClick={clickable ? openDetail : undefined}
 					>
 						<Loading size={14} />
 					</div>

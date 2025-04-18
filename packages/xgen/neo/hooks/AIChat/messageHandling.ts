@@ -440,6 +440,7 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 		tool: { pending: false }
 	}
 	if (text) {
+		const tool_id = current_answer.tool_id || ''
 		current_answer.text = updatedContent
 
 		// Handle delta (incremental) message updates
@@ -447,6 +448,7 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 			current_answer.text = updatedContent
 			if (type == 'think' || type == 'tool') {
 				current_answer.type = 'text'
+				current_answer.props = { ...(current_answer.props || {}), id: tool_id, begin, end }
 				// Check if the tag is closed, add closing tag if needed
 				if (updatedContent.indexOf(`</${type}>`) == -1) {
 					tokens[type].pending = true
@@ -456,7 +458,6 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 		}
 
 		// Format the text to be valid MDX with proper tag handling
-		const tool_id = current_answer.tool_id || ''
 		const props = { ...(current_answer.props || {}), id: tool_id, begin, end }
 		current_answer.text = formatToMDX(props, current_answer.text, tokens)
 	}

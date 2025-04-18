@@ -152,19 +152,19 @@ const Index = (props: IProps) => {
 	const parsedData = React.useMemo(() => parseLogs(props, is_cn), [props, is_cn])
 	const { title, size, consoleLogs, outputLogs } = parsedData
 
-	// Update log window when data changes if window is open
-	React.useEffect(() => {
-		if (id && isLogWindowOpen(id)) {
-			updateLogData(id, {
-				logs: {
-					console: consoleLogs,
-					output: outputLogs
-				},
-				title,
-				tabItems: getTabItems(is_cn)
-			})
-		}
-	}, [id, consoleLogs, outputLogs, title, is_cn])
+	// // Update log window when data changes if window is open
+	// React.useEffect(() => {
+	// 	if (id && isLogWindowOpen(id)) {
+	// 		updateLogData(id, {
+	// 			logs: {
+	// 				console: consoleLogs,
+	// 				output: outputLogs
+	// 			},
+	// 			title,
+	// 			tabItems: getTabItems(is_cn)
+	// 		})
+	// 	}
+	// }, [id, consoleLogs, outputLogs, title, is_cn])
 
 	if (!id) return null
 

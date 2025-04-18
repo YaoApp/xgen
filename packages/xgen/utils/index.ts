@@ -63,3 +63,12 @@ export const FormatDateTime = (date: Date, is_cn?: boolean) => {
 		options
 	)}`
 }
+
+/**
+ * Escape HTML characters
+ * @param html - html string
+ * @returns escaped html string
+ */
+export const HtmlEscape = (html: string) => {
+	return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
