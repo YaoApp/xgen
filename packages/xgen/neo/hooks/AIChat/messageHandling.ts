@@ -431,7 +431,54 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 
 	// Update props if available
 	if (props) {
-		current_answer.props = props
+		// Merge props
+		if (type != 'text' && type != 'error' && props.id && delta) {
+			current_answer.type = type
+			const current_props = current_answer.props || {}
+			let break_line = false
+
+			// Merge title
+			let title = current_answer.props?.title || ''
+			if (props.title) {
+				break_line = props.title.startsWith('\r')
+				title = props.title.replace('\r', '')
+			}
+
+			// Merge text
+			let text = current_answer.props?.text || ''
+			if (props.text) {
+				text = text + props.text
+			}
+
+			// Merge logs
+			const logs: { titles: string[]; texts: string[] } = current_props.logs || {
+				titles: [title],
+				texts: [text]
+			}
+
+			// New Log title with \r
+			if (break_line) {
+				text = props.text || ''
+				logs.titles.push(title)
+				logs.texts.push(text) // RESET TEXT
+			} else {
+				logs.titles[logs.titles.length - 1] = title
+				logs.texts[logs.texts.length - 1] = text
+			}
+
+			// Other props
+			const new_props = { ...current_props, ...props, text, title, logs }
+			current_answer.props = new_props
+		} else {
+			// No need to merge
+			const title = current_answer.props?.title || ''
+			const text = current_answer.props?.text || ''
+			const logs: { titles: string[]; texts: string[] } = current_answer.props?.logs || {
+				titles: [title],
+				texts: [text]
+			}
+			current_answer.props = { ...props, text, title, logs }
+		}
 	}
 
 	// Handle text content processing

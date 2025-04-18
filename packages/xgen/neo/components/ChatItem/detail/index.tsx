@@ -22,7 +22,7 @@ type DetailLog = {
  * Open the log window
  */
 export function OpenDetail(id: string, type: App.ChatMessageType | undefined, props: DetailProps) {
-	const { title, items, logs } = parseLogsDefault(props)
+	const { title, items, logs } = type == 'progress' ? parseLogsProgress(props) : parseLogsDefault(props)
 	openLogWindow(id, { logs, title, tabItems: items })
 }
 
@@ -32,8 +32,53 @@ export function OpenDetail(id: string, type: App.ChatMessageType | undefined, pr
 export function UpdateDetail(id: string, type: App.ChatMessageType | undefined, props: DetailProps) {
 	if (!isLogWindowOpen(id)) return
 
-	const { title, items, logs } = parseLogsDefault(props)
+	const { title, items, logs } = type == 'progress' ? parseLogsProgress(props) : parseLogsDefault(props)
 	updateLogData(id, { logs, title, tabItems: items })
+}
+
+function parseLogsProgress(props: DetailProps): DetailLog {
+	const { logs: logs_props, title: title_props, done, locale } = props
+	const begin = parseInt(`${props?.begin}` || '0') / 1000 / 1000
+	const end = parseInt(`${props?.end}` || '0') / 1000 / 1000
+	const is_cn = locale === 'zh-CN'
+	const logs: Record<string, LogItem[]> = { console: [], output: [] }
+	const items: LogTabItem[] = [
+		{
+			key: 'console',
+			label: is_cn ? '控制台' : 'Console',
+			children: null
+		},
+		{
+			key: 'output',
+			label: is_cn ? '实时消息' : 'Live Messages',
+			children: null
+		}
+	]
+
+	const length = logs_props?.titles?.length || 0
+	logs_props?.titles?.forEach((title: string, index: number) => {
+		const last = index == length - 1
+
+		logs.console.push({
+			datetime: FormatDateTime(new Date(begin)),
+			message: `${title} ${last ? `(${SizeHumanize(logs_props?.texts?.[index]?.length || 0)})` : ''}`,
+			level: 'info'
+		})
+	})
+
+	logs_props?.texts?.forEach((text: string, index: number) => {
+		logs.output.push({
+			datetime: FormatDateTime(new Date(begin)),
+			message: HtmlEscape(text),
+			level: 'info'
+		})
+	})
+
+	return {
+		title: title_props,
+		items,
+		logs
+	}
 }
 
 /**

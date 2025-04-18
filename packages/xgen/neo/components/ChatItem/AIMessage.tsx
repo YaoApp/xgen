@@ -68,7 +68,7 @@ const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) =>
 			<div
 				className={`border_box flex ${styles.left_content}`}
 				style={{
-					width: type == 'text' || type == 'error' ? 'auto' : '100%'
+					width: type == 'text' || type == 'error' || type == 'progress' ? 'auto' : '100%'
 				}}
 			>
 				{assistant_name && <div className={styles.assistant_name}>{assistant_name}</div>}

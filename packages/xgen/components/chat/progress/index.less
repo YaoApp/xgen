@@ -1,0 +1,46 @@
+.progress {
+	color: var(--color_text_grey);
+	font-size: 12px;
+	display: flex;
+	gap: 4px;
+	align-items: center;
+	min-height: 24px;
+	transition: color 0.2s;
+	flex: 1;
+}
+
+.progress_done {
+	color: var(--color_text_grey);
+	font-size: 12px;
+	display: flex;
+	gap: 4px;
+	align-items: center;
+	min-height: 24px;
+	cursor: pointer;
+	transition: color 0.2s;
+	flex: 1;
+
+	&:hover {
+		color: var(--color_primary);
+	}
+}
+
+.icon {
+	color: inherit;
+	display: flex;
+	align-items: center;
+	line-height: 1;
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	border-radius: 8px;
+}
