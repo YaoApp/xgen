@@ -48,3 +48,79 @@ export type GenerateOptions = {
 	onProgress?: (text: string) => void // Callback for SSE progress updates
 	onComplete?: (finalText: string) => void | Promise<void>
 }
+
+/**
+ * Merge props parameters
+ */
+export type MergePropsParams = {
+	type?: App.ChatMessageType
+	delta?: boolean
+	begin?: number
+	end?: number
+}
+
+/**
+ * Message log
+ */
+export type MessageLog = {
+	title: string
+	text: string
+	begin?: number
+	end?: number
+	status?: string
+}
+
+/**
+ * Interface for parameters needed to process AI chat data
+ */
+export interface ProcessAIChatDataParams {
+	// Raw data and content
+	/** Raw data string from event source */
+	// data: string
+
+	/** Formated data object */
+	formated_data: App.ChatAI
+
+	/** Current accumulated content */
+	content: string
+
+	// Messages and assistant information
+	/** Array of chat messages */
+	messages: Array<App.ChatInfo>
+	/** Object to track assistant information */
+	last_assistant: {
+		assistant_id: string | null
+		assistant_name: string | null
+		assistant_avatar: string | null
+	}
+
+	// State update functions
+	/** Function to update assistant information */
+	updateAssistant: (assistant: App.AssistantSummary) => void
+	/** Function to update messages state */
+	setMessages: (messages: Array<App.ChatInfo>) => void
+	/** Function to update loading state */
+	setLoading: (loading: boolean) => void
+
+	// Event source and handlers
+	/** EventSource instance for SSE connection */
+	eventSource: EventSource
+	/** Function to handle title generation */
+	handleTitleGeneration: (messages: Array<App.ChatInfo>, chat_id: string) => void
+
+	// Configuration
+	/** Current chat ID */
+	chat_id: string | undefined
+	/** Default assistant ID */
+	defaultAssistantId: string | undefined
+
+	// Action handling
+	/** Action dispatcher function */
+	onAction: (params: {
+		namespace: string
+		primary: string
+		data_item: any
+		it: { action: Array<Action.ActionParams>; title: string; icon: string }
+		extra?: any
+	}) => void
+}

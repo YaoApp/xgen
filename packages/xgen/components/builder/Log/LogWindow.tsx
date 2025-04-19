@@ -7,6 +7,7 @@ import { Icon } from '@/widgets'
 import { useState } from 'react'
 import { FormatDateTime } from '@/utils'
 import { AntdProvider, GlobalProvider } from '@/widgets'
+import LogView from './LogView'
 
 interface IProps {
 	id: string
@@ -22,7 +23,6 @@ interface LogContentProps extends IProps {
 
 function LogContent({ logs, activeTab }: LogContentProps) {
 	const is_cn = getLocale() === 'zh-CN'
-
 	return (
 		<div className={styles.logContainer}>
 			<div className={styles.logContent}>
@@ -31,10 +31,16 @@ function LogContent({ logs, activeTab }: LogContentProps) {
 					return Array.isArray(logEntries) ? (
 						logEntries.map((item: LogItem, index: number) => (
 							<div key={index} className={clsx(styles.logItem, styles[item.level])}>
-								<span className={styles.datetime}>
+								<span
+									className={styles.datetime}
+									style={{ display: item.hideDateTime ? 'none' : '' }}
+								>
 									{FormatDateTime(new Date(item.datetime), is_cn)}
 								</span>
-								<span className={styles.levelIcon}>
+								<span
+									className={styles.levelIcon}
+									style={{ display: item.hideDateTime ? 'none' : '' }}
+								>
 									{item.level === 'info' && <Icon name='material-info' size={14} />}
 									{item.level === 'warn' && (
 										<Icon name='material-warning' size={14} />
@@ -44,11 +50,14 @@ function LogContent({ logs, activeTab }: LogContentProps) {
 									)}
 								</span>
 								<span className={styles.message}>
-									{item.level === 'error' ? (
-										<div className={styles.errorMessage}>{item.message}</div>
-									) : (
-										<div className={styles.messageContent}>{item.message}</div>
-									)}
+									<LogView
+										{...item}
+										className={
+											item.level === 'error'
+												? styles.errorMessage
+												: styles.messageContent
+										}
+									/>
 								</span>
 							</div>
 						))

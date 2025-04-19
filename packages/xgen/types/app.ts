@@ -117,6 +117,7 @@ export declare namespace App {
 		assistant_id?: string
 		assistant_name?: string
 		assistant_avatar?: string
+		previous_assistant_id?: string // previous assistant_id for the message
 		// actions?: Array<Action.ActionParams>
 		done: boolean // Whether the message is done
 		delta?: boolean // Whether the message is a delta message

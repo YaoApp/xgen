@@ -1,5 +1,6 @@
 import { App, Action } from '@/types'
 import { formatToMDX } from './utils'
+import { MergePropsParams, MessageLog, ProcessAIChatDataParams } from './types'
 
 /**
  * Merge messages with the same ID into consolidated messages
@@ -188,61 +189,6 @@ export const getContent = (
 }
 
 /**
- * Interface for parameters needed to process AI chat data
- */
-export interface ProcessAIChatDataParams {
-	// Raw data and content
-	/** Raw data string from event source */
-	// data: string
-
-	/** Formated data object */
-	formated_data: App.ChatAI
-
-	/** Current accumulated content */
-	content: string
-
-	// Messages and assistant information
-	/** Array of chat messages */
-	messages: Array<App.ChatInfo>
-	/** Object to track assistant information */
-	last_assistant: {
-		assistant_id: string | null
-		assistant_name: string | null
-		assistant_avatar: string | null
-	}
-
-	// State update functions
-	/** Function to update assistant information */
-	updateAssistant: (assistant: App.AssistantSummary) => void
-	/** Function to update messages state */
-	setMessages: (messages: Array<App.ChatInfo>) => void
-	/** Function to update loading state */
-	setLoading: (loading: boolean) => void
-
-	// Event source and handlers
-	/** EventSource instance for SSE connection */
-	eventSource: EventSource
-	/** Function to handle title generation */
-	handleTitleGeneration: (messages: Array<App.ChatInfo>, chat_id: string) => void
-
-	// Configuration
-	/** Current chat ID */
-	chat_id: string | undefined
-	/** Default assistant ID */
-	defaultAssistantId: string | undefined
-
-	// Action handling
-	/** Action dispatcher function */
-	onAction: (params: {
-		namespace: string
-		primary: string
-		data_item: any
-		it: { action: Array<Action.ActionParams>; title: string; icon: string }
-		extra?: any
-	}) => void
-}
-
-/**
  * Process AI chat data from event source
  * This function handles the core logic for processing streaming AI responses,
  * including handling actions, updating messages, and managing assistant information.
@@ -373,6 +319,15 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 	current_answer.assistant_avatar = last_assistant.assistant_avatar || undefined
 	current_answer.type = type || current_answer.type || 'text'
 
+	// Set previous assistant id
+	if (messages.length > 2) {
+		// Get previous message
+		const previous_message = messages[messages.length - 2] as App.ChatAI
+		if (previous_message.assistant_id) {
+			current_answer.previous_assistant_id = previous_message.assistant_id
+		}
+	}
+
 	// Update tool ID
 	if (tool_id) {
 		current_answer.tool_id = tool_id
@@ -430,56 +385,7 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 	if (!text && !props && !type) return updatedContent
 
 	// Update props if available
-	if (props) {
-		// Merge props
-		if (type != 'text' && type != 'error' && props.id && delta) {
-			current_answer.type = type
-			const current_props = current_answer.props || {}
-			let break_line = false
-
-			// Merge title
-			let title = current_answer.props?.title || ''
-			if (props.title) {
-				break_line = props.title.startsWith('\r')
-				title = props.title.replace('\r', '')
-			}
-
-			// Merge text
-			let text = current_answer.props?.text || ''
-			if (props.text) {
-				text = text + props.text
-			}
-
-			// Merge logs
-			const logs: { titles: string[]; texts: string[] } = current_props.logs || {
-				titles: [title],
-				texts: [text]
-			}
-
-			// New Log title with \r
-			if (break_line) {
-				text = props.text || ''
-				logs.titles.push(title)
-				logs.texts.push(text) // RESET TEXT
-			} else {
-				logs.titles[logs.titles.length - 1] = title
-				logs.texts[logs.texts.length - 1] = text
-			}
-
-			// Other props
-			const new_props = { ...current_props, ...props, text, title, logs }
-			current_answer.props = new_props
-		} else {
-			// No need to merge
-			const title = current_answer.props?.title || ''
-			const text = current_answer.props?.text || ''
-			const logs: { titles: string[]; texts: string[] } = current_answer.props?.logs || {
-				titles: [title],
-				texts: [text]
-			}
-			current_answer.props = { ...props, text, title, logs }
-		}
-	}
+	props && mergeProps(current_answer, props, { type, delta, begin, end })
 
 	// Handle text content processing
 	const tokens: Record<string, { pending: boolean }> = {
@@ -566,4 +472,66 @@ export const isFirstMessage = (messages: App.ChatInfo[]) => {
 	}
 
 	return true
+}
+
+/**
+ * Merge props with current answer
+ * @param current_answer Current answer
+ * @param props Props to merge
+ * @param params Parameters for merging
+ */
+export const mergeProps = (current_answer: App.ChatAI, props: Record<string, any>, params: MergePropsParams) => {
+	const { type, delta, begin: begin_param, end: end_param } = params
+	let { begin, end, status } = current_answer.props || {}
+
+	// Default begin and end
+	begin = begin || begin_param
+	end = end || end_param
+
+	// Merge props
+	if (type != 'text' && type != 'error' && props.id && delta) {
+		current_answer.type = type
+		const current_props = current_answer.props || {}
+		let break_line = false
+
+		// Merge title
+		let title = current_answer.props?.title || ''
+		if (props.title) {
+			break_line = props.title.startsWith('\r')
+			title = props.title.replace('\r', '')
+		}
+
+		// Merge text
+		let text = current_answer.props?.text || ''
+		if (props.text) {
+			text = text + props.text
+		}
+
+		// Merge logs
+		const logs: MessageLog[] = current_props.logs || [{ title, text, begin, end, status }]
+
+		// New Log title with \r
+		if (break_line) {
+			// Update last log end
+			if (logs[logs.length - 1]) {
+				logs[logs.length - 1].end = begin
+				logs[logs.length - 1].status = 'done'
+			}
+
+			text = props.text || ''
+			logs.push({ title, text, begin, end })
+		} else {
+			logs[logs.length - 1] = { title, text, begin, end }
+		}
+
+		// Other props
+		const new_props = { ...current_props, ...props, text, title, logs }
+		current_answer.props = new_props
+	} else {
+		// No need to merge
+		const title = current_answer.props?.title || ''
+		const text = current_answer.props?.text || ''
+		const logs: MessageLog[] = current_answer.props?.logs || [{ title, text, begin, end, status }]
+		current_answer.props = { ...props, text, title, logs }
+	}
 }

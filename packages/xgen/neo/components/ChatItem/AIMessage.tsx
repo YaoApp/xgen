@@ -5,6 +5,7 @@ import Content from './Content'
 import { getLocale } from '@umijs/max'
 import Loading from '@/widgets/Loading'
 import { OpenDetail, UpdateDetail } from './detail'
+import { useEffect } from 'react'
 
 interface AIMessageProps {
 	assistant_id?: string
@@ -51,10 +52,12 @@ const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) =>
 	}
 
 	// Update Detail
-	if (clickable) {
-		const id = props?.id || tool_id || ''
-		UpdateDetail(id, type, { ...props, id, text, done, locale })
-	}
+	useEffect(() => {
+		if (clickable) {
+			const id = props?.id || tool_id || ''
+			UpdateDetail(id, type, { ...props, id, text, done, locale })
+		}
+	}, [clickable, tool_id, props, type, text, done, locale])
 
 	return (
 		<>
