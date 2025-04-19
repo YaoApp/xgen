@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const Index = (props: IProps) => {
-	const { tool_id, type, text, assistant_id, chat_id, done } = props
+	const { tool_id, type, assistant_id, chat_id, done } = props
 	let { props: component_props } = props
 
 	if (!component_props) {
@@ -42,13 +42,15 @@ const Index = (props: IProps) => {
 		})
 	}, [type])
 
+	// Use the text from props if it exists, otherwise use the text from the component_props
+	const text = component_props.text && component_props.text.trim() !== '' ? component_props.text : props.text
 	return (
 		<Suspense fallback={null}>
 			<Component
-				text={text}
+				{...component_props}
 				tool_id={tool_id}
 				assistant_id={assistant_id}
-				{...component_props}
+				text={text}
 				chat_id={chat_id || component_props.chat_id || ''}
 				done={done}
 			/>

@@ -105,6 +105,17 @@ export const mergeMessages = (parsedContent: any[], baseMessage: any): App.ChatI
 			processedIds.set(item.id, res.length - 1)
 		}
 	})
+
+	// Set previous_assistant_id for each message
+	for (let i = 1; i < res.length; i++) {
+		if (!res[i].is_neo) continue
+		const current = res[i] as App.ChatAI
+		const previous = res[i - 1] as App.ChatAI
+		if (previous.is_neo && previous.assistant_id) {
+			current.previous_assistant_id = previous.assistant_id
+		}
+	}
+
 	return res
 }
 

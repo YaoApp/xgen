@@ -25,6 +25,7 @@ const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) =>
 		assistant_id,
 		assistant_name,
 		assistant_avatar,
+		previous_assistant_id,
 		done
 	} = chat_info
 	if (type === 'loading') {
@@ -59,9 +60,10 @@ const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) =>
 		}
 	}, [clickable, tool_id, props, type, text, done, locale])
 
+	const is_same_assistant = previous_assistant_id !== undefined && previous_assistant_id === assistant_id
 	return (
 		<>
-			<div className={styles.avatar}>
+			<div className={styles.avatar} style={{ opacity: is_same_assistant ? 0 : 1 }}>
 				{assistant_avatar ? (
 					<img src={assistant_avatar} alt={assistant_name} />
 				) : (
@@ -74,7 +76,9 @@ const AIMessage = ({ chat_id, chat_info, context, callback }: AIMessageProps) =>
 					width: type == 'text' || type == 'error' || type == 'progress' ? 'auto' : '100%'
 				}}
 			>
-				{assistant_name && <div className={styles.assistant_name}>{assistant_name}</div>}
+				{assistant_name && !is_same_assistant && (
+					<div className={styles.assistant_name}>{assistant_name}</div>
+				)}
 				<div className='chat_content border_box'>
 					<Content
 						tool_id={tool_id}
