@@ -2,7 +2,7 @@
 	max-width: 100%;
 	min-width: 0;
 	width: 100%;
-	overflow-x: hidden;
+	overflow-x: auto;
 
 	:global(._newline) {
 		margin-bottom: 12px !important;
@@ -27,12 +27,23 @@
 		background-color: var(--color_bg_menu);
 		border-collapse: collapse;
 
-		:global(th),
+		:global(th) {
+			text-align: center;
+			padding: 8px 12px;
+			border: 1px solid var(--color_border_light);
+			line-height: 1.5;
+			vertical-align: middle;
+			white-space: nowrap;
+			background-color: var(--color_bg_menu);
+		}
+
 		:global(td) {
 			text-align: left;
-			padding: 8px;
+			padding: 8px 12px;
 			border: 1px solid var(--color_border_light);
-			white-space: nowrap;
+			line-height: 1.5;
+			vertical-align: top;
+			background-color: var(--color_bg_menu);
 		}
 
 		:global(._newline) {
