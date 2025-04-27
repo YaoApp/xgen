@@ -25,8 +25,29 @@ type DetailLog = {
  * Open the log window
  */
 export function OpenDetail(id: string, type: App.ChatMessageType | undefined, props: DetailProps) {
-	const { title, items, logs } = type == 'progress' ? parseLogsProgress(props) : parseLogsDefault(props)
-	openLogWindow(id, { logs, title, tabItems: items })
+	const detail_log = getDetailLog(type, props)
+	openLogWindow(id, { logs: detail_log.logs, title: detail_log.title, tabItems: detail_log.items })
+}
+
+/**
+ * Get the detail log
+ * @param type
+ * @param props
+ * @returns
+ */
+function getDetailLog(type: App.ChatMessageType | undefined, props: DetailProps): DetailLog {
+	let detail_log: DetailLog | null = null
+	switch (type) {
+		case 'progress':
+			detail_log = parseLogsProgress(props)
+			break
+		case 'plan':
+			detail_log = parseLogsPlan(props)
+			break
+		default:
+			detail_log = parseLogsDefault(props)
+	}
+	return detail_log
 }
 
 /**
@@ -35,8 +56,9 @@ export function OpenDetail(id: string, type: App.ChatMessageType | undefined, pr
 export function UpdateDetail(id: string, type: App.ChatMessageType | undefined, props: DetailProps) {
 	if (!isLogWindowOpen(id)) return
 
-	const { title, items, logs } = type == 'progress' ? parseLogsProgress(props) : parseLogsDefault(props)
-	updateLogData(id, { logs, title, tabItems: items })
+	// Update the log window
+	const detail_log = getDetailLog(type, props)
+	updateLogData(id, { logs: detail_log.logs, title: detail_log.title, tabItems: detail_log.items })
 }
 
 /**
@@ -75,6 +97,47 @@ function parseLogsProgress(props: DetailProps): DetailLog {
 			dt = getDateTime(end)
 		}
 
+		const datetime = FormatDateTime(dt)
+		logs.console.push({ datetime, message: title, level: 'info', hideDateTime, type })
+		logs.output.push({ datetime, message: text, level: 'info', hideDateTime, type })
+	})
+	return { title: title_props, items, logs }
+}
+
+/**
+ * Parse the logs for plan
+ * @param props
+ * @returns
+ */
+function parseLogsPlan(props: DetailProps): DetailLog {
+	const { title: title_props, locale, done: props_done, type, hideDateTime } = props
+	const is_cn = locale === 'zh-CN'
+	const logs: Record<string, LogItem[]> = { console: [], output: [] }
+	const items: LogTabItem[] = [
+		{
+			key: 'console',
+			label: is_cn ? '控制台' : 'Console',
+			children: null
+		},
+		{
+			key: 'output',
+			label: is_cn ? '实时消息' : 'Live Messages',
+			children: null
+		}
+	]
+
+	const message_logs = (props.logs || []) as MessageLog[]
+	message_logs.forEach((log: MessageLog, index: number) => {
+		let { title, text, begin, end, status } = log
+		if (status != 'done' && !props_done) {
+			const size = SizeHumanize(text?.length || 0)
+			title = `${title} (${size})`
+		}
+
+		let dt = getDateTime(begin)
+		if (status == 'done' && end) {
+			dt = getDateTime(end)
+		}
 		const datetime = FormatDateTime(dt)
 		logs.console.push({ datetime, message: title, level: 'info', hideDateTime, type })
 		logs.output.push({ datetime, message: text, level: 'info', hideDateTime, type })

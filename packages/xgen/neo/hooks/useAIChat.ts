@@ -9,7 +9,7 @@ import { App } from '@/types'
 
 // 导入 AIChat 目录中的所有模块
 import { AIHookArgs } from './AIChat/types'
-import { formatMessage, processAIChatData } from './AIChat/messageHandling'
+import { fixMessageDone, formatMessage, processAIChatData } from './AIChat/messageHandling'
 import { createFileHandlers } from './AIChat/fileHandling'
 import { createChatManagement } from './AIChat/chatManagement'
 import { createAssistantManagement } from './AIChat/assistantManagement'
@@ -152,7 +152,6 @@ export default ({ chat_id, upload_options = {} }: AIHookArgs) => {
 
 		const status_endpoint = `${neo_api}/status?content=${contentRaw}&context=${contextRaw}&token=${token}&chat_id=${chat_id}${assistantParam}`
 		const endpoint = `${neo_api}?content=${contentRaw}&context=${contextRaw}&token=${token}&chat_id=${chat_id}${assistantParam}`
-
 		const handleError = async (error: any) => {
 			// Check status endpoint for detailed error information
 			try {
@@ -179,6 +178,8 @@ export default ({ chat_id, upload_options = {} }: AIHookArgs) => {
 					errorMessage = 'Connection failed: Please check your network connection'
 				}
 
+				// Check previous messages if is neo not mark as done, when done == true break
+				fixMessageDone(messages, 'error')
 				setMessages((prevMessages: Array<App.ChatInfo>) => [
 					...prevMessages,
 					{
@@ -256,6 +257,12 @@ export default ({ chat_id, upload_options = {} }: AIHookArgs) => {
 	const cancel = useMemoizedFn(() => {
 		setLoading(false)
 		event_source.current?.close()
+
+		// Fix the done message
+		const fixed = fixMessageDone(messages, 'cancelled')
+		if (fixed) {
+			setMessages([...messages])
+		}
 	})
 
 	/** Get AI Chat Data **/

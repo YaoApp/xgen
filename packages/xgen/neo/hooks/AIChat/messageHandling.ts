@@ -366,18 +366,7 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 		}
 
 		// Check previous messages if is neo not mark as done, when done == true break
-		let fix_done = false
-		for (let i = messages.length - 1; i >= 0; i--) {
-			const message = messages[i]
-			if (message.is_neo) {
-				if ((message as App.ChatAI).done) {
-					break
-				}
-				fix_done = true
-				messages[i] = { ...message, done: true }
-			}
-		}
-
+		const fix_done = fixMessageDone(messages, 'done')
 		// Generate title for the first message if needed
 		if (isFirstMessage(messages) && chat_id) {
 			handleTitleGeneration(messages, chat_id)
@@ -434,6 +423,31 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 	}
 
 	return updatedContent
+}
+
+export const fixMessageDone = (messages: App.ChatInfo[], reason: 'cancelled' | 'error' | 'done'): boolean => {
+	let fixed = false
+	for (let i = messages?.length - 1; i >= 0; i--) {
+		const message = messages[i]
+		if (message.is_neo) {
+			if ((message as App.ChatAI).done) {
+				break
+			}
+
+			// If the message is plan, update each task status to failed
+			if ((message as App.ChatAI).type == 'plan' && reason != 'done') {
+				const default_status = reason == 'cancelled' ? 'cancelled' : 'failed'
+				const tasks = (message as App.ChatAI).props?.tasks || []
+				tasks.forEach((task: any) => {
+					task.status = task.status != 'completed' ? default_status : task.status
+				})
+			}
+
+			messages[i] = { ...message, done: true }
+			fixed = true
+		}
+	}
+	return fixed
 }
 
 /**
@@ -499,6 +513,12 @@ export const mergeProps = (current_answer: App.ChatAI, props: Record<string, any
 	begin = begin || begin_param
 	end = end || end_param
 
+	// Merge plan props
+	if (type == 'plan') {
+		mergePlanProps(current_answer, props, params)
+		return
+	}
+
 	// Merge props
 	if (type != 'text' && type != 'error' && props.id && delta) {
 		current_answer.type = type
@@ -545,4 +565,79 @@ export const mergeProps = (current_answer: App.ChatAI, props: Record<string, any
 		const logs: MessageLog[] = current_answer.props?.logs || [{ title, text, begin, end, status }]
 		current_answer.props = { ...props, text, title, logs }
 	}
+}
+
+/**
+ * Merge plan props
+ * @param current_answer Current answer
+ * @param props Props to merge
+ * @param params Parameters for merging
+ */
+function mergePlanProps(current_answer: App.ChatAI, props: Record<string, any>, params: MergePropsParams) {
+	const begin = current_answer.props?.begin || params.begin
+	const end = current_answer.props?.end || params.end
+	// No need to merge
+	if (!params.delta) {
+		const title = current_answer.props?.title || ''
+		const text = current_answer.props?.text || ''
+		const status = planCompleted(props) ? 'completed' : 'running'
+		const logs: MessageLog[] = current_answer.props?.logs || defaultPlanLogs(props, begin, end, status)
+		current_answer.props = { ...props, text, title, logs }
+		return
+	}
+
+	// Merge plan props
+	const current_props = current_answer.props || {}
+	const status = planCompleted(props) ? 'completed' : 'running'
+	const tasks = current_props.tasks || []
+	const logs: MessageLog[] = current_props.logs || defaultPlanLogs(props, begin, end, status)
+
+	// Merge task props by task_id
+	if (props.task_id && tasks.length > 0) {
+		const task_props = tasks.find((task: any) => task.id == props.task_id)
+		const task_log = logs.find((log: any) => log.task_id == props.task_id)
+		const task_text =
+			task_props?.text && task_props?.text.length > 0
+				? task_props?.text + (props.text || '')
+				: props.text || ''
+
+		// Update status and details
+		if (task_props) {
+			props.status && (task_props.status = props.status) // update status
+			props.text && props.text.length > 0 && (task_props.text = task_text)
+		}
+
+		// Update log
+		if (task_log) {
+			task_log.status = task_props.status == 'completed' ? 'done' : 'running'
+			props.text && props.text.length > 0 && (task_log.text = task_text)
+		}
+	}
+
+	// Update props
+	const new_props = { ...current_props, ...props, logs: [...logs] }
+	current_answer.props = new_props
+}
+
+function planCompleted(props: Record<string, any>): boolean {
+	const tasks = props.tasks || []
+	let completed = true
+	tasks.forEach((task: any) => {
+		if (task.status != 'completed' && task.status != 'failed') {
+			completed = false
+		}
+	})
+	return completed
+}
+
+function defaultPlanLogs(props: Record<string, any>, begin: number, end: number, status: string): MessageLog[] {
+	const tasks = props.tasks || []
+	return tasks.map((task: any) => ({
+		title: task.title,
+		text: task.text || '',
+		begin: begin,
+		end: end,
+		status: task.status || status,
+		task_id: task.id
+	}))
 }

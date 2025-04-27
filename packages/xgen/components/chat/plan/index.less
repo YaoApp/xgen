@@ -61,30 +61,67 @@
 }
 
 .status {
-	width: 6px;
-	height: 6px;
-	border-radius: 50%;
+	width: 16px;
+	height: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	flex-shrink: 0;
+	position: relative;
 
-	&.created {
+	&::before {
+		content: '';
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		position: absolute;
+	}
+
+	&.created::before {
 		background: var(--color_text_quaternary);
 	}
 
-	&.running {
+	&.running::before {
 		background: var(--color_warning);
 		animation: pulse 2s infinite;
 	}
 
 	&.completed {
-		background: var(--color_success);
+		color: var(--color_success);
+		&::before {
+			display: none;
+		}
+		&::after {
+			content: '✓';
+			font-size: 12px;
+		}
 	}
 
 	&.failed {
-		background: var(--color_error);
+		color: var(--color_error);
+		&::before {
+			display: none;
+		}
+		&::after {
+			content: '✕';
+			font-size: 12px;
+		}
 	}
 
-	&.destroyed {
+	&.destroyed::before {
 		background: var(--color_text_quaternary);
+	}
+
+	&.cancelled {
+		color: var(--color_text_quaternary);
+		&::before {
+			display: none;
+		}
+		&::after {
+			content: '⊘';
+			font-size: 14px;
+			opacity: 0.5;
+		}
 	}
 }
 

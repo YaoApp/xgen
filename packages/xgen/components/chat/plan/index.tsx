@@ -17,7 +17,7 @@ interface IProps extends Component.PropsChatComponent {
 	}[]
 }
 
-type ITaskStatus = 'created' | 'running' | 'completed' | 'failed' | 'destroyed'
+type ITaskStatus = 'created' | 'running' | 'completed' | 'failed' | 'destroyed' | 'cancelled'
 
 const Plan = (props: IProps) => {
 	const { title, description, tasks, assistant_id, chat_id } = props

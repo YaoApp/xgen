@@ -68,6 +68,7 @@ export type MessageLog = {
 	begin?: number
 	end?: number
 	status?: string
+	task_id?: string
 }
 
 /**
