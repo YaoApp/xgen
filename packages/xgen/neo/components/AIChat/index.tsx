@@ -43,7 +43,8 @@ const AIChat = (props: AIChatProps) => {
 
 	const global = useGlobal()
 	const locale = getLocale()
-	const { pathname } = useLocation()
+	const { search, pathname } = useLocation()
+
 	const is_cn = locale === 'zh-CN'
 	const stack = global.stack.paths.join('/')
 
@@ -213,8 +214,9 @@ const AIChat = (props: AIChatProps) => {
 
 	/** Set Current Page **/
 	useEffect(() => {
-		setCurrentPage(pathname.replace(/\/_menu.*/gi, ''))
-	}, [pathname])
+		const url = pathname.replace(/\/_menu.*/gi, '') + search
+		setCurrentPage(url)
+	}, [pathname, search])
 
 	const handleNewChat = (options?: App.NewChatOptions) => {
 		const new_chat_id = options?.chat_id || makeChatID()

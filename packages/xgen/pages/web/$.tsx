@@ -6,8 +6,7 @@ import { App } from '@/types'
 import { useAction } from '@/actions'
 
 const Index = () => {
-	const { search } = useLocation()
-	const { pathname } = useLocation()
+	const { search, pathname } = useLocation()
 
 	const [loading, setLoading] = useState(true)
 	const ref = useRef<HTMLIFrameElement>(null)
