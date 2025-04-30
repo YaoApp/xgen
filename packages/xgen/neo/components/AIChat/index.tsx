@@ -213,7 +213,7 @@ const AIChat = (props: AIChatProps) => {
 
 	/** Set Current Page **/
 	useEffect(() => {
-		setCurrentPage(pathname.replace(/\/_menu.*/gi, '').toLowerCase())
+		setCurrentPage(pathname.replace(/\/_menu.*/gi, ''))
 	}, [pathname])
 
 	const handleNewChat = (options?: App.NewChatOptions) => {
@@ -614,7 +614,15 @@ const AIChat = (props: AIChatProps) => {
 							/>
 							{/* Current Page Info */}
 							{showCurrentPage && currentPage && (
-								<div className={styles.pageInfo}>
+								<div
+									className={styles.pageInfo}
+									onClick={() => {
+										window.$app.Event.emit('app/openSidebar', {
+											path: currentPage
+										})
+									}}
+									style={{ cursor: 'pointer' }}
+								>
 									<Icon name='icon-link-2' size={12} className='pageIcon' />
 									{currentPage}
 								</div>
