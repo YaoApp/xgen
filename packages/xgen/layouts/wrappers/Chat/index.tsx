@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { FC, PropsWithChildren, useState, useCallback, useEffect } from 'react'
 import { container } from 'tsyringe'
 import { GlobalModel } from '@/context/app'
-import { LeftOutlined, RightOutlined } from '@ant-design/icons'
+import { LeftOutlined, RightOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { IPropsNeo } from '@/layouts/types'
 import clsx from 'clsx'
 import Menu from './Menu'
@@ -11,6 +11,7 @@ import Container from './Container/index'
 import NeoPage, { NEO_PAGE_BREAKPOINT, NEO_PAGE_PADDING } from '@/neo/components/Page'
 import './style.less'
 import { useNavigate } from '@umijs/max'
+import Icon from '@/widgets/Icon'
 
 const MAIN_CONTENT_MIN_WIDTH = 320
 const DEFAULT_WIDTH = 400
@@ -248,6 +249,33 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 						: { marginLeft: '92px', width: 'calc(100% - 92px)' }
 				}
 			>
+				{!sidebarVisible && (
+					<Button
+						type='text'
+						icon={<Icon name='material-chevron_left' size={16} color='var(--color_text)' />}
+						onClick={() => setSidebarVisible(true)}
+						className='maximize-btn sidebar-toggle-btn'
+						style={{
+							position: 'fixed',
+							right: '0',
+							top: '50%',
+							transform: 'translateY(-50%)',
+							zIndex: 10,
+							width: '12px',
+							height: '24px',
+							padding: 0,
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+							borderRadius: '2px',
+							backgroundColor: 'var(--color_bg_active)',
+							color: 'var(--color_text)',
+							transition: 'all 0.2s',
+							cursor: 'pointer',
+							border: 'none'
+						}}
+					/>
+				)}
 				<div
 					className={clsx(['w_100 border_box flex flex_column'])}
 					style={{

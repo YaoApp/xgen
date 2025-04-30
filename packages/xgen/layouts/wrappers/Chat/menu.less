@@ -101,4 +101,38 @@
 			}
 		}
 	}
+
+	.menu-avatar {
+		margin-top: auto;
+		width: 44px;
+		height: 44px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		border-radius: var(--radius);
+		margin: 0 auto 8px;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+		&:hover {
+			background: var(--color_bg_hover);
+			.avatar {
+				transform: scale(1.1);
+			}
+		}
+
+		.avatar {
+			transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		}
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 8px;
+			right: 8px;
+			height: 1px;
+			background: var(--color_border_light);
+		}
+	}
 }

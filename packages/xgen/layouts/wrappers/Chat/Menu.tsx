@@ -8,6 +8,7 @@ import clsx from 'clsx'
 import './menu.less'
 import { Icon } from '@/widgets'
 import { App } from '@/types'
+import ReactNiceAvatar from 'react-nice-avatar'
 
 interface Props {
 	sidebarVisible?: boolean
@@ -21,6 +22,13 @@ const Menu: FC<Props> = ({ sidebarVisible, setSidebarVisible, openSidebar }) => 
 	const [currentNav, setCurrentNav] = useState(0)
 	const quick_items = global.menus?.quick || []
 	const navigate = useNavigate()
+
+	const getUserDisplayInfo = () => {
+		const user = global.user || {}
+		const { name, mobile, email } = user
+		return name || mobile || email || 'User'
+	}
+
 	if (quick_items.length == 0) {
 		return null
 	}
@@ -31,9 +39,6 @@ const Menu: FC<Props> = ({ sidebarVisible, setSidebarVisible, openSidebar }) => 
 	}
 
 	const handleNavChange = (menu: App.Menu) => {
-		// const menuItem = TEST_MENU_ITEMS.find((item) => item.id === id)
-		// id === 3 && openSidebar?.('/id=3', menuItem?.name)
-		// id === 4 && setSidebarVisible?.(true)
 		if (menu.path === '/chat') {
 			setCurrentNav(0)
 			return
@@ -81,6 +86,16 @@ const Menu: FC<Props> = ({ sidebarVisible, setSidebarVisible, openSidebar }) => 
 						</Tooltip>
 					))}
 				</div>
+
+				<Tooltip title={getUserDisplayInfo()} placement='right'>
+					<div className='menu-avatar' onClick={() => NavigateTo('/setting')}>
+						<ReactNiceAvatar
+							className='avatar'
+							style={{ width: 32, height: 32 }}
+							{...global.avatar}
+						/>
+					</div>
+				</Tooltip>
 			</div>
 		</div>
 	)

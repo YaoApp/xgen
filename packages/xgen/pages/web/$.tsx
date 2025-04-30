@@ -3,11 +3,16 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { getLocale, useLocation } from '@umijs/max'
 import { local, session } from '@yaoapp/storex'
 import { App } from '@/types'
+import { useAction } from '@/actions'
 
 const Index = () => {
 	const { search } = useLocation()
+	const { pathname } = useLocation()
+
 	const [loading, setLoading] = useState(true)
 	const ref = useRef<HTMLIFrameElement>(null)
+
+	const onAction = useAction()
 
 	const getToken = (): string => {
 		const is_session_token = local.token_storage === 'sessionStorage'
@@ -20,24 +25,18 @@ const Index = () => {
 		return theme
 	}
 
+	const handlers: Record<string, () => string> = {
+		__token: getToken,
+		__theme: getTheme,
+		__locale: getLocale
+	}
+
 	const src = useMemo(() => {
-		if (!search) return ''
-		const src = search.split('?src=')?.[1]?.split('/_menu')[0] || ''
-		if (!src) return ''
-		const token = getToken()
-		const theme = getTheme()
-		const locale = getLocale()
-		const url = decodeURIComponent(src)
-		const re = /{{\s*([^}]+)\s*}}/gi
-		const replace = (match: string, p1: string) => {
-			p1 = p1.trim()
-			if (p1 === '__token') return token
-			if (p1 === '__theme') return theme
-			if (p1 === '__locale') return locale
-			return ''
-		}
-		return url.replace(re, replace)
-	}, [search])
+		const url = pathname.replace(/^\/web/, '')
+		const params = new URLSearchParams(search)
+		params.forEach((value, key) => handlers[value] && params.set(key, handlers[value]()))
+		return url + (params.size > 0 ? '?' + params.toString() : '')
+	}, [search, pathname])
 
 	useLayoutEffect(() => {
 		document.body.style.overflow = 'hidden'
@@ -51,10 +50,18 @@ const Index = () => {
 	useEffect(() => {
 		// Receive message from iframe
 		const message = (e: MessageEvent) => {
-			// const data = e.data || {}
-			// const { type, value, bind, namespace } = data
-			// console.debug('message', type, value, bind, namespace)
+			const data = e.data || {}
+			const { extra, data_item = {}, action, primary, namespace } = data
+			try {
+				onAction({ namespace, primary, data_item, it: { action, title: '', icon: '' }, extra })
+			} catch (err) {
+				console.error('Failed to run action:', err)
+				console.debug('--- Receive message from iframe ---')
+				console.debug(data)
+				console.debug('---')
+			}
 		}
+
 		window.addEventListener('message', message)
 		return () => window.removeEventListener('message', message)
 	}, [])
