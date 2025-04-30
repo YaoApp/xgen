@@ -84,14 +84,18 @@ const ChatWrapper: FC<PropsWithChildren> = ({ children }) => {
 
 		const handleOpenSidebar = (detail: any) => {
 			if (detail) {
-				if (detail.url) {
-					setTemporaryLink(detail.url)
-					setIsTemporaryView(true)
-				}
+				// Open Page
 				if (detail.path) {
 					navigate(detail.path)
 				}
-				if (detail.title) setCurrentPageName(detail.title || detail.url)
+
+				// Open Temporary Link
+				if (detail.url) {
+					if (detail.title) setCurrentPageName(detail.title || detail.url)
+					setTemporaryLink(detail.url)
+					setIsTemporaryView(true)
+					navigate(detail.url)
+				}
 			}
 
 			setSidebarVisible(true)
