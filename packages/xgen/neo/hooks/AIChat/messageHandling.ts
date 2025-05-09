@@ -257,6 +257,11 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 	// Update content based on message properties
 	let updatedContent = getContent(content, type || 'text', text, delta || false, is_new, props)
 
+	// Ignore result message
+	if (type == 'result') {
+		return content
+	}
+
 	// Handle action message (special message type for executing actions)
 	if (type === 'action') {
 		const { namespace, primary, data_item, action, extra } = props || {}

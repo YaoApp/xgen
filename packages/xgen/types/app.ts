@@ -38,6 +38,7 @@ export declare namespace App {
 		| 'tool'
 		| 'think'
 		| 'loading'
+		| 'result'
 		| 'action'
 
 	type ChatCmd = {

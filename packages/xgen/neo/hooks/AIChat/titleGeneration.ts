@@ -36,11 +36,21 @@ export const createTitleGenerationHandlers = (
 				onComplete: async (finalTitle) => {
 					// Use the final complete title
 					generatedTitle = finalTitle
-					// Remove <think>....</think>
-					finalTitle = finalTitle.replace(/<think>.*?<\/think>/g, '')
-					const parts = finalTitle.split('</think>')
-					if (parts.length > 1) {
-						finalTitle = parts[1]
+					// Remove <think>....</think>, <Think>....</Think>
+					finalTitle = finalTitle
+						.replace(/<think>.*?<\/think>/g, '')
+						.replace(/<Think>.*?<\/Think>/g, '')
+
+					if (finalTitle.includes('</think>')) {
+						const parts = finalTitle.split('</think>')
+						if (parts.length > 1) {
+							finalTitle = parts[1]
+						}
+					} else if (finalTitle.includes('</Think>')) {
+						const parts = finalTitle.split('</Think>')
+						if (parts.length > 1) {
+							finalTitle = parts[1]
+						}
 					}
 
 					setTitle(finalTitle)
