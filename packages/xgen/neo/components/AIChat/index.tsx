@@ -636,9 +636,10 @@ const AIChat = (props: AIChatProps) => {
 										})
 									}}
 									style={{ cursor: 'pointer' }}
+									title={currentPage}
 								>
 									<Icon name='icon-link-2' size={12} className='pageIcon' />
-									{currentPage}
+									<span className={styles.pageText}>{currentPage}</span>
 								</div>
 							)}
 						</div>
