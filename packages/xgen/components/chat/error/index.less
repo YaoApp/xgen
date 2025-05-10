@@ -21,5 +21,33 @@
 			padding: 0;
 			margin: 0;
 		}
+
+		.retry_button {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 1px;
+			margin-left: -2px;
+			background: transparent;
+			color: var(--color_danger);
+			border: none;
+			cursor: pointer;
+			transition: all 0.2s ease-out;
+			opacity: 0.6;
+			border-radius: 3px;
+
+			svg {
+				transition: all 0.2s ease-out;
+				transform: scale(1);
+			}
+
+			&:hover {
+				opacity: 1;
+
+				svg {
+					transform: scale(1.15);
+				}
+			}
+		}
 	}
 }

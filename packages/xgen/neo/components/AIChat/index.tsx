@@ -280,12 +280,23 @@ const AIChat = (props: AIChatProps) => {
 		return callAssistantAPI(assistant_id, method, args)
 	}
 
+	/** Handle Input **/
+	const handleInput = useMemoizedFn((params: { text: string; attachments?: App.ChatAttachment[] }) => {
+		const { text, attachments: user_attachments } = params
+		setInputValue(text)
+		if (user_attachments && user_attachments.length > 0) {
+			const unpinned_attachments = user_attachments.filter((att) => !att.pinned)
+			setAttachments([...attachments, ...unpinned_attachments])
+		}
+	})
+
 	/** Register Events **/
 	useLayoutEffect(() => {
 		const events = window.$app.Event
 		events.on('app/getContext', getContext)
 		events.on('app/getField', getField)
 
+		events.on('app/neoInput', handleInput)
 		events.on('app/neoNewChat', handleNewChat) // Create a new chat
 		events.on('app/neoExecute', handleExecute) // Handle execute server-side methods
 
@@ -294,6 +305,7 @@ const AIChat = (props: AIChatProps) => {
 			events.off('app/getField', getField)
 			events.off('app/neoNewChat', handleNewChat)
 			events.off('app/neoExecute', handleExecute)
+			events.off('app/neoInput', handleInput)
 		}
 	}, [assistant])
 

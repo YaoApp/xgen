@@ -238,6 +238,7 @@ export default ({ chat_id, upload_options = {} }: AIHookArgs) => {
 					eventSource: es,
 					handleTitleGeneration,
 					chat_id,
+					locale,
 					defaultAssistantId: global.default_assistant.assistant_id,
 					onAction
 				})

@@ -78,6 +78,7 @@ export interface ProcessAIChatDataParams {
 	// Raw data and content
 	/** Raw data string from event source */
 	// data: string
+	locale?: string
 
 	/** Formated data object */
 	formated_data: App.ChatAI

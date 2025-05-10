@@ -200,6 +200,65 @@ export const getContent = (
 }
 
 /**
+ * Get the last conversation messages
+ * @param messages Array of chat messages
+ * @returns Last conversation
+ */
+export const getLastConversation = (messages: App.ChatInfo[]): App.ChatInfo[] => {
+	let lastUserIndex: number = NaN
+	const lastMessages: App.ChatInfo[] = []
+	// Find the last user message
+	for (let i = messages.length - 1; i >= 0; i--) {
+		const message = messages[i]
+		lastMessages.unshift(message)
+		if (message.is_neo === false || message.is_neo === undefined) {
+			lastUserIndex = i
+			break
+		}
+	}
+	return lastMessages
+}
+
+/**
+ * Convert messages to user input
+ * @param messages Array of chat messages
+ * @returns User input
+ */
+export const messagesToUserInput = (messages: App.ChatInfo[], locale?: string): App.ChatHuman => {
+	const is_cn = locale === 'zh-CN'
+	const input: App.ChatHuman = { is_neo: false, text: '' }
+	let prompt = ''
+	messages.forEach((message) => {
+		if (message.is_neo === false || message.is_neo === undefined) {
+			const user_message = message as App.ChatHuman
+			prompt += `${user_message.text}`
+			input.attachments = user_message.attachments
+			return
+		}
+
+		// Neo message
+		const neo_message = message as App.ChatAI
+		if (neo_message.type == 'think' || neo_message.type == 'tool') {
+			// Ignore think and tool message
+			return
+		}
+
+		if (neo_message.type == 'error') {
+			const message_error = neo_message.props?.text || neo_message.text || ''
+			prompt += `\n--\n${is_cn ? '请修复以下错误:' : 'Please fix the following error:'}\n${message_error}`
+			return
+		}
+
+		// Text message
+		if (neo_message.type == 'text' || !neo_message.type) {
+			prompt += `${neo_message.text}\n`
+		}
+	})
+	input.text = prompt
+	return input
+}
+
+/**
  * Process AI chat data from event source
  * This function handles the core logic for processing streaming AI responses,
  * including handling actions, updating messages, and managing assistant information.
@@ -211,6 +270,7 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 	const {
 		formated_data,
 		content,
+		locale,
 		messages,
 		last_assistant,
 		updateAssistant,
@@ -244,7 +304,6 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 		begin,
 		end,
 		text,
-		props,
 		type,
 		done,
 		assistant_id,
@@ -254,12 +313,26 @@ export const processAIChatData = (params: ProcessAIChatDataParams): string => {
 		delta
 	} = formated_data
 
+	let { props } = formated_data
+
 	// Update content based on message properties
 	let updatedContent = getContent(content, type || 'text', text, delta || false, is_new, props)
 
 	// Ignore result message
 	if (type == 'result') {
 		return content
+	}
+
+	// Add Retry handler
+	if (type == 'error') {
+		props = {
+			...props,
+			onRetry: () => {
+				const lastConversation = getLastConversation(messages)
+				const message = messagesToUserInput(lastConversation, locale)
+				window.$app.Event.emit('app/neoInput', { text: message.text, attachments: message.attachments })
+			}
+		}
 	}
 
 	// Handle action message (special message type for executing actions)
