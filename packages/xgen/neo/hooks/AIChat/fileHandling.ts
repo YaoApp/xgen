@@ -56,12 +56,35 @@ export const createFileHandlers = (
 			throw new Error('Neo API endpoint not configured')
 		}
 
+		// @todo
+		// it should be limited by the server and get the maxsize from the server
+		// if upload_options.max_file_size is set, it should not greater than the server maxsize
+		// if upload_options.allowed_types is set, it should be used, but it should be a subset of the server allowed_types
+		const uploadSetting = {
+			max_file_size: 100, // 100MB default maxsize
+			allowed_types: [
+				'image/*',
+				'.pdf',
+				'.doc',
+				'.docx',
+				'.txt',
+				'.md',
+				'.mdx',
+				'.yao',
+				'.yaml',
+				'.yml',
+				'.xlsx',
+				'.xls',
+				'.ppt',
+				'.pptx'
+			] // default allowed types
+		}
+
 		// Default options
 		const options = {
 			process_image: false,
 			vision: handleVision,
-			max_file_size: 10, // 10MB
-			allowed_types: ['image/*', '.pdf', '.doc', '.docx', '.txt'],
+			...uploadSetting,
 			...upload_options
 		}
 

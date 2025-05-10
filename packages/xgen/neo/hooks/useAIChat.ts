@@ -283,6 +283,8 @@ export default ({ chat_id, upload_options = {} }: AIHookArgs) => {
 
 	/** Add/Update attachment **/
 	const addAttachment = useMemoizedFn((attachment: App.ChatAttachment) => {
+		// Set default pinned, if not set
+		attachment.pinned = attachment.pinned !== undefined ? attachment.pinned : true
 		setAttachments((prev) => [...prev, attachment])
 	})
 
