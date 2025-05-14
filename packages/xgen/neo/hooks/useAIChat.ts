@@ -221,7 +221,9 @@ export default ({ chat_id, upload_options = {} }: AIHookArgs) => {
 			})
 			event_source.current = es
 
-			es.onopen = () => messages.push({ is_neo: true, text: '' })
+			es.onopen = () => {
+				messages.push({ is_neo: true, text: '' })
+			}
 
 			es.onmessage = ({ data }: { data: string }) => {
 				const formated_data = ntry(() => JSON.parse(data)) as App.ChatAI
@@ -247,6 +249,15 @@ export default ({ chat_id, upload_options = {} }: AIHookArgs) => {
 			es.onerror = (ev) => {
 				handleError(ev)
 				es.close()
+
+				// Fix the done message if the connection is closed
+				if (es.readyState === EventSource.CLOSED) {
+					const fixed = fixMessageDone(messages, 'done')
+					if (fixed) {
+						setMessages([...messages])
+					}
+					setLoading(false)
+				}
 			}
 		}
 
@@ -279,7 +290,9 @@ export default ({ chat_id, upload_options = {} }: AIHookArgs) => {
 
 	/** Clean up the AI Chat **/
 	useEffect(() => {
-		return () => event_source.current?.close()
+		return () => {
+			event_source.current?.close()
+		}
 	}, [])
 
 	/** Add/Update attachment **/
