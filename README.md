@@ -1,3 +1,9 @@
+> [!IMPORTANT]
+> ### 🚀 Project Migration Notice
+> This project has been migrated to [YaoApp/cui](https://github.com/YaoApp/cui) - A Chat UI Framework for building AI Native applications on Yao App Engine.
+> Please visit the new repository for the latest updates and features.
+
+
 <p align="center">
       <img src="packages/xgen/public/logo_xgen.png" width="180" alt="logo">
 </p>
